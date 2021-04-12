@@ -1,0 +1,21 @@
+Host: pc-sport.esdi.ru
+Date: 2021-03-29 21:35:05
+Module: my_module_id
+Произвольный текст сообщения
+    AddMessage2Log
+	/sites/pc-sport.esdi.ru/index.php:5
+----------
+Host: pc-sport.esdi.ru
+Date: 2021-03-29 21:37:07
+Module: my_module_id
+Произвольный текст сообщения
+    AddMessage2Log
+	/sites/pc-sport.esdi.ru/index.php:6
+----------
+Host: pc-sport.esdi.ru
+Date: 2021-03-29 21:40:09
+Module: my_module_id
+Произвольный текст сообщения
+    AddMessage2Log
+	/sites/pc-sport.esdi.ru/index.php:6
+----------
