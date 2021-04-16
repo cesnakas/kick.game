@@ -76,10 +76,10 @@ $teamID = $arUser['UF_ID_TEAM'];
                 РУС
                 <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 32 28"><g><path fill="#0039A6" d="M6 11.5h20v5H6z"/><path d="M6 7.5a1 1 0 011-1h18a1 1 0 011 1v4H6v-4z" fill="#fff"/><path d="M6 16.5h20v4a1 1 0 01-1 1H7a1 1 0 01-1-1v-4z" fill="#E62D3B"/></g></svg>
               </div>
-              <div class="lang-selector__menu-item">
+              <a class="lang-selector__menu-item" href="/en/">
                 ENG
                 <svg fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" viewBox="0 0 32 28"><g ><path fill="url(#pattern0)" d="M6 6.5h20v15H6z"/></g><defs><pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1"><use xlink:href="#image0" transform="matrix(.015 0 0 .02 -.25 0)"/></pattern><image id="image0" width="100" height="50" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAyCAMAAACd646MAAAApVBMVEUAJH1Vbaj///9WbqnPFCvi5vDbTl/zxMoCJn5UbKjU2ulXb6nk6PHl6fLwtLsBJX7T2enbT2DTKD1ZcKpbcqvW3OrY3uuOnsWPn8bfYXHfYnLhbXzhbnzhb33ib32Qn8aRoMcDJ3/niJTniZTojpnoj5rpkZzpk57SJTrwtr3wt77TJjz319v32Nz88vP98/T99PX99fb+9/j++Pj++fr++vvTJzwm3ws1AAABN0lEQVR42u3Xt27FMAxGYYqW2+3pvffe8/6PlqvBGQQaJ1yCIPCZf+DbBEqqWrs21hrpL6hq/E5VW+nvZH1TH8+vY6qqJUZgAGFCdYkAAwgTS+QzAgMIEgl5vgQGECQSMlJgAGFCF9KMgQGEiTAXIYYRJgQYRphghhEmmAEECAdjI0y4GBNBws0YCBJ+psiRAgk/M8mR6c+JYFRsl/p2c7ibOnvQrgx5n+3ni3KrCEaimI14+kdI/IUGZEAG5I8gwwPpQ1qj4niqXfenO6mD248MyRd7s1edHIXWqOcy76qrmFq9etEyR8p8dXfxBL81IBahyJEwHgHjJebWSdQA4yXs4w4YL2EjwHgJGwHGQQDCDBOIMMMEI8wwwQgzRDDCjBDBCDNCBCPMCBGMMCNEMMKMAMEIMytfZZZd/8K7Cz4AAAAASUVORK5CYII="/></defs></svg>
-              </div>
+              </a>
             </div>
           </div>
             <?php if (!$USER->IsAuthorized()) { ?>
