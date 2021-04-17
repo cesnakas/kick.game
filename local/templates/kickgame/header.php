@@ -163,7 +163,7 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                                                     "forgot_password",
                                                     "change_password"));?>"
                                                class="nav__link color-red"
-                                            >Выход</a>
+                                            ><?=GetMessage('NAV_LOGOUT')?></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -172,10 +172,10 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                     <?php } else { ?>
                         <div class="navbar-no-auth">
                             <a class="btn btn_auth btn_border" href="<?=SITE_DIR;?>personal/auth/reg.php">Регистрация</a>
-                            <a class="btn btn_auth" href="<?=SITE_DIR;?>personal/auth/">Вход</a>
+                            <a class="btn btn_auth" href="<?=SITE_DIR;?>personal/auth/"><?=GetMessage('NAV_LOGOUT')?></a>
                         </div>
                         <div class="navbar-no-auth-mobile">
-                            <a class="btn-sign-in" href="<?=SITE_DIR;?>personal/auth/"><i></i> Вход</a>
+                            <a class="btn-sign-in" href="<?=SITE_DIR;?>personal/auth/"><i></i> <?=GetMessage('NAV_LOGOUT')?></a>
                         </div>
                     <?php } ?>
                 </nav>
