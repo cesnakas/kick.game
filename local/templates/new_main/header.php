@@ -187,21 +187,21 @@ $teamID = $arUser['UF_ID_TEAM'];
                         src="<?php echo SITE_TEMPLATE_PATH; ?>/images/squad.png" alt="squad"
                         srcset="<?php echo SITE_TEMPLATE_PATH; ?>/images/squad.png 1x, <?php echo SITE_TEMPLATE_PATH; ?>/images/squad@2x.png 2x"
                     >
-                    Турниры для сквадов на 1000&euro; каждый месяц
+                    <?=GetMessage('MAIN_SQUAD')?>
                 </div>
                 <div class="cta__feature">
                     <img
                         src="<?php echo SITE_TEMPLATE_PATH; ?>/images/customs.png" alt="customs"
                         srcset="<?php echo SITE_TEMPLATE_PATH; ?>/images/customs.png 1x, <?php echo SITE_TEMPLATE_PATH; ?>/images/customs@2x.png 2x"
                     >
-                    Кастомки с призами каждую неделю
+                    <?=GetMessage('MAIN_CUSTOMS')?>
                 </div>
                 <div class="cta__feature">
                     <img
                         src="<?php echo SITE_TEMPLATE_PATH; ?>/images/free.png" alt="free"
                         srcset="<?php echo SITE_TEMPLATE_PATH; ?>/images/free.png 1x, <?php echo SITE_TEMPLATE_PATH; ?>/images/free@2x.png 2x"
                     >
-                    14 дней, чтобы попробовать все плюшки бесплатно
+                    <?=GetMessage('MAIN_FREE')?>
                 </div>
             </div>
             <div class="cta__action">

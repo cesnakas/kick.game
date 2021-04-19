@@ -10,4 +10,7 @@ $MESS['NAV_PERSONAL']           = 'Profile';
 $MESS['NAV_LANG']          = 'Рус';
 
 $MESS['MAIN_SUBTITLE'] = 'Your eSports pass, pabger'; // Твой пропуск в киберспорт, пабгер
-$MESS['MAIN_DUO'] = 'Duo tournaments for &euro;100 every week'; // Турниры дуо на 100&euro; каждую неделю
+$MESS['MAIN_DUO'] = 'Duo tournaments for €100 every week'; // Турниры дуо на 100€ каждую неделю
+$MESS['MAIN_SQUAD'] = 'Squad tournaments for €1000 every month'; // Турниры для сквадов на 1000€ каждый месяц
+$MESS['MAIN_CUSTOMS'] = 'Custom prizes every week'; // Кастомки с призами каждую неделю
+$MESS['MAIN_FREE'] = '14 days to try all the goodies for free'; // 14 дней, чтобы попробовать все плюшки бесплатно
