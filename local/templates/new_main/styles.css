@@ -490,6 +490,7 @@ button {
 }
 
 .lang-selector svg:first-of-type {
+  margin-top: -4px;
   margin-right: 5px;
 }
 
@@ -514,7 +515,7 @@ button {
 }
 
 .lang-selector__menu-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   color: #FFF;
   text-decoration: none;
