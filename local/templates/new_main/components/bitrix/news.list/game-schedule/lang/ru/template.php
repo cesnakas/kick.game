@@ -5,5 +5,6 @@ $MESS['GS_TYPE'] = 'Тип игры';
 $MESS['GS_TITLE'] = 'Название';
 $MESS['GS_DATE_EVENT'] = 'Дата проведения';
 $MESS['GS_RATING'] = 'Рейтинг';
+$MESS['GS_RATING_INFO'] = 'Рейтинг, необходимый для записи на игру';
 $MESS['GS_MODE'] = 'Режим';
 $MESS['GS_COMMENTATOR'] = 'Комментатор';

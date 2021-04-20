@@ -201,16 +201,16 @@ function getAvailableGroup($arItem) {
       <th><?=GetMessage('GS_TITLE')?></th>
       <th><?=GetMessage('GS_DATE_EVENT')?></th>
       <th>
-        Рейтинг
+          <?=GetMessage('GS_RATING')?>
         <span class="tooltip">
                   ?
                   <span class="tooltip__text">
-                    Рейтинг, необходимый для записи на игру
+                    <?=GetMessage('GS_RATING_INFO')?>
                   </span>
                 </span>
       </th>
-      <th>Режим</th>
-      <th>Комментатор</th>
+      <th><?=GetMessage('GS_MODE')?></th>
+      <th><?=GetMessage('GS_COMMENTATOR')?></th>
     </tr>
     </thead>
     <tbody>
