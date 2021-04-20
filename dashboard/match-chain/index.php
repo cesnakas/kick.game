@@ -51,10 +51,10 @@ function getCoreTeam($teamID)
 function getPlayersSquadByIdMatch($idMatch, $teamId)
 {
 
-    $coreTeam = getCoreTeam($teamId);
-    foreach ($coreTeam as $key => $val) {
-        $coreTeam[$key] = $val['ID'];
-    }
+//    $coreTeam = getCoreTeam($teamId);
+//    foreach ($coreTeam as $key => $val) {
+//        $coreTeam[$key] = $val['ID'];
+//    }
 
     $arSelect = Array(
         "ID",
@@ -89,6 +89,23 @@ function getPlayersSquadByIdMatch($idMatch, $teamId)
     }
     return false;
 }
+
+function getUsers($ids)
+{
+    $filter = Array('ID' => implode('|', $ids));
+   // $arParams["SELECT"] = array("UF_*");
+    $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, false);
+    // $elementsResult->NavStart(50);
+    $output = [];
+    while ($rsUser = $elementsResult->Fetch())
+    {
+        $output[] = $rsUser;
+    }
+    return $output;
+}
+
+
+
 
 
 // получаем матч по id
@@ -303,9 +320,9 @@ function makeFormSquadResult($firstMatchId, $matchId, $teamId)
 {
     GLOBAL $matchMembersResult;
     $teamId+=0;
-    $coreTeam = getCoreTeam($teamId);
-
+    $coreTeam = getUsers(getPlayersSquadByIdMatch($firstMatchId, $teamId));
     $squadMembers = [];
+
     if ($squadMembers = getPlayersSquadByIdMatch($firstMatchId, $teamId)) {
         $squadMembers = array_flip($squadMembers);
     }
@@ -358,7 +375,6 @@ function showMatch($match = null)
 
   if ($members) {
       addMatchMembersResult($match['ID']);
-
     echo '<form id="deleteForm" action="'.POST_FORM_ACTION_URI.'" method="post">'. bitrix_sessid_post() .'</form>
 <form  action="#" method="post">';
       echo '<h2 class="mb-3">#' . $match['ID'] . ' ' . $match['NAME'] . '</h2>';
@@ -420,18 +436,21 @@ function showMatch($match = null)
         '19',
         '20',
     ];
+
     foreach ($tmpKeys as $key) {
         $curTeamId = $members["TEAM_PLACE_$key"]['VALUE'];
         $teamName = '';
 
-        if(!empty($curTeamId)) {
-            $team = getTeamById($curTeamId);
 
-            $coreTeam = getCoreTeam($curTeamId);
+        if(!empty($curTeamId)) {
+
+            $team = getTeamById($curTeamId);
+           // $coreTeam = getCoreTeam($curTeamId);
+
             $squadMembers = [];
-            if ($squadMembers = getPlayersSquadByIdMatch($firstMatchId, $curTeamId)) {
-                $squadMembers = array_flip($squadMembers);
-            }
+//            if ($squadMembers = getPlayersSquadByIdMatch($firstMatchId, $curTeamId)) {
+//                $squadMembers = array_flip($squadMembers);
+//            }
 
             $teamName = '<div>
                             <img width="50" style="margin-right: 5px" src="'. CFile::GetPath($team["LOGO_TEAM"]['VALUE']) .'" alt="">
@@ -479,12 +498,15 @@ function showMatch($match = null)
         echo '<div class="row my-3 align-items-center">
                 <div class="col-md-3">TEAM-PLACE-'.$key.':<br> ' . $teamName . '</div>';
         if ($curTeamId+0 > 0) {
+
             makeFormMemberResult($match['ID'], $curTeamId);
 
             makeFormSquadResult($firstMatchId, $match['ID'], $curTeamId);
+
         }
         echo '</div>';
     }
+
     echo '<input type="submit" class="btn btn-success my-3" name="sendResults" value="Сохранить и отправить результаты">';
     echo '<input type="hidden" value="'.$match['ID'].'" name="matchId">';
     echo '</form>';
@@ -628,7 +650,7 @@ function updateMembers($props = [], $id)
 /*end function for remove teame with match*/
 
 
-function countResultsByTeam($teamId) {
+function countResultsByTeam($teamId, $typeMatch) {
     $teamId+=0;
 
     $kill = 0;
@@ -644,68 +666,135 @@ function countResultsByTeam($teamId) {
     $total = 0;
     if (isset($_POST["place"][$teamId]) && $_POST["place"][$teamId] != '') {
         $t = $_POST["place"][$teamId]+0;
-        switch ($t) {
-            case 1:
-                $total = 12;
-                break;
-            case 2:
-              $total = 10;
-              break;
-            case 3:
-              $total = 8;
-              break;
-            case 4:
-              $total = 6;
-              break;
-            case 5:
-              $total = 4;
-              break;
-          case 6:
-            $total = 2;
-            break;
-          case 7:
-            $total = 1;
-            break;
-          case 8:
-            $total = 1;
-            break;
-          case 9:
-            $total = 0;
-            break;
-          case 10:
-            $total = 0;
-            break;
-          case 11:
-            $total = -2;
-            break;
-          case 12:
-            $total = -4;
-            break;
-          case 13:
-            $total = -6;
-            break;
-          case 14:
-            $total = -8;
-            break;
-          case 15:
-            $total = -10;
-            break;
-          case 16:
-            $total = -12;
-            break;
-          case 17:
-            $total = -14;
-            break;
-          case 18:
-            $total = -16;
-            break;
-          case 19:
-            $total = -16;
-            break;
-          case 20:
-            $total = -16;
-            break;
+
+        if ($typeMatch == 6) {
+            switch ($t) {
+                case 1:
+                    $total = 12;
+                    break;
+                case 2:
+                    $total = 10;
+                    break;
+                case 3:
+                    $total = 8;
+                    break;
+                case 4:
+                    $total = 6;
+                    break;
+                case 5:
+                    $total = 4;
+                    break;
+                case 6:
+                    $total = 2;
+                    break;
+                case 7:
+                    $total = 1;
+                    break;
+                case 8:
+                    $total = 1;
+                    break;
+                case 9:
+                    $total = 0;
+                    break;
+                case 10:
+                    $total = 0;
+                    break;
+                case 11:
+                    $total = -2;
+                    break;
+                case 12:
+                    $total = -4;
+                    break;
+                case 13:
+                    $total = -6;
+                    break;
+                case 14:
+                    $total = -8;
+                    break;
+                case 15:
+                    $total = -10;
+                    break;
+                case 16:
+                    $total = -12;
+                    break;
+                case 17:
+                    $total = -14;
+                    break;
+                case 18:
+                    $total = -16;
+                    break;
+                case 19:
+                    $total = -16;
+                    break;
+                case 20:
+                    $total = -16;
+                    break;
+            }
+        } else if ($typeMatch == 5) {
+            switch ($t) {
+                case 1:
+                    $total = 15;
+                    break;
+                case 2:
+                    $total = 12;
+                    break;
+                case 3:
+                    $total = 10;
+                    break;
+                case 4:
+                    $total = 8;
+                    break;
+                case 5:
+                    $total = 6;
+                    break;
+                case 6:
+                    $total = 4;
+                    break;
+                case 7:
+                    $total = 2;
+                    break;
+                case 8:
+                    $total = 1;
+                    break;
+                case 9:
+                    $total = 1;
+                    break;
+                case 10:
+                    $total = 1;
+                    break;
+                case 11:
+                    $total = 1;
+                    break;
+                case 12:
+                    $total = 1;
+                    break;
+                case 13:
+                    $total = 0;
+                    break;
+                case 14:
+                    $total = 0;
+                    break;
+                case 15:
+                    $total = 0;
+                    break;
+                case 16:
+                    $total = 0;
+                    break;
+                case 17:
+                    $total = 0;
+                    break;
+                case 18:
+                    $total = 0;
+                    break;
+                case 19:
+                    $total = 0;
+                    break;
+                case 20:
+                    $total = 0;
+                    break;
+            }
         }
+
     }
     $total += $kill;
     $result = [
@@ -757,8 +846,10 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["removeTeamFromMatch"]))) {
     $dateA = DateTime::createFromFormat('d.m.Y H:i:s', $now);
     $dateB = DateTime::createFromFormat('d.m.Y H:i:s', $dateStartMatch);
 
+
     // получаем цепочку матчей
     $chainMatches = getChainMatchesByParentId($firstMatchId);
+
     $results = getResultByMatchTeam($firstMatchId, $_POST["removeTeamFromMatch"]);
     if ($results) {
         $errors[] = 'По матчу уже сформированы результаты';
@@ -810,7 +901,7 @@ if (!empty($_POST["sendResults"])) {
 
 
     if (!empty($matchId) && !empty($_POST['date_time_match'])) {
-        //$start = microtime(true);
+
 
         $props = [];
         $props['DATE_START'] = $_POST['date_time_match'];
@@ -848,10 +939,11 @@ if (!empty($_POST["sendResults"])) {
             if (count($scoreTeamIds) == $scoreTeamCount) {
                 foreach ($scoreTeamIds as $teamId) {
                     $score = getScoreMatch($matchId, $teamId);
-                    $countResult = countResultsByTeam($teamId);
+                    // получили матч по id
+                    $resMatch = getMatchById($matchId);
+                    $countResult = countResultsByTeam($teamId, $resMatch["PROPERTY_23"]);
                     $resSaveTeamPlace = false;
-                  // получили матч по id
-                  $resMatch = getMatchById($matchId);
+
 
                     if ($score) {
                         // update этой записи
@@ -897,7 +989,7 @@ if (!empty($_POST["sendResults"])) {
 
 
     }
-    //dump('Время выполнения скрипта: '.round(microtime(true) - $start, 4).' сек.');
+
 }
 
 

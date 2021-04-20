@@ -83,8 +83,8 @@ $arUser = $rsUser->Fetch();
   <div class="row justify-content-center">
     <div class="col-lg-10 col-md-12">
       <div class="layout__content-anons text-center">
-		<a class="btn btn_auth btn_border">Список команд</a>
-		<a class="btn btn_auth " href="/players/">Список игроков</a>
+		<a class="btn btn_auth ">Список команд</a>
+		<a class="btn btn_auth btn_border" href="/players/">Список игроков</a>
       </div>
     </div>
   </div>

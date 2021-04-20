@@ -1141,6 +1141,10 @@ if (!empty($newMatchIds)) {
         </div>
       </div>
     </div>
+        <div class="mt-3 text-center">
+            <a href="https://t.me/joinchat/3zyL7w5RL7czZmYy" class="btn" target="_blank">Поддержка</a>
+        </div>
+    </div>
   </section>
 <?php } ?>
   <section class="promo-code mt-5 <?php if ($resultPrem >= 0) echo 'mb-5'; ?>">
@@ -1404,7 +1408,7 @@ if (!empty($newMatchIds)) {
         </div>
         <div class="modal-body">
           <h3 class="modal-body__title">Создание команды</h3>
-          <form action="<?= POST_FORM_ACTION_URI; ?>" method="post" enctype="multipart/form-data">
+          <form class="form-team" action="<?= POST_FORM_ACTION_URI; ?>" method="post" enctype="multipart/form-data">
               <?=bitrix_sessid_post()?>
             <div class="form-field">
               <label for="nameTeam" class="form-field__label">Название команды</label>

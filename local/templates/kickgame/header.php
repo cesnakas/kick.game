@@ -58,19 +58,23 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
 
             <div class="container">
                 <nav class="navbar">
+
                     <div class="navbar__logo">
                         <a href="<?=SITE_DIR;?>"><img src="<?=SITE_TEMPLATE_PATH;?>/dist/images/logo.svg" alt="logo"></a>
                     </div>
+
                     <div class="navbar__burger" id="navbar__burger">
                         <button></button>
                     </div>
+
                     <div class="navbar-link" id="navbar-link">
+
                         <ul class="navbar__nav">
                             <li><a href="<?=SITE_DIR;?>"><?=GetMessage('NAV_HOME')?></a></li>
                             <li><a href="<?=SITE_DIR;?>game-schedule/"><?=GetMessage('NAV_TIMETABLE')?></a></li>
                             <li><a href="<?=SITE_DIR;?>teams/"><?=GetMessage('NAV_RATINGS')?></a></li>
                             <li><a href="<?=SITE_DIR;?>subscription-plans/"><?=GetMessage('NAV_SUBSCRIPTION')?></a></li>
-                            <?php if ($USER->IsAuthorized()) { ?>
+                            <? if ($USER->IsAuthorized()) { ?>
                                 <li class="nav-link-exit">
                                     <a href="<?= $APPLICATION->GetCurPageParam(
                                         "logout=yes&".bitrix_sessid_get(),
@@ -84,8 +88,9 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                                         class="color-red"
                                     ><?=GetMessage('NAV_LOGOUT')?></a>
                                 </li>
-                            <?php } ?>
+                            <? } ?>
                         </ul>
+
                         <ul class="navbar__lang">
                             <li class="navbar-dropdown">
                                 <a href="javascript:void(0);">
@@ -108,23 +113,23 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                         </ul>
 
                     </div>
-                    <?php if ($USER->IsAuthorized()) { ?>
+                    <? if ($USER->IsAuthorized()) { ?>
                         <div class="navbar-user ">
                             <a href="<?=SITE_DIR;?>personal/">
                                 <div class="navbar-user__avatar"
-                                    <?php if (!empty($arUser["PERSONAL_PHOTO"])) { ?>
-                                        style="background-image: url(<?php echo CFile::GetPath($arUser["PERSONAL_PHOTO"]); ?>)"
-                                    <?php } else { ?>
-                                        style="background-image: url(<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/default-avatar.svg)"
-                                    <?php } ?>
+                                    <? if (!empty($arUser["PERSONAL_PHOTO"])) { ?>
+                                        style="background-image: url(<?=CFile::GetPath($arUser["PERSONAL_PHOTO"]);?>)"
+                                    <? } else { ?>
+                                        style="background-image: url(<?=SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
+                                    <? } ?>
                                 >
                                     <div class="navbar-user__avatar-rating-bg">
                                         <div class="navbar-user__avatar-rating">
-                                            <?php if (!$arUser['UF_RATING']) { ?>
+                                            <? if (!$arUser['UF_RATING']) { ?>
                                                 300
-                                            <?php } else { ?>
-                                                <?php echo $arUser['UF_RATING']; ?>
-                                            <?php } ?>
+                                            <? } else { ?>
+                                                <?=$arUser['UF_RATING'];?>
+                                            <? } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -136,24 +141,24 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                                     </a>
                                     <ul class="navbar-dropdown__menu">
                                         <li class="navbar-dropdown__item">
-                                            <a href="<?=SITE_DIR;?>personal/" class="nav__link">Профиль</a>
+                                            <a href="<?=SITE_DIR;?>personal/" class="nav__link"><?=GetMessage('NAV_PERSONAL')?></a>
                                         </li>
-                                        <?php if ($isCaptainHeader) { ?>
+                                        <? if ($isCaptainHeader) { ?>
                                             <li class="navbar-dropdown__item">
-                                                <a href="<?=SITE_DIR;?>management-compositional/" class="nav__link">Моя команда</a>
+                                                <a href="<?=SITE_DIR;?>management-compositional/" class="nav__link"><?=GetMessage('NAV_MY_TEAM')?></a>
                                             </li>
                                             <li class="navbar-dropdown__item">
-                                                <a href="<?=SITE_DIR;?>management-games/" class="nav__link">Управление играми</a>
+                                                <a href="<?=SITE_DIR;?>management-games/" class="nav__link"><?=GetMessage('NAV_GAMES_MANAGEMENT')?></a>
                                             </li>
-                                        <?php } ?>
-                                        <?php if (CSite::InGroup(array(1, 8))) { ?>
+                                        <? } ?>
+                                        <? if (CSite::InGroup(array(1, 8))) { ?>
                                             <li class="navbar-dropdown__item">
-                                                <a href="<?=SITE_DIR;?>dashboard/" class="nav__link">Dashboard</a>
+                                                <a href="<?=SITE_DIR;?>dashboard/" class="nav__link"><?=GetMessage('NAV_DASHBOARD')?></a>
                                             </li>
                                             <li class="navbar-dropdown__item">
-                                                <a href="<?=SITE_DIR;?>referee/" class="nav__link">Create matches</a>
+                                                <a href="<?=SITE_DIR;?>referee/" class="nav__link"><?=GetMessage('NAV_CREATE_MATCHES')?></a>
                                             </li>
-                                        <?php } ?>
+                                        <? } ?>
                                         <li class="navbar-dropdown__item">
                                             <a href="<?=$APPLICATION->GetCurPageParam("logout=yes&".bitrix_sessid_get(),
                                                 array(
@@ -169,19 +174,19 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                                 </li>
                             </ul>
                         </div>
-                    <?php } else { ?>
+                    <? } else { ?>
                         <div class="navbar-no-auth">
-                            <a class="btn btn_auth btn_border" href="<?=SITE_DIR;?>personal/auth/reg.php">Регистрация</a>
+                            <a class="btn btn_auth btn_border" href="<?=SITE_DIR;?>personal/auth/reg.php"><?=GetMessage('NAV_REGISTER')?></a>
                             <a class="btn btn_auth" href="<?=SITE_DIR;?>personal/auth/"><?=GetMessage('NAV_LOGOUT')?></a>
                         </div>
                         <div class="navbar-no-auth-mobile">
                             <a class="btn-sign-in" href="<?=SITE_DIR;?>personal/auth/"><i></i> <?=GetMessage('NAV_LOGOUT')?></a>
                         </div>
-                    <?php } ?>
+                    <? } ?>
                 </nav>
             </div>
 
         </header>
 
         <div class="layout__content">
-        <?php } ?>
+        <? } ?>

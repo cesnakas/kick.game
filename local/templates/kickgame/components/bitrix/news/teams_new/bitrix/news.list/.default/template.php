@@ -11,20 +11,13 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-$arRating = [];
-foreach($arResult['ITEMS'] as $items){
-  //dump($items["PROPERTIES"]["RATING"]['VALUE']);
-  $arRating[$items["ID"]] = $items["PROPERTIES"]["RATING"]['VALUE'];
-
-}
-//dump($arRating);
-function countTeamsRating(){
+/*function countTeamsRating(){
   GLOBAL $DB;
   $points = false;
   // m.PROPERTY_23 = 6 prak
   //16 prizeplace
   $sql = 'SELECT t.PROPERTY_15 AS teamID, sum(t.PROPERTY_18) AS total, sum(t.PROPERTY_17) AS kills
-      FROM b_iblock_element_prop_s5 AS t 
+      FROM b_iblock_element_prop_s5 AS t
       INNER JOIN b_iblock_element_prop_s3 AS m ON t.PROPERTY_14 = m.IBLOCK_ELEMENT_ID
       WHERE m.PROPERTY_23 = 6
       GROUP BY t.PROPERTY_15';
@@ -44,7 +37,7 @@ function countTeamsRating(){
 }
 
 $points = countTeamsRating();
-//dump( $points );
+//dump( $points ); */
 
 function countTeams(){
   GLOBAL $DB;
@@ -58,44 +51,20 @@ function countTeams(){
   return $count['c'];
 }
 
-
-function getPlayersList(){
-  GLOBAL $DB;
-  $sql = 'SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, count_matches, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
-			FROM  b_user as u 
-            LEFT JOIN (SELECT t.USER_ID, count(t.USER_ID) as count_matches, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
-            LEFT JOIN b_uts_user AS r ON r.VALUE_ID = u.ID 
-            INNER JOIN b_user_group AS g ON g.USER_ID = u.ID 
-            AND g.GROUP_ID = 7 
-            ORDER BY total DESC, kills DESC';
-
-  $res = $DB->Query($sql);
-  $players = [];
-  while( $row = $res->Fetch() ) {
-    $players[ $row['ID'] ] = [ 'kills' => $row['kills'],
-        'total' => $row['total'],
-        'count_matches' => $row['count_matches'],
-        'login' => $row['LOGIN'],
-        'photo' => $row['PERSONAL_PHOTO']];
-  }
-  return $players;
-}
-
 function showTeams(){
-  global $DB;
-  global $APPLICATION;
-  //пагинация
+    global $DB;
+    global $APPLICATION;
+    //пагинация
+    $count_tema=20; // выводим по 5 Записей на страницу
+    //создаем объект пагинации
+    $nav = new \Bitrix\Main\UI\PageNavigation("nav-more-teams");
+    $nav->allowAllRecords(false)
+        ->setPageSize($count_tema)
+        ->initFromUri();
 
-  $count_tema=20; // выводим по 5 Записей на страницу
-  //создаем объект пагинации
-  $nav = new \Bitrix\Main\UI\PageNavigation("nav-more-teams");
-  $nav->allowAllRecords(false)
-      ->setPageSize($count_tema)
-      ->initFromUri();
-
-  $count_zap=countTeams(); // сделать запрос для определения количества всех строк
-  // в sql вставляем limit и Offset
-  $strSql = 'SELECT u.PROPERTY_19 as avatar, u.PROPERTY_21 AS name, u.IBLOCK_ELEMENT_ID as id_team, IF(total IS NOT Null,total, 0) + IF(u.PROPERTY_31 IS NOT Null, u.PROPERTY_31, 300) as total, kills 
+    $count_zap=countTeams(); // сделать запрос для определения количества всех строк
+    // в sql вставляем limit и Offset
+    $strSql = 'SELECT u.PROPERTY_19 as avatar, u.PROPERTY_21 AS name, u.IBLOCK_ELEMENT_ID as id_team, IF(total IS NOT Null,total, 0) + IF(u.PROPERTY_31 IS NOT Null, u.PROPERTY_31, 300) as total, kills 
                                 FROM b_iblock_element_prop_s1 as u 
                                 LEFT JOIN (SELECT t.PROPERTY_15 AS teamID, sum(t.PROPERTY_18) AS total, sum(t.PROPERTY_17) AS kills 
                                 FROM b_iblock_element_prop_s5 AS t 
@@ -103,20 +72,51 @@ function showTeams(){
                                 WHERE m.PROPERTY_23 = 6 
                                 GROUP BY t.PROPERTY_15) AS r1 ON r1.teamID = u.IBLOCK_ELEMENT_ID 
                                 ORDER BY total DESC, kills DESC LIMIT '.$nav->getLimit().'  OFFSET '.$nav->getOffset() ; //
+    $rsData = $DB->Query($strSql);
+    $i = $nav->getOffset();
+    while($el = $rsData->fetch()){
+        $i+=1;
+        showRow($el, $i);
+    }
+
+    $nav->setRecordCount($count_zap);
+    $APPLICATION->IncludeComponent("bitrix:main.pagenavigation", ".default", Array(
+        "NAV_OBJECT" => $nav,
+        "SEF_MODE" => "N",
+    ),
+        false
+    );
+}
+
+function searchTeams($search = ""){
+  global $DB;
+    $search = trim(strip_tags($search));
+
+    $search = "WHERE name LIKE '%". $search ."%' ";
+
+    $strSql = 'SELECT @rank:=0';
+    $rsData = $DB->Query($strSql);
+
+  $strSql = 'SELECT rank, avatar, name, id_team, total, kills FROM (SELECT @rank:=@rank+1 as rank, avatar, name, id_team, total, kills FROM (SELECT u.PROPERTY_19 as avatar, u.PROPERTY_21 AS name, u.IBLOCK_ELEMENT_ID as id_team, IF(total IS NOT Null,total, 0) + IF(u.PROPERTY_31 IS NOT Null, u.PROPERTY_31, 300) as total, kills 
+                                FROM b_iblock_element_prop_s1 as u 
+                                LEFT JOIN (SELECT t.PROPERTY_15 AS teamID, sum(t.PROPERTY_18) AS total, sum(t.PROPERTY_17) AS kills 
+                                FROM b_iblock_element_prop_s5 AS t 
+                                INNER JOIN b_iblock_element_prop_s3 AS m ON t.PROPERTY_14 = m.IBLOCK_ELEMENT_ID 
+                                WHERE m.PROPERTY_23 = 6 
+                                GROUP BY t.PROPERTY_15) AS r1 ON r1.teamID = u.IBLOCK_ELEMENT_ID
+                                ORDER BY total DESC, kills DESC) as r2) as r3 
+                                ' . $search;
   $rsData = $DB->Query($strSql);
-  $i = $nav->getOffset();
+  $i = 0;
+
   while($el = $rsData->fetch()){
     $i+=1;
-    showRow($el, $i);
+    showRow($el, $el['rank']);
   }
+    if($i == 0){
+        echo "По вашему запросу ничего не найдено";
+    }
 
-  $nav->setRecordCount($count_zap);
-  $APPLICATION->IncludeComponent("bitrix:main.pagenavigation", ".default", Array(
-      "NAV_OBJECT" => $nav,
-      "SEF_MODE" => "N",
-  ),
-      false
-  );
 }
 
 function showRow($team, $rank){
@@ -275,11 +275,11 @@ if( count( $points ) && !isset($_GET['teamname']) ){
   </div>
 </section>
 <?php //echo $arResult["NAV_STRING"]*/ ?>
-<section class="match-participants bg-blue-lighter">
+<section class="match-participants">
   <div class="container">
     <div class="game-schedule-table">
       <div class="flex-table">
-        <div class="flex-table--header bg-blue-lighter">
+        <div class="flex-table--header bg-default">
           <div class="flex-table--categories">
             <span>Команда</span>
             <span>Позиция в рейтинге</span>
@@ -288,7 +288,13 @@ if( count( $points ) && !isset($_GET['teamname']) ){
           </div>
         </div>
         <div class="flex-table--body">
-         <?php showTeams(); ?>
+         <?php
+
+         if( isset($_GET['teamname']) && $_GET['teamname'] != '' ){
+             searchTeams($_GET['teamname']);
+         }else{
+             showTeams();
+         } ?>
         </div>
       </div>
     </div>

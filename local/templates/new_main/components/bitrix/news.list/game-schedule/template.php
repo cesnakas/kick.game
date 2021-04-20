@@ -32,6 +32,18 @@ function getMatchById($matchId) {
     }
     return null;
 }
+
+// есть ли свободное место
+function isPlace($idMatch)
+{
+    $qtyPlaces = 18;
+    $qtyOccupiedPlaces = getParticipationByMatchId($idMatch);
+    if ($qtyPlaces == count($qtyOccupiedPlaces)) {
+        return false;
+    }
+    return true;
+}
+
 // проверка команды на участие
 function getParticipationByMatchId($idMatch)
 {
@@ -67,6 +79,8 @@ function getParticipationByMatchId($idMatch)
         16 => "TEAM_PLACE_16",
         17 => "TEAM_PLACE_17",
         18 => "TEAM_PLACE_18",
+        19 => "TEAM_PLACE_19",
+        20 => "TEAM_PLACE_20",
     ];
     if ($ob = $res->GetNextElement()) {
         $arFields = $ob->GetFields();
@@ -131,15 +145,48 @@ function isTournament($idMatch)
     return null;
 }
 
-// есть ли свободное место
-function isPlace($idMatch): bool
-{
-    $qtyPlaces = 4;
-    $qtyOccupiedPlaces = getParticipationByMatchId($idMatch);
-    if ($qtyPlaces == count($qtyOccupiedPlaces)) {
-        return false;
+function getMatchesByDate($date, $minRating, $maxRating) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "CODE", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+
+    $arOrder = array(
+        "SORT"=>"ASC"
+    );
+
+    $arFilter = Array(
+        "IBLOCK_ID" =>3,
+        "PROPERTY_PREV_MATCH" => false,
+        "PROPERTY_TYPE_MATCH" => 6,
+        "PROPERTY_MIN_RATING" => $minRating,
+        "PROPERTY_MAX_RATING" => $maxRating,
+        "PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD HH:MI:SS"),
+        //  "<=PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD")." 23:59:59",
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $output = [];
+
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        //$arProps = $ob->GetProperties();
+        $output[] = $arFields;
     }
-    return true;
+    return $output;
+}
+
+function getAvailableGroup($arItem) {
+
+//Через функцию getMatchesByDate возвращаем массив и разбиваем его в foreach
+
+    foreach(getMatchesByDate($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], $arItem["PROPERTIES"]['MIN_RATING']["VALUE"], $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]) as $match){
+//Проверяем есть ли свободные места в матче, если да то сохраняем match и выходим из цикла c break
+        $freeGroup = $match;
+
+        if(isPlace($match['ID'])){
+            break;
+        }
+    }
+
+    return $freeGroup;
 }
 
 ?>
@@ -158,7 +205,7 @@ function isPlace($idMatch): bool
         <span class="tooltip">
                   ?
                   <span class="tooltip__text">
-                    Минимальный рейтинг игрока, необходимый для записи на эту игру
+                    Рейтинг, необходимый для записи на игру
                   </span>
                 </span>
       </th>
@@ -168,6 +215,29 @@ function isPlace($idMatch): bool
     </thead>
     <tbody>
     <?foreach($arResult["ITEMS"] as $arItem) {
+
+    $freeGroup = getAvailableGroup($arItem);
+    //заменяем данные выводимой строки на данные матча со свободными местами
+    if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
+        //URL
+        $arItem["DETAIL_PAGE_URL"] = "/game-schedule/".$freeGroup["CODE"]."/";
+        //ID
+        $arItem['ID'] = $freeGroup['ID'];
+        //GROUP
+        $arItem["PROPERTIES"]["GROUP"]["VALUE"] = $freeGroup["PROPERTY_53"];
+    }
+
+        switch($arItem["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]) {
+            case 4:
+                $type = "SQUAD";
+                break;
+            case 2:
+                $type = "DUO";
+                break;
+            case 1:
+                $type = "SOLO";
+                break;
+        }
     $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
     $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
     ?>
@@ -194,7 +264,7 @@ function isPlace($idMatch): bool
         <td>
           <a class="games__link" href="<?php echo $arItem["DETAIL_PAGE_URL"];?>">
               <?php
-              $name = '';// 'У меня нет названия';
+              $name = 'Kickgame Scrims GROUP '. $arItem["PROPERTIES"]["GROUP"]["VALUE"];// 'У меня нет названия';
 
               if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) {
                   $name = $arItem["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')';
@@ -207,11 +277,10 @@ function isPlace($idMatch): bool
         <td><?php
             $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
             echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?></td>
-        <td>3.00</td>
+        <td><?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"] ?></td>
         <td>
           <div class="games-type">
-            <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="15" viewBox="0 0 17 21"><circle cx="8.5" cy="4.75" r="3.75" stroke="#fff"/><path d="M1 17.25a6.5 6.5 0 016.5-6.5h2a6.5 6.5 0 016.5 6.5v0a3.25 3.25 0 01-3.25 3.25h-8.5A3.25 3.25 0 011 17.25v0z" stroke="#fff"/></svg>
-            x<?php echo $arItem["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]; ?>
+           <?php echo $type; ?>
           </div>
         </td>
         <td><?php if (!empty($arItem["PROPERTY_STREAMER_NAME"])) { ?>
@@ -242,7 +311,7 @@ function isPlace($idMatch): bool
           </td>
           <td><a class="games__link" href="<?php echo $arItem["DETAIL_PAGE_URL"];?>">
                   <?php
-                  $name = '';// 'У меня нет названия';
+                  $name = "";// 'У меня нет названия';
 
                   if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) {
                       $name = $arItem["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')';
@@ -254,11 +323,10 @@ function isPlace($idMatch): bool
           <td><?php
               $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
               echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?></td>
-          <td>3.00</td>
+          <td><?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"] ?></td>
           <td>
             <div class="games-type">
-              <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="15" viewBox="0 0 17 21"><circle cx="8.5" cy="4.75" r="3.75" stroke="#fff"/><path d="M1 17.25a6.5 6.5 0 016.5-6.5h2a6.5 6.5 0 016.5 6.5v0a3.25 3.25 0 01-3.25 3.25h-8.5A3.25 3.25 0 011 17.25v0z" stroke="#fff"/></svg>
-              x<?php echo $arItem["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]; ?>
+                <?php echo $type; ?>
             </div>
           </td>
           <td><?php if (!empty($arItem["PROPERTY_STREAMER_NAME"])) { ?>
@@ -269,92 +337,145 @@ function isPlace($idMatch): bool
         </tr>
         <?php } ?>
 
-    <?php } ?>
+    <?php }?>
     </tbody>
   </table>
   <div class="games__list-mobile">
       <?foreach($arResult["ITEMS"] as $arItem) {
+
           $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
           $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
+
+          $freeGroup = getAvailableGroup($arItem);
+          //заменяем данные выводимой строки на данные матча со свободными местами
+          if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
+              //URL
+              $arItem["DETAIL_PAGE_URL"] = "/game-schedule/".$freeGroup["CODE"]."/";
+              //ID
+              $arItem['ID'] = $freeGroup['ID'];
+              //GROUP
+              $arItem["PROPERTIES"]["GROUP"]["VALUE"] = $freeGroup["PROPERTY_53"];
+          }
+
+          switch($arItem["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]) {
+              case 4:
+                  $type = "SQUAD";
+                  break;
+              case 2:
+                  $type = "DUO";
+                  break;
+              case 1:
+                  $type = "SOLO";
+                  break;
+          }
+
           ?>
     <div class="games__list-mobile-item">
         <?php if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) { ?>
       <div class="game-type game-type--practice">
         <img
-          width="60"
+          width="40"
           src="<?php echo SITE_TEMPLATE_PATH;?>/images/practice.png" alt="practice"
           srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/practice.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/practice@2x.png 2x"
         >
-        Практическая игра
-          <?php
-          if($tmp = getParticipationByMatchId($arItem["ID"])) {
-              $tmp = array_flip($tmp);
-              if (isset($tmp[$teamID])) { ?>
-                <span>Слот № <?php echo $tmp[$teamID];?></span>
-              <?php }
-          }
-          ?>
+          <div class="game-link">
+              <a class="games__link" href="<?php echo $arItem["DETAIL_PAGE_URL"];?>">
+                  <?php
+                  $name = 'KICKGAME Scrims GROUP '.$arItem["PROPERTIES"]["GROUP"]["VALUE"];// 'У меня нет названия';
+                  echo $name;
+                  ?>
+              </a>
+          </div>
+          <div class="game-qty">
+             <?php echo $type; ?>
+          </div>
+
       </div>
       <?php } elseif($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
           <div class="game-type game-type--tournament">
             <img
-              width="60"
+              width="40"
               src="<?php echo SITE_TEMPLATE_PATH;?>/images/tournament-table.png" alt="tournament-table"
               srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/tournament-table.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/tournament-table@2x.png 2x"
             >
-            Турнир
-              <?php
-              if($tmp = getParticipationByMatchId($arItem["ID"])) {
-                  $tmp = array_flip($tmp);
-                  if (isset($tmp[$teamID])) { ?>
-                    <span>Слот № <?php echo $tmp[$teamID];?></span>
-                  <?php }
-              }
-              ?>
+              <a class="games__link" href="<?php echo $arItem["DETAIL_PAGE_URL"];?>">
+                  <?php
+                  $name = $arItem["PROPERTY_TOURNAMENT_NAME"];
+                  echo $name;
+                  ?>
+              </a>
+              <div class="game-qty">
+                  <?php echo $type; ?>
+              </div>
           </div>
       <?php } ?>
-      <div class="game-link">
-        <a class="games__link" href="<?php echo $arItem["DETAIL_PAGE_URL"];?>">
-            <?php
-            $name = '';// 'У меня нет названия';
-
-            if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) {
-                $name = $arItem["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')';
-            }
-            echo $name;
-
-            ?>
-        </a>
-      </div>
       <div class="game-info">
         <div class="game-info__row">
-          <div class="game-info__item">
-            <span>Дата проведение</span>
-              <?php
-              $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-              echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
-          </div>
-          <div class="game-info__item">
-            <span>Рейтинг</span>
-            3.0
-          </div>
-        </div>
-        <div class="game-info__row">
-          <div class="game-info__item">
-            <span>Режим</span>
-            <div class="game-qty">
-              <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="15" viewBox="0 0 17 21"><circle cx="8.5" cy="4.75" r="3.75" stroke="#fff"/><path d="M1 17.25a6.5 6.5 0 016.5-6.5h2a6.5 6.5 0 016.5 6.5v0a3.25 3.25 0 01-3.25 3.25h-8.5A3.25 3.25 0 011 17.25v0z" stroke="#fff"/></svg>
-              x<?php echo $arItem["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]; ?>
+            <div class="game-info__item-row">
+            <div class="game-info__item">
+                <span>Дата проведения: </span>
+                <?php
+                $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
+                echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
             </div>
-          </div>
-          <div class="game-info__item">
-            <span>Комментатор</span>
-              <?php if (!empty($arItem["PROPERTY_STREAMER_NAME"])) { ?>
-                  <?php echo $arItem["PROPERTY_STREAMER_NAME"]; ?>
-              <?php } else { ?>
-                -
-              <?php } ?>
-          </div>
+            </div>
+            <div class="game-info__item-row">
+                <?php if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) { ?>
+                <div class="game-info__item">
+                <span>Рейтинг: </span>
+                    <?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]?>
+                </div>
+                <?php } elseif($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
+                <div class="game-info__item">
+                <span>Этап: </span>
+                    <?php
+                    $name = $arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'];
+                    echo $name;
+                    ?>
+                </div>
+                <?php } ?>
+                    <div class="game-info__item game-info__item_right">
+
+                        <?php
+
+                        $tmp = getParticipationByMatchId($arItem["ID"]);
+                            $tmp = array_flip($tmp);
+                            if (isset($tmp[$teamID])) {
+                                ?>
+                                <span class="slot-span">Слот № <?php echo $tmp[$teamID];?></span>
+                            <?php } else {
+                                $freeSlots = 18 - count($tmp);
+                                if($freeSlots > 0){
+                                ?>
+                                <span class="place-span"><?php echo count($tmp);?>/18 Занято</span><?php
+                        } else {
+                                    ?>
+                                    <span class="no-slots-span">Мест нет</span><?php
+                                }
+                                }
+                        ?>
+
+                    </div>
+            </div>
+<!--          <div class="game-info__item">-->
+<!--            <span>Дата проведение</span>-->
+<!--              --><?php
+//              $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
+//              echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
+<!--          </div>-->
+<!--          <div class="game-info__item">-->
+<!--            <span>Рейтинг</span>-->
+<!--            3.0-->
+<!--          </div>-->
+
+<!--          <div class="game-info__item">-->
+<!--            <span>Комментатор</span>-->
+<!--              --><?php //if (!empty($arItem["PROPERTY_STREAMER_NAME"])) { ?>
+<!--                  --><?php //echo $arItem["PROPERTY_STREAMER_NAME"]; ?>
+<!--              --><?php //} else { ?>
+<!--                --->
+<!--              --><?php //} ?>
+<!--          </div>-->
         </div>
       </div>
     </div>

@@ -13,6 +13,12 @@
 $this->setFrameMode(true);
 //dump($_GET['arrFilterDateTime_pf']['TYPE_MATCH']);
 ?>
+<style>
+    .flex-table-new--body .btn-italic{
+    text-align:center;
+        display: block;
+    }
+</style>
 <div class="container">
   <div class="row">
     <div class="col-lg-3 col-md-12">
@@ -85,6 +91,20 @@ $this->setFrameMode(true);
       </div>
     </div>
     <div class="col-lg-9 col-md-12">
+<<<<<<< Updated upstream
+      <h1 class="game-schedule__heading mt-3">Расписание игр</h1>
+<div class="new-game-schedule-table">
+  <div class="flex-table-new">
+    <div class="flex-table--header bg-default">
+      <div class="flex-table--categories">
+        <span>Тип игры</span>
+        <span>Название</span>
+        <span>Дата проведения</span>
+        <span>Рейтинг</span>
+        <span>Режим</span>
+        <span>Комментатор</span>
+          <span>Свободные места</span>
+=======
       <h1 class="game-schedule__heading mt-3"><?=GetMessage('GS_HEADER')?></h1>
 <div class="game-schedule-table">
   <div class="flex-table">
@@ -96,15 +116,20 @@ $this->setFrameMode(true);
         <span><?=GetMessage('GS_RATING')?></span>
         <span><?=GetMessage('GS_MODE')?></span>
         <span><?=GetMessage('GS_COMMENTATOR')?></span>
+>>>>>>> Stashed changes
       </div>
     </div>
-    <div class="flex-table--body">
-<?
-//dump($_GET);
+    <div class="flex-table-new--body">
+<?php
 $curDate = date('Y-m-d H:i:s', time()-3600);
 GLOBAL $arrFilterDateTime;
 $arrFilterDateTime=Array(
     "ACTIVE" => "Y",
+    array(
+      "LOGIC" => "OR",
+      array("PROPERTY_GROUP" => "A"),
+      array("PROPERTY_TYPE_MATCH" => 5)
+    ),
     ">=PROPERTY_DATE_START" => $curDate,
     "PROPERTY_PREV_MATCH" => false,
     //"PROPERTY_TYPE_MATCH" => 5

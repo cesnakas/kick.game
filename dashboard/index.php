@@ -53,7 +53,8 @@ function getMatchesByDate($date) {
       <h2>Список матчей дня</h2>
       <ul>
           <?php foreach ($resMatches as $match) { ?>
-            <li><a href="/dashboard/match-chain/?id=<?php echo $match['ID']?>"><?php echo $match['NAME']; ?></a></li>
+
+            <li><a href="/dashboard/match-chain/?id=<?php echo $match['ID']?>"><?php echo $match['NAME'];  echo $match["PROPERTY_23"] == 6 ? " GROUP " . $match["PROPERTY_53"] : ""; ?></a></li>
           <?php } ?>
       </ul>
         <?php } else {

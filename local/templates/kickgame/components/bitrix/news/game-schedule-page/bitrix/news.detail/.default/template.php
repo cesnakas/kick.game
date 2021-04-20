@@ -232,10 +232,11 @@ $btnValue = "Принять участие";
             <?php } ?>
           <?php if ($isCaptain) { ?>
             <a href="/management-games/join-game/?mid=<?php echo $arResult["ID"];?>" class="btn"><?php echo $btnValue; ?></a>
-
+               <?php if($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5){ ?>
           <div class="game__block-call">
-            <a href="#" class="btn-italic">Связаться с модератором</a>
+              <a href="https://t.me/joinchat/mRicMNoqO4pkOTgy" target="_blank" class="btn-italic">Связаться с модератором</a>
           </div>
+              <?php } ?>
           <?php } ?>
         </div>
       </div>

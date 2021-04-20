@@ -2,60 +2,60 @@
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 ?>
 
-<?php if (!CSite::InDir('/personal/auth/')) { ?>
+<? if (!CSite::InDir('/personal/auth/')) { ?>
     </div><!-- end layout__content -->
+
     <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
                     <div class="footer__logo">
-                        <a href="/"><img src="<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/logo-footer.svg"
-                                         alt="kickgame"></a>
+                        <a href="/">
+                            <img src="<?=SITE_TEMPLATE_PATH;?>/dist/images/logo-footer.svg" alt="kickgame">
+                        </a>
                     </div>
                     <div class="footer__info-about">
-                        <p>Весь контент, названия игр, торговые наименования и/или коммерческий внешний вид, товарные
-                            знаки, произведения искусства и связанные изображения являются товарными знаками и/или
-                            материалами, защищенными авторским правом соответствующих правообладателей.</p>
-                        <p>KICKGAME ESPORTS LIMITED (рег.номер компании HE 416108)<br>
-                            Адрес: Василий Михайлиди, 21, Лимассол 3026, Кипр <br>
-                            © KICKGAME ESPORTS, <?php echo date('Y') ?>. Все права защищены.<br>
+
+                        <p><?=GetMessage('FOOTER_CONTENT_P_1')?></p>
+
+                        <p>
+                            <?=GetMessage('FOOTER_CONTENT_P_2_1')?>
+                            <br>
+                            <?=GetMessage('FOOTER_CONTENT_P_2_2')?>
+                            <br>
+                            © KICKGAME ESPORTS, <?= date('Y') ?>. <?=GetMessage('FOOTER_CONTENT_P_2_3')?>.
+                            <br>
                             email: <a href="mailto:support@kick.game">support@kick.game</a><br>
-                            tel: <a href="tel:+35799934485">+35799934485</a></p>
+                            tel: <a href="tel:+35799934485">+35799934485</a>
+                        </p>
                     </div>
                     <div class="social-networks">
-                        <a class="social-networks__item" href="https://vm.tiktok.com/ZSEfnbCf/" target="_blank">
-                        </a>
-                        <a class="social-networks__item" href="https://t.me/joinchat/VdYRn7YOnT-ll6ms" target="_blank">
-                        </a>
-                        <a class="social-networks__item" href="https://www.instagram.com/kickgameleague/"
-                           target="_blank">
-                        </a>
-                        <a class="social-networks__item" href="https://youtube.com/c/KICKGAMEeSports" target="_blank">
-                        </a>
-                        <a class="social-networks__item" href="https://discord.gg/wEVwzumwSQ" target="_blank">
-                        </a>
-                        <a class="social-networks__item" href="https://vk.com/kick.game" target="_blank">
-                        </a>
+                        <a class="social-networks__item" href="https://vm.tiktok.com/ZSEfnbCf/" target="_blank"></a>
+                        <a class="social-networks__item" href="https://t.me/joinchat/VdYRn7YOnT-ll6ms" target="_blank"></a>
+                        <a class="social-networks__item" href="https://www.instagram.com/kickgameleague/" target="_blank"></a>
+                        <a class="social-networks__item" href="https://youtube.com/c/KICKGAMEeSports" target="_blank"></a>
+                        <a class="social-networks__item" href="https://discord.gg/wEVwzumwSQ" target="_blank"></a>
+                        <a class="social-networks__item" href="https://vk.com/kick.game" target="_blank"></a>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-6">
                             <ul class="footer-menu">
-                                <li><a href="/game-schedule/">Расписание</a></li>
-                                <li><a href="/personal/">Профиль</a></li>
-                                <li><a href="/teams/">Команды</a></li>
-                                <li><a href="/players/">Игроки</a></li>
-                                <li><a href="/subscription-plans/">Подписка </a></li>
+                                <li><a href="<?=SITE_DIR?>game-schedule/"><?=GetMessage('FOOTER_NAV_GAME_SCHEDULE')?></a></li>
+                                <li><a href="<?=SITE_DIR?>personal/"><?=GetMessage('FOOTER_NAV_PERSONAL')?></a></li>
+                                <li><a href="<?=SITE_DIR?>teams/"><?=GetMessage('FOOTER_NAV_TEAMS')?></a></li>
+                                <li><a href="<?=SITE_DIR?>players/"><?=GetMessage('FOOTER_NAV_PLAYERS')?></a></li>
+                                <li><a href="<?=SITE_DIR?>subscription-plans/"><?=GetMessage('FOOTER_NAV_SUBSCRIPTION_PLANS')?></a></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <ul class="footer-menu">
-                                <li><a href="#">Правила подписки</a></li>
-                                <li><a href="/regulations/">Регламент проведения турниров</a></li>
-                                <li><a href="/privacy-policy/">Политика конфиденциальности</a></li>
-                                <li><a href="/terms-conditions/">Пользовательское соглашение</a></li>
-                                <li><a href="/refund-policy/">Политика возврата средств</a></li>
+                                <li><a href="#"><?=GetMessage('FOOTER_NAV_SUBSCRIPTION_RULES')?></a></li>
+                                <li><a href="<?=SITE_DIR?>regulations/"><?=GetMessage('FOOTER_NAV_TOURNAMENT_REGULATIONS')?></a></li>
+                                <li><a href="<?=SITE_DIR?>privacy-policy/"><?=GetMessage('FOOTER_NAV_PRIVACY_POLICY')?></a></li>
+                                <li><a href="<?=SITE_DIR?>terms-conditions/"><?=GetMessage('FOOTER_NAV_USER_AGREEMENT')?></a></li>
+                                <li><a href="<?=SITE_DIR?>refund-policy/"><?=GetMessage('FOOTER_NAV_REFUND_POLICY')?></a></li>
                                 <? if ($USER->IsAuthorized()) { ?>
                                     <li>
                                         <a href="<?= $APPLICATION->GetCurPageParam("logout=yes&" . bitrix_sessid_get(), array(
@@ -63,7 +63,9 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
                                             "logout",
                                             "register",
                                             "forgot_password",
-                                            "change_password")); ?>"> Выход</a></li>
+                                            "change_password")); ?>"
+                                        ><?=GetMessage('FOOTER_NAV_LOGOUT')?></a>
+                                    </li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -72,7 +74,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
             </div>
         </div>
     </footer>
-<?php } ?>
+<? } ?>
+
 </div><!-- end layout -->
 <section id="cookieSection" class="cookie">
     <div class="cookie-wrapper">
@@ -100,6 +103,90 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
         </div>
     </div>
 </section>
+<<<<<<< Updated upstream
+<div class="modal fade " id="expirePrem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
+          <i></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3 class="modal-body__title">Бесплатный Премиум-период закончен</h3>
+        <div class="subscription-plans">
+          <div class="subscription-plans__description subscription-plans__description_popup text-center">Твой аккаунт переведён на Базовый уровень подписки. Теперь тебе будут недоступны:</div>
+          <ul>
+            <li class="not">Участие в практических играх</li>
+            <li class="not">Участие в ежемесячном турнире от 1000 €</li>
+            <li class="not">Участие в еженедельном турнире от  100 €</li>
+            <li class="not">Участие в играх со стримами и комментапторами </li>
+            <li class="not">Мой личный рейтинг </li>
+            <li class="not">Рейтинг моей команды </li>
+          </ul>
+          <div class="subscription-plans__description subscription-plans__description_popup text-center">Чтобы сохранить доступ к преимуществам платформы, оформи платную подписку.</div>
+          <div class="subscription-plans-item__btn text-center">
+            <a href="/subscription-plans/" class="btn">Купить подписку</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade " id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
+          <i></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn mr-3" data-dismiss="modal">Отключить все</button>
+        <button type="button" class="btn cookieAccept" data-dismiss="modal">Принять</button>
+      </div>
+    </div>
+  </div>
+</div>
+<?php if ($USER->IsAuthorized()) {
+    $resultPrem = isPrem($arUser['UF_DATE_PREM_EXP']); ?>
+  <?php   if ($resultPrem <= 0) { ?>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!sessionStorage.getItem('shown-modal')){
+            setTimeout(function () {
+                $('#expirePrem').modal('show');
+            }, 3000);
+            sessionStorage.setItem('shown-modal', 'true');
+        }
+    });
+</script>
+      <?php } ?>
+<?php } ?>
+<!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1484314341910243');
+    fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+               src="https://www.facebook.com/tr?id=1484314341910243&ev=PageView&noscript=1"
+    /></noscript>
+<!-- End Facebook Pixel Code -->
+<!-- Start of  Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=adaefb0f-5b54-4b83-a508-c98c16194250"> </script>
+<!-- End of  Zendesk Widget script -->
+=======
 
     <div class="modal fade " id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -120,6 +207,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
             </div>
         </div>
     </div>
+>>>>>>> Stashed changes
 
     <!-- Facebook Pixel Code -->
     <script>

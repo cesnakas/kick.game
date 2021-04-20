@@ -34,6 +34,51 @@ function countPointsByUserID( $userID ){
     return false;
 }
 
+function getRating($arResult)
+{
+    global $DB;
+    $sql = 'SELECT t.PROPERTY_15 AS teamID, sum(t.PROPERTY_18) AS total, sum(t.PROPERTY_17) AS kills
+      FROM b_iblock_element_prop_s5 AS t 
+      INNER JOIN b_iblock_element_prop_s3 AS m ON t.PROPERTY_14 = m.IBLOCK_ELEMENT_ID
+      WHERE m.PROPERTY_23 = 6 AND t.PROPERTY_15 = '.$arResult['ID'].' 
+      GROUP BY t.PROPERTY_15';
+    $res = $DB->Query($sql);
+    if( $row = $res->Fetch()  ) {
+        //$row['total'] = empty($arResult['PROPERTIES']['RATING']) ? $row['total']+0 + 300 :$row['total']+0 + $arResult['PROPERTIES']['RATING']+0;
+        //if()
+      $row['total'] = empty($arResult['PROPERTIES']['RATING']["VALUE"]) ? $row['total'] + 300 : $row['total'] + ceil($arResult['PROPERTIES']['RATING']["VALUE"]);
+      return $row;
+    }
+    return false;
+}
+
+$ratingTeam = getRating($arResult);
+/*function countTeamsRating(){
+    GLOBAL $DB;
+    $points = false;
+    $sql = 'SELECT t.PROPERTY_15 AS teamID, sum(t.PROPERTY_18) AS total, sum(t.PROPERTY_17) AS kills
+      FROM b_iblock_element_prop_s5 AS t
+      INNER JOIN b_iblock_element_prop_s3 AS m ON t.PROPERTY_14 = m.IBLOCK_ELEMENT_ID
+      WHERE m.PROPERTY_23 = 6
+      GROUP BY t.PROPERTY_15';
+    $sql = 'SELECT r.* FROM ('.$sql.') AS r ORDER BY r.total DESC';
+    $res = $DB->Query($sql);
+    $pos = 1;
+    while( $row = $res->Fetch() ) {
+        $points[ $row['teamID'] ] = [
+            'teamID' => $row['teamID'],
+            'kills' => ceil($row['kills']),
+            'rating' => ceil($row['total']) + 300,
+            'total' => ceil($row['total']-$row['kills']),
+        ];
+        $points[ $row['teamID'] ]['ratingPosition'] = $pos++;
+    }
+    return $points;
+}
+*/
+//dump(countTeamsRating());
+
+
 function countPointsAllUsers(){
     GLOBAL $DB;
     $sql = 'SELECT t.USER_ID, count(t.USER_ID) as count_matches, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills
@@ -47,6 +92,50 @@ function countPointsAllUsers(){
     }
     return $points;
 }
+
+function getQtyPlayedGames($teamId)
+{
+    GLOBAL $DB;
+    $sql = 'SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
+      FROM  b_user as u 
+            LEFT JOIN (SELECT t.USER_ID, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
+            LEFT JOIN b_uts_user AS r ON r.VALUE_ID = u.ID
+            INNER JOIN b_user_group AS g ON g.USER_ID = u.ID 
+            AND g.GROUP_ID = 7
+            WHERE r.UF_ID_TEAM = '.$teamId;
+
+    $res = $DB->Query($sql);
+    $players = [];
+    while( $row = $res->Fetch() ) {
+        $players[ $row['ID'] ] = [ 'kills' => $row['kills'],
+            'total' => $row['total'],
+            'login' => $row['LOGIN'],
+            'count_matches' => '',
+            'photo' => $row['PERSONAL_PHOTO']
+        ];
+    }
+
+    $sql = 'SELECT t.USER_ID, count(DISTINCT r1.id1) as count_matches  FROM b_squad_member_result as t
+        INNER JOIN 
+        (SELECT m.IBLOCK_ELEMENT_ID as id1, m2.IBLOCK_ELEMENT_ID as id2, m3.IBLOCK_ELEMENT_ID as id3 FROM b_iblock_element_prop_s3 as m
+        INNER JOIN b_iblock_element_prop_s3 as m2 ON m2.PROPERTY_8 = m.IBLOCK_ELEMENT_ID
+        INNER JOIN b_iblock_element_prop_s3 as m3 ON m3.PROPERTY_8 = m2.IBLOCK_ELEMENT_ID
+        WHERE m.PROPERTY_8 IS NULL) as r1 ON t.MATCH_ID IN(r1.id1, r1.id2, r1.id3)
+        INNER JOIN b_uts_user as u ON u.VALUE_ID = t.USER_ID
+        AND u.UF_ID_TEAM = '.$teamId.' 
+        GROUP BY t.USER_ID';
+
+    $res = $DB->Query($sql);
+
+    while( $row = $res->Fetch() ) {
+        $players[ $row['USER_ID'] ]['count_matches'] = $row['count_matches'];
+    }
+
+    return $players;
+
+}
+
+
 function isCaptain($idUser, $idTeam)
 {
     if ($idTeam) {
@@ -104,11 +193,7 @@ if(isset($_SESSION['team_success'])) { ?>
           <div class="team__logo" style="background-image: url(<?=$arResult["DETAIL_PICTURE"]["SRC"]?>">
             <div class="team__logo-rating-bg">
               <div class="team__logo-rating">
-                  <?php if (empty($arResult["PROPERTIES"]['RATING']["VALUE"])) { ?>
-                    300
-                  <?php } else { ?>
-                      <?php echo $arResult["PROPERTIES"]['RATING']["VALUE"];?>
-                  <?php } ?>
+                  <?php echo $ratingTeam != false ? $ratingTeam['total'] : 300;?>
               </div>
             </div>
           </div>
@@ -179,7 +264,9 @@ $teamID = $arResult['ID'];
 if ( $teamID ) {
     $arrResultTeam = getTeamById($teamID);
     $players = getCoreTeam($teamID);
-    $points = countPointsAllUsers();
+    //$points = countPointsAllUsers();
+   $results = getQtyPlayedGames($arResult['ID']);
+   //dump($results);
     // ставим капитана на первое место
     foreach ($players as $k => $player) {
         if ($arrResultTeam['AUTHOR']["VALUE"] == $player['ID']) {
@@ -198,7 +285,7 @@ if ( $teamID ) {
               <span>Игрок</span>
               <span>Количество игр</span>
               <span>Киллы</span>
-              <span>Total</span>
+              <!--<span>Total</span>-->
               <span>Рейтинг</span>
             </div>
           </div>
@@ -207,10 +294,10 @@ if ( $teamID ) {
                   $cntMatches = '..';
                   $kills = '..';
                   $total = '..';
-                  if( isset($points[$player['ID']]) ){
-                      $cntMatches = ceil($points[$player['ID']]['count_matches']);
-                      $kills = ceil($points[$player['ID']]['kills']);
-                      $total = ceil($points[$player['ID']]['total']);
+                  if( isset($results) ){
+                      $cntMatches = ceil($results[$player['ID']]['count_matches']);
+                      $kills = ceil($results[$player['ID']]['kills']);
+                      $total = ceil($results[$player['ID']]['total']);
                   }
                 ?>
                 <div class="flex-table--row">
@@ -242,17 +329,13 @@ if ( $teamID ) {
                   <div class="core-team__param">Киллы</div>
                   <?php echo $kills;?>
                 </span>
-                  <span class="core-team__param-wrap">
+                  <!--<span class="core-team__param-wrap">
                   <div class="core-team__param">Total</div>
-                  <?php echo $total;?>
-                </span>
+                  <?php// echo $total;?>
+                </span>-->
                   <span class="core-team__param-wrap">
                   <div class="core-team__param">Рейтинг</div>
-                  <?php if(!$player['UF_RATING']) { ?>
-                      300
-                  <?php } else { ?>
-                      <?php echo $player['UF_RATING'];?>
-                  <?php } ?>
+                      <?php echo $total;?>
                 </span>
                 </div>
               <?php } ?>

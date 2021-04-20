@@ -67,17 +67,17 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
         <div class="footer__nav">
             <nav class="footer__nav-item">
-                <a class="footer__link" href="<?SITE_DIR?>game-schedule/"><?=GetMessage('FOOTER_NAV_GAME_SCHEDULE')?></a>
-                <a class="footer__link" href="<?SITE_DIR?>personal/"><?=GetMessage('FOOTER_NAV_PERSONAL')?></a>
-                <a class="footer__link" href="<?SITE_DIR?>players/"><?=GetMessage('FOOTER_NAV_PLAYERS')?></a>
-                <a class="footer__link" href="<?SITE_DIR?>teams/"><?=GetMessage('FOOTER_NAV_TEAMS')?></a>
-                <a class="footer__link" href="<?SITE_DIR?>subscription-plans/"><?=GetMessage('FOOTER_NAV_SUBSCRIPTION_PLANS')?></a>
+                <a class="footer__link" href="<?=SITE_DIR?>game-schedule/"><?=GetMessage('FOOTER_NAV_GAME_SCHEDULE')?></a>
+                <a class="footer__link" href="<?=SITE_DIR?>personal/"><?=GetMessage('FOOTER_NAV_PERSONAL')?></a>
+                <a class="footer__link" href="<?=SITE_DIR?>players/"><?=GetMessage('FOOTER_NAV_PLAYERS')?></a>
+                <a class="footer__link" href="<?=SITE_DIR?>teams/"><?=GetMessage('FOOTER_NAV_TEAMS')?></a>
+                <a class="footer__link" href="<?=SITE_DIR?>subscription-plans/"><?=GetMessage('FOOTER_NAV_SUBSCRIPTION_PLANS')?></a>
             </nav>
             <nav class="footer__nav-item">
                 <a class="footer__link" href="#"><?=GetMessage('FOOTER_NAV_SUBSCRIPTION_RULES')?></a>
-                <a class="footer__link" href="<?SITE_DIR?>regulations/"><?=GetMessage('FOOTER_NAV_TOURNAMENT_REGULATIONS')?></a>
-                <a class="footer__link" href="<?SITE_DIR?>refund-policy/"><?=GetMessage('FOOTER_NAV_REFUND_POLICY')?></a>
-                <a class="footer__link" href="<?SITE_DIR?>privacy-policy/"><?=GetMessage('FOOTER_NAV_PRIVACY_POLICY')?></a>
+                <a class="footer__link" href="<?=SITE_DIR?>regulations/"><?=GetMessage('FOOTER_NAV_TOURNAMENT_REGULATIONS')?></a>
+                <a class="footer__link" href="<?=SITE_DIR?>refund-policy/"><?=GetMessage('FOOTER_NAV_REFUND_POLICY')?></a>
+                <a class="footer__link" href="<?=SITE_DIR?>privacy-policy/"><?=GetMessage('FOOTER_NAV_PRIVACY_POLICY')?></a>
             </nav>
         </div>
 

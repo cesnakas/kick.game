@@ -565,6 +565,11 @@ if ($result->isSuccess())
             $arrFilterDateTime=Array(
                 "ACTIVE" => "Y",
                 ">=PROPERTY_DATE_START" => $curDate,
+                array(
+                    "LOGIC" => "OR",
+                    array("PROPERTY_GROUP" => "A"),
+                    array("PROPERTY_TYPE_MATCH" => 5)
+                ),
                 "PROPERTY_PREV_MATCH" => false,
                 //"PROPERTY_STAGE_TOURNAMENT" => 4,
                 //"!=PROPERTY_TOURNAMENT" => false, // турниры
