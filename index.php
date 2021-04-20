@@ -501,17 +501,17 @@ if ($result->isSuccess())
     <main class="main">
         <div class="adv">
             <div class="adv__text">
-                <h3>Турнир по PUBG Mobile на 1000&euro; для команд — регистрация открыта</h3>
-                <p>Количество мест ограничено. Зарегистрируйся на платформе KICKGAME, чтобы подать заявку на участие сегодня :3</p>
+                <h3><?=GetMessage('CONTENT_ADV_TEXT_H3')?></h3>
+                <p><?=GetMessage('CONTENT_ADV_TEXT_P')?></p>
             </div>
             <div class="adv__action">
-                <a href="/game-schedule/?arrFilterDateTime_pf%5BTYPE_MATCH%5D=5&set_filter=Y&set_filter=" class="button">подать заявку</a>
-                <a href="/regulations/" class="link link--text">Условия проведения турнира<br />и требования к участникам</a>
+                <a href="<?=SITE_DIR?>game-schedule/?arrFilterDateTime_pf%5BTYPE_MATCH%5D=5&set_filter=Y&set_filter=" class="button"><?=GetMessage('CONTENT_ADV_ACTION_BUTTON')?></a>
+                <a href="<?=SITE_DIR?>regulations/" class="link link--text"><?=GetMessage('CONTENT_ADV_ACTION_P')?></a>
             </div>
         </div>
 
         <section class="section">
-            <h2 class="main-title">Играя с нами, ты сможешь</h2>
+            <h2 class="main-title"><?=GetMessage('CONTENT_MAIN_TITLE')?></h2>
             <div class="features">
                 <ul class="features__list">
                     <li class="features__item">
