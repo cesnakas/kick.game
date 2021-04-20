@@ -6,7 +6,6 @@ $userName = CUser::GetFullName();
 if (!$userName)
 	$userName = CUser::GetLogin();
 ?>
-
 <script>
 	<?if ($userName):?>
 	BX.localStorage.set("eshop_user_name", "<?=CUtil::JSEscape($userName)?>", 604800);
@@ -22,12 +21,9 @@ if (!$userName)
 <?
 $APPLICATION->SetTitle("Авторизация");
 ?>
-
-    <div class="container" style="position: relative; z-index: 2; padding-bottom: 60px;">
-        <p>Вы зарегистрированы и успешно авторизовались.</p>
-        <p><a href="<?=SITE_DIR?>">Вернуться на главную страницу</a></p>
-    </div>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+<div class="container" style="position: relative; z-index: 2; padding-bottom: 60px">
+<p>Вы зарегистрированы и успешно авторизовались.</p>
+ 
+<p><a href="<?=SITE_DIR?>">Вернуться на главную страницу</a></p>
+</div>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
