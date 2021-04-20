@@ -197,9 +197,9 @@ function getAvailableGroup($arItem) {
     <thead>
     <tr>
       <th></th>
-      <th>Тип игры</th>
-      <th>Название</th>
-      <th>Дата проведения</th>
+      <th><?=GetMessage('GS_TYPE')?></th>
+      <th><?=GetMessage('GS_TITLE')?></th>
+      <th><?=GetMessage('GS_DATE_EVENT')?></th>
       <th>
         Рейтинг
         <span class="tooltip">

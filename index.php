@@ -520,8 +520,8 @@ if ($result->isSuccess())
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/flash.png" alt="flash"
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/flash.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/flash@2x.png 2x"
                         >
-                        <h3>Прокачаться</h3>
-                        <p>тренироваться с tier 1 - tier 3 командами, анализировать свои результаты по готовым записям игр и совершенствовать навыки</p>
+                        <h3><?=GetMessage('CONTENT_MAIN_PUMP_UP')?></h3>
+                        <p><?=GetMessage('CONTENT_MAIN_PUMP_UP_TEXT')?></p>
                     </li>
                     <li class="features__item">
                         <img
@@ -529,8 +529,8 @@ if ($result->isSuccess())
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/first.png" alt="first"
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/first.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/first@2x.png 2x"
                         >
-                        <h3>Стать первым</h3>
-                        <p>в рейтингах игроков и команд, ежедневно соревнуясь с разными соперниками в практических играх</p>
+                        <h3><?=GetMessage('CONTENT_MAIN_FIRST')?></h3>
+                        <p><?=GetMessage('CONTENT_MAIN_FIRST_TEXT')?></p>
                     </li>
                     <li class="features__item">
                         <img
@@ -538,18 +538,18 @@ if ($result->isSuccess())
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/tournament.png" alt="tournament"
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/tournament.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/tournament@2x.png 2x"
                         >
-                        <h3>Победить в турнире</h3>
-                        <p>или нескольких, и забрать часть призового фонда размером в 1000&euro; или 10000&euro;</p>
+                        <h3><?=GetMessage('CONTENT_MAIN_WIN')?></h3>
+                        <p><?=GetMessage('CONTENT_MAIN_WIN_TEXT')?></p>
                     </li>
                 </ul>
             </div>
             <div class="section__action">
-                <?php if (!$USER->IsAuthorized()) { ?>
-                  <a href="/personal/auth/reg.php" class="button">регистрация</a>
-                <?php } else { ?>
-                  <a href="/personal/" class="button">Войти</a>
-                <?php } ?>
-                <span>14 дней бесплатный пробный период</span>
+                <? if (!$USER->IsAuthorized()) { ?>
+                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
+                <? } else { ?>
+                  <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
+                <? } ?>
+                <span><?=GetMessage('CONTENT_MAIN_14DAYS')?></span>
             </div>
             <div class="features-bg"></div>
         </section>
@@ -558,7 +558,7 @@ if ($result->isSuccess())
 
         <section class="section">
             <div class="games-bg"></div>
-            <h2 class="main-title">Игры</h2>
+            <h2 class="main-title"><?=GetMessage('MAIN_GAMES')?></h2>
             <?php
             $curDate = date('Y-m-d H:i:s', time()-3600);
             GLOBAL $arrFilterDateTime;
@@ -591,7 +591,7 @@ if ($result->isSuccess())
                     "CACHE_TIME" => "36000000",
                     "CACHE_TYPE" => "A",
                     "CHECK_DATES" => "Y",
-                    "DETAIL_URL" => "/game-schedule/#ELEMENT_CODE#/",
+                    "DETAIL_URL" => SITE_DIR."/game-schedule/#ELEMENT_CODE#/",
                     "DISPLAY_BOTTOM_PAGER" => "Y",
                     "DISPLAY_DATE" => "Y",
                     "DISPLAY_NAME" => "Y",
@@ -649,7 +649,7 @@ if ($result->isSuccess())
             );
             ?>
             <div class="section__action">
-                <a href="/game-schedule/" class="button">Поиск игры</a>
+                <a href="<?=SITE_DIR?>game-schedule/" class="button">Поиск игры</a>
                 <!--<span>Показать ещё 5</span>-->
             </div>
         </section>
