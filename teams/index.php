@@ -86,7 +86,7 @@ $APPLICATION->IncludeComponent(
 		"USE_SEARCH" => "N",
 		"USE_SHARE" => "N",
 		"COMPONENT_TEMPLATE" => "teams_new",
-		"SEF_FOLDER" => SITE_DIR.'teams/',
+		"SEF_FOLDER" => "/teams/",
 		"FILE_404" => "",
 		"SEF_URL_TEMPLATES" => array(
 			"news" => "",

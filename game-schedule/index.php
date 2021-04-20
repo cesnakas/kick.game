@@ -99,7 +99,7 @@ $APPLICATION->SetTitle("Расписание игр");
 		"PAGER_TEMPLATE" => "ajax_pager",
 		"PAGER_TITLE" => "Новости",
 		"PREVIEW_TRUNCATE_LEN" => "",
-		"SEF_FOLDER" => SITE_DIR.'game-schedule/',
+		"SEF_FOLDER" => "/game-schedule/",
 		"SEF_MODE" => "Y",
 		"SET_LAST_MODIFIED" => "N",
 		"SET_STATUS_404" => "Y",
