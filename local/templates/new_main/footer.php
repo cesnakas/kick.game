@@ -8,12 +8,14 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
                 <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/logo.svg#logo-footer"/>
             </svg>
 
-            <p>Весь контент, названия игр, торговые наименования и/или коммерческий внешний вид, товарные знаки,
-                произведения искусства и связанные изображения являются товарными знаками и/или материалами, защищенными
-                авторским правом соответствующих правообладателей.</p>
-            <p>KICKGAME ESPORTS LIMITED (рег.номер компании HE 416108)<br>
-                Адрес: Василий Михайлиди, 21, Лимассол 3026, Кипр <br>
-                © KICKGAME ESPORTS, <?= date('Y') ?>. Все права защищены.<br>
+            <p><?=GetMessage('FOOTER_CONTENT_P_1')?></p>
+            <p>
+                <?=GetMessage('FOOTER_CONTENT_P_2_1')?>
+                <br>
+                <?=GetMessage('FOOTER_CONTENT_P_2_2')?>
+                <br>
+                © KICKGAME ESPORTS, <?=date('Y')?>. <?=GetMessage('FOOTER_CONTENT_P_2_3')?>.
+                <br>
             </p>
 
             <div class="footer__contacts">
@@ -66,16 +68,16 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
         <div class="footer__nav">
             <nav class="footer__nav-item">
                 <a class="footer__link" href="<?SITE_DIR?>game-schedule/"><?=GetMessage('FOOTER_NAV_GAME_SCHEDULE')?></a>
-                <a class="footer__link" href="<?SITE_DIR?>personal/">Профиль</a>
-                <a class="footer__link" href="<?SITE_DIR?>players/">Игроки</a>
-                <a class="footer__link" href="<?SITE_DIR?>teams/">Команда</a>
-                <a class="footer__link" href="<?SITE_DIR?>subscription-plans/">Подписка</a>
+                <a class="footer__link" href="<?SITE_DIR?>personal/"><?=GetMessage('FOOTER_NAV_PERSONAL')?></a>
+                <a class="footer__link" href="<?SITE_DIR?>players/"><?=GetMessage('FOOTER_NAV_PLAYERS')?></a>
+                <a class="footer__link" href="<?SITE_DIR?>teams/"><?=GetMessage('FOOTER_NAV_TEAMS')?></a>
+                <a class="footer__link" href="<?SITE_DIR?>subscription-plans/"><?=GetMessage('FOOTER_NAV_SUBSCRIPTION_PLANS')?></a>
             </nav>
             <nav class="footer__nav-item">
-                <a class="footer__link" href="#">Правила подписки</a>
-                <a class="footer__link" href="<?SITE_DIR?>regulations/">Регламент проведения турниров</a>
-                <a class="footer__link" href="<?SITE_DIR?>refund-policy/">Политика возврата средств</a>
-                <a class="footer__link" href="<?SITE_DIR?>privacy-policy/">Политика конфиденциальности</a>
+                <a class="footer__link" href="#"><?=GetMessage('FOOTER_NAV_SUBSCRIPTION_RULES')?></a>
+                <a class="footer__link" href="<?SITE_DIR?>regulations/"><?=GetMessage('FOOTER_NAV_TOURNAMENT_REGULATIONS')?></a>
+                <a class="footer__link" href="<?SITE_DIR?>refund-policy/"><?=GetMessage('FOOTER_NAV_REFUND_POLICY')?></a>
+                <a class="footer__link" href="<?SITE_DIR?>privacy-policy/"><?=GetMessage('FOOTER_NAV_PRIVACY_POLICY')?></a>
             </nav>
         </div>
 
