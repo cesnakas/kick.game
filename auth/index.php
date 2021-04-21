@@ -24,8 +24,8 @@ $APPLICATION->SetTitle("Авторизация");
 ?>
 
     <div class="container" style="position: relative; z-index: 2; padding-bottom: 60px;">
-        <p>Вы зарегистрированы и успешно авторизовались.</p>
-        <p><a href="<?=SITE_DIR?>">Вернуться на главную страницу</a></p>
+        <p><?=GetMessage('AUTH_SUCCESS')?></p>
+        <p><a href="<?=SITE_DIR?>"><?=GetMessage('AUTH_LINK')?></a></p>
     </div>
 
 <?

@@ -1,6 +1,5 @@
 <?
-if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
-	die();
+if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,7 +37,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
 		</div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="/">KICKGAME</a>
+        <a class="navbar-brand" href="<?=SITE_DIR;?>">KICKGAME</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -47,9 +46,9 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
           <?php if ($USER->IsAuthorized()) { ?>
           <ul class="navbar-nav m-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="<?=SITE_DIR;?>">Главная <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item"><a class="nav-link" href="/game-schedule/">Расписание</a></li>
+            <li class="nav-item"><a class="nav-link" href="<?=SITE_DIR;?>game-schedule/">Расписание</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Рейтинг Команды/Игрока</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Подписка</a></li>
 
@@ -66,10 +65,10 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                 Support
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/matches/">Matches</a>
-                <a class="dropdown-item" href="/teams/">Teams</a>
-                <a class="dropdown-item" href="/dashboard/">Dashboard</a>
-                <a class="dropdown-item" href="/referee/">Referee</a>
+                <a class="dropdown-item" href="<?=SITE_DIR;?>matches/">Matches</a>
+                <a class="dropdown-item" href="<?=SITE_DIR;?>teams/">Teams</a>
+                <a class="dropdown-item" href="<?=SITE_DIR;?>dashboard/">Dashboard</a>
+                <a class="dropdown-item" href="<?=SITE_DIR;?>referee/">Referee</a>
               </div>
             </li>
 
@@ -83,7 +82,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                 if (strlen($name) > 10)
                     $name = substr($name, 0, 10).' ...';*/
                 ?>
-              <a href="/personal/" style="margin-right: 10px"><?=htmlspecialcharsbx($name); ?></a>
+              <a href="<?=SITE_DIR;?>personal/" style="margin-right: 10px"><?=htmlspecialcharsbx($name); ?></a>
               <a href="<?=$APPLICATION->GetCurPageParam("logout=yes&".bitrix_sessid_get(), array(
                 "login",
                 "logout",
@@ -92,7 +91,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                 "change_password"));?>" class="btn btn-info"> Выход</a>
             <?else:?>
               <div class="ml-auto">
-              <a href="/personal/auth/?login=yes" class="btn btn-info mr-2">Войти</a>   <a href="/personal/auth/reg.php" class="btn btn-info">Регистрация</a>
+              <a href="<?=SITE_DIR;?>personal/auth/?login=yes" class="btn btn-info mr-2">Войти</a>   <a href="<?=SITE_DIR;?>personal/auth/reg.php" class="btn btn-info">Регистрация</a>
               </div>
             <?endif?>
 
