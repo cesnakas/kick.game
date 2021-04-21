@@ -103,7 +103,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
         </div>
     </div>
 </section>
-<<<<<<< Updated upstream
+
 <div class="modal fade " id="expirePrem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -133,24 +133,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
     </div>
   </div>
 </div>
-<div class="modal fade " id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
-          <i></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn mr-3" data-dismiss="modal">Отключить все</button>
-        <button type="button" class="btn cookieAccept" data-dismiss="modal">Принять</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 <?php if ($USER->IsAuthorized()) {
     $resultPrem = isPrem($arUser['UF_DATE_PREM_EXP']); ?>
   <?php   if ($resultPrem <= 0) { ?>
@@ -186,28 +169,6 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 <!-- Start of  Zendesk Widget script -->
 <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=adaefb0f-5b54-4b83-a508-c98c16194250"> </script>
 <!-- End of  Zendesk Widget script -->
-=======
-
-    <div class="modal fade " id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
-                        <i></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn mr-3" data-dismiss="modal">Отключить все</button>
-                    <button type="button" class="btn cookieAccept" data-dismiss="modal">Принять</button>
-                </div>
-            </div>
-        </div>
-    </div>
->>>>>>> Stashed changes
 
     <!-- Facebook Pixel Code -->
     <script>

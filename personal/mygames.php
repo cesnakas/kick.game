@@ -1,4 +1,5 @@
-<?php
+<?
+require($_SERVER["DOCUMENT_ROOT"].'/bitrix/header.php');
 /**
  *  
  * Вывод списка каскадов матчей(игр), в которых 

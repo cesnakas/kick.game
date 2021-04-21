@@ -832,8 +832,8 @@ unset($_SESSION['alert_error']);
                   <i></i>
                 </div>
                 <div class="profile-info__type-account-description">
-                  <div>Базовая</div>
-                  <div><a href="/subscription-plans/" class="btn-italic">Поменять</a></div>
+                  <div><?=GetMessage('TYPE_ACCOUNT')?></div>
+                  <div><a href="<?=SITE_DIR?>subscription-plans/" class="btn-italic"><?=GetMessage('TYPE_ACCOUNT_CHANGE')?></a></div>
                 </div>
                   <?php  } else { ?>
                     <div class="profile-info__type-account-icon profile-info__type-account-icon_prem">
