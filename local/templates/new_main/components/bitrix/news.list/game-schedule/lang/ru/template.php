@@ -8,3 +8,5 @@ $MESS['GS_RATING'] = 'Рейтинг';
 $MESS['GS_RATING_INFO'] = 'Рейтинг, необходимый для записи на игру';
 $MESS['GS_MODE'] = 'Режим';
 $MESS['GS_COMMENTATOR'] = 'Комментатор';
+
+$MESS['GS_TABLE_TYPE'] = 'Турнир';

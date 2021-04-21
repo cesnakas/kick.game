@@ -649,14 +649,16 @@ if ($result->isSuccess())
             );
             ?>
             <div class="section__action">
-                <a href="<?=SITE_DIR?>game-schedule/" class="button">Поиск игры</a>
+                <a href="<?=SITE_DIR?>game-schedule/" class="button">
+                    <?=GetMessage('MAIN_GAME_SEARCH')?>
+                </a>
                 <!--<span>Показать ещё 5</span>-->
             </div>
         </section>
 
 
         <section class="section about">
-            <h2 class="main-title">О платформе</h2>
+            <h2 class="main-title"><?=GetMessage('MAIN_TITLE_ABOUT')?></h2>
             <div class="separator"></div>
             <div class="video-container">
                 <div class="player">
@@ -678,82 +680,82 @@ if ($result->isSuccess())
 
         <section class="section functions">
             <div class="functions-bg"></div>
-            <h2 class="main-title">Функции</h2>
+            <h2 class="main-title"><?=GetMessage('MAIN_TITLE_FUNCTIONS')?></h2>
             <div class="functions__items">
                 <div class="functions__items-row">
                     <div class="functions__item">
                         <div class="functions__item-text">
-                            <h4>Поиск игроков и команд</h4>
-                            <p>Возможность найти свою идеальную команду, напарника для дуо или бойца в сквад</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_SEARCHING_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_SEARCHING_TEXT')?></p>
                         </div>
                         <img
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/search.png" alt="search"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/search.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/search@2x.png 2x"
+                            src="<?php echo SITE_TEMPLATE_PATH;?>/images/search.png" alt="search"
+                            srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/search.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/search@2x.png 2x"
                         >
                     </div>
                     <div class="functions__item">
                         <img
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/checked.png" alt="registration"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/checked.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/checked@2x.png 2x"
+                            src="<?php echo SITE_TEMPLATE_PATH;?>/images/checked.png" alt="registration"
+                            srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/checked.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/checked@2x.png 2x"
                         >
                         <div class="functions__item-text">
-                            <h4>Ранняя регистрация на игры</h4>
-                            <p>Начать регистрироваться на праки можно за 1-2 дня до их начала, а на турниры — за 15 дней</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="functions__items-row">
-                    <div class="functions__item">
-                        <div class="functions__item-text">
-                            <h4>Удобное управление командой</h4>
-                            <p>Создание команды, выбор игр, управление календарём, напоминания об играх и лёгкая замена игроков</p>
-                        </div>
-                        <img
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/console.png" alt="team"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/console.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/console@2x.png 2x"
-                        >
-                    </div>
-                    <div class="functions__item">
-                        <img
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/stream.png" alt="stream"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/stream.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/stream@2x.png 2x"
-                        >
-                        <div class="functions__item-text">
-                            <h4>Трансляции и записи игр</h4>
-                            <p>Все наши игры проходят со стримами, и остаются в открытом доступе для просмотра после завершения</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_REGISTER_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_REGISTER_TEXT')?></p>
                         </div>
                     </div>
                 </div>
                 <div class="functions__items-row">
                     <div class="functions__item">
                         <div class="functions__item-text">
-                            <h4>Игры для сквадов, дуо и соло</h4>
-                            <p>От 15 праков ежедневно, кастомки и мини-турики каждую неделю, крупные турниры каждый месяц</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_MANAGEMENT_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_MANAGEMENT_TEXT')?></p>
                         </div>
                         <img
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/calendar.png" alt="calendar"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/calendar.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/calendar@2x.png 2x"
+                            src="<?php echo SITE_TEMPLATE_PATH;?>/images/console.png" alt="team"
+                            srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/console.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/console@2x.png 2x"
                         >
                     </div>
                     <div class="functions__item">
                         <img
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/rate.png" alt="rate"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/rate.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/rate@2x.png 2x"
+                            src="<?php echo SITE_TEMPLATE_PATH;?>/images/stream.png" alt="stream"
+                            srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/stream.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/stream@2x.png 2x"
                         >
                         <div class="functions__item-text">
-                            <h4>Рейтинги и статистика</h4>
-                            <p>Квалификация команд и игроков, которая гарантирует игру с равными соперниками и личная статистика по сыграными играм</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_BROADCASTS_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_BROADCASTS_TEXT')?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="functions__items-row">
+                    <div class="functions__item">
+                        <div class="functions__item-text">
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_GAMES_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_GAMES_TEXT')?></p>
+                        </div>
+                        <img
+                            src="<?php echo SITE_TEMPLATE_PATH;?>/images/calendar.png" alt="calendar"
+                            srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/calendar.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/calendar@2x.png 2x"
+                        >
+                    </div>
+                    <div class="functions__item">
+                        <img
+                            src="<?php echo SITE_TEMPLATE_PATH;?>/images/rate.png" alt="rate"
+                            srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/rate.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/rate@2x.png 2x"
+                        >
+                        <div class="functions__item-text">
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_RATINGS_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_RATINGS_TEXT')?></p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="section__action">
                 <?php if (!$USER->IsAuthorized()) { ?>
-                  <a href="/personal/auth/reg.php" class="button">регистрация</a>
+                  <a href="/personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
                 <?php } else { ?>
-                  <a href="/personal/" class="button">Войти</a>
+                  <a href="/personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
                 <?php } ?>
-                <span>14 дней бесплатный пробный период</span>
+                <span><?=GetMessage('CONTENT_MAIN_14DAYS')?></span>
             </div>
         </section>
     </main>

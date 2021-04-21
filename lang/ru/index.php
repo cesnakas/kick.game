@@ -20,3 +20,21 @@ $MESS['CONTENT_MAIN_LOGIN'] = 'Войти';
 $MESS['CONTENT_MAIN_14DAYS'] = '14 дней бесплатный пробный период';
 
 $MESS['MAIN_GAMES'] = 'Игры';
+
+$MESS['MAIN_GAME_SEARCH'] = 'Поиск игры';
+
+$MESS['MAIN_TITLE_ABOUT'] = 'О платформе';
+
+$MESS['MAIN_TITLE_FUNCTIONS'] = 'Функции';
+$MESS['MAIN_FUNCTIONS_SEARCHING_TITLE'] = 'Поиск игроков и команд';
+$MESS['MAIN_FUNCTIONS_SEARCHING_TEXT'] = 'Возможность найти свою идеальную команду, напарника для дуо или бойца в сквад';
+$MESS['MAIN_FUNCTIONS_REGISTER_TITLE'] = 'Ранняя регистрация на игры';
+$MESS['MAIN_FUNCTIONS_REGISTER_TEXT'] = 'Начать регистрироваться на праки можно за 1-2 дня до их начала, а на турниры — за 15 дней';
+$MESS['MAIN_FUNCTIONS_MANAGEMENT_TITLE'] = 'Удобное управление командой';
+$MESS['MAIN_FUNCTIONS_MANAGEMENT_TEXT'] = 'Создание команды, выбор игр, управление календарём, напоминания об играх и лёгкая замена игроков';
+$MESS['MAIN_FUNCTIONS_BROADCASTS_TITLE'] = 'Трансляции и записи игр';
+$MESS['MAIN_FUNCTIONS_BROADCASTS_TEXT'] = 'Все наши игры проходят со стримами, и остаются в открытом доступе для просмотра после завершения';
+$MESS['MAIN_FUNCTIONS_GAMES_TITLE'] = 'Игры для сквадов, дуо и соло';
+$MESS['MAIN_FUNCTIONS_GAMES_TEXT'] = 'От 15 праков ежедневно, кастомки и мини-турики каждую неделю, крупные турниры каждый месяц';
+$MESS['MAIN_FUNCTIONS_RATINGS_TITLE'] = 'Рейтинги и статистика';
+$MESS['MAIN_FUNCTIONS_RATINGS_TEXT'] = 'Квалификация команд и игроков, которая гарантирует игру с равными соперниками и личная статистика по сыгранным играм';

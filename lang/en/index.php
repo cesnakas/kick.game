@@ -20,3 +20,21 @@ $MESS['CONTENT_MAIN_LOGIN'] = 'Login';
 $MESS['CONTENT_MAIN_14DAYS'] = '14 days free trial period';
 
 $MESS['MAIN_GAMES'] = 'Games';
+
+$MESS['MAIN_GAME_SEARCH'] = 'Game Searching';
+
+$MESS['MAIN_TITLE_ABOUT'] = 'About the platform';
+
+$MESS['MAIN_TITLE_FUNCTIONS'] = 'Functions';
+$MESS['MAIN_FUNCTIONS_SEARCHING_TITLE'] = 'Search for players and teams';
+$MESS['MAIN_FUNCTIONS_SEARCHING_TEXT'] = 'The opportunity to find your ideal team, a partner for a duo or a fighter in the squad';
+$MESS['MAIN_FUNCTIONS_REGISTER_TITLE'] = 'Early registration for games';
+$MESS['MAIN_FUNCTIONS_REGISTER_TEXT'] = 'You can start registering for praki 1-2 days before they start, and for tournaments — 15 days before';
+$MESS['MAIN_FUNCTIONS_MANAGEMENT_TITLE'] = 'Convenient team management';
+$MESS['MAIN_FUNCTIONS_MANAGEMENT_TEXT'] = 'Team building, game selection, calendar management, game reminders, and easy player swapping';
+$MESS['MAIN_FUNCTIONS_BROADCASTS_TITLE'] = 'Broadcasts and recordings of games';
+$MESS['MAIN_FUNCTIONS_BROADCASTS_TEXT'] = 'All of our games are streamed, and remain publicly available for viewing after completion';
+$MESS['MAIN_FUNCTIONS_GAMES_TITLE'] = 'Games for squads, duos, and solos';
+$MESS['MAIN_FUNCTIONS_GAMES_TEXT'] = 'From 15 praks daily, customizations and mini-tours every week, major tournaments every month';
+$MESS['MAIN_FUNCTIONS_RATINGS_TITLE'] = 'Ratings and statistics';
+$MESS['MAIN_FUNCTIONS_RATINGS_TEXT'] = 'Qualification of teams and players, which guarantees a game with equal opponents and personal statistics on the games played';

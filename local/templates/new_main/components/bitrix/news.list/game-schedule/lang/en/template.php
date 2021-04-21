@@ -8,3 +8,5 @@ $MESS['GS_RATING'] = 'Rating';
 $MESS['GS_RATING_INFO'] = 'Rating required to sign up for the game';
 $MESS['GS_MODE'] = 'Mode';
 $MESS['GS_COMMENTATOR'] = 'Commentator';
+
+$MESS['GS_TABLE_TYPE'] = 'Tournament';

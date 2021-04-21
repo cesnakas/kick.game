@@ -307,7 +307,7 @@ function getAvailableGroup($arItem) {
               ?>
           </td>
           <td>
-            Турнир
+            <?=GetMessage('GS_TABLE_TYPE')?>
           </td>
           <td><a class="games__link" href="<?php echo $arItem["DETAIL_PAGE_URL"];?>">
                   <?php
