@@ -172,12 +172,8 @@ $teamID = $arUser['UF_ID_TEAM'];
   </div>
 <?endforeach;?>
 
-<<<<<<< Updated upstream
-=======
 <?php if(!empty($arResult["ITEMS"])){ ?>
 <div class="mt-3">
     <a href="https://t.me/joinchat/3zyL7w5RL7czZmYy" class="btn">Поддержка</a>
 </div>
 <?php } ?>
->>>>>>> Stashed changes
-
