@@ -192,10 +192,7 @@ function getRecruitTeam($teamID)
     return $output;
 }
 
-$isCaptain = isCaptain($userID, $teamID);
-if(!$isCaptain) {
-    LocalRedirect("/personal/");
-}
+
 if (!empty($teamID)) {
 
 $resTeam = getTeamById($teamID);
@@ -205,12 +202,6 @@ $recruits = getRecruitTeam($teamID);
     if ($redirectUrlAction != false) {
         LocalRedirect($redirectUrlAction);
     }
-
-    // капитан или нет
-
-    /*if(!$isCaptain) {
-        LocalRedirect("/personal/");
-    }*/
 ?>
   <?php /* ?>
 <div class="container my-5">
@@ -323,7 +314,6 @@ $recruits = getRecruitTeam($teamID);
 
     ?>
     <?php
-
     if(isset($_SESSION['management-players_success'])) { ?>
       <div class="alert-container">
         <div class="alert alert-success alert-dismissible fade show" role="alert">

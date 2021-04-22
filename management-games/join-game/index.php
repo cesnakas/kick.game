@@ -215,22 +215,6 @@ function getMembersByMatchId($matchId) {
 }
 
 
-//Проверяем учавствует ли комманда в другом матче в это же время
-function isSameTime($teamID, $gameTime){
-    global $DB;
-    $sql = " SELECT t.PROPERTY_27 as matchid, t.PROPERTY_28 as teamid, m.PROPERTY_4
-    FROM b_iblock_element_prop_s6 as t, b_iblock_element_prop_s3 as m
-    WHERE m.IBLOCK_ELEMENT_ID = t.PROPERTY_27
-    AND t.PROPERTY_28 = " . $teamID . "
-    AND UNIX_TIMESTAMP(m.PROPERTY_4) BETWEEN (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') - 6600) AND (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') + 6600)";
-    $rsData = $DB->Query($sql);
-    $matches = [];
-        while($res = $rsData->fetch()){
-            $matches[$res['matchid']] = $res;
-        }
-    return count($matches);
-}
-
 function getPlacesKeys()
 {
     return [
@@ -452,23 +436,6 @@ function isPlace($idMatch)
     return true;
 }
 
-function getRating($teamID)
-{
-    global $DB;
-    $sql = 'SELECT t2.IBLOCK_ELEMENT_ID as teamID, (IF(t2.PROPERTY_31 IS NOT NULL, t2.PROPERTY_31, 300) + IF(total IS NOT NULL, total, 0)) as rating, t2.PROPERTY_21 as name FROM b_iblock_element_prop_s1 as t2
-		LEFT JOIN
-      (SELECT t.PROPERTY_15 AS teamID, sum(t.PROPERTY_18) AS total, sum(t.PROPERTY_17) AS kills
-      FROM b_iblock_element_prop_s5 AS t
-      INNER JOIN b_iblock_element_prop_s3 AS m ON t.PROPERTY_14 = m.IBLOCK_ELEMENT_ID WHERE m.PROPERTY_23 = 6 GROUP BY t.PROPERTY_15) as r1
-      ON r1.teamID = t2.IBLOCK_ELEMENT_ID
-      WHERE t2.IBLOCK_ELEMENT_ID = '.$teamID;
-    $res = $DB->Query($sql);
-    if( $row = $res->Fetch()  ) {
-        return $row;
-    }
-    return false;
-}
-
 function updateMembers($props = [], $id)
 {
     CIBlockElement::SetPropertyValuesEx($id, 4, $props);
@@ -538,8 +505,6 @@ $playerKeys = [
 $minLimPlayers = 4;
 $maxLimPlayers = 6;
 $alertManagementSquad = '';
-
-$objDateTime = new DateTime($curMatch['DATE_START']['VALUE']);
 if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
     if (!empty($_POST['squad'])) {
             $squad = $_POST['squad'];
@@ -555,71 +520,50 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
             $props['TEAM_ID'] = $teamID;
             $code = 'SQUAD_' . $curMatch['NAME'];
 
-
-
             if (count($tmp) >= $minLimPlayers && count($tmp) <= $maxLimPlayers) {
                 if (isset($_POST['update_squad']) || $placeName != '') {
                     updateSquad($props, $mId);
                     createSession('management-games_success', $messages[$lang]['UPDATE_SQUAD_SUCCESS']);
                     $redirectUrlAction = "/management-games/join-game/?mid=".$mId;
                 } else {
-                    //Проверка регистрации на одно время
-                    $teamRating = getRating($teamID);
+                    if($idTournament = isTournament($mId)) {
 
-                    if (($teamRating['rating']>= $curMatch['MIN_RATING']['VALUE'] && $teamRating['rating'] <= $curMatch['MAX_RATING']['VALUE']) || $curMatch['TYPE_MATCH']["VALUE_ENUM_ID"] != 6) {
+                        $registeredMatchId = checkRegistrationTeamOnTournament($teamID, $idTournament);
+                        //dump($registeredMatchId, 1);
+                        if($registeredMatchId > 0) {
 
-                        if (isSameTime($teamID, $objDateTime) == 0) {
-                            if ($idTournament = isTournament($mId)) {
-
-                                $registeredMatchId = checkRegistrationTeamOnTournament($teamID, $idTournament);
-                                //dump($registeredMatchId, 1);
-                                if ($registeredMatchId > 0) {
-
-                                    $alertManagementSquad = $messages[$lang]['YOU_ALREADY_ADDED_ON_TOURNAMENT'] . '<br>
-                                <a href="/management-games/join-game/?mid=' . $registeredMatchId . '">' . $messages[$lang]['GO_TO_MATCH'] . '</a>';
-                                    createSession('management-games_error', $alertManagementSquad);
-                                    //LocalRedirect("/management-games/join-game/?mid=".$mId);
-                                } else {
-                                    if ($isPlace) {
-                                        $squadId = createSquad($props, $code);
-                                        $alertManagementSquad = 'Ты успешно сформировал команду на игру';
-                                        createSession('management-games_success', $alertManagementSquad);
-                                        //LocalRedirect("/management-games/join-game/?mid=".$mId);
-                                    } else {
-                                        $alertManagementSquad = 'Ты не успел, мест нет';
-                                        createSession('management-games_error', $alertManagementSquad);
-                                        //LocalRedirect("/management-games/join-game/?mid=".$mId);
-                                    }
-                                }
-                            } else {
-                                if ($isPlace) {
-                                    $squadId = createSquad($props, $code);
-                                    //dump($squadId);
-
-                                    $alertManagementSquad = 'Ты успешно сформировал команду';
-                                    //dump($alertManagementSquad);
-                                    createSession('management-games_success', $alertManagementSquad);
-                                    // not working
-                                    // header('Location: /management-games/join-game/?mid='.$mId);
-                                    //LocalRedirect("/management-games/join-game/?mid=".$mId);
-                                } else {
-                                    $alertManagementSquad = 'Ты не успел, мест нет';
-                                    createSession('management-games_error', $alertManagementSquad);
-                                    //LocalRedirect("/management-games/join-game/?mid=".$mId);
-                                }
-                            }
+                          $alertManagementSquad = $messages[$lang]['YOU_ALREADY_ADDED_ON_TOURNAMENT'].'<br>
+                                <a href="/management-games/join-game/?mid='.$registeredMatchId.'">'.$messages[$lang]['GO_TO_MATCH'].'</a>';
+                          createSession('management-games_error', $alertManagementSquad);
+                          //LocalRedirect("/management-games/join-game/?mid=".$mId);
                         } else {
-                            $alertManagementSquad = 'Ты уже зарегистрирован на другую игру в это время';
-                            createSession('management-games_error', $alertManagementSquad);
+                            if($isPlace) {
+                                $squadId = createSquad($props, $code);
+                              $alertManagementSquad = 'Ты успешно сформировал команду на игру';
+                              createSession('management-games_success', $alertManagementSquad);
+                              //LocalRedirect("/management-games/join-game/?mid=".$mId);
+                            } else {
+                              $alertManagementSquad = 'Ты не успел, мест нет';
+                              createSession('management-games_error', $alertManagementSquad);
+                              //LocalRedirect("/management-games/join-game/?mid=".$mId);
+                            }
                         }
+                    } else {
+                        if($isPlace) {
+                            $squadId = createSquad($props, $code);
+                            //dump($squadId);
 
-                    } else if($teamRating['rating'] <= $curMatch['MIN_RATING']['VALUE']){
-                        $alertManagementSquad = 'Рейтинг твоей команды ниже минимального рейтинга для этой игры';
-                        createSession('management-games_error', $alertManagementSquad);
-
-                    } else if($teamRating['rating'] >= $curMatch['MAX_RATING']['VALUE']){
-                        $alertManagementSquad = 'Рейтинг твоей команды выше максимального рейтинга для этой игры';
-                        createSession('management-games_error',  $alertManagementSquad );
+                          $alertManagementSquad = 'Ты успешно сформировал команду';
+                            //dump($alertManagementSquad);
+                          createSession('management-games_success', $alertManagementSquad);
+                          // not working
+                         // header('Location: /management-games/join-game/?mid='.$mId);
+                            //LocalRedirect("/management-games/join-game/?mid=".$mId);
+                        } else {
+                          $alertManagementSquad = 'Ты не успел, мест нет';
+                          createSession('management-games_error', $alertManagementSquad);
+                          //LocalRedirect("/management-games/join-game/?mid=".$mId);
+                        }
                     }
                     $redirectUrlAction = "/management-games/join-game/?mid=".$mId;
                     //LocalRedirect("/management-games/join-game/?mid=".$mId);

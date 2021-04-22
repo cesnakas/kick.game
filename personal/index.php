@@ -1296,7 +1296,7 @@ if (!empty($newMatchIds)) {
       </div>
     </div>
   </section>
-    <?php  if (!empty($teamID)) {
+    <?php  if (empty($teamID)) { // !empty
       $players = getCoreTeam($teamID);
     $points = countPointsAllUsers();
       // ставим капитана на первое место

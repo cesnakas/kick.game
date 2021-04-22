@@ -135,20 +135,18 @@ if (isset($arUser) && $resultPrem <= 0) { ?>
         <div class="container">
             <div class="banner__bg">
                 <div class="banner__content">
-                  <h2>15 праков в день<br>
-                    Турниры на 100€ и 1000€
-                  </h2>
+                    <h2><?=GetMessage('BANNER_TITLE')?></h2>
                     <div class="banner__content-btn">
-                        <a href="/subscription-plans/" class="btn">Купить подписку</a>
+                        <a href="/subscription-plans/" class="btn"><?= GetMessage('BANNER_BUTTON') ?></a>
                     </div>
                 </div>
                 <div class="banner__img">
-                    <img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/banner-img-2.png" alt="banner">
+                    <img src="<?=SITE_TEMPLATE_PATH;?>/dist/images/banner-img-2.png" alt="banner">
                 </div>
             </div>
         </div>
     </section>
-    <?php } ?>
+<?php } ?>
 
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");

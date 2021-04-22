@@ -1,5 +1,9 @@
 <?
-$MESS ['SEARCH_LABEL'] = "Search:";
+$MESS['FILTER_TITLE'] = 'Filters';
+$MESS['FILTER_INPUT_PRACTICAL'] = 'Praki';
+$MESS['FILTER_INPUT_TOURNAMENT'] = 'Tournaments';
+$MESS['FILTER_BTN_FILTER'] = 'Filter';
+$MESS['FILTER_BTN_RESET'] = 'Reset';
 
 $MESS['GS_HEADER'] = 'Game Schedule';
 $MESS['GS_TYPE'] = 'Game type';

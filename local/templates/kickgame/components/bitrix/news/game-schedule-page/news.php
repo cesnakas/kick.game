@@ -1,5 +1,5 @@
 <?
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -14,17 +14,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 $this->setFrameMode(true);
 //dump($_GET['arrFilterDateTime_pf']['TYPE_MATCH']);
 ?>
-<style>
-    .flex-table-new--body .btn-italic {
-        text-align: center;
-        display: block;
-    }
-</style>
+
 <div class="container">
     <div class="row">
         <div class="col-lg-3 col-md-12">
             <div class="filter-param">
-                <h3>Фильтры</h3>
+                <h3><?= GetMessage('FILTER_TITLE') ?></h3>
                 <form action="" method="get">
                     <div class="form-field-wrap">
                         <div class="form-field__row">
@@ -38,7 +33,7 @@ $this->setFrameMode(true);
                                        value="6" <?php if ($_GET['arrFilterDateTime_pf']['TYPE_MATCH'] == 6) echo 'checked' ?>
                                        id="practical">
                                 <label for="practical"
-                                       class="form-field__label form-field__label_filter form-field__label-checkbox">Праки</label>
+                                       class="form-field__label form-field__label_filter form-field__label-checkbox"><?= GetMessage('FILTER_INPUT_PRACTICAL') ?></label>
                             </div>
                             <div class="form-field form-field__checkbox form-field__checkbox_filter">
                                 <input type="checkbox" class="form-field__checkbox "
@@ -46,7 +41,7 @@ $this->setFrameMode(true);
                                        value="5" <?php if ($_GET['arrFilterDateTime_pf']['TYPE_MATCH'] == 5) echo 'checked' ?>
                                        id="tournament">
                                 <label for="tournament"
-                                       class="form-field__label form-field__label_filter form-field__label-checkbox">Турниры</label>
+                                       class="form-field__label form-field__label_filter form-field__label-checkbox"><?= GetMessage('FILTER_INPUT_TOURNAMENT') ?></label>
                             </div>
                             <!--<div class="form-field form-field__checkbox form-field__checkbox_filter">
                               <input type="checkbox" class="form-field__checkbox " name="practical" id="custom">
@@ -74,9 +69,10 @@ $this->setFrameMode(true);
                     </div>-->
                     <div class="form-field  text-center">
                         <input type="hidden" name="set_filter" value="Y"/>
-                        <button class="btn mr-1" type="submit" name="set_filter">Фильтр</button>
-                        <button class="btn" type="submit" name="arrFilterDateTime_pf[TYPE_MATCH]" value="">Сбросить
-                        </button>
+                        <button class="btn mr-1" type="submit"
+                                name="set_filter"><?= GetMessage('FILTER_BTN_FILTER') ?></button>
+                        <button class="btn" type="submit" name="arrFilterDateTime_pf[TYPE_MATCH]"
+                                value=""><?= GetMessage('FILTER_BTN_RESET') ?></button>
                     </div>
                 </form>
                 <? /*if($arParams["USE_FILTER"]=="Y"):?>
@@ -101,31 +97,26 @@ $this->setFrameMode(true);
             </div>
         </div>
         <div class="col-lg-9 col-md-12">
-            <h1 class="game-schedule__heading mt-3">Расписание игр</h1>
-            <div class="new-game-schedule-table">
-                <div class="flex-table-new">
+            <h1 class="game-schedule__heading mt-3"><?= GetMessage('GS_HEADER') ?></h1>
+            <div class="game-schedule-table">
+                <div class="flex-table">
                     <div class="flex-table--header bg-default">
                         <div class="flex-table--categories">
-                            <span>Тип игры</span>
-                            <span>Название</span>
-                            <span>Дата проведения</span>
-                            <span>Рейтинг</span>
-                            <span>Режим</span>
-                            <span>Комментатор</span>
-                            <span>Свободные места</span>
+                            <span><?= GetMessage('GS_TYPE') ?></span>
+                            <span><?= GetMessage('GS_TITLE') ?></span>
+                            <span><?= GetMessage('GS_DATE_EVENT') ?></span>
+                            <span><?= GetMessage('GS_RATING') ?></span>
+                            <span><?= GetMessage('GS_MODE') ?></span>
+                            <span><?= GetMessage('GS_COMMENTATOR') ?></span>
                         </div>
                     </div>
-                    <div class="flex-table-new--body">
-                        <?php
+                    <div class="flex-table--body">
+                        <?
+                        //dump($_GET);
                         $curDate = date('Y-m-d H:i:s', time() - 3600);
                         global $arrFilterDateTime;
                         $arrFilterDateTime = array(
                             "ACTIVE" => "Y",
-                            array(
-                                "LOGIC" => "OR",
-                                array("PROPERTY_GROUP" => "A"),
-                                array("PROPERTY_TYPE_MATCH" => 5)
-                            ),
                             ">=PROPERTY_DATE_START" => $curDate,
                             "PROPERTY_PREV_MATCH" => false,
                             //"PROPERTY_TYPE_MATCH" => 5
