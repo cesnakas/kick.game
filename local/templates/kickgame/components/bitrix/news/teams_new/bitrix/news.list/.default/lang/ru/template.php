@@ -1,3 +1,5 @@
 <?
-$MESS["CT_BNL_ELEMENT_DELETE_CONFIRM"] = "Будет удалена вся информация, связанная с этой записью. Продолжить?";
-?>
+$MESS['GAME_SCHEDULE_TABLE_TEAM'] = 'Команда';
+$MESS['GAME_SCHEDULE_TABLE_POSITION'] = 'Позиция в рейтинге';
+$MESS['GAME_SCHEDULE_TABLE_RATING'] = 'Рейтинг';
+$MESS['GAME_SCHEDULE_TABLE_KILLS'] = 'Киллы';
