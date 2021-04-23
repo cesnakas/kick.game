@@ -171,7 +171,7 @@ if (isset($arUser) && $resultPrem <= 0) { ?>
                 <div class="banner__content">
                     <h2><?=GetMessage('TEAMS_BANNER_TITLE')?></h2>
                     <div class="banner__content-btn">
-                        <a href="/subscription-plans/" class="btn"><?=GetMessage('TEAMS_BANNER_BUTTON')?></a>
+                        <a href="<?=SITE_DIR?>subscription-plans/" class="btn"><?=GetMessage('TEAMS_BANNER_BUTTON')?></a>
                     </div>
                 </div>
                 <div class="banner__img banner__img_girl">

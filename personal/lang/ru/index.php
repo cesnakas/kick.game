@@ -1,6 +1,8 @@
 <?
 $MESS['TYPE_ACCOUNT'] = 'Базовая';
 $MESS['TYPE_ACCOUNT_PREMIUM'] = 'Премиум';
+$MESS['TYPE_ACCOUNT_PREMIUM_REMAINING'] = 'Остался, Осталось, Осталось';
+$MESS['TYPE_ACCOUNT_PREMIUM_DAYS'] = 'день, дня, дней';
 $MESS['TYPE_ACCOUNT_CHANGE'] = 'Поменять';
 
 $MESS['PERSONAL_EDIT'] = 'Редактировать';
@@ -35,3 +37,25 @@ $MESS['BANNER_BUTTON'] = 'Купить подписку';
 
 $MESS['GS_HEADER'] = 'Расписание игр';
 $MESS['GS_BTN'] = 'Поиск матча';
+
+$MESS['CORE_TEAM_HEADING'] = 'Моя команда';
+$MESS['CORE_TEAM_SUBTITLE'] = 'Основной Состав';
+$MESS['CORE_TEAM_PLAYER'] = 'Игрок';
+$MESS['CORE_TEAM_NUMBER_GAMES'] = 'Количество игр';
+$MESS['CORE_TEAM_KILLS'] = 'Киллы';
+$MESS['CORE_TEAM_TOTAL'] = 'Total';
+$MESS['CORE_TEAM_RATING'] = 'Рейтинг';
+
+$MESS['MANAGEMENT_COMPOSITIONAL'] = 'Управление составом';
+$MESS['MANAGEMENT_GAMES'] = 'Управление играми';
+
+$MESS['MODAL_TITLE'] = 'Создание команды';
+$MESS['MODAL_TEAM_NAME'] = 'Название команды';
+$MESS['MODAL_TEAM_NAME_PLACEHOLDER'] = 'Введите название команды';
+$MESS['MODAL_TEAM_TAG'] = 'Тег команды';
+$MESS['MODAL_TEAM_TAG_PLACEHOLDER'] = 'Введите тег команды';
+$MESS['MODAL_TEAM_LOGO'] = 'Прикрепить логотип команды';
+$MESS['MODAL_TEAM_DESCRIPTION'] = 'Описание команды';
+$MESS['MODAL_TEAM_DESCRIPTION_PLACEHOLDER'] = 'Описание команды';
+$MESS['MODAL_TEAM_BTN_CREATE_TEAM'] = 'Создать команду';
+$MESS['MODAL_TEAM_BTN_CANCEL'] = 'Отмена';

@@ -1,4 +1,5 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+<?
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -26,8 +27,8 @@ if(isset($_GET['leaveteam']) && $_GET['leaveteam'] != '') {
   //dump($_GET['leaveteam']);
   //dump($arResult["VARIABLES"]["ELEMENT_ID"]);
   updateFieldUserbyId($userID+0, $fields= array("UF_ID_TEAM" => null));
-  createSession('team_success', 'Tы успешно вышел из команды');
-  LocalRedirect("/teams/". $arResult["VARIABLES"]["ELEMENT_ID"].'/');
+  createSession('team_success', GetMessage('TEAM_OUT'));
+  LocalRedirect(SITE_DIR."/teams/". $arResult["VARIABLES"]["ELEMENT_ID"].'/');
 }
 ?>
 <?$ElementID = $APPLICATION->IncludeComponent(

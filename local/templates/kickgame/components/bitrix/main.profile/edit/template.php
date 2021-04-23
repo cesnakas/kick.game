@@ -4,12 +4,11 @@
  * @var array $arParams
  * @var array $arResult
  */
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
-	die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
+    die();
 
-if($arResult["SHOW_SMS_FIELD"] == true)
-{
-	CJSCore::Init('phone_auth');
+if ($arResult["SHOW_SMS_FIELD"] == true) {
+    CJSCore::Init('phone_auth');
 }
 ?>
 <?php /*
@@ -193,129 +192,155 @@ if($arResult["SHOW_SMS_FIELD"] == true)
 </div>
 <?php */ ?>
 <?php if (!empty($arResult["strProfileError"])) {
-  createSession('save-profile_error', $arResult["strProfileError"]);
-  LocalRedirect("/personal/edit/");
+    createSession('save-profile_error', $arResult["strProfileError"]);
+    LocalRedirect("/personal/edit/");
 }
 ?>
 <?php
 if ($arResult['DATA_SAVED'] == 'Y') {
-  createSession('save-profile_success', GetMessage('PROFILE_DATA_SAVED'));
-  LocalRedirect("/personal/edit/");
+    createSession('save-profile_success', GetMessage('PROFILE_DATA_SAVED'));
+    LocalRedirect(SITE_DIR."personal/edit/");
 } ?>
 <?php
-if(isset($_SESSION['save-profile_success'])) { ?>
-  <div class="alert-container">
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <?php echo $_SESSION['save-profile_success'];?>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+if (isset($_SESSION['save-profile_success'])) { ?>
+    <div class="alert-container">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['save-profile_success']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
-  </div>
-  <?php
-  unset($_SESSION['save-profile_success']);
-} else if(isset($_SESSION['save-profile_error'])){ ?>
-  <div class="alert-container">
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <?php echo $_SESSION['save-profile_error'];?>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+    <?php
+    unset($_SESSION['save-profile_success']);
+} else if (isset($_SESSION['save-profile_error'])) { ?>
+    <div class="alert-container">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['save-profile_error']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
-  </div>
 <?php }
 unset($_SESSION['save-profile_error']);
 ?>
 <section class="profile">
-  <div class="container">
-    <div class="layout__content-heading-with-btn-back">
-      <a href="/personal/" class="btn-italic-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
-          <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z" transform="translate(-949.26 -534.62)"/>
-        </svg> Назад
-      </a>
-      <h1 class="text-center">Редактирование профиля</h1>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-10 col-md-12">
+    <div class="container">
+        <div class="layout__content-heading-with-btn-back">
+            <a href="<?= SITE_DIR ?>personal/" class="btn-italic-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
+                    <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z"
+                          transform="translate(-949.26 -534.62)"/>
+                </svg>
+                Назад
+            </a>
+            <h1 class="text-center">Редактирование профиля</h1>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
 
-        <form method="post" name="form1" action="<?=$arResult["FORM_TARGET"]?>" enctype="multipart/form-data">
-          <?=$arResult["BX_SESSION_CHECK"]?>
-          <input type="hidden" name="lang" value="<?=LANG?>">
-          <input type="hidden" name="ID" value=<?=$arResult["ID"]?>>
-          <?php if($arResult["ID"]>0) { ?>
-          <div class="profile__edit-avatar">
-            <input type="file" class="form-field__input-file inputFileAvatar"  name="PERSONAL_PHOTO" id="avatar">
-            <label for="avatar" class="form-field__upload-avatar">
-              <div class="profile__avatar-bg">
-                <div title="Поменять аватар" class="profile__avatar profile__avatar-edit fileAvatarUploaded"
-                  <?php if (!empty($arResult["arUser"]["PERSONAL_PHOTO"])) { ?>
-                    style="background-image: url(<?php echo CFile::GetPath($arResult["arUser"]["PERSONAL_PHOTO"]); ?>)"
-                  <?php }?>>
-                  <div class="profile__avatar-edit-icon"></div>
-                </div>
-              </div>
-            </label>
-          </div>
-          <div class="profile-info">
-            <div class="profile-info__edit">
-              <div class="form-field">
-                <label for="edit-nic" class="form-field__label">NickName <span>*</span></label>
-                <input type="text" class="form-field__input" name="LOGIN" value="<?=$arResult["arUser"]["LOGIN"]?>" autocomplete="off" id="edit-nic" placeholder="Введите свой NicName">
+                <form method="post" name="form1" action="<?= $arResult["FORM_TARGET"] ?>" enctype="multipart/form-data">
+                    <?= $arResult["BX_SESSION_CHECK"] ?>
+                    <input type="hidden" name="lang" value="<?= LANG ?>">
+                    <input type="hidden" name="ID" value=<?= $arResult["ID"] ?>>
+                    <?php if ($arResult["ID"] > 0) { ?>
+                    <div class="profile__edit-avatar">
+                        <input type="file" class="form-field__input-file inputFileAvatar" name="PERSONAL_PHOTO"
+                               id="avatar">
+                        <label for="avatar" class="form-field__upload-avatar">
+                            <div class="profile__avatar-bg">
+                                <div title="Поменять аватар"
+                                     class="profile__avatar profile__avatar-edit fileAvatarUploaded"
+                                    <?php if (!empty($arResult["arUser"]["PERSONAL_PHOTO"])) { ?>
+                                        style="background-image: url(<?php echo CFile::GetPath($arResult["arUser"]["PERSONAL_PHOTO"]); ?>)"
+                                    <?php } ?>>
+                                    <div class="profile__avatar-edit-icon"></div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-info__edit">
+                            <div class="form-field">
+                                <label for="edit-nic" class="form-field__label">NickName <span>*</span></label>
+                                <input type="text" class="form-field__input" name="LOGIN"
+                                       value="<?= $arResult["arUser"]["LOGIN"] ?>" autocomplete="off" id="edit-nic"
+                                       placeholder="Введите свой NicName">
 
-              </div>
-              <div class="form-field">
-                <label for="edit-pubgid" class="form-field__label">PUBG ID <span>*</span></label>
-                <input type="text" class="form-field__input" name="UF_PUBG_ID" value="<?=htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]);?>" autocomplete="off" id="edit-pubgid" placeholder="Введите свой PUBG ID">
-              </div>
-              <div class="form-field">
-                <label for="edit-subscription" class="form-field__label">Подписка</label>
-                <?php $resultPrem = isPrem($arResult["arUser"]["UF_DATE_PREM_EXP"]);
-                if ($resultPrem <= 0) { ?>
-                <div class="form-field__with-btn">
-                  <div class="form-field__input-wrap">
-                    <i class="form-field__icon form-field__icon_base"></i>
-                    <input type="text" class="form-field__input" name="authLogin" value="Базовая" autocomplete="off" id="edit-subscription">
-                  </div>
-                  <a href="/subscription-plans/" class="btn-italic"  target="_blank">Поменять</a>
-                </div>
-                <?php } else { ?>
-                  <div class="form-field__input-wrap">
-                    <i class="form-field__icon form-field__icon_prem"></i>
-                    <input type="text" class="form-field__input" name="authLogin" value="Премиум <?php echo num_decline( $resultPrem, 'Остался, Осталось, Осталось', false );?> <?php echo num_decline( $resultPrem, 'день, дня, дней' );?>" autocomplete="off" id="edit-subscription">
-                  </div>
-                <?php } ?>
-              </div>
-              <div class="form-field">
-                <label for="my-mood" class="form-field__label">Мое настроение</label>
-                <input type="text" class="form-field__input" name="TITLE" value="<?php echo htmlspecialchars($arResult["arUser"]["TITLE"])?>" autocomplete="off" id="my-mood" placeholder="Какое у Вас настроение">
-              </div>
-              <div class="form-field">
-                <label for="edit-email" class="form-field__label">Email <span>*</span></label>
-                <input type="text" class="form-field__input" name="EMAIL" value="<?=$arResult["arUser"]["EMAIL"]?>" autocomplete="off" id="edit-email" placeholder="Введите свой email" readonly>
-              </div>
-              <div class="form-field">
-                <label for="edit-telegramNic" class="form-field__label">Telegram Nic</label>
-                <input type="text" class="form-field__input" name="UF_TELEGRAM_NIC" value="<?=htmlspecialchars($arResult["arUser"]["UF_TELEGRAM_NIC"])?>" autocomplete="off" id="edit-telegramNic" placeholder="Введите свой email">
-              </div>
-              <?if($arResult['CAN_EDIT_PASSWORD']) { ?>
-              <div class="form-field">
-                <label for="edit-new-pass" class="form-field__label">Новый пароль</label>
-                <input type="password" class="form-field__input form-field__input_pass" name="NEW_PASSWORD" value="" autocomplete="off" id="edit-new-pass" placeholder="Введите новый пароль">
-                <span class="form-field__eyes"></span>
-                <span class="form-field__helper">Пароль должен быть не менее 6 символов длиной.</span>
-              </div>
-              <div class="form-field">
-                <label for="edit-confirm-new-pass" class="form-field__label">Повторить пароль</label>
-                <input type="password" class="form-field__input" name="NEW_PASSWORD_CONFIRM"  value="" autocomplete="off" id="edit-confirm-new-pass" placeholder="Повторить пароль">
-              </div>
-              <?php } ?>
-              <?php } ?>
-              <div class="form-field__button">
-                <button type="submit" name="save" class="btn" value="<?=(($arResult["ID"]>0) ? GetMessage("MAIN_SAVE") : GetMessage("MAIN_ADD"))?>">Сохранить</button>
-                <button type="reset" value="<?=GetMessage('MAIN_RESET');?>" class="btn">Сбросить</button>
-              </div>
+                            </div>
+                            <div class="form-field">
+                                <label for="edit-pubgid" class="form-field__label">PUBG ID <span>*</span></label>
+                                <input type="text" class="form-field__input" name="UF_PUBG_ID"
+                                       value="<?= htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]); ?>"
+                                       autocomplete="off" id="edit-pubgid" placeholder="Введите свой PUBG ID">
+                            </div>
+                            <div class="form-field">
+                                <label for="edit-subscription" class="form-field__label">Подписка</label>
+                                <?php $resultPrem = isPrem($arResult["arUser"]["UF_DATE_PREM_EXP"]);
+                                if ($resultPrem <= 0) { ?>
+                                    <div class="form-field__with-btn">
+                                        <div class="form-field__input-wrap">
+                                            <i class="form-field__icon form-field__icon_base"></i>
+                                            <input type="text" class="form-field__input" name="authLogin"
+                                                   value="Базовая" autocomplete="off" id="edit-subscription">
+                                        </div>
+                                        <a href="/subscription-plans/" class="btn-italic" target="_blank">Поменять</a>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="form-field__input-wrap">
+                                        <i class="form-field__icon form-field__icon_prem"></i>
+                                        <input type="text" class="form-field__input" name="authLogin"
+                                               value="Премиум <?php echo num_decline($resultPrem, 'Остался, Осталось, Осталось', false); ?> <?php echo num_decline($resultPrem, 'день, дня, дней'); ?>"
+                                               autocomplete="off" id="edit-subscription">
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <div class="form-field">
+                                <label for="my-mood" class="form-field__label">Мое настроение</label>
+                                <input type="text" class="form-field__input" name="TITLE"
+                                       value="<?php echo htmlspecialchars($arResult["arUser"]["TITLE"]) ?>"
+                                       autocomplete="off" id="my-mood" placeholder="Какое у Вас настроение">
+                            </div>
+                            <div class="form-field">
+                                <label for="edit-email" class="form-field__label">Email <span>*</span></label>
+                                <input type="text" class="form-field__input" name="EMAIL"
+                                       value="<?= $arResult["arUser"]["EMAIL"] ?>" autocomplete="off" id="edit-email"
+                                       placeholder="Введите свой email" readonly>
+                            </div>
+                            <div class="form-field">
+                                <label for="edit-telegramNic" class="form-field__label">Telegram Nic</label>
+                                <input type="text" class="form-field__input" name="UF_TELEGRAM_NIC"
+                                       value="<?= htmlspecialchars($arResult["arUser"]["UF_TELEGRAM_NIC"]) ?>"
+                                       autocomplete="off" id="edit-telegramNic" placeholder="Введите свой email">
+                            </div>
+                            <? if ($arResult['CAN_EDIT_PASSWORD']) { ?>
+                                <div class="form-field">
+                                    <label for="edit-new-pass" class="form-field__label">Новый пароль</label>
+                                    <input type="password" class="form-field__input form-field__input_pass"
+                                           name="NEW_PASSWORD" value="" autocomplete="off" id="edit-new-pass"
+                                           placeholder="Введите новый пароль">
+                                    <span class="form-field__eyes"></span>
+                                    <span class="form-field__helper">Пароль должен быть не менее 6 символов длиной.</span>
+                                </div>
+                                <div class="form-field">
+                                    <label for="edit-confirm-new-pass" class="form-field__label">Повторить
+                                        пароль</label>
+                                    <input type="password" class="form-field__input" name="NEW_PASSWORD_CONFIRM"
+                                           value="" autocomplete="off" id="edit-confirm-new-pass"
+                                           placeholder="Повторить пароль">
+                                </div>
+                            <?php } ?>
+                            <?php } ?>
+                            <div class="form-field__button">
+                                <button type="submit" name="save" class="btn"
+                                        value="<?= (($arResult["ID"] > 0) ? GetMessage("MAIN_SAVE") : GetMessage("MAIN_ADD")) ?>">
+                                    Сохранить
+                                </button>
+                                <button type="reset" value="<?= GetMessage('MAIN_RESET'); ?>" class="btn">Сбросить
+                                </button>
+                            </div>
 
+                        </div>
+                    </div>
+                </form>
             </div>
-          </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </section>

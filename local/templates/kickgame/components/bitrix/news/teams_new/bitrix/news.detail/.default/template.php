@@ -1,4 +1,5 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+<?
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -92,10 +93,10 @@ if(isset($_SESSION['team_success'])) { ?>
 
 <section class="team py-8">
   <div class="container">
-    <a href="/teams/" class="btn-italic-icon">
+    <a href="<?=SITE_DIR?>teams/" class="btn-italic-icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
         <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z" transform="translate(-949.26 -534.62)"/>
-      </svg> Назад
+      </svg> <?=GetMessage('GS_BACK')?>
     </a>
 
     <div class="row justify-content-center">
@@ -137,9 +138,9 @@ if(isset($_SESSION['team_success'])) { ?>
                if (!$isCaptain) {
                 if ($teamID != $arResult['ID']) { ?>
               <p>У Вас уже есть команда: </p>
-              <p><a href="/teams/<?php echo $teamID;?>/"><?php echo $team['NAME'] ?></a></p>
+              <p><a href="<?=SITE_DIR?>teams/<?php echo $teamID;?>/"><?php echo $team['NAME'] ?></a></p>
                 <?php } else { ?>
-                    <a href="/teams/<?php echo $arResult['ID'];?>/?leaveteam=<?php echo md5(strtotime('now'))?>" class="btn">Выйти из команды</a>
+                    <a href="<?=SITE_DIR?>teams/<?php echo $arResult['ID'];?>/?leaveteam=<?php echo md5(strtotime('now'))?>" class="btn">Выйти из команды</a>
                 <?php }
                 } else {
                    echo 'Вы капитан этой команды';
@@ -356,7 +357,7 @@ if( count($matches) ){
                       "CACHE_TIME" => "36000000",
                       "CACHE_TYPE" => "A",
                       "CHECK_DATES" => "Y",
-                      "DETAIL_URL" => "/game-schedule/#ELEMENT_CODE#/",
+                      "DETAIL_URL" => SITE_DIR."/game-schedule/#ELEMENT_CODE#/",
                       "DISPLAY_BOTTOM_PAGER" => "Y",
                       "DISPLAY_DATE" => "Y",
                       "DISPLAY_NAME" => "Y",
