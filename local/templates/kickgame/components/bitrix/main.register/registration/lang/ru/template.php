@@ -1,23 +1,35 @@
 <?
+$MESS['AUTH_REGISTER'] = 'Регистрация';
+$MESS['MAIN_REGISTER_LINK_BEFORE'] = 'Перейти в';
+$MESS['MAIN_REGISTER_LINK'] = 'профиль';
+$MESS['MAIN_REGISTER_LOGIN'] = 'NicName';
+$MESS['MAIN_REGISTER_LOGIN_PLACEHOLDER'] = 'Придумайте свой NickName';
+$MESS['MAIN_REGISTER_LOGIN_HELPER'] = 'После регистрации нельзя поменять';
+$MESS['MAIN_REGISTER_EMAIL_PLACEHOLDER'] = 'Введите свой email';
+$MESS['MAIN_REGISTER_PASSWORD'] = 'Пароль';
+$MESS['MAIN_REGISTER_PASSWORD_PLACEHOLDER'] = 'Введите свой пароль';
+$MESS['MAIN_REGISTER_CONFIRM_PASSWORD'] = 'Повторить Пароль';
+$MESS['MAIN_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER'] = 'Повторите свой пароль';
+$MESS['MAIN_REGISTER_ACCEPT'] = 'Создавая аккаунт, я принимаю следующие документы:';
+$MESS['MAIN_REGISTER_ACCEPT_SERVICE'] = 'Условия обслуживания';
+$MESS['MAIN_REGISTER_ACCEPT_PRIVACY'] = 'Конфиденциальность';
+$MESS['MAIN_REGISTER_ACCOUNT'] = 'Уже есть аккаунт?';
+$MESS['MAIN_REGISTER_ACCOUNT_ENTER'] = 'Войти';
+
+
+
+
 $MESS['MAIN_REGISTER_FORM_TITLE']          = 'Регистрация';
 $MESS['MAIN_REGISTER_REG_AUTH']            = 'Вы зарегистрированы и успешно авторизованы.';
 $MESS['MAIN_REGISTER_EMAIL_HELP']          = 'На указанный в форме e-mail придет запрос на подтверждение регистрации.';
-
-$MESS['MAIN_REGISTER_LOGIN']               = 'NicName';
 $MESS['MAIN_REGISTER_EMAIL']               = 'E-mail';
-$MESS['MAIN_REGISTER_PASSWORD']            = 'Пароль';
-$MESS['MAIN_REGISTER_CONFIRM_PASSWORD']    = 'Подтверждение пароля';
-
 $MESS['MAIN_REGISTER_NAME']                = 'Имя';
 $MESS['MAIN_REGISTER_SECOND_NAME']         = 'Отчество';
 $MESS['MAIN_REGISTER_LAST_NAME']           = 'Фамилия';
-
 $MESS['MAIN_REGISTER_TITLE']               = 'Обращение';
-
 $MESS['MAIN_REGISTER_USER_UNKNOWN']        = 'Нет данных';
 $MESS['MAIN_REGISTER_USER_MALE']           = 'Мужской';
 $MESS['MAIN_REGISTER_USER_FEMALE']         = 'Женский';
-
 $MESS['MAIN_REGISTER_PERSONAL_PROFESSION'] = 'Профессия';
 $MESS['MAIN_REGISTER_PERSONAL_WWW']        = 'WWW-страница';
 $MESS['MAIN_REGISTER_PERSONAL_ICQ']        = 'ICQ';

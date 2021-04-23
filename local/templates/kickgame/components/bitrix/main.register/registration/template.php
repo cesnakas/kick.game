@@ -15,9 +15,7 @@
  * @param CBitrixComponentTemplate $this
  */
 
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)
-	die();
-
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
 if($arResult["SHOW_SMS_FIELD"] == true)
 {
@@ -27,7 +25,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
 <?php if($USER->IsAuthorized()) { ?>
 
   <p class="text-center"><?echo GetMessage("MAIN_REGISTER_AUTH")?></p>
-  <p class="text-center">Перейти в <a  href="/personal/">профиль</a>.</p>
+  <p class="text-center"><?=GetMessage('MAIN_REGISTER_LINK_BEFORE')?> <a href="<?=SITE_DIR?>personal/"><?=GetMessage("MAIN_REGISTER_LINK")?></a>.</p>
 
 <?php } else { ?>
   <div class="layout__content layout__content_full">
@@ -35,12 +33,12 @@ if($arResult["SHOW_SMS_FIELD"] == true)
       <div class="row align-items-center">
         <div class="col-md-12 col-lg-6">
           <div class="logo-tagline">
-            <a href="/"><img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/logo-tagline.svg" alt="kickgame esports"></a>
+            <a href="<?=SITE_DIR?>"><img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/logo-tagline.svg" alt="kickgame esports"></a>
           </div>
         </div>
         <div class="col-md-12 col-lg-6">
           <div class="form-authentication">
-            <h2 class="form-authentication__heading">Регистрация</h2>
+            <h2 class="form-authentication__heading"><?=GetMessage("AUTH_REGISTER")?></h2>
               <?php if (count($arResult["ERRORS"]) > 0): /* сообщения об ошибках при заполнении формы */ ?>
                   <?php
                   foreach ($arResult["ERRORS"] as $key => $error) {
@@ -52,7 +50,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                           );
                       }
                   }
-                  ShowError(implode("<br />", $arResult["ERRORS"]));
+                  ShowError(implode("<br/>", $arResult["ERRORS"]));
                   ?>
               <?php elseif ($arResult["USE_EMAIL_CONFIRMATION"] === "Y"): ?>
                 <p><?= GetMessage('MAIN_REGISTER_EMAIL_HELP'); /* будет отправлено письмо для подтверждения */ ?></p>
@@ -75,24 +73,24 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                   <input type="hidden" name="backurl" value="<?= $arResult["BACKURL"]; ?>" />
                 <?php endif; ?>
                     <div class="form-field">
-                      <label for="auth-login" class="form-field__label">NickName</label>
-                      <input type="text" class="form-field__input" name="REGISTER[LOGIN]" value="<?= $arResult["VALUES"]['LOGIN'] ?>" autocomplete="off" id="auth-login" placeholder="Придумайте свой NickName">
-                      <span class="form-field__helper" style="margin-bottom: -15px; display: block">После регистрации нельзя поменять</span>
+                      <label for="auth-login" class="form-field__label"><?=GetMessage('MAIN_REGISTER_LOGIN')?></label>
+                      <input type="text" class="form-field__input" name="REGISTER[LOGIN]" value="<?= $arResult["VALUES"]['LOGIN'] ?>" autocomplete="off" id="auth-login" placeholder="<?=GetMessage('MAIN_REGISTER_LOGIN_PLACEHOLDER')?>">
+                      <span class="form-field__helper" style="margin-bottom: -15px; display: block"><?=GetMessage('MAIN_REGISTER_LOGIN_HELPER')?></span>
                     </div>
                     <div class="form-field">
                       <label for="auth-email" class="form-field__label">Email</label>
-                      <input type="email" class="form-field__input" name="REGISTER[EMAIL]" value="<?= $arResult["VALUES"]['EMAIL'] ?>" autocomplete="off" id="auth-email" placeholder="Введите свой email">
+                      <input type="email" class="form-field__input" name="REGISTER[EMAIL]" value="<?= $arResult["VALUES"]['EMAIL'] ?>" autocomplete="off" id="auth-email" placeholder="<?=GetMessage('MAIN_REGISTER_EMAIL_PLACEHOLDER')?>">
                     </div>
                     <div class="form-field">
-                      <label for="auth-pass" class="form-field__label">Пароль</label>
-                      <input type="password" class="form-field__input form-field__input_pass" name="REGISTER[PASSWORD]" value="<?= $arResult["VALUES"]['PASSWORD'] ?>" autocomplete="off" id="auth-pass" placeholder="Введите свой пароль">
+                      <label for="auth-pass" class="form-field__label"><?=GetMessage('MAIN_REGISTER_PASSWORD')?></label>
+                      <input type="password" class="form-field__input form-field__input_pass" name="REGISTER[PASSWORD]" value="<?= $arResult["VALUES"]['PASSWORD'] ?>" autocomplete="off" id="auth-pass" placeholder="<?=GetMessage('MAIN_REGISTER_PASSWORD_PLACEHOLDER')?>">
                       <span class="form-field__eyes"></span>
                     </div>
                     <div class="form-field">
-                      <label for="auth-pass-repeat" class="form-field__label">Повторить Пароль</label>
-                      <input type="password" class="form-field__input" name="REGISTER[CONFIRM_PASSWORD]" value="<?= $arResult["VALUES"]['CONFIRM_PASSWORD'] ?>" autocomplete="off" id="auth-pass-repeat" placeholder="Повторите свой пароль">
+                      <label for="auth-pass-repeat" class="form-field__label"><?=GetMessage('MAIN_REGISTER_CONFIRM_PASSWORD')?></label>
+                      <input type="password" class="form-field__input" name="REGISTER[CONFIRM_PASSWORD]" value="<?= $arResult["VALUES"]['CONFIRM_PASSWORD'] ?>" autocomplete="off" id="auth-pass-repeat" placeholder="<?=GetMessage('MAIN_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER')?>">
                     </div>
-                  <input type="hidden" name="UF_DATE_PREM_EXP" value="<?php echo date('d.m.Y');?>">
+                  <input type="hidden" name="UF_DATE_PREM_EXP" value="<?=date('d.m.Y');?>">
                 <?
                 if ($arResult["USE_CAPTCHA"] == "Y"):?>
                   <div class="form-field">
@@ -111,13 +109,13 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                   </div>
                 <?endif;?>
               <div class="form-field d-flex justify-content-center">
-                <button class="btn" type="submit" name="register_submit_button" value="<?= GetMessage("AUTH_REGISTER") ?>">Регистрация</button>
+                <button class="btn" type="submit" name="register_submit_button" value="<?=GetMessage("AUTH_REGISTER") ?>"><?=GetMessage("AUTH_REGISTER")?></button>
               </div>
-              <div class="form-authentication__rules text-center">Создавая аккаунт, я принимаю следующие документы: <a href="/terms-conditions/" target="_blank">Условия обслуживания</a> и
-                <a href="/privacy-policy/" target="_blank">Конфиденциальность</a>.</div>
-              <div class="form-authentication__already text-center">Уже есть аккаунт?</div>
+              <div class="form-authentication__rules text-center"><?=GetMessage('MAIN_REGISTER_ACCEPT')?> <a href="<?=SITE_DIR?>terms-conditions/" target="_blank"><?=GetMessage('MAIN_REGISTER_ACCEPT_SERVICE')?></a> &
+                <a href="<?=SITE_DIR?>privacy-policy/" target="_blank"><?=GetMessage('MAIN_REGISTER_ACCEPT_PRIVACY')?></a>.</div>
+              <div class="form-authentication__already text-center"><?=GetMessage('MAIN_REGISTER_ACCEPT_ACCOUNT')?></div>
               <div class="form-field text-center">
-                <a class="form-authentication__forgot-pass" href="/personal/auth/">Войти</a>
+                <a class="form-authentication__forgot-pass" href="<?=SITE_DIR?>personal/auth/"><?=GetMessage('MAIN_REGISTER_ACCOUNT_ENTER')?></a>
               </div>
             </form>
 

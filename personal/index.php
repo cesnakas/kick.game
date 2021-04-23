@@ -1264,7 +1264,7 @@ if (!empty($newMatchIds)) {
                                 "CACHE_TIME" => "36000000",
                                 "CACHE_TYPE" => "A",
                                 "CHECK_DATES" => "Y",
-                                "DETAIL_URL" => SITE_DIR."/game-schedule/#ELEMENT_CODE#/",
+                                "DETAIL_URL" => SITE_DIR."game-schedule/#ELEMENT_CODE#/",
                                 "DISPLAY_BOTTOM_PAGER" => "Y",
                                 "DISPLAY_DATE" => "Y",
                                 "DISPLAY_NAME" => "Y",
@@ -1389,7 +1389,7 @@ if (!empty($newMatchIds)) {
                       </div>
                       <?php } ?>
                     </div>
-                    <a href="/players/<?php echo $player['ID'] . '_' . $player['LOGIN'] . '/'; ?>"
+                    <a href="<?=SITE_DIR?>players/<?php echo $player['ID'] . '_' . $player['LOGIN'] . '/'; ?>"
                        class="core-team__user-link"><?php echo $player['LOGIN']; ?></a>
                   </div>
                 </span>

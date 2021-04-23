@@ -84,7 +84,7 @@ $APPLICATION->SetTitle("Матчи");
 		"PAGER_TEMPLATE" => ".default",
 		"PAGER_TITLE" => "Новости",
 		"PREVIEW_TRUNCATE_LEN" => "",
-		"SEF_FOLDER" => "/matches/",
+		"SEF_FOLDER" => SITE_DIR."/matches/",
 		"SEF_MODE" => "Y",
 		"SET_LAST_MODIFIED" => "N",
 		"SET_STATUS_404" => "Y",
