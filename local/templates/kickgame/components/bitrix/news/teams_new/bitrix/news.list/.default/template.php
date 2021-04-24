@@ -133,7 +133,7 @@ function showRow($team, $rank)
             <div class="match-participants__team">
                 <div class="match-participants__team-logo" style="background-image: url(<?php echo CFile::GetPath($team["avatar"]); ?>)">
                 </div>
-                <a href="/teams/<?php echo $team["id_team"]; ?>/" class="match-participants__team-link"><?php echo $team["name"]; ?></a>
+                <a href="<?=SITE_DIR?>teams/<?php echo $team["id_team"]; ?>/" class="match-participants__team-link"><?php echo $team["name"]; ?></a>
             </div>
         </span>
         <span class="flex-table__param-wrap">

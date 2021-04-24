@@ -2,10 +2,11 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Цепочка матчей");
 CModule::IncludeModule("iblock");
-  ?>
+?>
 
 <?php
 $firstMatchId = $_GET['id']+0;
+
 // собираем все ошибки
 $errors = [];
 // переделать в singleton
@@ -32,7 +33,243 @@ function addMatchMembersResult($idMatch)
     }
 }
 
+function getChainMatches( $firstMatchID ){
+    GLOBAL $DB;
+    $firstMatchID += 0;
+    $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
+                    ,m.PROPERTY_8 AS parentMatchID
+                    ,m.PROPERTY_22 AS stageMatch
+                    ,m.PROPERTY_23 AS typeMatch
+              FROM b_iblock_element_prop_s3 AS m 
+              WHERE m.IBLOCK_ELEMENT_ID = '.$firstMatchID;
+    $res = $DB->Query($sql);
+    if($row = $res->Fetch()) {
+        $chain = $row;
+        $chain[ 'chain' ] = [ $firstMatchID ];
+        $mID = $firstMatchID;
+        do {
+            $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
+                  FROM b_iblock_element_prop_s3 AS m 
+                  WHERE m.PROPERTY_8 = '.$mID;
+            $res = $DB->Query($sql);
+            if($row = $res->Fetch()) {
+                $mID = $row['matchID']+0;
+                $chain[ 'chain' ][] = $mID;
+            } else {
+                $mID = false;
+            }
+        } while( $mID );
+        return $chain;
+    }
+    return false;
+}
 
+function countPointsByMatchesIDs( $IDs = array() ){
+    GLOBAL $DB;
+    if( is_array($IDs) && count($IDs) ){
+        foreach( $IDs as $k=>$v ){
+            $IDs[$k] = $v+0;
+        }
+        $sql = 'SELECT   t.PROPERTY_15 AS teamID
+                    ,sum(t.PROPERTY_17) AS kills 
+                    ,sum(t.PROPERTY_18) AS total
+              FROM b_iblock_element_prop_s5 AS t 
+              WHERE t.PROPERTY_14 IN ('.implode(',',$IDs).')
+              GROUP BY t.PROPERTY_15';
+        $res = $DB->Query($sql);
+        $points = [];
+        while( $row = $res->Fetch() ) {
+            //dump( $row );
+            $points[ $row['teamID'] ] = [ 'kills' => $row['kills'], 'total' => $row['total'] ];
+        }
+        return $points;
+    }
+    return false;
+}
+
+function countKillsByMatchesIDs( $IDs = array() ){
+    GLOBAL $DB;
+    if( is_array($IDs) && count($IDs) ){
+        foreach( $IDs as $k=>$v ){
+            $IDs[$k] = $v+0;
+        }
+        $sql = 'SELECT   t.PROPERTY_15 AS teamID
+                    , sum(t.PROPERTY_17) AS kills 
+                    , t.PROPERTY_14 AS matchID 
+              FROM b_iblock_element_prop_s5 AS t 
+              WHERE t.PROPERTY_14 IN ('.implode(',',$IDs).')
+              GROUP BY t.PROPERTY_15, t.PROPERTY_14 
+              ORDER BY t.PROPERTY_15';
+        $res = $DB->Query($sql);
+        $IDs = array_flip($IDs);
+        //dump($IDs);
+        $kills = [];
+        //$i = 0;
+        while( $row = $res->Fetch() ) {
+
+
+            // if ($row['matchID'] != $tmp) {
+
+            //}
+            $nm = $IDs[$row['matchID']];
+            $kills[$row['teamID']][$nm] = ceil($row['kills']);
+
+
+            //if ($row['matchID'] != $tmp) {
+            //$i++;
+            //}
+            // $tmp = $row['matchID'];
+
+            //$tmp = $row['matchID'];
+        }
+        return $kills;
+    }
+    return false;
+}
+
+function sortRank(&$arrForRank, $matchKills)
+{
+    //dump($matchKills);
+
+    $n = sizeof($arrForRank);
+    $len = sizeof($matchKills[$arrForRank[0]['team']['ID']]);
+    // Traverse through all array elements
+    for($i = 0; $i < $n; $i++)
+    {
+        // Last i elements are already in place
+        for ($j = 0; $j < $n - $i - 1; $j++)
+        {
+            // traverse the array from 0 to n-i-1
+            // Swap if the element found is greater
+            // than the next element
+            if ($arrForRank[$j]['total'] < $arrForRank[$j+1]['total'])
+            {
+                $t = $arrForRank[$j];
+                $arrForRank[$j] = $arrForRank[$j + 1];
+                $arrForRank[$j + 1] = $t;
+            } else if (($arrForRank[$j]['total'] == $arrForRank[$j+1]['total']) && ($arrForRank[$j]['kills'] < $arrForRank[$j+1]['kills'])) {
+                $t = $arrForRank[$j];
+                $arrForRank[$j] = $arrForRank[$j+1];
+                $arrForRank[$j+1] = $t;
+            } else if (
+                ($arrForRank[$j]['total'] == $arrForRank[$j+1]['total']) &&
+                ($arrForRank[$j]['kills'] == $arrForRank[$j+1]['kills']) &&
+                ($matchKills[$arrForRank[$j]['team']['ID']][$len-1] < $matchKills[$arrForRank[$j+1]['team']['ID']][$len-1])) {
+                $t = $arrForRank[$j];
+                $arrForRank[$j] = $arrForRank[$j+1];
+                $arrForRank[$j+1] = $t;
+            } else if (
+                ($arrForRank[$j]['total'] == $arrForRank[$j+1]['total']) &&
+                ($arrForRank[$j]['kills'] == $arrForRank[$j+1]['kills']) &&
+                ($matchKills[$arrForRank[$j]['team']['ID']][$len-1] == $matchKills[$arrForRank[$j+1]['team']['ID']][$len-1]) &&
+                ($matchKills[$arrForRank[$j]['team']['ID']][$len-2] < $matchKills[$arrForRank[$j+1]['team']['ID']][$len-2])
+            ) {
+                $t = $arrForRank[$j];
+                $arrForRank[$j] = $arrForRank[$j+1];
+                $arrForRank[$j+1] = $t;
+            }
+        }
+    }
+
+}
+
+function updateTeam($props = [], $id)
+{
+    CIBlockElement::SetPropertyValuesEx($id, 1, $props);
+}
+
+function getMembersIdsTeamByMatchId($matchId) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array(
+        "IBLOCK_ID" => 4,
+        "PROPERTY_WHICH_MATCH" => $matchId,
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y"
+    );
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $teamIds = [];
+
+    if ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        //dump($arProps);
+        foreach ($arProps as $k=>$v) {
+            $arFields[$k] = $v['VALUE'];
+        }
+        $teamIds[] = $arFields["TEAM_PLACE_03"];
+        $teamIds[] = $arFields["TEAM_PLACE_04"];
+        $teamIds[] = $arFields["TEAM_PLACE_05"];
+        $teamIds[] = $arFields["TEAM_PLACE_06"];
+        $teamIds[] = $arFields["TEAM_PLACE_07"];
+        $teamIds[] = $arFields["TEAM_PLACE_08"];
+        $teamIds[] = $arFields["TEAM_PLACE_09"];
+        $teamIds[] = $arFields["TEAM_PLACE_10"];
+        $teamIds[] = $arFields["TEAM_PLACE_11"];
+        $teamIds[] = $arFields["TEAM_PLACE_12"];
+        $teamIds[] = $arFields["TEAM_PLACE_13"];
+        $teamIds[] = $arFields["TEAM_PLACE_14"];
+        $teamIds[] = $arFields["TEAM_PLACE_15"];
+        $teamIds[] = $arFields["TEAM_PLACE_16"];
+        $teamIds[] = $arFields["TEAM_PLACE_17"];
+        $teamIds[] = $arFields["TEAM_PLACE_18"];
+        $teamIds[] = $arFields["TEAM_PLACE_19"];
+        $teamIds[] = $arFields["TEAM_PLACE_20"];
+    }
+    return $teamIds;
+
+}
+
+function setStagePass($firstMatchID, $stageKeyPass){
+    $matchChainIds = getChainMatches( $firstMatchID );
+    $points = countPointsByMatchesIDs($matchChainIds['chain']);
+    $matchKills = countKillsByMatchesIDs($matchChainIds['chain']);
+
+    $teamIds = getMembersIdsTeamByMatchId($firstMatchID);
+    $teamIds = array_diff($teamIds, array(''));
+
+    $arrForRank = [];
+    $n = 0;
+    foreach ($teamIds as $teamId) {
+
+        $total = '...';
+        $kills = '...';
+        $place = '...';
+
+        if( isset( $points[$teamId] ) ){
+            $total = ceil($points[$teamId]['total']);
+            $kills = ceil($points[$teamId]['kills']);
+            $place = $total - $kills;
+        }
+
+        $arrForRank[$n] = [
+                'id'=>$teamId,
+                'total' =>$total,
+                'kills' => $kills,
+                'place' => $place,
+        ];
+        $n = $n+1;
+    }
+    sortRank($arrForRank, $matchKills);
+
+    for ($i=0; $i < 6; $i++){
+        $props["STAGE_PASS"] = $stageKeyPass;
+        updateTeam($props, $arrForRank[$i]["id"]);
+    }
+}
+function isMatchRes($matchID){
+    GLOBAL $DB;
+    $sql = 'SELECT * FROM b_iblock_element_prop_s5 as t WHERE t.PROPERTY_14 = '.$matchID;
+    $res = $DB->Query($sql);
+    $points = [];
+    while( $row = $res->Fetch() ) {
+        $points[] = $row;
+    }
+    $isRes = false;
+    if (count($points) > 0){
+        $isRes = true;
+    }
+    return $isRes;
+}
 // получаем состав команды
 function getCoreTeam($teamID)
 {
@@ -51,10 +288,10 @@ function getCoreTeam($teamID)
 function getPlayersSquadByIdMatch($idMatch, $teamId)
 {
 
-    $coreTeam = getCoreTeam($teamId);
-    foreach ($coreTeam as $key => $val) {
-        $coreTeam[$key] = $val['ID'];
-    }
+//    $coreTeam = getCoreTeam($teamId);
+//    foreach ($coreTeam as $key => $val) {
+//        $coreTeam[$key] = $val['ID'];
+//    }
 
     $arSelect = Array(
         "ID",
@@ -90,6 +327,23 @@ function getPlayersSquadByIdMatch($idMatch, $teamId)
     return false;
 }
 
+function getUsers($ids)
+{
+    $filter = Array('ID' => implode('|', $ids));
+    // $arParams["SELECT"] = array("UF_*");
+    $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, false);
+    // $elementsResult->NavStart(50);
+    $output = [];
+    while ($rsUser = $elementsResult->Fetch())
+    {
+        $output[] = $rsUser;
+    }
+    return $output;
+}
+
+
+
+
 
 // получаем матч по id
 function getMatchById($matchId) {
@@ -104,84 +358,84 @@ function getMatchById($matchId) {
 }
 //PROPERTY_STREAMER.NAME
 function getMatchByIds( $matchesId) {
-  $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*", "PROPERTY_STREAMER.NAME", "PROPERTY_STREAMER.ID");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-  $arFilter = Array("IBLOCK_ID" =>3, "ID" => $matchesId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-  $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-  while ($ob = $res->GetNextElement()) {
-    $arFields = $ob->GetFields();
-    $arProps = $ob->GetProperties();
-    return array_merge($arFields, $arProps);
-  }
-  return null;
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*", "PROPERTY_STREAMER.NAME", "PROPERTY_STREAMER.ID");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" =>3, "ID" => $matchesId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        return array_merge($arFields, $arProps);
+    }
+    return null;
 }
 
 function getMatchByParentId($parentId) {
-  $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-  $arFilter = Array("IBLOCK_ID" => 3, "PROPERTY_PREV_MATCH" => $parentId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-  $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-  while ($ob = $res->GetNextElement()) {
-    $arFields = $ob->GetFields();
-    $arProps = $ob->GetProperties();
-    return array_merge($arFields, $arProps);
-  }
-  return null;
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" => 3, "PROPERTY_PREV_MATCH" => $parentId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        return array_merge($arFields, $arProps);
+    }
+    return null;
 }
 
 function getMembersByMatchId($matchId) {
-  $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-  $arFilter = Array("IBLOCK_ID" => 4, "PROPERTY_WHICH_MATCH" => $matchId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-  $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-  while ($ob = $res->GetNextElement()) {
-    $arFields = $ob->GetFields();
-    $arProps = $ob->GetProperties();
-    return array_merge($arFields, $arProps);
-  }
-  return null;
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" => 4, "PROPERTY_WHICH_MATCH" => $matchId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        return array_merge($arFields, $arProps);
+    }
+    return null;
 }
 
 function getResultByMatchTeam($matchId, $teamId) {
-  $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-  $arFilter = Array("IBLOCK_ID" => 5, "PROPERTY_WHICH_MATCH" => $matchId, "PROPERTY_WHICH_TEAM" => $teamId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-  $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-  while ($ob = $res->GetNextElement()) {
-    $arFields = $ob->GetFields();
-    $arProps = $ob->GetProperties();
-    return array_merge($arFields, $arProps);
-  }
-  return null;
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" => 5, "PROPERTY_WHICH_MATCH" => $matchId, "PROPERTY_WHICH_TEAM" => $teamId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        return array_merge($arFields, $arProps);
+    }
+    return null;
 }
 
 function makeFormMemberResult($matchId, $teamId)
 {
-  $matchId+=0;
-  $teamId+=0;
-  if ($teamId > 0) {
-    $kill = $total = $place = '';
-    $results = getResultByMatchTeam($matchId, $teamId);
-    if ($results) {
-      $kill = $results['KILL']['VALUE'];
-      $place = $results['PRIZE_PLACE']['VALUE'];
-      $total = $results['TOTAL']['VALUE'];
-    }
-    echo '<div class="col-md-3">
+    $matchId+=0;
+    $teamId+=0;
+    if ($teamId > 0) {
+        $kill = $total = $place = '';
+        $results = getResultByMatchTeam($matchId, $teamId);
+        if ($results) {
+            $kill = $results['KILL']['VALUE'];
+            $place = $results['PRIZE_PLACE']['VALUE'];
+            $total = $results['TOTAL']['VALUE'];
+        }
+        echo '<div class="col-md-3">
             <div class="form-group">
                 <label>Total</label>
                 <input type="text" class="form-control" name="total['.$teamId.']" value="'.$total.'" readonly>
             </div>
           </div>';
-    echo '<div class="col-md-3">
+        echo '<div class="col-md-3">
           <div class="form-group">
               <label>Kill</label>
               <input type="text" class="form-control" name="kill['.$teamId.']"  value="'.$kill.'" readonly>
           </div>
         </div>';
-    echo '<div class="col-md-3">
+        echo '<div class="col-md-3">
         <div class="form-group">
             <label>Place</label>
             <input type="text" class="form-control" name="place['.$teamId.']" value="'.$place.'">
         </div>
       </div>';
-  }
+    }
 }
 
 // получаем участников команды
@@ -243,9 +497,9 @@ function getStreamers()
         "NAME",
         "DATE_ACTIVE_FROM");
     $arFilter = array(
-            "IBLOCK_ID" => 8,
-            "ACTIVE_DATE" => "Y",
-            "ACTIVE" => "Y"
+        "IBLOCK_ID" => 8,
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y"
     );
     $res = CIBlockElement::GetList(array(), $arFilter, false, false, $arSelect);
     $arFields = [];
@@ -288,7 +542,7 @@ function createResults($props = [], $code)
 // обновление даты и времени, лобби id, ссылки на трансляцию
 function updateMatch($props = [], $idMatch, $firstMatchId)
 {
-   CIBlockElement::SetPropertyValuesEx($idMatch, 3, $props);
+    CIBlockElement::SetPropertyValuesEx($idMatch, 3, $props);
     //header('Location: /dashboard/match-chain/?id='.$firstMatchId);
 }
 
@@ -303,9 +557,9 @@ function makeFormSquadResult($firstMatchId, $matchId, $teamId)
 {
     GLOBAL $matchMembersResult;
     $teamId+=0;
-    $coreTeam = getCoreTeam($teamId);
-
+    $coreTeam = getUsers(getPlayersSquadByIdMatch($firstMatchId, $teamId));
     $squadMembers = [];
+
     if ($squadMembers = getPlayersSquadByIdMatch($firstMatchId, $teamId)) {
         $squadMembers = array_flip($squadMembers);
     }
@@ -314,14 +568,14 @@ function makeFormSquadResult($firstMatchId, $matchId, $teamId)
     //return;
     //$matchId+=0;
     if ($teamId > 0) {
-      if (isset($coreTeam)) {
-          foreach ($coreTeam as $player)  {
-              if(isset($squadMembers[$player['ID']])) {
-                $memberKill = '';
-                if (isset($matchMembersResult[$matchId]) && isset($matchMembersResult[$matchId][$player['ID']])) {
-                    $memberKill = $matchMembersResult[$matchId][$player['ID']]['KILLS'];
-                }
-                  echo '
+        if (isset($coreTeam)) {
+            foreach ($coreTeam as $player)  {
+                if(isset($squadMembers[$player['ID']])) {
+                    $memberKill = '';
+                    if (isset($matchMembersResult[$matchId]) && isset($matchMembersResult[$matchId][$player['ID']])) {
+                        $memberKill = $matchMembersResult[$matchId][$player['ID']]['KILLS'];
+                    }
+                    echo '
                       <div class="col-md-3 text-right"><span class="badge badge-dark">#'. $player['ID']. ' ' . $player['LOGIN']. '</span></div>
                      <div class="col-md-3"></div>
                       <div class="col-md-3">
@@ -329,9 +583,9 @@ function makeFormSquadResult($firstMatchId, $matchId, $teamId)
                               <input type="text" class="form-control" name="memberKill['.$teamId.']['.$player['ID'].']"  value="'.$memberKill.'">
                          </div>
                     </div><div class="col-md-3"></div>';
-              }
-          }
-      }
+                }
+            }
+        }
     }
     /*if ($teamId > 0) {
         //dump(getSquadByIdMatch($matchId));
@@ -349,91 +603,93 @@ function makeFormSquadResult($firstMatchId, $matchId, $teamId)
     }*/
 }
 
-function showMatch($match = null)
+function showMatch($match = null, $next)
 {
 
-  $firstMatchId = $_GET['id']+0;
-  $members = getMembersByMatchId($match['ID']);
-  $streamers = getStreamers();
+    $firstMatchId = $_GET['id']+0;
+    $members = getMembersByMatchId($match['ID']);
+    $streamers = getStreamers();
 
-  if ($members) {
-      addMatchMembersResult($match['ID']);
-
-    echo '<form id="deleteForm" action="'.POST_FORM_ACTION_URI.'" method="post">'. bitrix_sessid_post() .'</form>
+    if ($members) {
+        addMatchMembersResult($match['ID']);
+        echo '<form id="deleteForm" action="'.POST_FORM_ACTION_URI.'" method="post">'. bitrix_sessid_post() .'</form>
 <form  action="#" method="post">';
-      echo '<h2 class="mb-3">#' . $match['ID'] . ' ' . $match['NAME'] . '</h2>';
-    echo '<div class="row">
+        echo '<h2 class="mb-3">#' . $match['ID'] . ' ' . $match['NAME'] . '</h2>';
+        echo '<div class="row">
           <div class="col-md-4">
           <div class="form-group">
              <label>Укажите время</label>
               <div style="position: relative;"><input type="text" class="form-control dashboard-time" value="'.$match["DATE_START"]['VALUE'].'" name="date_time_match"></div>
            </div>
            </div>';
-      echo '<div class="col-md-4">
+        echo '<div class="col-md-4">
             <div class="form-group">
              <label>Ссылка на трансляцию</label>
               <input type="text" class="form-control" value="'.$match["URL_STREAM"]['VALUE'].'" name="url_stream">
            </div>
            </div>';
-      echo '<div class="col-md-4">
+        echo '<div class="col-md-4">
             <div class="form-group">
              <label>PUBG LOBBY ID</label>
               <input type="text" class="form-control" value="'.$match["PUBG_LOBBY_ID"]['VALUE'].'" name="pubg_lobby_id">
            </div>
            </div>';
 
-      echo '<div class="col-md-4">
+        echo '<div class="col-md-4">
             <div class="form-group">
             
                 <label>Веберите комментатора</label>
                 <select class="form-control" name="streamer">
                 <option value="">0</option>';
 
-                  foreach ($streamers as $streamer) {
-                    echo '<option value="'.$streamer['ID'].'"';
-                        if($streamer['ID'] == $match["STREAMER"]['VALUE']) { echo ' selected'; }
-                    echo '>'.$streamer['NAME'].'</option>';
-                  }
-      echo '</select>
+        foreach ($streamers as $streamer) {
+            echo '<option value="'.$streamer['ID'].'"';
+            if($streamer['ID'] == $match["STREAMER"]['VALUE']) { echo ' selected'; }
+            echo '>'.$streamer['NAME'].'</option>';
+        }
+        echo '</select>
               </div>
            </div></div>';
 
-      echo '<h3>Список участников команд</h3>';
-    //echo '<table>';
-    $tmpKeys = [
-        '03',
-        '04',
-        '05',
-        '06',
-        '07',
-        '08',
-        '09',
-        '10',
-        '11',
-        '12',
-        '13',
-        '14',
-        '15',
-        '16',
-        '17',
-        '18',
-        '19',
-        '20',
-    ];
-    foreach ($tmpKeys as $key) {
-        $curTeamId = $members["TEAM_PLACE_$key"]['VALUE'];
-        $teamName = '';
+        echo '<h3>Список участников команд</h3>';
+        //echo '<table>';
+        $tmpKeys = [
+            '03',
+            '04',
+            '05',
+            '06',
+            '07',
+            '08',
+            '09',
+            '10',
+            '11',
+            '12',
+            '13',
+            '14',
+            '15',
+            '16',
+            '17',
+            '18',
+            '19',
+            '20',
+        ];
 
-        if(!empty($curTeamId)) {
-            $team = getTeamById($curTeamId);
+        foreach ($tmpKeys as $key) {
+            $curTeamId = $members["TEAM_PLACE_$key"]['VALUE'];
+            $teamName = '';
 
-            $coreTeam = getCoreTeam($curTeamId);
-            $squadMembers = [];
-            if ($squadMembers = getPlayersSquadByIdMatch($firstMatchId, $curTeamId)) {
-                $squadMembers = array_flip($squadMembers);
-            }
 
-            $teamName = '<div>
+            if(!empty($curTeamId)) {
+
+                $team = getTeamById($curTeamId);
+                // $coreTeam = getCoreTeam($curTeamId);
+
+                $squadMembers = [];
+//            if ($squadMembers = getPlayersSquadByIdMatch($firstMatchId, $curTeamId)) {
+//                $squadMembers = array_flip($squadMembers);
+//            }
+
+                $teamName = '<div>
                             <img width="50" style="margin-right: 5px" src="'. CFile::GetPath($team["LOGO_TEAM"]['VALUE']) .'" alt="">
                             <span class="badge badge-danger"><a href="/teams/?ELEMENT_ID='.$team['ID'].'" class="text-white">' . $team['NAME'] . ' ['. $team["TAG_TEAM"]['VALUE']. ']</a></span>
                             
@@ -446,49 +702,55 @@ function showMatch($match = null)
                                 </div>
                       
                         </div>';
-           /* $teamName.= '<span class="badge badge-dark">Список игроков</span>
-              <table class="table table-striped table-dark ">
-                <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nick</th>
-                  <th scope="col">Сыграно игр</th>
-                  <th scope="col">Фраги</th>
-                  <th scope="col">Рейтинг</th>
-                </tr>
-                </thead>
-                <tbody>';
-            foreach ($coreTeam as $player)  {
-                if(isset($squadMembers[$player['ID']])) {
-                  $frag = !$player["UF_FRAGS"] ? '0' : $player["UF_FRAGS"];
-                  $playedGames = !$player["UF_PLAYED_GAMES"] ? '0' : $player["UF_PLAYED_GAMES"];
-                  $rating = !$player["UF_RATING"] ? '0' : $player["UF_RATING"];
-                  $teamName.= '<tr>
-                      <td>'. $player['ID'].'</td>
-                      <td>'. $player['LOGIN'].'</td>
-                      <td>'. $playedGames .'</td>
-                                       <td>'. $frag.'</td>
-                                       <td>'. $rating.'</td>
-               
-                    </tr>';
-                }
-            }
-            $teamName.= '</tbody>
-                         </table>';*/
-        }
-        echo '<div class="row my-3 align-items-center">
-                <div class="col-md-3">TEAM-PLACE-'.$key.':<br> ' . $teamName . '</div>';
-        if ($curTeamId+0 > 0) {
-            makeFormMemberResult($match['ID'], $curTeamId);
+                /* $teamName.= '<span class="badge badge-dark">Список игроков</span>
+                   <table class="table table-striped table-dark ">
+                     <thead>
+                     <tr>
+                       <th scope="col">#</th>
+                       <th scope="col">Nick</th>
+                       <th scope="col">Сыграно игр</th>
+                       <th scope="col">Фраги</th>
+                       <th scope="col">Рейтинг</th>
+                     </tr>
+                     </thead>
+                     <tbody>';
+                 foreach ($coreTeam as $player)  {
+                     if(isset($squadMembers[$player['ID']])) {
+                       $frag = !$player["UF_FRAGS"] ? '0' : $player["UF_FRAGS"];
+                       $playedGames = !$player["UF_PLAYED_GAMES"] ? '0' : $player["UF_PLAYED_GAMES"];
+                       $rating = !$player["UF_RATING"] ? '0' : $player["UF_RATING"];
+                       $teamName.= '<tr>
+                           <td>'. $player['ID'].'</td>
+                           <td>'. $player['LOGIN'].'</td>
+                           <td>'. $playedGames .'</td>
+                                            <td>'. $frag.'</td>
+                                            <td>'. $rating.'</td>
 
-            makeFormSquadResult($firstMatchId, $match['ID'], $curTeamId);
+                         </tr>';
+                     }
+                 }
+                 $teamName.= '</tbody>
+                              </table>';*/
+            }
+            echo '<div class="row my-3 align-items-center">
+                <div class="col-md-3">TEAM-PLACE-'.$key.':<br> ' . $teamName . '</div>';
+            if ($curTeamId+0 > 0) {
+
+                makeFormMemberResult($match['ID'], $curTeamId);
+
+                makeFormSquadResult($firstMatchId, $match['ID'], $curTeamId);
+
+            }
+            echo '</div>';
         }
-        echo '</div>';
+
+        echo '<input type="submit" class="btn btn-success my-3" name="sendResults" value="Сохранить и отправить результаты">';
+        if ($next){
+            echo '<input type="hidden" value="'.$next.'" name="last">';
+        }
+        echo '<input type="hidden" value="'.$match['ID'].'" name="matchId">';
+        echo '</form>';
     }
-    echo '<input type="submit" class="btn btn-success my-3" name="sendResults" value="Сохранить и отправить результаты">';
-    echo '<input type="hidden" value="'.$match['ID'].'" name="matchId">';
-    echo '</form>';
-  }
 }
 
 function createMembersResult($userId, $matchId, $kill, $total = 0, $place = 0, $typeMatch = null)
@@ -514,17 +776,17 @@ function createMembersResult($userId, $matchId, $kill, $total = 0, $place = 0, $
 
 function updateMemberResult($idRecord, $kill, $total = 0, $place = 0, $typeMatch = null)
 {
-        $membersResult = new \App\MemberResultTable();
-        $result = $membersResult::update($idRecord, array(
-            'KILLS' => $kill,
-            'TOTAL' => $total,
-            'PLACE' => $place,
-            'TYPE_MATCH' => $typeMatch,
-        ));
-        if ($result->isSuccess())
-        {
-            return true;
-        }
+    $membersResult = new \App\MemberResultTable();
+    $result = $membersResult::update($idRecord, array(
+        'KILLS' => $kill,
+        'TOTAL' => $total,
+        'PLACE' => $place,
+        'TYPE_MATCH' => $typeMatch,
+    ));
+    if ($result->isSuccess())
+    {
+        return true;
+    }
     return  false;
 }
 // собираем цепочку матчей
@@ -628,7 +890,7 @@ function updateMembers($props = [], $id)
 /*end function for remove teame with match*/
 
 
-function countResultsByTeam($teamId) {
+function countResultsByTeam($teamId, $typeMatch) {
     $teamId+=0;
 
     $kill = 0;
@@ -644,68 +906,135 @@ function countResultsByTeam($teamId) {
     $total = 0;
     if (isset($_POST["place"][$teamId]) && $_POST["place"][$teamId] != '') {
         $t = $_POST["place"][$teamId]+0;
-        switch ($t) {
-            case 1:
-                $total = 12;
-                break;
-            case 2:
-              $total = 10;
-              break;
-            case 3:
-              $total = 8;
-              break;
-            case 4:
-              $total = 6;
-              break;
-            case 5:
-              $total = 4;
-              break;
-          case 6:
-            $total = 2;
-            break;
-          case 7:
-            $total = 1;
-            break;
-          case 8:
-            $total = 1;
-            break;
-          case 9:
-            $total = 0;
-            break;
-          case 10:
-            $total = 0;
-            break;
-          case 11:
-            $total = -2;
-            break;
-          case 12:
-            $total = -4;
-            break;
-          case 13:
-            $total = -6;
-            break;
-          case 14:
-            $total = -8;
-            break;
-          case 15:
-            $total = -10;
-            break;
-          case 16:
-            $total = -12;
-            break;
-          case 17:
-            $total = -14;
-            break;
-          case 18:
-            $total = -16;
-            break;
-          case 19:
-            $total = -16;
-            break;
-          case 20:
-            $total = -16;
-            break;
+
+        if ($typeMatch == 6) {
+            switch ($t) {
+                case 1:
+                    $total = 12;
+                    break;
+                case 2:
+                    $total = 10;
+                    break;
+                case 3:
+                    $total = 8;
+                    break;
+                case 4:
+                    $total = 6;
+                    break;
+                case 5:
+                    $total = 4;
+                    break;
+                case 6:
+                    $total = 2;
+                    break;
+                case 7:
+                    $total = 1;
+                    break;
+                case 8:
+                    $total = 1;
+                    break;
+                case 9:
+                    $total = 0;
+                    break;
+                case 10:
+                    $total = 0;
+                    break;
+                case 11:
+                    $total = -2;
+                    break;
+                case 12:
+                    $total = -4;
+                    break;
+                case 13:
+                    $total = -6;
+                    break;
+                case 14:
+                    $total = -8;
+                    break;
+                case 15:
+                    $total = -10;
+                    break;
+                case 16:
+                    $total = -12;
+                    break;
+                case 17:
+                    $total = -14;
+                    break;
+                case 18:
+                    $total = -16;
+                    break;
+                case 19:
+                    $total = -16;
+                    break;
+                case 20:
+                    $total = -16;
+                    break;
+            }
+        } else if ($typeMatch == 5) {
+            switch ($t) {
+                case 1:
+                    $total = 15;
+                    break;
+                case 2:
+                    $total = 12;
+                    break;
+                case 3:
+                    $total = 10;
+                    break;
+                case 4:
+                    $total = 8;
+                    break;
+                case 5:
+                    $total = 6;
+                    break;
+                case 6:
+                    $total = 4;
+                    break;
+                case 7:
+                    $total = 2;
+                    break;
+                case 8:
+                    $total = 1;
+                    break;
+                case 9:
+                    $total = 1;
+                    break;
+                case 10:
+                    $total = 1;
+                    break;
+                case 11:
+                    $total = 1;
+                    break;
+                case 12:
+                    $total = 1;
+                    break;
+                case 13:
+                    $total = 0;
+                    break;
+                case 14:
+                    $total = 0;
+                    break;
+                case 15:
+                    $total = 0;
+                    break;
+                case 16:
+                    $total = 0;
+                    break;
+                case 17:
+                    $total = 0;
+                    break;
+                case 18:
+                    $total = 0;
+                    break;
+                case 19:
+                    $total = 0;
+                    break;
+                case 20:
+                    $total = 0;
+                    break;
+            }
         }
+
     }
     $total += $kill;
     $result = [
@@ -717,38 +1046,38 @@ function countResultsByTeam($teamId) {
 
 function saveMembersResult($teamId, $matchId, $countResult, $place, $typeMatch)
 {
-  $res = false;
-  if (isset($_POST['memberKill'][$teamId]) && is_array($_POST['memberKill'][$teamId])) {
-    GLOBAL $matchMembersResult;
-    $total = $countResult['total']+0;
+    $res = false;
+    if (isset($_POST['memberKill'][$teamId]) && is_array($_POST['memberKill'][$teamId])) {
+        GLOBAL $matchMembersResult;
+        $total = $countResult['total']+0;
 
-    foreach ($_POST['memberKill'][$teamId] as $memberId => $qtwKill) {
+        foreach ($_POST['memberKill'][$teamId] as $memberId => $qtwKill) {
 
-      // проверить существует ли в сущности результатов игрокоав записи по этому матчу
-      if ($matchMembersResult[$matchId][$memberId]) {
-        $recordId = $matchMembersResult[$matchId][$memberId]['ID'];
-        if ($qtwKill === '') {
-          // delete record  by $recordId
-          $membersResult = new \App\MemberResultTable();
-          $result = $membersResult::delete($recordId);
-        } else {
-          //
-          updateMemberResult($recordId, $qtwKill, $total, $place, $typeMatch);
+            // проверить существует ли в сущности результатов игрокоав записи по этому матчу
+            if ($matchMembersResult[$matchId][$memberId]) {
+                $recordId = $matchMembersResult[$matchId][$memberId]['ID'];
+                if ($qtwKill === '') {
+                    // delete record  by $recordId
+                    $membersResult = new \App\MemberResultTable();
+                    $result = $membersResult::delete($recordId);
+                } else {
+                    //
+                    updateMemberResult($recordId, $qtwKill, $total, $place, $typeMatch);
+                }
+            } else {
+                if ($qtwKill !== '') {
+                    createMembersResult($memberId, $matchId, $qtwKill, $total, $place, $typeMatch);
+                }
+            }
         }
-      } else {
-        if ($qtwKill !== '') {
-          createMembersResult($memberId, $matchId, $qtwKill, $total, $place, $typeMatch);
-        }
-      }
+        $res = true;
+
     }
-    $res = true;
-
-  }
-  return $res;
+    return $res;
 }
 
 $firstMatch = getMatchByIds($firstMatchId);
-
+$stageKeyPass = $firstMatch["TOURNAMENT"]["VALUE"]. "." .$firstMatch["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"];
 // снимаем команду с матча
 if (check_bitrix_sessid() && (!empty($_REQUEST["removeTeamFromMatch"]))) {
 
@@ -757,8 +1086,10 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["removeTeamFromMatch"]))) {
     $dateA = DateTime::createFromFormat('d.m.Y H:i:s', $now);
     $dateB = DateTime::createFromFormat('d.m.Y H:i:s', $dateStartMatch);
 
+
     // получаем цепочку матчей
     $chainMatches = getChainMatchesByParentId($firstMatchId);
+
     $results = getResultByMatchTeam($firstMatchId, $_POST["removeTeamFromMatch"]);
     if ($results) {
         $errors[] = 'По матчу уже сформированы результаты';
@@ -810,7 +1141,7 @@ if (!empty($_POST["sendResults"])) {
 
 
     if (!empty($matchId) && !empty($_POST['date_time_match'])) {
-        //$start = microtime(true);
+
 
         $props = [];
         $props['DATE_START'] = $_POST['date_time_match'];
@@ -845,13 +1176,17 @@ if (!empty($_POST["sendResults"])) {
             }
         }
         if ($scoreError == false && $scoreTeamCount > 0) {
+
             if (count($scoreTeamIds) == $scoreTeamCount) {
+
+
                 foreach ($scoreTeamIds as $teamId) {
                     $score = getScoreMatch($matchId, $teamId);
-                    $countResult = countResultsByTeam($teamId);
+                    // получили матч по id
+                    $resMatch = getMatchById($matchId);
+                    $countResult = countResultsByTeam($teamId, $resMatch["PROPERTY_23"]);
                     $resSaveTeamPlace = false;
-                  // получили матч по id
-                  $resMatch = getMatchById($matchId);
+
 
                     if ($score) {
                         // update этой записи
@@ -862,7 +1197,7 @@ if (!empty($_POST["sendResults"])) {
                         $props['TOTAL'] = $countResult['total'];//$_POST["total"][$teamId];
 
 
-                      $resSaveTeamPlace = updateResults($props, $score["ID"]);
+                        $resSaveTeamPlace = updateResults($props, $score["ID"]);
 
                     } else {
                         // сделать новую запись
@@ -877,17 +1212,20 @@ if (!empty($_POST["sendResults"])) {
                             $props['TOTAL'] = $countResult['total'];//$_POST["total"][$teamId];
                             $code = 'RESULT_TEAM_ID_'.$teamId.'#' . $resMatch['ID'] . $resMatch['NAME'];
                             // создадим запись с результатами
-                          $resSaveTeamPlace = createResults($props, $code);
+                            $resSaveTeamPlace = createResults($props, $code);
 
                         }
 
                     }
                     // todo проверить что $resSaveTeamPlace success
 
-                  $res = saveMembersResult($teamId, $matchId, $countResult, $_POST["place"][$teamId], $resMatch["PROPERTY_23"]);
+                    $res = saveMembersResult($teamId, $matchId, $countResult, $_POST["place"][$teamId], $resMatch["PROPERTY_23"]);
 
                 }
-              //header('Location: /dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
+                if(isset($_POST["last"]) && isMatchRes($matchId) && ($firstMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 5)){
+                   setStagePass($firstMatchId, $stageKeyPass);
+                }
+                //header('Location: /dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
             } else {
                 echo 'С данными что-то не то!';
             }
@@ -897,7 +1235,7 @@ if (!empty($_POST["sendResults"])) {
 
 
     }
-    //dump('Время выполнения скрипта: '.round(microtime(true) - $start, 4).' сек.');
+
 }
 
 
@@ -909,39 +1247,39 @@ if (!empty($_POST["sendResults"])) {
 
 
 ?>
-  <div class="container my-5">
-      <?php if (!empty($errors)) { ?>
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <h4 class="alert-heading">Error!</h4>
-              <?php foreach ($errors as $error) { ?>
-                  <p><strong><?php echo $error; ?></strong></p>
-              <?php } ?>
-              <hr>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-      <?php } ?>
-    <?php showMatch($firstMatch); ?>
-  </div>
+    <div class="container my-5">
+        <?php if (!empty($errors)) { ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">Error!</h4>
+                <?php foreach ($errors as $error) { ?>
+                    <p><strong><?php echo $error; ?></strong></p>
+                <?php } ?>
+                <hr>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php } ?>
+        <?php showMatch($firstMatch, false); ?>
+    </div>
 <?php $parentId = $firstMatch['ID'];
 
 
 
 do {
-  $match = getMatchByParentId($parentId);
+    $match = getMatchByParentId($parentId);
+    $next = (getMatchByParentId($parentId+2) == null);
+    if ($match != null) {
 
-  if ($match != null) {
-
-    ?>
-    <div class="container">
-    <?php showMatch($match); ?>
-    </div>
-    <?php $nextMatch = true;
-    $parentId = $match['ID'];
-  } else {
-    $nextMatch = false;
-  }
+        ?>
+        <div class="container">
+            <?php showMatch($match, $next); ?>
+        </div>
+        <?php $nextMatch = true;
+        $parentId = $match['ID'];
+    } else {
+        $nextMatch = false;
+    }
 
 
 } while($nextMatch == true);
