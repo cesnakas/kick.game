@@ -2,7 +2,6 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Команды");
 ?>
-
 <?
 $APPLICATION->IncludeComponent(
 	"bitrix:news", 
@@ -59,7 +58,7 @@ $APPLICATION->IncludeComponent(
 		"MESSAGE_404" => "",
 		"META_DESCRIPTION" => "-",
 		"META_KEYWORDS" => "-",
-		"NEWS_COUNT" => "5000",
+		"NEWS_COUNT" => "0",
 		"PAGER_BASE_LINK_ENABLE" => "N",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
@@ -97,7 +96,4 @@ $APPLICATION->IncludeComponent(
 	),
 	false
 );?>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
