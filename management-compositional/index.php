@@ -381,20 +381,22 @@ if (!empty($teamID)) {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <h3 class="modal-body__title">Редактирование команды</h3>
+                            <h3 class="modal-body__title"><?=GetMessage('MC_EDIT_TEAM_TITLE')?></h3>
                             <form action="<?= POST_FORM_ACTION_URI; ?>" method="post" enctype="multipart/form-data">
                                 <?= bitrix_sessid_post() ?>
                                 <div class="form-field">
-                                    <label for="nameTeam" class="form-field__label">Название команды</label>
+                                    <label for="nameTeam" class="form-field__label">
+                                        <?=GetMessage('MC_EDIT_TEAM_NAME')?>
+                                    </label>
                                     <input type="text" class="form-field__input" name="nameTeam"
-                                           value="<?php echo $resTeam["NAME_TEAM"]['VALUE']; ?>" autocomplete="off"
-                                           id="nameTeam" placeholder="Введите название команды">
+                                           value="<?= $resTeam["NAME_TEAM"]['VALUE']; ?>" autocomplete="off"
+                                           id="nameTeam" placeholder="<?=GetMessage('MC_EDIT_TEAM_NAME_PLACEHOLDER')?>">
                                 </div>
                                 <div class="form-field">
-                                    <label for="tagTeam" class="form-field__label">Тег команды</label>
+                                    <label for="tagTeam" class="form-field__label"><?=GetMessage('MC_EDIT_TEAM_TAG')?></label>
                                     <input type="text" class="form-field__input" name="tagTeam"
                                            value="<?php echo $resTeam["TAG_TEAM"]['VALUE']; ?>" autocomplete="off"
-                                           id="tagTeam" placeholder="Введите тег команды">
+                                           id="tagTeam" placeholder="<?=GetMessage('MC_EDIT_TEAM_TAG_PLACEHOLDER')?>">
                                 </div>
                                 <!--<div class="form-field">
                                   <label for="mottoTeam" class="form-field__label">Девиз команды</label>
