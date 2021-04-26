@@ -794,7 +794,7 @@ button {
 
 .games-type {
   display: flex;
-  align-items: baseline;
+  align-items: center;
 }
 
 .games__list td:nth-child(6) svg {
@@ -804,8 +804,9 @@ button {
 .games__list-mobile {
   display: none;
 }
+
 .games__list-mobile-item:not(:first-child) {
-  margin-top: 10px;
+  margin-top: 60px;
 }
 
 .game-img {
@@ -823,7 +824,7 @@ button {
 }
 
 .game-link {
-  margin-right: 20px;
+  margin-top: 20px;
 }
 
 .game-type {
@@ -833,92 +834,48 @@ button {
   margin-top: 20px;
 }
 
-.game-qty {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  justify-items: end;
-  margin-right: 7px;
+.game-type--practice {
+  color: #FF10CB;
 }
 
-/*.game-type--practice {*/
-/*  color: #FF10CB;*/
-/*}*/
+.game-type--tournament {
+  color: #00FFF0;
+}
 
-/*.game-type--tournament {*/
-/*  color: #00FFF0;*/
-/*}*/
-
-/*.game-type span {*/
-/*  margin-left: auto;*/
-/*  padding: 4px 8px 2px;*/
-/*  background-color: #FF0052;*/
-/*  color: #ffffff;*/
-/*  font-size: 10px;*/
-/*  text-transform: uppercase;*/
-/*  border-radius: 8px;*/
-/*}*/
+.game-type span {
+  margin-left: auto;
+  padding: 4px 8px 2px;
+  background-color: #FF0052;
+  color: #ffffff;
+  font-size: 10px;
+  text-transform: uppercase;
+  border-radius: 8px;
+}
 
 .game-type img {
   margin-right: 20px;
 }
 
 .game-info {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .game-info__row {
-  border-left: 1px solid #454261;
+  display: flex;
+  margin-top: 20px;
 }
 
 .game-info__item {
-  width: 100%;
-  padding: 5px 5px 5px;
-}
-
-.game-info__item_right {
-    text-align: right;
-  }
-
-.slot-span {
-  margin-left: auto;
-  padding: 2px 8px 2px;
-  background-color: #FF0052;
-  color: #ffffff !important;
-  font-size: 12px;
-  text-transform: uppercase;
-  border-radius: 8px;
-  align-self: end;
-}
-
-.no-slots-span {
-  margin-left: auto;
-  padding: 2px 8px 2px;
-  background-color: #9F0443;
-  color: #ffffff !important;
-  font-size: 12px;
-  text-transform: uppercase;
-  border-radius: 8px;
-}
-
-.place-span {
-  margin-left: auto;
-  padding: 2px 8px 2px;
-  background-color: #069DA2;
-  color: #ffffff !important;
-  font-size: 12px;
-  text-transform: uppercase;
-  border-radius: 8px;
-}
-
-.game-info__item-row {
   display: flex;
-  margin-bottom: 5px;
+  flex-direction: column;
+  width: 50%;
+  padding: 20px 20px 40px;
+  border-left: 1px solid #454261;
 }
 
 .game-info__item span {
-  color: #5F5A82;
+  margin-bottom: 20px;
+  color: #454261;
 }
 
 .practice td:nth-child(2) {

@@ -193,7 +193,7 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
 <?php */ ?>
 <?php if (!empty($arResult["strProfileError"])) {
     createSession('save-profile_error', $arResult["strProfileError"]);
-    LocalRedirect("/personal/edit/");
+    LocalRedirect(SITE_DIR."/personal/edit/");
 }
 ?>
 <?php
@@ -229,9 +229,9 @@ unset($_SESSION['save-profile_error']);
                     <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z"
                           transform="translate(-949.26 -534.62)"/>
                 </svg>
-                Назад
+                <?=GetMessage('PERSONAL_EDIT_BTN_BACK')?>
             </a>
-            <h1 class="text-center">Редактирование профиля</h1>
+            <h1 class="text-center"><?=GetMessage('PERSONAL_EDIT_TITLE')?></h1>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12">
@@ -246,7 +246,7 @@ unset($_SESSION['save-profile_error']);
                                id="avatar">
                         <label for="avatar" class="form-field__upload-avatar">
                             <div class="profile__avatar-bg">
-                                <div title="Поменять аватар"
+                                <div title="<?=GetMessage('PERSONAL_EDIT_AVATAR_TITLE')?>"
                                      class="profile__avatar profile__avatar-edit fileAvatarUploaded"
                                     <?php if (!empty($arResult["arUser"]["PERSONAL_PHOTO"])) { ?>
                                         style="background-image: url(<?php echo CFile::GetPath($arResult["arUser"]["PERSONAL_PHOTO"]); ?>)"
@@ -259,81 +259,83 @@ unset($_SESSION['save-profile_error']);
                     <div class="profile-info">
                         <div class="profile-info__edit">
                             <div class="form-field">
-                                <label for="edit-nic" class="form-field__label">NickName <span>*</span></label>
+                                <label for="edit-nic" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_NICKNAME')?> <span>*</span></label>
                                 <input type="text" class="form-field__input" name="LOGIN"
                                        value="<?= $arResult["arUser"]["LOGIN"] ?>" autocomplete="off" id="edit-nic"
-                                       placeholder="Введите свой NicName">
+                                       placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>">
 
                             </div>
                             <div class="form-field">
-                                <label for="edit-pubgid" class="form-field__label">PUBG ID <span>*</span></label>
+                                <label for="edit-pubgid" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_PUBGID')?> <span>*</span></label>
                                 <input type="text" class="form-field__input" name="UF_PUBG_ID"
                                        value="<?= htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]); ?>"
-                                       autocomplete="off" id="edit-pubgid" placeholder="Введите свой PUBG ID">
+                                       autocomplete="off" id="edit-pubgid" placeholder="<?=GetMessage('PERSONAL_EDIT_PUBGID_PLACEHOLDER')?>">
                             </div>
                             <div class="form-field">
-                                <label for="edit-subscription" class="form-field__label">Подписка</label>
+                                <label for="edit-subscription" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION')?></label>
                                 <?php $resultPrem = isPrem($arResult["arUser"]["UF_DATE_PREM_EXP"]);
                                 if ($resultPrem <= 0) { ?>
                                     <div class="form-field__with-btn">
                                         <div class="form-field__input-wrap">
                                             <i class="form-field__icon form-field__icon_base"></i>
                                             <input type="text" class="form-field__input" name="authLogin"
-                                                   value="Базовая" autocomplete="off" id="edit-subscription">
+                                                   value="<?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC')?>" autocomplete="off" id="edit-subscription">
                                         </div>
-                                        <a href="/subscription-plans/" class="btn-italic" target="_blank">Поменять</a>
+                                        <a href="<?=SITE_DIR?>subscription-plans/" class="btn-italic" target="_blank"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC_BTN')?></a>
                                     </div>
                                 <?php } else { ?>
                                     <div class="form-field__input-wrap">
                                         <i class="form-field__icon form-field__icon_prem"></i>
                                         <input type="text" class="form-field__input" name="authLogin"
-                                               value="Премиум <?php echo num_decline($resultPrem, 'Остался, Осталось, Осталось', false); ?> <?php echo num_decline($resultPrem, 'день, дня, дней'); ?>"
+                                               value="<?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM')?>, <?= num_decline($resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_REMAINING'), false); ?> <?= num_decline($resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_DAYS')); ?>"
                                                autocomplete="off" id="edit-subscription">
                                     </div>
                                 <?php } ?>
                             </div>
                             <div class="form-field">
-                                <label for="my-mood" class="form-field__label">Мое настроение</label>
+                                <label for="my-mood" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_MY_MOOD')?></label>
                                 <input type="text" class="form-field__input" name="TITLE"
                                        value="<?php echo htmlspecialchars($arResult["arUser"]["TITLE"]) ?>"
-                                       autocomplete="off" id="my-mood" placeholder="Какое у Вас настроение">
+                                       autocomplete="off" id="my-mood" placeholder="<?=GetMessage('PERSONAL_EDIT_MY_MOOD_PLACEHOLDER')?>">
                             </div>
                             <div class="form-field">
-                                <label for="edit-email" class="form-field__label">Email <span>*</span></label>
+                                <label for="edit-email" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_EMAIL')?> <span>*</span></label>
                                 <input type="text" class="form-field__input" name="EMAIL"
                                        value="<?= $arResult["arUser"]["EMAIL"] ?>" autocomplete="off" id="edit-email"
-                                       placeholder="Введите свой email" readonly>
+                                       placeholder="<?=GetMessage('PERSONAL_EDIT_EMAIL_PLACEHOLDER')?>" readonly>
                             </div>
                             <div class="form-field">
-                                <label for="edit-telegramNic" class="form-field__label">Telegram Nic</label>
+                                <label for="edit-telegramNic" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_TELEGRAM_NIK')?></label>
                                 <input type="text" class="form-field__input" name="UF_TELEGRAM_NIC"
                                        value="<?= htmlspecialchars($arResult["arUser"]["UF_TELEGRAM_NIC"]) ?>"
-                                       autocomplete="off" id="edit-telegramNic" placeholder="Введите свой email">
+                                       autocomplete="off" id="edit-telegramNic" placeholder="<?=GetMessage('PERSONAL_EDIT_TELEGRAM_NIK_PLACEHOLDER')?>">
                             </div>
                             <? if ($arResult['CAN_EDIT_PASSWORD']) { ?>
                                 <div class="form-field">
-                                    <label for="edit-new-pass" class="form-field__label">Новый пароль</label>
+                                    <label for="edit-new-pass" class="form-field__label">
+                                        <?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD')?>
+                                    </label>
                                     <input type="password" class="form-field__input form-field__input_pass"
                                            name="NEW_PASSWORD" value="" autocomplete="off" id="edit-new-pass"
-                                           placeholder="Введите новый пароль">
+                                           placeholder="<?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_PLACEHOLDER')?>">
                                     <span class="form-field__eyes"></span>
-                                    <span class="form-field__helper">Пароль должен быть не менее 6 символов длиной.</span>
+                                    <span class="form-field__helper"><?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_HELP')?></span>
                                 </div>
                                 <div class="form-field">
-                                    <label for="edit-confirm-new-pass" class="form-field__label">Повторить
-                                        пароль</label>
+                                    <label for="edit-confirm-new-pass" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_REPEAT')?></label>
                                     <input type="password" class="form-field__input" name="NEW_PASSWORD_CONFIRM"
                                            value="" autocomplete="off" id="edit-confirm-new-pass"
-                                           placeholder="Повторить пароль">
+                                           placeholder="<?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_REPEAT_PLACEHOLDER')?>">
                                 </div>
                             <?php } ?>
                             <?php } ?>
                             <div class="form-field__button">
                                 <button type="submit" name="save" class="btn"
-                                        value="<?= (($arResult["ID"] > 0) ? GetMessage("MAIN_SAVE") : GetMessage("MAIN_ADD")) ?>">
-                                    Сохранить
+                                        value="<?= (($arResult["ID"] > 0) ? GetMessage('PERSONAL_EDIT_BTN_SAVE') : GetMessage('PERSONAL_EDIT_BTN_ADD')) ?>">
+                                    <?=GetMessage('PERSONAL_EDIT_BTN_SAVE');?>
                                 </button>
-                                <button type="reset" value="<?= GetMessage('MAIN_RESET'); ?>" class="btn">Сбросить
+                                <button type="reset" value="<?= GetMessage('PERSONAL_EDIT_BTN_RESET'); ?>" class="btn">
+                                    <?=GetMessage('PERSONAL_EDIT_BTN_RESET');?>
                                 </button>
                             </div>
 

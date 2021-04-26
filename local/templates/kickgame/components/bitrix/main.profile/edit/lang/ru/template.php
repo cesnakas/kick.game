@@ -1,4 +1,33 @@
 <?
+$MESS['PERSONAL_EDIT_BTN_BACK'] = 'Назад';
+$MESS['PERSONAL_EDIT_TITLE'] = 'Редактирование профиля';
+$MESS['PERSONAL_EDIT_AVATAR_TITLE'] = 'Поменять аватар';
+$MESS['PERSONAL_EDIT_NICKNAME'] = 'NickName';
+$MESS['PERSONAL_EDIT_NICKNAME_PLACEHOLDER'] = 'Введите свой NicName';
+$MESS['PERSONAL_EDIT_PUBGID'] = 'PUBG ID';
+$MESS['PERSONAL_EDIT_PUBGID_PLACEHOLDER'] = 'Введите свой PUBG ID';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION'] = 'Подписка';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC'] = 'Базовая';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC_BTN'] = 'Поменять';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM'] = 'Премиум';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_REMAINING'] = 'Остался, Осталось, Осталось';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_DAYS'] = 'день, дня, дней';
+$MESS['PERSONAL_EDIT_MY_MOOD'] = 'Мое настроение';
+$MESS['PERSONAL_EDIT_MY_MOOD_PLACEHOLDER'] = 'Какое у Вас настроение';
+$MESS['PERSONAL_EDIT_EMAIL'] = 'Email';
+$MESS['PERSONAL_EDIT_EMAIL_PLACEHOLDER'] = 'Введите свой email';
+$MESS['PERSONAL_EDIT_TELEGRAM_NIK'] = 'Telegram Nic';
+$MESS['PERSONAL_EDIT_TELEGRAM_NIK_PLACEHOLDER'] = 'Введите свой Telegram Nic';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD'] = 'Новый пароль';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD_PLACEHOLDER'] = 'Введите новый пароль';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD_HELP'] = 'Пароль должен быть не менее 6 символов длиной.';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD_REPEAT'] = 'Повторить пароль';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD_REPEAT_PLACEHOLDER'] = 'Повторить пароль';
+$MESS['PERSONAL_EDIT_BTN_SAVE'] = 'Сохранить';
+$MESS['PERSONAL_EDIT_BTN_ADD'] = 'Добавить';
+$MESS['PERSONAL_EDIT_BTN_RESET'] = 'Сбросить';
+
+// Other
 $MESS["PROFILE_DATA_SAVED"] = "Изменения успешно сохранены";
 $MESS["REG_SHOW_HIDE"] = "Регистрационная информация";
 $MESS["forum_INFO"] = "Профиль форума";

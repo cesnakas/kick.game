@@ -1,4 +1,33 @@
 <?
+$MESS['PERSONAL_EDIT_BTN_BACK'] = 'Back';
+$MESS['PERSONAL_EDIT_TITLE'] = 'Editing a profile';
+$MESS['PERSONAL_EDIT_AVATAR_TITLE'] = 'Change your avatar';
+$MESS['PERSONAL_EDIT_NICKNAME'] = 'NickName';
+$MESS['PERSONAL_EDIT_NICKNAME_PLACEHOLDER'] = 'Enter your Nickname';
+$MESS['PERSONAL_EDIT_PUBGID'] = 'PUBG ID';
+$MESS['PERSONAL_EDIT_PUBGID_PLACEHOLDER'] = 'Enter your PUB ID';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION'] = 'Subscription';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC'] = 'Basic';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC_BTN'] = 'Change';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM'] = 'Premium';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_REMAINING'] = 'Remaining, Remaining, Remaining';
+$MESS['PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_DAYS'] = 'day, day, days';
+$MESS['PERSONAL_EDIT_MY_MOOD'] = 'My mood';
+$MESS['PERSONAL_EDIT_MY_MOOD_PLACEHOLDER'] = 'What is your mood';
+$MESS['PERSONAL_EDIT_EMAIL'] = 'Email';
+$MESS['PERSONAL_EDIT_EMAIL_PLACEHOLDER'] = 'Enter your Email';
+$MESS['PERSONAL_EDIT_TELEGRAM_NIK'] = 'Telegram Nic';
+$MESS['PERSONAL_EDIT_TELEGRAM_NIK_PLACEHOLDER'] = 'Enter your Telegram Nic';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD'] = 'New password';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD_PLACEHOLDER'] = 'Enter your new password';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD_HELP'] = 'The password must be at least 6 characters long.';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD_REPEAT'] = 'Repeat password';
+$MESS['PERSONAL_EDIT_NEW_PASSWORD_REPEAT_PLACEHOLDER'] = 'Repeat password';
+$MESS['PERSONAL_EDIT_BTN_SAVE'] = 'Save';
+$MESS['PERSONAL_EDIT_BTN_ADD'] = 'Add';
+$MESS['PERSONAL_EDIT_BTN_RESET'] = 'Reset';
+
+// Other
 $MESS['ACTIVE'] = "Active:";
 $MESS['ADD'] = "Add a new user";
 $MESS['AUTH_NONSECURE_NOTE'] = "The password will be sent in open form. Enable JavaScript in your web browser to enable password encryption.";

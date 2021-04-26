@@ -118,7 +118,7 @@ function showTeams()
     $nav->setRecordCount($count_zap);
     $APPLICATION->IncludeComponent("bitrix:main.pagenavigation", ".default", array(
         "NAV_OBJECT" => $nav,
-        "SEF_MODE" => "N",
+        "SEF_MODE" => "Y",
     ),
         false
     );
