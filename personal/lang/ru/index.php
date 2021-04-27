@@ -9,6 +9,7 @@ $MESS['PERSONAL_EDIT'] = 'Редактировать';
 $MESS['PERSONAL_ENTER_ID'] = 'Введите';
 $MESS['PERSONAL_MY_MOOD'] = 'Мое настроение';
 $MESS['PERSONAL_REGION'] = 'Регион, город';
+$MESS['PERSONAL_REGION_PLACEHOLDER'] = 'Введите регион, город';
 $MESS['PERSONAL_DIVISION'] = 'Дивизион';
 $MESS['PERSONAL_LANG'] = 'Язык общения';
 $MESS['PERSONAL_ACTIVITY'] = 'Активность в игре';

@@ -524,7 +524,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
                 if (isset($_POST['update_squad']) || $placeName != '') {
                     updateSquad($props, $mId);
                     createSession('management-games_success', $messages[$lang]['UPDATE_SQUAD_SUCCESS']);
-                    $redirectUrlAction = "/management-games/join-game/?mid=".$mId;
+                    $redirectUrlAction = SITE_DIR."management-games/join-game/?mid=".$mId;
                 } else {
                     if($idTournament = isTournament($mId)) {
 

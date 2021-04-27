@@ -177,10 +177,10 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                     <? } else { ?>
                         <div class="navbar-no-auth">
                             <a class="btn btn_auth btn_border" href="<?=SITE_DIR;?>personal/auth/reg.php"><?=GetMessage('NAV_REGISTER')?></a>
-                            <a class="btn btn_auth" href="<?=SITE_DIR;?>personal/auth/"><?=GetMessage('NAV_LOGOUT')?></a>
+                            <a class="btn btn_auth" href="<?=SITE_DIR;?>personal/auth/"><?=GetMessage('NAV_LOGIN')?></a>
                         </div>
                         <div class="navbar-no-auth-mobile">
-                            <a class="btn-sign-in" href="<?=SITE_DIR;?>personal/auth/"><i></i> <?=GetMessage('NAV_LOGOUT')?></a>
+                            <a class="btn-sign-in" href="<?=SITE_DIR;?>personal/auth/"><i></i> <?=GetMessage('NAV_LOGIN')?></a>
                         </div>
                     <? } ?>
                 </nav>

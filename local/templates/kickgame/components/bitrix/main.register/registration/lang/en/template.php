@@ -14,7 +14,7 @@ $MESS['MAIN_REGISTER_ACCEPT'] = 'When creating an account, I accept the followin
 $MESS['MAIN_REGISTER_ACCEPT_SERVICE'] = 'Terms of Service';
 $MESS['MAIN_REGISTER_ACCEPT_PRIVACY'] = 'Privacy Policy';
 $MESS['MAIN_REGISTER_ACCEPT_ACCOUNT'] = 'Already have an account?';
-$MESS['MAIN_REGISTER_ACCOUNT_ENTER'] = 'Enter';
+$MESS['MAIN_REGISTER_ACCOUNT_ENTER'] = 'Login';
 
 
 

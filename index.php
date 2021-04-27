@@ -753,7 +753,7 @@ if ($result->isSuccess())
                 <?php if (!$USER->IsAuthorized()) { ?>
                   <a href="/personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
                 <?php } else { ?>
-                  <a href="/personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
+                  <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
                 <?php } ?>
                 <span><?=GetMessage('CONTENT_MAIN_14DAYS')?></span>
             </div>

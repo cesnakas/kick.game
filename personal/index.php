@@ -911,7 +911,7 @@ unset($_SESSION['alert_error']);
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
                                     <div><?= GetMessage('PERSONAL_REGION') ?></div>
-                                    <div>Введите регион, город</div>
+                                    <div><?= GetMessage('PERSONAL_REGION_PLACEHOLDER') ?></div>
                                 </div>
                             </div>
                             <div class="col-6 col-md-3">

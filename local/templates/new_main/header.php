@@ -117,14 +117,14 @@ $teamID = $arUser['UF_ID_TEAM'];
                         <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#lang-selector"/>
                     </svg>
                     <? if (LANGUAGE_ID == 'ru'): ?>
-                        <span class="lang-selector__label js-lang-label">ENG</span>
-                        <svg width="13" height="13" fill="currentColor">
-                            <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#flag-eng"/>
-                        </svg>
-                    <? else: ?>
                         <span class="lang-selector__label js-lang-label">РУС</span>
                         <svg width="13" height="13" fill="currentColor">
                             <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#flag-rus"/>
+                        </svg>
+                    <? else: ?>
+                        <span class="lang-selector__label js-lang-label">ENG</span>
+                        <svg width="13" height="13" fill="currentColor">
+                            <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#flag-eng"/>
                         </svg>
                     <? endif; ?>
                     <!--<span class="lang-selector__label js-lang-label">ENG</span>
@@ -166,7 +166,7 @@ $teamID = $arUser['UF_ID_TEAM'];
                 />
             </button>
             <? if ($USER->IsAuthorized()) { ?>
-                <a href="/personal/" type="button" class="menu-button">
+                <a href="<?=SITE_DIR?>personal/" type="button" class="menu-button">
                     <img
                         width="60"
                         src="<?=SITE_TEMPLATE_PATH;?>/images/icon-profile.png" alt="icon-profile"
@@ -214,9 +214,9 @@ $teamID = $arUser['UF_ID_TEAM'];
             </div>
             <div class="cta__action">
                 <?php if (!$USER->IsAuthorized()) { ?>
-                    <a href="/personal/auth/reg.php" class="button button"><?=GetMessage('NAV_REGISTER')?></a>
+                    <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button button"><?=GetMessage('NAV_REGISTER')?></a>
                 <?php } else { ?>
-                    <a href="/personal/" class="button button"><?=GetMessage('NAV_LOGIN')?></a>
+                    <a href="<?=SITE_DIR?>personal/" class="button button"><?=GetMessage('NAV_LOGIN')?></a>
                 <?php } ?>
                 <?=GetMessage('MAIN_WAY')?>
             </div>

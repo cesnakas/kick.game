@@ -30,7 +30,10 @@ if($cookieToSave != false) {
   }
 }
 
-$APPLICATION->IncludeComponent("bitrix:main.auth.form", "auth", Array(
+$APPLICATION->IncludeComponent(
+    "bitrix:main.auth.form",
+    "auth",
+    Array(
 	"AUTH_FORGOT_PASSWORD_URL" => SITE_DIR."personal/auth/forgotpassword.php",	// Страница для восстановления пароля
 		"AUTH_REGISTER_URL" => SITE_DIR."personal/auth/reg.php",	// Страница для регистрации
 		"AUTH_SUCCESS_URL" => SITE_DIR."personal/",	// Страница после успешной авторизации

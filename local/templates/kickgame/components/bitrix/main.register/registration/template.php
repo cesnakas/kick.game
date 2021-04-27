@@ -8,122 +8,147 @@
 
 /**
  * Bitrix vars
- * @global CMain $APPLICATION
- * @global CUser $USER
  * @param array $arParams
  * @param array $arResult
  * @param CBitrixComponentTemplate $this
+ * @global CUser $USER
+ * @global CMain $APPLICATION
  */
 
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
-if($arResult["SHOW_SMS_FIELD"] == true)
-{
-	CJSCore::Init('phone_auth');
+if ($arResult["SHOW_SMS_FIELD"] == true) {
+    CJSCore::Init('phone_auth');
 }
 ?>
-<?php if($USER->IsAuthorized()) { ?>
+<?php if ($USER->IsAuthorized()) { ?>
 
-  <p class="text-center"><?echo GetMessage("MAIN_REGISTER_AUTH")?></p>
-  <p class="text-center"><?=GetMessage('MAIN_REGISTER_LINK_BEFORE')?> <a href="<?=SITE_DIR?>personal/"><?=GetMessage("MAIN_REGISTER_LINK")?></a>.</p>
+    <p class="text-center"><? echo GetMessage("MAIN_REGISTER_AUTH") ?></p>
+    <p class="text-center"><?= GetMessage('MAIN_REGISTER_LINK_BEFORE') ?> <a
+                href="<?= SITE_DIR ?>personal/"><?= GetMessage("MAIN_REGISTER_LINK") ?></a>.</p>
 
 <?php } else { ?>
-  <div class="layout__content layout__content_full">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-12 col-lg-6">
-          <div class="logo-tagline">
-            <a href="<?=SITE_DIR?>"><img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/logo-tagline.svg" alt="kickgame esports"></a>
-          </div>
-        </div>
-        <div class="col-md-12 col-lg-6">
-          <div class="form-authentication">
-            <h2 class="form-authentication__heading"><?=GetMessage("AUTH_REGISTER")?></h2>
-              <?php if (count($arResult["ERRORS"]) > 0): /* сообщения об ошибках при заполнении формы */ ?>
-                  <?php
-                  foreach ($arResult["ERRORS"] as $key => $error) {
-                      if (intval($key) == 0 && $key !== 0) {
-                          $arResult["ERRORS"][$key] = str_replace(
-                              "#FIELD_NAME#",
-                              '«'.GetMessage('MAIN_REGISTER_'.$key).'»',
-                              $error
-                          );
-                      }
-                  }
-                  ShowError(implode("<br/>", $arResult["ERRORS"]));
-                  ?>
-              <?php elseif ($arResult["USE_EMAIL_CONFIRMATION"] === "Y"): ?>
-                <p><?= GetMessage('MAIN_REGISTER_EMAIL_HELP'); /* будет отправлено письмо для подтверждения */ ?></p>
-              <?php endif; ?>
-            <!--<div class="form-authentication__login-social-network_sign-in">
-              <div class="form-authentication__login-social-network-heading">Регистрация с помощью Соц Сетей</div>
-              <div class="social-networks justify-content-center">
-                <a class="social-networks__item" href="#">
-                </a>
-                <a class="social-networks__item" href="#">
-                </a>
-                <a class="social-networks__item" href="#">
-                </a>
-                <a class="social-networks__item" href="#">
-                </a>
-              </div>
-            </div>-->
-            <form method="post" action="<?= POST_FORM_ACTION_URI; ?>" name="regform" enctype="multipart/form-data">
-                <?php if ($arResult["BACKURL"] <> ''): ?>
-                  <input type="hidden" name="backurl" value="<?= $arResult["BACKURL"]; ?>" />
-                <?php endif; ?>
-                    <div class="form-field">
-                      <label for="auth-login" class="form-field__label"><?=GetMessage('MAIN_REGISTER_LOGIN')?></label>
-                      <input type="text" class="form-field__input" name="REGISTER[LOGIN]" value="<?= $arResult["VALUES"]['LOGIN'] ?>" autocomplete="off" id="auth-login" placeholder="<?=GetMessage('MAIN_REGISTER_LOGIN_PLACEHOLDER')?>">
-                      <span class="form-field__helper" style="margin-bottom: -15px; display: block"><?=GetMessage('MAIN_REGISTER_LOGIN_HELPER')?></span>
+    <div class="layout__content layout__content_full">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-lg-6">
+                    <div class="logo-tagline">
+                        <a href="<?= SITE_DIR ?>"><img
+                                    src="<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/logo-tagline.svg"
+                                    alt="kickgame esports"></a>
                     </div>
-                    <div class="form-field">
-                      <label for="auth-email" class="form-field__label">Email</label>
-                      <input type="email" class="form-field__input" name="REGISTER[EMAIL]" value="<?= $arResult["VALUES"]['EMAIL'] ?>" autocomplete="off" id="auth-email" placeholder="<?=GetMessage('MAIN_REGISTER_EMAIL_PLACEHOLDER')?>">
-                    </div>
-                    <div class="form-field">
-                      <label for="auth-pass" class="form-field__label"><?=GetMessage('MAIN_REGISTER_PASSWORD')?></label>
-                      <input type="password" class="form-field__input form-field__input_pass" name="REGISTER[PASSWORD]" value="<?= $arResult["VALUES"]['PASSWORD'] ?>" autocomplete="off" id="auth-pass" placeholder="<?=GetMessage('MAIN_REGISTER_PASSWORD_PLACEHOLDER')?>">
-                      <span class="form-field__eyes"></span>
-                    </div>
-                    <div class="form-field">
-                      <label for="auth-pass-repeat" class="form-field__label"><?=GetMessage('MAIN_REGISTER_CONFIRM_PASSWORD')?></label>
-                      <input type="password" class="form-field__input" name="REGISTER[CONFIRM_PASSWORD]" value="<?= $arResult["VALUES"]['CONFIRM_PASSWORD'] ?>" autocomplete="off" id="auth-pass-repeat" placeholder="<?=GetMessage('MAIN_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER')?>">
-                    </div>
-                  <input type="hidden" name="UF_DATE_PREM_EXP" value="<?=date('d.m.Y');?>">
-                <?
-                if ($arResult["USE_CAPTCHA"] == "Y"):?>
-                  <div class="form-field">
-                      <div class="bx-captcha">
-                        <input type="hidden" name="captcha_sid" value="<?= $arResult["CAPTCHA_CODE"] ?>"/>
-                        <img src="/bitrix/tools/captcha.php?captcha_sid=<?= $arResult["CAPTCHA_CODE"] ?>"
-                             width="180" height="40" alt="<?=GetMessage("AUTH_CAPTCHA_LOADING") ?>"/>
-                      </div>
-                      <a href="<?= $APPLICATION->GetCurPage() ?>?reload_captcha=yes"
-                         class="reload-captcha"
-                         title="<?=GetMessage('AUTH_RELOAD_CAPTCHA_TITLE')?>"><i class="uk-icon-refresh uk-link-muted"></i></a>
-                      <input type="text" name="captcha_word" maxlength="50" value=""
-                             class="form-field__input"
-                             placeholder="<?= GetMessage("REGISTER_CAPTCHA_PROMT") ?>">
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-authentication">
+                        <h2 class="form-authentication__heading"><?= GetMessage("AUTH_REGISTER") ?></h2>
+                        <?php if (count($arResult["ERRORS"]) > 0): /* сообщения об ошибках при заполнении формы */ ?>
+                            <?php
+                            foreach ($arResult["ERRORS"] as $key => $error) {
+                                if (intval($key) == 0 && $key !== 0) {
+                                    $arResult["ERRORS"][$key] = str_replace(
+                                        "#FIELD_NAME#",
+                                        '«' . GetMessage('MAIN_REGISTER_' . $key) . '»',
+                                        $error
+                                    );
+                                }
+                            }
+                            ShowError(implode("<br/>", $arResult["ERRORS"]));
+                            ?>
+                        <?php elseif ($arResult["USE_EMAIL_CONFIRMATION"] === "Y"): ?>
+                            <p><?= GetMessage('MAIN_REGISTER_EMAIL_HELP'); /* будет отправлено письмо для подтверждения */ ?></p>
+                        <?php endif; ?>
+                        <!--<div class="form-authentication__login-social-network_sign-in">
+                          <div class="form-authentication__login-social-network-heading">Регистрация с помощью Соц Сетей</div>
+                          <div class="social-networks justify-content-center">
+                            <a class="social-networks__item" href="#">
+                            </a>
+                            <a class="social-networks__item" href="#">
+                            </a>
+                            <a class="social-networks__item" href="#">
+                            </a>
+                            <a class="social-networks__item" href="#">
+                            </a>
+                          </div>
+                        </div>-->
+                        <form method="post" action="<?= POST_FORM_ACTION_URI; ?>" name="regform"
+                              enctype="multipart/form-data">
+                            <?php if ($arResult["BACKURL"] <> ''): ?>
+                                <input type="hidden" name="backurl" value="<?= $arResult["BACKURL"]; ?>"/>
+                            <?php endif; ?>
+                            <div class="form-field">
+                                <label for="auth-login"
+                                       class="form-field__label"><?= GetMessage('MAIN_REGISTER_LOGIN') ?></label>
+                                <input type="text" class="form-field__input" name="REGISTER[LOGIN]"
+                                       value="<?= $arResult["VALUES"]['LOGIN'] ?>" autocomplete="off" id="auth-login"
+                                       placeholder="<?= GetMessage('MAIN_REGISTER_LOGIN_PLACEHOLDER') ?>">
+                                <span class="form-field__helper"
+                                      style="margin-bottom: -15px; display: block"><?= GetMessage('MAIN_REGISTER_LOGIN_HELPER') ?></span>
+                            </div>
+                            <div class="form-field">
+                                <label for="auth-email" class="form-field__label">Email</label>
+                                <input type="email" class="form-field__input" name="REGISTER[EMAIL]"
+                                       value="<?= $arResult["VALUES"]['EMAIL'] ?>" autocomplete="off" id="auth-email"
+                                       placeholder="<?= GetMessage('MAIN_REGISTER_EMAIL_PLACEHOLDER') ?>">
+                            </div>
+                            <div class="form-field">
+                                <label for="auth-pass"
+                                       class="form-field__label"><?= GetMessage('MAIN_REGISTER_PASSWORD') ?></label>
+                                <input type="password" class="form-field__input form-field__input_pass"
+                                       name="REGISTER[PASSWORD]" value="<?= $arResult["VALUES"]['PASSWORD'] ?>"
+                                       autocomplete="off" id="auth-pass"
+                                       placeholder="<?= GetMessage('MAIN_REGISTER_PASSWORD_PLACEHOLDER') ?>">
+                                <span class="form-field__eyes"></span>
+                            </div>
+                            <div class="form-field">
+                                <label for="auth-pass-repeat"
+                                       class="form-field__label"><?= GetMessage('MAIN_REGISTER_CONFIRM_PASSWORD') ?></label>
+                                <input type="password" class="form-field__input" name="REGISTER[CONFIRM_PASSWORD]"
+                                       value="<?= $arResult["VALUES"]['CONFIRM_PASSWORD'] ?>" autocomplete="off"
+                                       id="auth-pass-repeat"
+                                       placeholder="<?= GetMessage('MAIN_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER') ?>">
+                            </div>
+                            <input type="hidden" name="UF_DATE_PREM_EXP" value="<?= date('d.m.Y'); ?>">
+                            <?
+                            if ($arResult["USE_CAPTCHA"] == "Y"):?>
+                                <div class="form-field">
+                                    <div class="bx-captcha">
+                                        <input type="hidden" name="captcha_sid"
+                                               value="<?= $arResult["CAPTCHA_CODE"] ?>"/>
+                                        <img src="/bitrix/tools/captcha.php?captcha_sid=<?= $arResult["CAPTCHA_CODE"] ?>"
+                                             width="180" height="40" alt="<?= GetMessage("AUTH_CAPTCHA_LOADING") ?>"/>
+                                    </div>
+                                    <a href="<?= $APPLICATION->GetCurPage() ?>?reload_captcha=yes"
+                                       class="reload-captcha"
+                                       title="<?= GetMessage('AUTH_RELOAD_CAPTCHA_TITLE') ?>"><i
+                                                class="uk-icon-refresh uk-link-muted"></i></a>
+                                    <input type="text" name="captcha_word" maxlength="50" value=""
+                                           class="form-field__input"
+                                           placeholder="<?= GetMessage("REGISTER_CAPTCHA_PROMT") ?>">
 
-                  </div>
-                <?endif;?>
-              <div class="form-field d-flex justify-content-center">
-                <button class="btn" type="submit" name="register_submit_button" value="<?=GetMessage("AUTH_REGISTER") ?>"><?=GetMessage("AUTH_REGISTER")?></button>
-              </div>
-              <div class="form-authentication__rules text-center"><?=GetMessage('MAIN_REGISTER_ACCEPT')?> <a href="<?=SITE_DIR?>terms-conditions/" target="_blank"><?=GetMessage('MAIN_REGISTER_ACCEPT_SERVICE')?></a> &
-                <a href="<?=SITE_DIR?>privacy-policy/" target="_blank"><?=GetMessage('MAIN_REGISTER_ACCEPT_PRIVACY')?></a>.</div>
-              <div class="form-authentication__already text-center"><?=GetMessage('MAIN_REGISTER_ACCEPT_ACCOUNT')?></div>
-              <div class="form-field text-center">
-                <a class="form-authentication__forgot-pass" href="<?=SITE_DIR?>personal/auth/"><?=GetMessage('MAIN_REGISTER_ACCOUNT_ENTER')?></a>
-              </div>
-            </form>
+                                </div>
+                            <? endif; ?>
+                            <div class="form-field d-flex justify-content-center">
+                                <button class="btn" type="submit" name="register_submit_button"
+                                        value="<?= GetMessage("AUTH_REGISTER") ?>"><?= GetMessage("AUTH_REGISTER") ?></button>
+                            </div>
+                            <div class="form-authentication__rules text-center"><?= GetMessage('MAIN_REGISTER_ACCEPT') ?>
+                                <a href="<?= SITE_DIR ?>terms-conditions/"
+                                   target="_blank"><?= GetMessage('MAIN_REGISTER_ACCEPT_SERVICE') ?></a> &
+                                <a href="<?= SITE_DIR ?>privacy-policy/"
+                                   target="_blank"><?= GetMessage('MAIN_REGISTER_ACCEPT_PRIVACY') ?></a>.
+                            </div>
+                            <div class="form-authentication__already text-center"><?= GetMessage('MAIN_REGISTER_ACCEPT_ACCOUNT') ?></div>
+                            <div class="form-field text-center">
+                                <a class="form-authentication__forgot-pass"
+                                   href="<?= SITE_DIR ?>personal/auth/"><?= GetMessage('MAIN_REGISTER_ACCOUNT_ENTER') ?></a>
+                            </div>
+                        </form>
 
-          </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 <?php } ?>
 
 <?php /*<div class="container my-3">
@@ -370,4 +395,4 @@ if ($arResult["USE_CAPTCHA"] == "Y")
 
 <?endif?>
 </div>?>
- */?>
+ */ ?>

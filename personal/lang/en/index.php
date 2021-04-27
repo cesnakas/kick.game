@@ -9,6 +9,7 @@ $MESS['PERSONAL_EDIT'] = 'Edit';
 $MESS['PERSONAL_ENTER_ID'] = 'Enter';
 $MESS['PERSONAL_MY_MOOD'] = 'My mood';
 $MESS['PERSONAL_REGION'] = 'Region, city';
+$MESS['PERSONAL_REGION_PLACEHOLDER'] = 'Enter the region, city';
 $MESS['PERSONAL_DIVISION'] = 'Division';
 $MESS['PERSONAL_LANG'] = 'Communication language';
 $MESS['PERSONAL_ACTIVITY'] = 'Activity in the game';
