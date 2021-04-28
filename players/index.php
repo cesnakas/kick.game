@@ -397,7 +397,7 @@ if(isset($path[2]) && trim($path[2]) != '') {
 */ ?>
 
 <?php
-$path = explode('/', trim($APPLICATION->GetCurPage()));
+$path = explode(SITE_DIR, trim($APPLICATION->GetCurPage()));
 
 if (isset($path[2]) && trim($path[2]) != '') {
     $arUser = getUser(trim($path[2]));
@@ -471,7 +471,7 @@ if (isset($path[2]) && trim($path[2]) != '') {
                                     <div><?php
                                         if ($arUser['UF_ID_TEAM'] + 0) {
                                             $team = getTeamById($arUser['UF_ID_TEAM'] + 0);
-                                            echo '<a href="/teams/' . $team['ID'] . '/">' . $team['NAME'] . '</a>';
+                                            echo '<a href="'.SITE_DIR.'teams/' . $team['ID'] . '/">' . $team['NAME'] . '</a>';
                                         }
                                         ?></div>
                                 </div>
