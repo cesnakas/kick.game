@@ -83,20 +83,17 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
             <div class="row align-items-center">
                 <div class="col-lg-8 col-md-12">
                     <div class="cookie-content">
-                        Мы используем файлы cookie для улучшения взаимодействия с пользователем и анализа посещаемости
-                        веб-сайта. По этим причинам мы можем передавать данные об использовании вашего сайта нашим
-                        партнерам по аналитике. Нажимая «Принять файлы cookie», вы соглашаетесь сохранить на своем
-                        устройстве все технологии, описанные в нашей Политике использования файлов cookie . Вы можете
-                        изменить настройки файлов cookie в любое время, нажав «<a
-                                href="#">Настройки</a> файлов cookie».
+                        <?=GetMessage('FOOTER_COOKIE')?>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="cookie__btn">
-                        <button class="btn-icon btn-icon_manage btn-icon_default mr-1" data-toggle="modal"
-                                data-target="#staticBackdrop"><i></i>Настроить
+                        <button class="btn-icon btn-icon_manage btn-icon_default mr-1" data-toggle="modal" data-target="#staticBackdrop">
+                            <i></i> <?=GetMessage('FOOTER_COOKIE_SETTINGS')?>
                         </button>
-                        <button class="btn-icon btn-icon_check cookieAccept"><i></i> Принять</button>
+                        <button class="btn-icon btn-icon_check cookieAccept">
+                            <i></i> <?=GetMessage('FOOTER_COOKIE_ACCEPT')?>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -104,34 +101,38 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
     </div>
 </section>
 
-<div class="modal fade " id="expirePrem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
-          <i></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h3 class="modal-body__title">Бесплатный Премиум-период закончен</h3>
-        <div class="subscription-plans">
-          <div class="subscription-plans__description subscription-plans__description_popup text-center">Твой аккаунт переведён на Базовый уровень подписки. Теперь тебе будут недоступны:</div>
-          <ul>
-            <li class="not">Участие в практических играх</li>
-            <li class="not">Участие в ежемесячном турнире от 1000 €</li>
-            <li class="not">Участие в еженедельном турнире от  100 €</li>
-            <li class="not">Участие в играх со стримами и комментапторами </li>
-            <li class="not">Мой личный рейтинг </li>
-            <li class="not">Рейтинг моей команды </li>
-          </ul>
-          <div class="subscription-plans__description subscription-plans__description_popup text-center">Чтобы сохранить доступ к преимуществам платформы, оформи платную подписку.</div>
-          <div class="subscription-plans-item__btn text-center">
-            <a href="/subscription-plans/" class="btn">Купить подписку</a>
-          </div>
+<div class="modal fade" id="expirePrem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
+                    <i></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 class="modal-body__title"><?=GetMessage('MODAL_TITLE')?></h3>
+                <div class="subscription-plans">
+                    <div class="subscription-plans__description subscription-plans__description_popup text-center">
+                        <?=GetMessage('MODAL_HEADER_TEXT')?>
+                    </div>
+                    <ul>
+                        <li class="not"><?=GetMessage('MODAL_ITEM_01')?></li>
+                        <li class="not"><?=GetMessage('MODAL_ITEM_02')?></li>
+                        <li class="not"><?=GetMessage('MODAL_ITEM_03')?></li>
+                        <li class="not"><?=GetMessage('MODAL_ITEM_04')?></li>
+                        <li class="not"><?=GetMessage('MODAL_ITEM_05')?></li>
+                        <li class="not"><?=GetMessage('MODAL_ITEM_06')?></li>
+                    </ul>
+                    <div class="subscription-plans__description subscription-plans__description_popup text-center">
+                        <?=GetMessage('MODAL_FOOTER_TEXT')?>
+                    </div>
+                    <div class="subscription-plans-item__btn text-center">
+                        <a href="<?=SITE_DIR?>subscription-plans/" class="btn"><?=GetMessage('MODAL_BUTTON')?></a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <?php if ($USER->IsAuthorized()) {

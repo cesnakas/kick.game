@@ -1,8 +1,8 @@
 <?
-$MESS['FOOTER_CONTENT_P_1'] = 'Весь контент, названия игр, торговые наименования и/или коммерческий внешний вид, товарные знаки, произведения искусства и связанные изображения являются товарными знаками и/или материалами, защищенными авторским правом соответствующих правообладателей.';
-$MESS['FOOTER_CONTENT_P_2_1'] = 'KICKGAME ESPORTS LIMITED (рег.номер компании HE 416108)';
-$MESS['FOOTER_CONTENT_P_2_2'] = 'Адрес: Василий Михайлиди, 21, Лимассол 3026, Кипр';
-$MESS['FOOTER_CONTENT_P_2_3'] = 'Все права защищены';
+$MESS['FOOTER_CONTENT_P_1'] = 'All content, game names, trade names and/or commercial appearance, trademarks, works of art, and related images are trademarks and/or copyrighted materials of the respective copyright holders.';
+$MESS['FOOTER_CONTENT_P_2_1'] = 'KICKGAME ESPORTS LIMITED (company registration number HE 416108)';
+$MESS['FOOTER_CONTENT_P_2_2'] = 'Address: Vasili Mihailidi, 21, Limassol 3026, Cyprus';
+$MESS['FOOTER_CONTENT_P_2_3'] = 'All rights reserved';
 
 $MESS['FOOTER_NAV_GAME_SCHEDULE'] = 'Schedule';
 $MESS['FOOTER_NAV_PERSONAL'] = 'Profile';
