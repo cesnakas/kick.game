@@ -5,8 +5,8 @@ $APPLICATION->SetTitle("Команды");
 
 <?
 $APPLICATION->IncludeComponent(
-	"bitrix:news", 
-	"teams_new", 
+	"bitrix:news",
+	"teams_new",
 	array(
 		"ADD_ELEMENT_CHAIN" => "N",
 		"ADD_SECTIONS_CHAIN" => "N",

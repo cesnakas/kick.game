@@ -58,7 +58,7 @@ $arUrlRewrite = array(
         ),
     14 =>
         array(
-            'CONDITION' => '#^/game-schedule/#',
+            'CONDITION' => '#^(/game-schedule/|/en/game-schedule/)#',
             'RULE' => '',
             'ID' => 'bitrix:news',
             'PATH' => '/game-schedule/index.php',
@@ -74,7 +74,7 @@ $arUrlRewrite = array(
         ),
     13 =>
         array(
-            'CONDITION' => '#^/matches/#',
+            'CONDITION' => '#^(/matches/|/en/matches/)#',
             'RULE' => '',
             'ID' => 'bitrix:news',
             'PATH' => '/matches/index.php',

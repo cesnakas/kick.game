@@ -947,7 +947,7 @@ unset($_SESSION['alert_error']);
                                     <div><?= GetMessage('PERSONAL_TEAM') ?></div>
                                     <div>
                                         <?php if (!empty($teamID)) {
-                                            echo '<a href="/teams/' . $teamID . '/">';
+                                            echo '<a href="'.SITE_DIR.'teams/' . $teamID . '/">';
                                             echo htmlspecialchars($arrResultTeam['NAME']) . ' [' . $arrResultTeam['TAG_TEAM']['~VALUE'] . ']';
                                             echo '</a>';
                                         } else { ?>
