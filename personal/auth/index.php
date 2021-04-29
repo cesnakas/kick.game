@@ -11,7 +11,9 @@ if(isset($_POST['AUTH_ACTION'])) {
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Авторизация");
-?><?
+?>
+
+<?
 $cookieToSave = json_encode($_COOKIE);
 
 if($cookieToSave != false) {
@@ -34,7 +36,7 @@ $APPLICATION->IncludeComponent(
     "bitrix:main.auth.form",
     "auth",
     Array(
-	"AUTH_FORGOT_PASSWORD_URL" => SITE_DIR."personal/auth/forgotpassword.php",	// Страница для восстановления пароля
+	    "AUTH_FORGOT_PASSWORD_URL" => SITE_DIR."personal/auth/forgotpassword.php",	// Страница для восстановления пароля
 		"AUTH_REGISTER_URL" => SITE_DIR."personal/auth/reg.php",	// Страница для регистрации
 		"AUTH_SUCCESS_URL" => SITE_DIR."personal/",	// Страница после успешной авторизации
 		"COMPONENT_TEMPLATE" => ".default"

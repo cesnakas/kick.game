@@ -1,83 +1,91 @@
 <?
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
 
-  <div class="layout__content layout__content_full">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-12 col-lg-6">
-          <div class="logo-tagline">
-            <a href="/"><img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/logo-tagline.svg" alt="kickgame esports"></a>
-          </div>
-        </div>
-        <div class="col-md-12 col-lg-6">
-          <div class="form-authentication">
-            <h2 class="form-authentication__heading">Вход</h2>
-              <?
-              ShowMessage($arParams["~AUTH_RESULT"]);
-              ShowMessage($arResult['ERROR_MESSAGE']);
-              ?>
-            <form name="form_auth" method="post" action="<?=$arResult["AUTH_URL"]?>">
-              <input type="hidden" name="AUTH_FORM" value="Y" />
-              <input type="hidden" name="TYPE" value="AUTH" />
-                <?if ($arResult["BACKURL"] <> ''):?>
-                  <input type="hidden" name="backurl" value="<?=$arResult["BACKURL"]?>" />
-                <?endif?>
-                <?foreach ($arResult["POST"] as $key => $value):?>
-                  <input type="hidden" name="<?=$key?>" value="<?=$value?>" />
-                <?endforeach?>
-              <div class="form-field">
-                <label for="auth-login" class="form-field__label">NickName</label>
-                <input type="text" class="form-field__input" name="USER_LOGIN" maxlength="255" value="<?=$arResult["LAST_LOGIN"]?>" autocomplete="off" id="auth-login" placeholder="Введите свой NickName">
-              </div>
-              <div class="form-field">
-                <label for="auth-pass" class="form-field__label">Пароль</label>
-                <input type="password" class="form-field__input " name="USER_PASSWORD" maxlength="255" autocomplete="off" id="auth-pass" placeholder="Введите свой пароль">
-              </div>
-                <?if ($arResult['STORE_PASSWORD'] == 'Y'):?>
-                  <div class="form-field">
-                    <label class="label-checkbox-main">
-                      <input type="checkbox" name="USER_REMEMBER" checked value="Y">
-                      <div class="label-checkbox-main__checkmark"></div>
-                      <span class="label-checkbox-main__title">Запомнить меня</span>
-                    </label>
-                  </div>
-                <?endif?>
+    <div class="layout__content layout__content_full">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-lg-6">
+                    <div class="logo-tagline">
+                        <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/dist/images/logo-tagline.svg"
+                                         alt="kickgame esports"></a>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-authentication">
+                        <h2 class="form-authentication__heading"><?=GetMessage('AUTH_FORM_TITLE')?></h2>
+                        <?
+                        ShowMessage($arParams["~AUTH_RESULT"]);
+                        ShowMessage($arResult['ERROR_MESSAGE']);
+                        ?>
+                        <form name="form_auth" method="post" action="<?= $arResult["AUTH_URL"] ?>">
+                            <input type="hidden" name="AUTH_FORM" value="Y"/>
+                            <input type="hidden" name="TYPE" value="AUTH"/>
+                            <? if ($arResult["BACKURL"] <> ''): ?>
+                                <input type="hidden" name="backurl" value="<?= $arResult["BACKURL"] ?>"/>
+                            <? endif ?>
+                            <? foreach ($arResult["POST"] as $key => $value): ?>
+                                <input type="hidden" name="<?= $key ?>" value="<?= $value ?>"/>
+                            <? endforeach ?>
+                            <div class="form-field">
+                                <label for="auth-login" class="form-field__label"><?=GetMessage('AUTH_FORM_NICKNAME_LABEL')?></label>
+                                <input type="text" class="form-field__input" name="USER_LOGIN" maxlength="255"
+                                       value="<?= $arResult["LAST_LOGIN"] ?>" autocomplete="off" id="auth-login"
+                                       placeholder="<?=GetMessage('AUTH_FORM_NICKNAME_PLACEHOLDER')?>">
+                            </div>
+                            <div class="form-field">
+                                <label for="auth-pass" class="form-field__label"><?=GetMessage('AUTH_FORM_PASSWORD_LABEL')?></label>
+                                <input type="password" class="form-field__input " name="USER_PASSWORD" maxlength="255"
+                                       autocomplete="off" id="auth-pass" placeholder="<?=GetMessage('AUTH_FORM_PASSWORD_PLACEHOLDER')?>">
+                            </div>
+                            <? if ($arResult['STORE_PASSWORD'] == 'Y'): ?>
+                                <div class="form-field">
+                                    <label class="label-checkbox-main">
+                                        <input type="checkbox" name="USER_REMEMBER" checked value="Y">
+                                        <div class="label-checkbox-main__checkmark"></div>
+                                        <span class="label-checkbox-main__title"><?=GetMessage('AUTH_FORM_REMEMBER_ME')?></span>
+                                    </label>
+                                </div>
+                            <? endif ?>
 
-              <div class="form-field text-center">
-                <a class="form-authentication__forgot-pass" href="<?=$arResult["AUTH_FORGOT_PASSWORD_URL"];?>">Забыли пароль?</a>
-              </div>
-              <div class="form-field d-flex justify-content-center">
-                <button class="btn btn_login"
-                        type="submit"
-                        name="Login" value="<?=GetMessage("AUTH_AUTHORIZE")?>">
-                  Вход
-                </button>
-              </div>
-              <div class="form-authentication__already text-center">У вас нет аккаунта?</div>
-              <div class="form-field text-center">
-                <a class="form-authentication__forgot-pass" href="<?= $arResult['AUTH_REGISTER_URL'];?>">Создать аккаунт</a>
-              </div>
-            </form>
-            <!--<div class="form-authentication__login-social-network">
-              <div class="form-authentication__login-social-network-heading">Войти с помощью:</div>
-              <div class="social-networks">
-                <a class="social-networks__item" href="#">
-                </a>
-                <a class="social-networks__item" href="#">
-                </a>
-                <a class="social-networks__item" href="#">
-                </a>
-                <a class="social-networks__item" href="#">
-                </a>
-              </div>
-            </div>-->
-          </div>
+                            <div class="form-field text-center">
+                                <a class="form-authentication__forgot-pass"
+                                   href="<?= $arResult["AUTH_FORGOT_PASSWORD_URL"]; ?>"><?=GetMessage('AUTH_FORGOT_PASSWORD')?></a>
+                            </div>
+                            <div class="form-field d-flex justify-content-center">
+                                <button class="btn btn_login"
+                                        type="submit"
+                                        name="Login" value="<?= GetMessage("AUTH_FORM_FIELD_SUBMIT") ?>">
+                                    <?=GetMessage('AUTH_FORM_LOGIN')?>
+                                </button>
+                            </div>
+                            <div class="form-authentication__already text-center"><?=GetMessage('AUTH_FORM_ACCOUNT')?></div>
+                            <div class="form-field text-center">
+                                <a class="form-authentication__forgot-pass" href="<?= (LANGUAGE_ID == 'ru') ? $arResult['AUTH_REGISTER_URL'] : SITE_DIR.'personal/auth/reg.php';?>">
+                                    <?=GetMessage('AUTH_FORM_ACCOUNT_CREATE')?>
+                                </a>
+                            </div>
+                        </form>
+                        <!--<div class="form-authentication__login-social-network">
+                          <div class="form-authentication__login-social-network-heading">Войти с помощью:</div>
+                          <div class="social-networks">
+                            <a class="social-networks__item" href="#">
+                            </a>
+                            <a class="social-networks__item" href="#">
+                            </a>
+                            <a class="social-networks__item" href="#">
+                            </a>
+                            <a class="social-networks__item" href="#">
+                            </a>
+                          </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-<?php/*
+
+<? php/*
 <div class="container my-5">
 <?if($arResult["AUTH_SERVICES"]):?>
 	<div class="bx-auth-title"><?echo GetMessage("AUTH_TITLE")?></div>
@@ -188,4 +196,4 @@ $APPLICATION->IncludeComponent("bitrix:socserv.auth.form", "",
 <?endif?>
 
 </div>
-*/?>
+*/ ?>

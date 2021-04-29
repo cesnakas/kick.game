@@ -399,7 +399,7 @@ if(isset($path[2]) && trim($path[2]) != '') {
 <?php
 $path = explode(SITE_DIR, trim($APPLICATION->GetCurPage()));
 
-if (isset($path[2]) && trim($path[2]) != '') {
+if (isset($path[2]) && trim($path[2]) != '') { // TODO: поменять на [3] с условием
     $arUser = getUser(trim($path[2]));
     //dump($arUser);
     $points = countPointsByUserID($arUser['ID']);

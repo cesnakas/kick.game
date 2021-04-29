@@ -1,2 +1,7 @@
 <?
-require($_SERVER['DOCUMENT_ROOT'].'/personal/.section.php');
+$sSectionName = "Personal Account";
+$arDirProperties = Array(
+    "description" => "Personal Account",
+    "keywords" => "Personal Account",
+    "TITLE" => "Personal Account"
+);

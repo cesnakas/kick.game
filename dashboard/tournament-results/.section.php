@@ -5,4 +5,3 @@ $arDirProperties = Array(
    "keywords" => "Tournament results",
    "TITLE" => "Tournament results"
 );
-?>

@@ -66,7 +66,7 @@ $arUrlRewrite = array(
         ),
     12 =>
         array(
-            'CONDITION' => '#^/tournaments/#',
+            'CONDITION' => '#^(/tournaments/|/en/tournaments/)#',
             'RULE' => '',
             'ID' => 'bitrix:news',
             'PATH' => '/tournaments/index.php',
