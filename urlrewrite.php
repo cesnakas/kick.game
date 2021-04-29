@@ -80,9 +80,9 @@ $arUrlRewrite = array(
             'PATH' => '/matches/index.php',
             'SORT' => 100,
         ),
-    17 =>
+    9 =>
         array(
-            'CONDITION' => '#^/players/#',
+            'CONDITION' => '#^(/players/|/en/players/)#',
             'RULE' => '',
             'ID' => 'bitrix:news',
             'PATH' => '/players/index.php',
@@ -96,9 +96,9 @@ $arUrlRewrite = array(
             'PATH' => '/matchi/index.php',
             'SORT' => 100,
         ),
-    18 =>
+    10 =>
         array(
-            'CONDITION' => '#^/teams/#',
+            'CONDITION' => '#^(/teams/|/en/teams/)#',
             'RULE' => '',
             'ID' => 'bitrix:news',
             'PATH' => '/teams/index.php',
