@@ -135,10 +135,13 @@ function showPlayers()
     }
 
     $nav->setRecordCount($count_zap);
-    $APPLICATION->IncludeComponent("bitrix:main.pagenavigation", ".default", array(
-        "NAV_OBJECT" => $nav,
-        "SEF_MODE" => "N",
-    ),
+    $APPLICATION->IncludeComponent(
+        "bitrix:main.pagenavigation",
+        ".default",
+        array(
+            "NAV_OBJECT" => $nav,
+            "SEF_MODE" => "N",
+        ),
         false
     );
 }
@@ -397,13 +400,14 @@ if(isset($path[2]) && trim($path[2]) != '') {
 */ ?>
 
 <?php
-$path = explode(SITE_DIR, trim($APPLICATION->GetCurPage()));
+$path = explode('/', trim($APPLICATION->GetCurPage()) );
 
-if (isset($path[2]) && trim($path[2]) != '') { // TODO: поменять на [3] с условием
-    $arUser = getUser(trim($path[2]));
+if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) != '') {
+    $arUser = (LANGUAGE_ID == 'ru') ? getUser(trim($path[2])) : getUser(trim($path[3]));
     //dump($arUser);
     $points = countPointsByUserID($arUser['ID']);
     ?>
+
     <section class="profile">
         <div class="container">
             <div class="row justify-content-center">
@@ -471,7 +475,7 @@ if (isset($path[2]) && trim($path[2]) != '') { // TODO: поменять на [3
                                     <div><?php
                                         if ($arUser['UF_ID_TEAM'] + 0) {
                                             $team = getTeamById($arUser['UF_ID_TEAM'] + 0);
-                                            echo '<a href="'.SITE_DIR.'teams/' . $team['ID'] . '/">' . $team['NAME'] . '</a>';
+                                            echo '<a href="'.SITE_DIR.'teams/'.$team['ID'].'/">'.$team['NAME'].'</a>';
                                         }
                                         ?></div>
                                 </div>
@@ -495,13 +499,13 @@ if (isset($path[2]) && trim($path[2]) != '') { // TODO: поменять на [3
             </div>
         </div>
     </section>
-<?php } else { ?>
-    <section class="py-10">
 
+<? } else { ?>
+
+    <section class="py-10">
         <div class="container">
             <h1 class="core-team__heading"><?=GetMessage('PLAYERS_TITLE')?></h1>
         </div>
-
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-12">
@@ -512,8 +516,6 @@ if (isset($path[2]) && trim($path[2]) != '') { // TODO: поменять на [3
                 </div>
             </div>
         </div>
-
-
         <div class="container">
             <div class="core-team">
                 <div class="flex-table">
@@ -533,6 +535,7 @@ if (isset($path[2]) && trim($path[2]) != '') { // TODO: поменять на [3
             </div>
         </div>
     </section>
+
 <?php } ?>
 
 <?

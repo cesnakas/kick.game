@@ -1,6 +1,6 @@
 <?
 $MESS['GSP_BACK'] = 'Back';
-
+$MESS['GSP_TAKE_PART'] = 'Take part';
 $MESS['GSP_BTN_UPDATE_TEAM'] = 'Update team';
 $MESS['GSP_BTN_UPDATE_TEAM_LABEL'] = 'Slot No.';
 $MESS['GSP_HEADLINE'] = 'KICKGAME Scrims';

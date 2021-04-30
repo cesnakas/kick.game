@@ -192,7 +192,7 @@ function isPlace($idMatch)
     return true;
 }
 
-$btnValue = "Принять участие";
+$btnValue = GetMessage('GSP_TAKE_PART');
 ?>
 
     <div class="container">
