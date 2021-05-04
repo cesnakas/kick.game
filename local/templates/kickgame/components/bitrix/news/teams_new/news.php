@@ -87,7 +87,7 @@ $arUser = $rsUser->Fetch();
         <div class="col-lg-10 col-md-12">
             <div class="layout__content-anons text-center">
                 <a class="btn btn_auth btn_border"><?=GetMessage('TEAMS_BTN_TEAMS_LIST')?></a>
-                <a class="btn btn_auth" href="<?=SITE_DIR?>players/"><?=GetMessage('TEAMS_BTN_PLAYERS_LIST')?></a>
+                <a class="btn btn_auth btn_border" href="<?=SITE_DIR?>players/"><?=GetMessage('TEAMS_BTN_PLAYERS_LIST')?></a>
             </div>
         </div>
     </div>

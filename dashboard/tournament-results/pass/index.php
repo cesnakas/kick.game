@@ -372,7 +372,13 @@ if (!empty($teamIds)) {
                 <input type="checkbox" <?php if(isset($passedTeams[$teamRank['team']['ID']])) echo "checked" ?>  name="idPass[]" value="<?php echo $teamRank['team']['ID'] ;?>">
             </th>
             <td><?php echo $rank ?></td>
-            <td><a href="/teams/<?php echo $teamRank['team']['ID'];?>/" class="match-participants__team-link"><?php echo $teamRank['team']['NAME']; ?> [<?php echo $teamRank['team']["TAG_TEAM"]['VALUE']; ?>]</a></td>
+            <td>
+                <?php if(isset($teamRank['team'])) { ?>
+                    <a href="/teams/<?php echo $teamRank['team']['ID'];?>/" class="match-participants__team-link"><?php echo $teamRank['team']['NAME']; ?> [<?php echo $teamRank['team']["TAG_TEAM"]['VALUE']; ?>]</a>
+                <?php } else {
+                    echo "Команда удалена";
+                }?>
+            </td>
             <td> <?php echo $teamRank['wwcd'] ?></td>
             <td> <?php echo $teamRank['kills'] ?></td>
             <td> <?php echo $teamRank['place'] ?></td>

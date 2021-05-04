@@ -6,9 +6,68 @@ if (!empty($teamID)) {
     $arrResultTeam = getTeamById($teamID);
 }
 
-function countPointsByUserID($userID)
+function getUserGames($userId) {
+GLOBAL $DB;
+$sql = "SELECT DISTINCT id1, MATCH_ID, USER_ID FROM b_squad_member_result as t
+        INNER JOIN 
+        (SELECT m.IBLOCK_ELEMENT_ID as id1, m2.IBLOCK_ELEMENT_ID as id2, m3.IBLOCK_ELEMENT_ID as id3 FROM b_iblock_element_prop_s3 as m
+        INNER JOIN b_iblock_element_prop_s3 as m2 ON m2.PROPERTY_8 = m.IBLOCK_ELEMENT_ID
+        INNER JOIN b_iblock_element_prop_s3 as m3 ON m3.PROPERTY_8 = m2.IBLOCK_ELEMENT_ID
+        WHERE m.PROPERTY_8 IS NULL) as r1 ON t.MATCH_ID IN(r1.id1, r1.id2, r1.id3)
+        WHERE USER_ID =".$userId;
+    $res = $DB->Query($sql);
+    $ids = [];
+    while( $row = $res->Fetch() ) {
+        $ids[] = $row["id1"];
+    }
+    return $ids;
+}
+
+
+function getQtyPlayedGames($teamId)
 {
-    global $DB;
+    GLOBAL $DB;
+    $sql = 'SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
+      FROM  b_user as u 
+            LEFT JOIN (SELECT t.USER_ID, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
+            LEFT JOIN b_uts_user AS r ON r.VALUE_ID = u.ID
+            INNER JOIN b_user_group AS g ON g.USER_ID = u.ID 
+            AND g.GROUP_ID = 7
+            WHERE r.UF_ID_TEAM = '.$teamId;
+
+    $res = $DB->Query($sql);
+    $players = [];
+    while( $row = $res->Fetch() ) {
+        $players[ $row['ID'] ] = [ 'kills' => $row['kills'],
+            'total' => $row['total'],
+            'ID' => $row['ID'],
+            'login' => $row['LOGIN'],
+            'count_matches' => '',
+            'photo' => $row['PERSONAL_PHOTO']
+        ];
+    }
+
+    $sql = 'SELECT t.USER_ID, count(DISTINCT r1.id1) as count_matches  FROM b_squad_member_result as t
+        INNER JOIN 
+        (SELECT m.IBLOCK_ELEMENT_ID as id1, m2.IBLOCK_ELEMENT_ID as id2, m3.IBLOCK_ELEMENT_ID as id3 FROM b_iblock_element_prop_s3 as m
+        INNER JOIN b_iblock_element_prop_s3 as m2 ON m2.PROPERTY_8 = m.IBLOCK_ELEMENT_ID
+        INNER JOIN b_iblock_element_prop_s3 as m3 ON m3.PROPERTY_8 = m2.IBLOCK_ELEMENT_ID
+        WHERE m.PROPERTY_8 IS NULL) as r1 ON t.MATCH_ID IN(r1.id1, r1.id2, r1.id3)
+        INNER JOIN b_uts_user as u ON u.VALUE_ID = t.USER_ID
+        AND u.UF_ID_TEAM = '.$teamId.' 
+        GROUP BY t.USER_ID';
+
+    $res = $DB->Query($sql);
+
+    while( $row = $res->Fetch() ) {
+        $players[ $row['USER_ID'] ]['count_matches'] = $row['count_matches'];
+    }
+
+    return $players;
+
+}
+function countPointsByUserID( $userID ){
+    GLOBAL $DB;
     $userID += 0;
     if ($userID) {
         $sql = 'SELECT  sum(t.TOTAL) AS total, sum(t.KILLS) AS kills
@@ -801,34 +860,94 @@ if (isset($_SESSION['alert_success'])) { ?>
 <?php }
 unset($_SESSION['alert_error']);
 ?>
-    <section class="profile">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-11 col-md-12">
-                    <div class="profile__avatar-bg">
-                        <div class="profile__avatar"
-                            <?php if (!empty($arUser["PERSONAL_PHOTO"])) { ?>
-                                style="background-image: url(<?php echo CFile::GetPath($arUser["PERSONAL_PHOTO"]); ?>)"
-                            <?php } else { ?>
-                                style="background-image: url(<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/default-avatar.svg)"
-                            <?php } ?>>
-                            <div class="profile__avatar-rating-bg">
-                                <div class="profile__avatar-rating">
-                                    <?php if (!$arUser['UF_RATING']) { ?>
-                                        300
-                                    <?php } else { ?>
-                                        <?php echo $arUser['UF_RATING']; ?>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="profile-info">
-                        <div class="row profile-info__row align-items-center ">
-                            <div class="col-md-3 profile-info__item">
-                                <div class="profile-info__type-account">
-                                    <?php
-                                    $resultPrem = isPrem($arUser['UF_DATE_PREM_EXP']);
+  <section class="profile">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-11 col-md-12">
+          <div class="profile__avatar-bg">
+            <div class="profile__avatar"
+                <?php if (!empty($arUser["PERSONAL_PHOTO"])) { ?>
+                  style="background-image: url(<?php echo CFile::GetPath($arUser["PERSONAL_PHOTO"]); ?>)"
+                <?php } else { ?>
+                  style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
+                <?php } ?>>
+              <div class="profile__avatar-rating-bg">
+                <div class="profile__avatar-rating">
+
+                        <?php echo getUserRating($arUser['ID']);?>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="profile-info">
+            <div class="row profile-info__row align-items-center ">
+              <div class="col-md-3 profile-info__item">
+                <div class="profile-info__type-account">
+                  <?
+                  $resultPrem = isPrem($arUser['UF_DATE_PREM_EXP']);
+
+                  $userId = $arUser["ID"];
+                  $userGroups = CUser::GetUserGroup($userId);
+                  $productGroups = array();$productName = ""; $productGroup = 0;
+                  $res = CIBlockElement::GetList(
+                      array(),
+                      array(
+                          "IBLOCK_CODE" => "tovari"
+                      ),
+                      false,
+                      false,
+                      array(
+                          "ID",
+                          "IBLOCK_ID",
+                          "PROPERTY_USER_GROUP",
+                          "NAME",
+                      )
+                  );
+
+                  while($element = $res->Fetch())
+                  {
+
+                      if($element["PROPERTY_USER_GROUP_VALUE"])
+                      {
+                          $productGroups[$element["PROPERTY_USER_GROUP_VALUE"]] = $element["NAME"];
+                      }
+                  }
+                  foreach ($userGroups as $k => $v)
+                  {
+                      if($productGroups[$v])
+                      {
+                          $productName = $productGroups[$v];
+                          $productGroup = $v;
+                          break;
+                      }
+                  }
+                  $resultPrem = 0;
+
+                  if($productGroup)
+                  {
+                      $res = CUser::GetUserGroupList($userId);
+                      while ($group = $res->Fetch())
+                      {
+                          if($group["GROUP_ID"] == $productGroup)
+                          {
+
+
+
+                              if (!$group["DATE_ACTIVE_TO"]) {
+                                  $resultPrem = isPrem($arUser['UF_DATE_PREM_EXP']);
+                              } else {
+                                  $now = date('d.m.Y');
+                                  $dateInsert = DateTime::createFromFormat("d.m.Y H:i:s", $group["DATE_ACTIVE_TO"]);
+                                  $origin = new DateTime($now);
+                                  $target = new DateTime($dateInsert->format('d.m.Y'));
+                                  $interval = $origin->diff($target);
+                                  $resultPrem =  $interval->format('%R%a')+0;
+                              }
+                              break;
+                          }
+                      }
+                  }
 
                                     if ($resultPrem <= 0) { ?>
                                         <div class="profile-info__type-account-icon profile-info__type-account-icon_base">
@@ -1374,8 +1493,8 @@ if (!empty($newMatchIds)) {
                 <span>
                   <div class="core-team__user">
                     <div class="core-team__user-avatar"
-                         <?php if (!empty($player["PERSONAL_PHOTO"])) { ?>
-                             style="background-image: url(<?php echo CFile::GetPath($player["PERSONAL_PHOTO"]); ?>)"
+                         <?php if (!empty($player["photo"])) { ?>
+                           style="background-image: url(<?php echo CFile::GetPath($player["photo"]); ?>)"
                          <?php } else { ?>
                              style="background-image: url(<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/default-avatar.svg)"
                          <?php } ?>>

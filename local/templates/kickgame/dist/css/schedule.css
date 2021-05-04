@@ -170,11 +170,54 @@
         display: none !important;
     }
 
+    .flex-table-new [class^=flex-table--] {
+        align-items: center
+    }
+
+    .desktop-btn {
+        justify-content: left !important;
+    }
 
 }
 
+.desktop-btn {
+    justify-content: space-around;
+}
+
+.btn-disabled {
+    font-family: "CeraProMedium";
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 11px 28px;
+    /* Neutral 400 */
+    background: #3D3667;
+    border: none;
+    border-radius: 4px;
+    /* Button */
+    font-size: 14px;
+
+    line-height: 18px;
+    /* identical to box height, or 129% */
+
+    /* Neutral 300 */
+    color: #5F5A82;
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 10px;
+
+}
 
 @media (max-width:768px) {
+
+    .new-game-schedule__icon-type-game {
+        width: 40px !important;
+        height: 34px !important;
+    }
 
     .game-qty {
         position: relative;
@@ -269,8 +312,8 @@
 }
 
 .new-game-schedule__icon-type-game {
-    width: 40px;
-    height: 34px;
+    width: 48px;
+    height: 40px;
     background: -o-linear-gradient(330.64deg, rgba(255, 255, 255, .4) 0, rgba(255, 255, 255, 0) 100%);
     background: linear-gradient(119.36deg, rgba(255, 255, 255, .4) 0, rgba(255, 255, 255, 0) 100%);
     -webkit-backdrop-filter: blur(6px);
@@ -411,4 +454,9 @@
 
 .color-custom-game {
     color: #00da5b
+}
+
+.premium-message {
+    color: #5F5A82;
+    margin: 15px;
 }

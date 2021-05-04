@@ -13,12 +13,24 @@ function OnAfterUserAddHandler(&$arFields)
         {
             $arGroups = CUser::GetUserGroup($arFields["ID"]);
             $arGroups[] = 7; //То добаляем пользователя в группу c ID7
+            //тариф Стандарт на 14 дней
+            $arGroups[] = array(
+                "GROUP_ID" => 10,
+                "DATE_ACTIVE_FROM" => date("d.m.Y 00:00:00"),
+                "DATE_ACTIVE_TO" => date("d.m.Y 00:00:00", strtotime("+" . 14 . " day"))
+            );
             CUser::SetUserGroup($arFields["ID"], $arGroups);
         }
         else
         {
             $arGroups = CUser::GetUserGroup($arFields["ID"]);
             $arGroups[] = 5; //Иначе в группу c ID5
+            //тариф Стандарт на 14 дней
+            $arGroups[] = array(
+                "GROUP_ID" => 10,
+                "DATE_ACTIVE_FROM" => date("d.m.Y 00:00:00"),
+                "DATE_ACTIVE_TO" => date("d.m.Y 00:00:00", strtotime("+" . 14 . " day"))
+            );
             CUser::SetUserGroup($arFields["ID"], $arGroups);
         }
     }

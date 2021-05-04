@@ -6,7 +6,28 @@ define("NOT_CHECK_PERMISSIONS", true);
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
 CModule::IncludeModule('iblock');
 
-if (isset($_POST['create_match'])) {
+function getMatchesByDate($date, $minRating, $maxRating) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array(
+        "IBLOCK_ID" =>3,
+        "PROPERTY_PREV_MATCH" => false,
+        "PROPERTY_TYPE_MATCH" => 6,
+        "PROPERTY_MIN_RATING" => $minRating,
+        "PROPERTY_MAX_RATING" => $maxRating,
+        "PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD HH:MI:SS"),
+        //  "<=PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD")." 23:59:59",
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $output = [];
+
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        //$arProps = $ob->GetProperties();
+        $output[] = $arFields;
+    }
+    return $output;
+}
 
   function makeUID($PROP, $level)
   {
@@ -86,11 +107,15 @@ if (isset($_POST['create_match'])) {
       }
   }
 
+if (isset($_POST['create_match'])) {
 
     $PROP = [];
 
+    $PROP["GROUP"] = chr(65 + count(getMatchesByDate($_POST['date_time_match'], $_POST['minRating'],$_POST['maxRating'])));
     $PROP['TOURNAMENT'] = false;
     $PROP['DATE_START'] = $_POST['date_time_match'];
+    $PROP['MIN_RATING'] = $_POST['minRating'];
+    $PROP['MAX_RATING'] = $_POST['maxRating'];
     $PROP['URL_STREAM'] = false;
     $PROP['PUBG_LOBBY_ID'] = false;
     $PROP['COUTN_TEAMS'] = 4;
@@ -101,8 +126,9 @@ if (isset($_POST['create_match'])) {
   $countChainMatches = 3;
   $matchDuration = 40; // 30 min
     $resIds = [];
-  $resId = createMatchItem($PROP, 1);
-
+    if($_POST['minRating'] <= $_POST['maxRating']) {
+        $resId = createMatchItem($PROP, 1);
+    }
   if ($resId+0 > 0 ) {
     $resIds[] = $resId;
     $countChainMatches--;
@@ -138,7 +164,13 @@ if (isset($_POST['create_match'])) {
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-  <? } ?>
+  <? } else if(isset($_POST['create_match'])){ ?>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <h4 class="alert-heading">Something went wrong!</h4>
+      <p>Минимальный рейтинг не может превышать максимальный!</p>
+      <hr>
+      </div>
+      <? } ?>
     <h2>Создать цепочку матчей</h2>
     <div class="container">
         <div class="row">
@@ -148,7 +180,14 @@ if (isset($_POST['create_match'])) {
                 <label for="datetimepicker2" class="form-label">Введите дату и время матча</label>
                 <input type='text' class="form-control" name="date_time_match" value="" id="datetimepicker2" />
               </div>
-
+                <div class="form-group">
+                    <label for="minRating" class="form-label">Введите минимальный рейтинг</label>
+                    <input type='text' class="form-control" name="minRating" value="" id="minRating" />
+                </div>
+                <div class="form-group">
+                    <label for="maxRating" class="form-label">Введите максимальный рейтинг</label>
+                    <input type='text' class="form-control" name="maxRating" value="" id="maxRating" />
+                </div>
               <button type="submit" name="create_match" class="btn btn-primary">Отправить</button>
             </form>
           </div>

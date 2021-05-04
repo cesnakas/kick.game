@@ -9,9 +9,96 @@ $teamID = $arUser['UF_ID_TEAM'];
 $redirectUrlAction = false;
 $alertManagementTeam = '';
 
-function countPointsByUserID($userID)
+
+function getRating($arResult)
 {
     global $DB;
+    $sql = 'SELECT t.PROPERTY_15 AS teamID, sum(t.PROPERTY_18) AS total, sum(t.PROPERTY_17) AS kills
+      FROM b_iblock_element_prop_s5 AS t 
+      INNER JOIN b_iblock_element_prop_s3 AS m ON t.PROPERTY_14 = m.IBLOCK_ELEMENT_ID
+      WHERE m.PROPERTY_23 = 6 AND t.PROPERTY_15 = '.$arResult['ID'].' 
+      GROUP BY t.PROPERTY_15';
+    $res = $DB->Query($sql);
+    if( $row = $res->Fetch()  ) {
+        //$row['total'] = empty($arResult['PROPERTIES']['RATING']) ? $row['total']+0 + 300 :$row['total']+0 + $arResult['PROPERTIES']['RATING']+0;
+        //if()
+        $row['total'] = empty($arResult['RATING']["VALUE"]) ? $row['total'] + 300 : $row['total'] + ceil($arResult['RATING']["VALUE"]);
+        return $row['total'];
+    }
+    return false;
+}
+
+function getRecruitsRating($recruitsIds){
+
+    GLOBAL $DB;
+    $sql = 'SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
+      FROM  b_user as u 
+            LEFT JOIN (SELECT t.USER_ID, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
+            LEFT JOIN b_uts_user AS r ON r.VALUE_ID = u.ID
+            INNER JOIN b_user_group AS g ON g.USER_ID = u.ID 
+            AND g.GROUP_ID = 7
+            WHERE u.ID IN('.implode(",",$recruitsIds).')
+            ORDER BY total DESC, kills DESC';
+
+    $res = $DB->Query($sql);
+    $players = [];
+    while( $row = $res->Fetch() ) {
+        $players[ $row['ID'] ] = [ 'kills' => $row['kills'],
+            'total' => $row['total'],
+            'ID' => $row['ID'],
+            'login' => $row['LOGIN'],
+            'count_matches' => '',
+            'photo' => $row['PERSONAL_PHOTO']
+        ];
+    }
+    return $players;
+}
+
+function getQtyPlayedGames($teamId)
+{
+    GLOBAL $DB;
+    $sql = 'SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
+      FROM  b_user as u 
+            LEFT JOIN (SELECT t.USER_ID, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
+            LEFT JOIN b_uts_user AS r ON r.VALUE_ID = u.ID
+            INNER JOIN b_user_group AS g ON g.USER_ID = u.ID 
+            AND g.GROUP_ID = 7
+            WHERE r.UF_ID_TEAM = '.$teamId;
+
+    $res = $DB->Query($sql);
+    $players = [];
+    while( $row = $res->Fetch() ) {
+        $players[ $row['ID'] ] = [ 'kills' => $row['kills'],
+            'total' => $row['total'],
+            'ID' => $row['ID'],
+            'login' => $row['LOGIN'],
+            'count_matches' => '',
+            'photo' => $row['PERSONAL_PHOTO']
+        ];
+    }
+
+    $sql = 'SELECT t.USER_ID, count(DISTINCT r1.id1) as count_matches  FROM b_squad_member_result as t
+        INNER JOIN 
+        (SELECT m.IBLOCK_ELEMENT_ID as id1, m2.IBLOCK_ELEMENT_ID as id2, m3.IBLOCK_ELEMENT_ID as id3 FROM b_iblock_element_prop_s3 as m
+        INNER JOIN b_iblock_element_prop_s3 as m2 ON m2.PROPERTY_8 = m.IBLOCK_ELEMENT_ID
+        INNER JOIN b_iblock_element_prop_s3 as m3 ON m3.PROPERTY_8 = m2.IBLOCK_ELEMENT_ID
+        WHERE m.PROPERTY_8 IS NULL) as r1 ON t.MATCH_ID IN(r1.id1, r1.id2, r1.id3)
+        INNER JOIN b_uts_user as u ON u.VALUE_ID = t.USER_ID
+        AND u.UF_ID_TEAM = '.$teamId.' 
+        GROUP BY t.USER_ID';
+
+    $res = $DB->Query($sql);
+
+    while( $row = $res->Fetch() ) {
+        $players[ $row['USER_ID'] ]['count_matches'] = $row['count_matches'];
+    }
+
+    return $players;
+
+}
+
+function countPointsByUserID( $userID ){
+    GLOBAL $DB;
     $userID += 0;
     if ($userID) {
         $sql = 'SELECT  sum(t.TOTAL) AS total, sum(t.KILLS) AS kills
@@ -75,6 +162,37 @@ function updateTeam($props = [], $idTeam)
 
 }
 
+function getUserById($id)
+{
+        $filter = Array("GROUPS_ID" => Array(7), 'ID' => $id);
+        $arParams["SELECT"] = array("UF_*");
+        $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, $arParams);
+        $output = false;
+        if ($rsUser = $elementsResult->Fetch())
+        {
+            $output = $rsUser;
+        }
+        return $output;
+
+}
+
+function updateCaptain($props = [], $idTeam)
+{
+    dump($idTeam);
+    CIBlockElement::SetPropertyValuesEx($idTeam, 1, $props, false);
+}
+
+function deactivateTeam($idTeam)
+{
+    $el = new CIBlockElement;
+
+    $arLoadProductArray = array(
+        "ACTIVE" => "N"
+    );
+    $el->Update($idTeam, $arLoadProductArray);
+
+}
+
 if (isset($_REQUEST['updateTeam']) && check_bitrix_sessid()) {
 
     $PROP = [];
@@ -97,19 +215,100 @@ if (isset($_REQUEST['updateTeam']) && check_bitrix_sessid()) {
         $alertUpdateTeam = 'Ошибка, команда не обновлена';
         createSession('management-players_error', $alertUpdateTeam);
     }
-    $redirectUrlAction = SITE_DIR . 'management-compositional/';
+    $redirectUrlAction = SITE_DIR.'management-compositional/';
+
+}
+
+if(check_bitrix_sessid() && isset($_REQUEST['btn_chg_cap'])) {
+    if (count($_POST['delete_player_from_team'])==1) {
+        $teamIdPost = $_POST['team_id']+0;
+        $userIds = $_POST['delete_player_from_team'];
+        foreach ($userIds as $userId) {
+            $PROP["AUTHOR"] = $userId+0;
+            updateCaptain($PROP, $teamID+0);
+        }
+        createSession('team_success', 'Ты успешно передал права капитана');
+        LocalRedirect(SITE_DIR."personal/");
+    } else {
+        $alertManagementSquad = 'Ошибка при выборе нового капитана';
+        createSession('management-players_error', $alertManagementSquad);
+        $redirectUrlAction = SITE_DIR.'management-compositional/';
+    }
+}
+
+
+if(check_bitrix_sessid() && isset($_REQUEST['btn_drop_team'])) {
+    if (!empty($teamID)) {
+        $coreTeam = getCoreTeam($teamID);
+        $recruits = getRecruitTeam($teamID);
+        $squadsCount = count(getSquadByIdTeam($teamID));
+    }
+    if(count($coreTeam) == 1 && $squadsCount == 0){
+
+
+    foreach ($recruits as $recruit){
+        updateFieldUserbyId($recruit["ID"]+0, $fields= array("UF_REQUEST_ID_TEAM" => null));
+    }
+
+        updateFieldUserbyId($userID, $fields= array("UF_ID_TEAM" => null));
+        $PROP["AUTHOR"] = "";
+        updateCaptain($PROP, $teamID);
+        deactivateTeam($teamID);
+
+    createSession('team_success', 'Ты успешно распустил свой состав');
+    LocalRedirect("/personal/");
+    } else {
+        $br = "";
+        if(count($coreTeam) > 1){
+            $alertManagementSquad = 'Ты не можешь распустить команду пока не удалил всех игроков';
+            $br = "<br>";
+        }
+
+        if($squadsCount > 0){
+            $alertManagementSquad = $alertManagementSquad . $br .'Ты не можешь распустить команду пока не снял ee с предстоящих матчей';
+        }
+
+
+        createSession('management-players_error', $alertManagementSquad);
+        $redirectUrlAction = '/management-compositional/';
+    }
 
 }
 
 if (check_bitrix_sessid() && isset($_REQUEST['btn_delete'])) {
     if (!empty($_POST['delete_player_from_team'])) {
         $userIds = $_POST['delete_player_from_team'];
+        $success = [];
+        $alerts = [];
+        dump( $teamID);
+
         foreach ($userIds as $userId) {
-            updateFieldUserbyId($userId + 0, $fields = array("UF_ID_TEAM" => null));
+            $user = getUserById($userId);
+            if(count(getSquadByIdPlayer($teamID, $userId)) == 0){
+                updateFieldUserbyId($userId+0, $fields= array("UF_ID_TEAM" => null));
+                $success[] = $user["LOGIN"];
+            } else {
+                $alerts[] = $user["LOGIN"];
+            }
         }
-        $alertManagementTeam = 'Игрок успешно удален из команды';
-        createSession('management-players_success', $alertManagementTeam);
-        $redirectUrlAction = SITE_DIR . 'management-compositional/';
+
+        $br = "";
+        if(count($success)>0){
+        foreach ($success as $succ){
+            $successManagementTeam = $successManagementTeam . $br . "<h style='color: #FFE500;'>". $succ . "</h>" . ' успешно удален из команды';
+            $br = "<br>";
+        }
+        createSession('management-players_success', $successManagementTeam);
+        }
+        $br = "";
+        if(count($alerts)>0) {
+            foreach ($alerts as $alert) {
+                $alertManagementTeam = $alertManagementTeam . $br . "<h style='color: #ffe500;'>" . $alert . "</h>" . ' записан на предстоящий матч. Снимите его с участия прежде чем удалять его из команды';
+                $br = "<br>";
+            }
+            createSession('management-players_error', $alertManagementTeam);
+        }
+        $redirectUrlAction = '/management-compositional/';
     }
 }
 
@@ -155,6 +354,22 @@ function updateFieldUserbyId($userId, $fields = [])
     }
 }
 
+function getSquadByIdTeam($idTeam)
+{
+    GLOBAL $DB;
+    $sql = 'SELECT s.PROPERTY_27, s.PROPERTY_28, m.PROPERTY_4 FROM b_iblock_element_prop_s6 as s  
+                    INNER JOIN b_iblock_element_prop_s3 as m ON m.IBLOCK_ELEMENT_ID = s.PROPERTY_27
+                    WHERE s.PROPERTY_28 ='.$idTeam.
+        ' AND UNIX_TIMESTAMP(m.PROPERTY_4) > UNIX_TIMESTAMP(CURTIME())';
+
+    $res = $DB->Query($sql);
+    $players = [];
+    while( $row = $res->Fetch() ) {
+        $players[] = $row;
+    }
+    return $players;
+}
+
 function isCaptain($idUser, $idTeam)
 {
     if ($idTeam) {
@@ -192,18 +407,27 @@ function getRecruitTeam($teamID)
     return $output;
 }
 
+$isCaptain = isCaptain($userID, $teamID);
+if(!$isCaptain) {
+    LocalRedirect(SITE_DIR."personal/");
+}
 
 if (!empty($teamID)) {
 
     $resTeam = getTeamById($teamID);
     $coreTeam = getCoreTeam($teamID);
-    $recruits = getRecruitTeam($teamID);
 
     if ($redirectUrlAction != false) {
         LocalRedirect($redirectUrlAction);
     }
-    ?>
-    <?php /* ?>
+
+    // капитан или нет
+
+    /*if(!$isCaptain) {
+        LocalRedirect("/personal/");
+    }*/
+?>
+  <?php /* ?>
 <div class="container my-5">
 
     <?php if ($resTeam['AUTHOR']["VALUE"] == $userID) {?>
@@ -314,23 +538,25 @@ if (!empty($teamID)) {
 
     ?>
     <?php
-    if (isset($_SESSION['management-players_success'])) { ?>
-        <div class="alert-container">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?php echo $_SESSION['management-players_success']; ?>
+
+    if(isset($_SESSION['management-players_success'])) { ?>
+        <div class="alert-container" style="position: relative !important; margin-bottom: 7px;">
+            <div class="alert alert-success alert-dismissible fade show"  role="alert">
+                <?php echo $_SESSION['management-players_success'];?>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
         <?php
-        unset($_SESSION['management-players_success']);
-    } else if (isset($_SESSION['management-players_error'])) { ?>
-        <div class="alert-container">
+    }
+    if(isset($_SESSION['management-players_error'])){ ?>
+        <div class="alert-container" style="position: relative !important;">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?php echo $_SESSION['management-players_error']; ?>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
     <?php }
+    unset($_SESSION['management-players_success']);
     unset($_SESSION['management-players_error']);
     ?>
     <section class="team py-8">
@@ -344,18 +570,17 @@ if (!empty($teamID)) {
                         <div class="team__logo" style="background-image: url(<?= CFile::GetPath($resTeam["LOGO_TEAM"]['VALUE']); ?>">
                             <div class="team__logo-rating-bg">
                                 <div class="team__logo-rating">
-                                    <?php if (empty($resTeam["RATING"]['VALUE'])) { ?>
-                                        300
-                                    <?php } else { ?>
-                                        <?php echo $resTeam["RATING"]['VALUE']; ?>
-                                    <?php } ?>
+
+                                    <?php
+                                    $ratingTeam = getRating($resTeam);
+                                    echo $ratingTeam != false ? $ratingTeam : 300;
+                                    ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="team-info">
-                        <h2 class="team-info__name"><?php echo $resTeam["NAME_TEAM"]['VALUE']; ?>
-                            [<?php echo $resTeam["TAG_TEAM"]['VALUE']; ?>]</h2>
+                        <h2 class="team-info__name"><?php echo $resTeam["NAME_TEAM"]['VALUE']; ?> [<?php echo $resTeam["TAG_TEAM"]['VALUE']; ?>]</h2>
                         <div class="team-info__description">
                             <?php echo $resTeam["DESCRIPTION_TEAM"]['VALUE']["TEXT"]; ?>
                         </div>
@@ -450,8 +675,13 @@ if (!empty($teamID)) {
                         </div>
                         <div class="flex-table--body">
                             <?php
-                            $players = getCoreTeam($teamID);
-                            $points = countPointsAllUsers();
+                            $players = getQtyPlayedGames($teamID);
+
+                            if($rec = getRecruitTeam($teamID)){
+                                $recruits = getRecruitsRating($rec);
+                            }
+
+                            //$points = countPointsAllUsers();
                             // ставим капитана на первое место
                             foreach ($players as $k => $player) {
                                 if ($resTeam['AUTHOR']["VALUE"] == $player['ID']) {
@@ -463,11 +693,11 @@ if (!empty($teamID)) {
                             <?php foreach ($players as $player) {
                                 $cntMatches = '..';
                                 $kills = '..';
-                                $total = '..';
-                                if (isset($points[$player['ID']])) {
-                                    $cntMatches = ceil($points[$player['ID']]['count_matches']);
-                                    $kills = ceil($points[$player['ID']]['kills']);
-                                    $total = ceil($points[$player['ID']]['total']);
+                                $total = ceil($player['total']);
+                                if( isset($player['kills']) ){
+                                    $cntMatches = ceil($player['count_matches']);
+                                    $kills = ceil($player['kills']);
+
                                 }
                                 ?>
                                 <div class="flex-table--row">
@@ -480,8 +710,8 @@ if (!empty($teamID)) {
                           </label>
                         <?php } ?>
                         <div class="core-team__user-avatar"
-                             <?php if (!empty($player["PERSONAL_PHOTO"])) { ?>
-                                 style="background-image: url(<?= CFile::GetPath($player["PERSONAL_PHOTO"]); ?>)"
+                             <?php if (!empty($player["photo"])) { ?>
+                                 style="background-image: url(<?php echo CFile::GetPath($player["photo"]); ?>)"
                              <?php } else { ?>
                                  style="background-image: url(<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/default-avatar.svg)"
                              <?php } ?>>
@@ -511,26 +741,32 @@ if (!empty($teamID)) {
                       <div class="core-team__param"><?=GetMessage('MC_TEAM_TOTAL')?></div>
                       <?php echo $total; ?>
                     </span>
-                                    <span class="core-team__param-wrap">
-                      <div class="core-team__param"><?=GetMessage('MC_TEAM_RATING')?></div>
-                      <?php if (!$player['UF_RATING']) { ?>
-                          300
-                      <?php } else { ?>
-                          <?php echo $player['UF_RATING']; ?>
-                      <?php } ?>
-                    </span>
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
                 </div>
-                <?php if (sizeof($players) > 1) { ?>
-                    <div class="core-team__btn">
-                        <button type="submit" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_delete"><i></i>
-                            <?=GetMessage('MC_TEAM_BTN_REMOVE')?>
-                        </button>
-                    </div>
+                <div class="row" style="justify-content: space-around">
+                <?php if(sizeof($players) > 1) { ?>
+
+
+                        <div class="core-team__btn">
+                            <button type="submit" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_delete"><i></i> <?=GetMessage('MC_TEAM_BTN_REMOVE')?></button>
+                        </div>
+
+                        <div class="core-team__btn">
+                            <button type="submit" class="btn-icon btn-icon_check" name="btn_chg_cap"><i></i> Передать права капитана</button>
+                        </div>
+
+
+
+
+
                 <?php } ?>
+                <div class="core-team__btn">
+                    <button type="submit" onclick="if (!confirm('Ты собираешься удалить команду, ты уверен?')) return false" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_drop_team"><i></i> Распустить состав</button>
+                </div>
+                    </div>
             </form>
         </div>
     </section>
@@ -556,11 +792,10 @@ if (!empty($teamID)) {
                                 <?php foreach ($recruits as $recruit) {
                                     $cntMatches = '..';
                                     $kills = '..';
-                                    $total = '..';
-                                    if (isset($points[$recruit['ID']])) {
-                                        $cntMatches = ceil($points[$recruit['ID']]['count_matches']);
-                                        $kills = ceil($points[$recruit['ID']]['kills']);
-                                        $total = ceil($points[$recruit['ID']]['total']);
+                                    $total = ceil($recruit['total']);
+                                    if( isset($recruit['kills']) ){
+                                        $cntMatches = ceil($recruit['count_matches']);
+                                        $kills = ceil($recruit['kills']);
                                     }
                                     ?>
 
@@ -572,8 +807,8 @@ if (!empty($teamID)) {
                           <div class="label-checkbox__checkmark"></div>
                         </label>
                         <div class="core-team__user-avatar"
-                             <?php if (!empty($recruit["PERSONAL_PHOTO"])) { ?>
-                                 style="background-image: url(<?php echo CFile::GetPath($recruit["PERSONAL_PHOTO"]); ?>)"
+                             <?php if (!empty($recruit["photo"])) { ?>
+                                 style="background-image: url(<?php echo CFile::GetPath($recruit["photo"]); ?>)"
                              <?php } else { ?>
                                  style="background-image: url(<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/default-avatar.svg)"
                              <?php } ?>>
@@ -591,12 +826,8 @@ if (!empty($teamID)) {
                       <?php echo $kills; ?>
                     </span>
                                         <span class="core-team__param-wrap">
-                      <div class="core-team__param"><?=GetMessage('MC_TEAM_TOTAL')?></div>
-                      <?php echo $total; ?>
-                    </span>
-                                        <span class="core-team__param-wrap">
                       <div class="core-team__param"><?=GetMessage('MC_TEAM_RATING')?></div>
-                      300
+                      <?php echo $total;?>
                     </span>
                                     </div>
                                 <?php } ?>
@@ -625,6 +856,145 @@ if (!empty($teamID)) {
     <?php } ?>
 <?php } ?>
 
-<?
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
+<?php
+    $matches = getMatchesByTeam($teamID);
+    //echo '<pre>'.print_r($matches,1).'</pre>';
+    $orfilerMatches = ['LOGIC' => 'OR'];
+    foreach( $matches as $matchID ){
+    $orfilerMatches[] = [ 'ID' => $matchID ];
+    }
+
+    if( count($matches) ){
+
+    ?>
+    <style>
+        .flex-table-new--body .btn-italic {
+            text-align:center;
+            display: block;
+        }
+        .game-schedule {
+            padding-top: 0;
+            padding-bottom: 30px;
+        }
+    </style>
+    <section class="game-schedule bg-blue-lighter">
+        <div class="container py-8">
+            <h2 class="game-schedule__heading text-center">Игры команды</h2>
+            <div class="game-schedule-table">
+                <div class="flex-table-new">
+                    <div class="flex-table--header bg-blue-lighter">
+                        <div class="flex-table--categories">
+                            <span>Тип игры</span>
+                            <span>Название</span>
+                            <span>Дата проведения</span>
+                            <span>Рейтинг</span>
+                            <span>Режим</span>
+                            <span>Комментатор</span>
+                        </div>
+                    </div>
+                    <div class="flex-table-new--body">
+                        <?php
+                        GLOBAL $arrFilterDateTime;
+                        $arrFilterDateTime=Array(
+                            $orfilerMatches,
+                            //'ID' => 2224,
+                            "ACTIVE" => "Y",
+                            //">=PROPERTY_DATE_START" => date('Y-m-d H:i:s', time()-3600),
+                            "PROPERTY_PREV_MATCH" => false,
+                            //"PROPERTY_STAGE_TOURNAMENT" => 4,
+                            //"!=PROPERTY_TOURNAMENT" => false, // турниры
+                            //"=PROPERTY_TOURNAMENT" => false, // праки
+                        );
+                        $APPLICATION->IncludeComponent(
+                            "bitrix:news.list",
+                            "game-schedule",
+                            array(
+                                "ACTIVE_DATE_FORMAT" => "d.m.Y",
+                                "ADD_SECTIONS_CHAIN" => "N",
+                                "AJAX_MODE" => "N",
+                                "AJAX_OPTION_ADDITIONAL" => "",
+                                "AJAX_OPTION_HISTORY" => "N",
+                                "AJAX_OPTION_JUMP" => "N",
+                                "AJAX_OPTION_STYLE" => "Y",
+                                "CACHE_FILTER" => "N",
+                                "CACHE_GROUPS" => "Y",
+                                "CACHE_TIME" => "36000000",
+                                "CACHE_TYPE" => "A",
+                                "CHECK_DATES" => "Y",
+                                "DETAIL_URL" => "/game-schedule/#ELEMENT_CODE#/",
+                                "DISPLAY_BOTTOM_PAGER" => "Y",
+                                "DISPLAY_DATE" => "Y",
+                                "DISPLAY_NAME" => "Y",
+                                "DISPLAY_PICTURE" => "Y",
+                                "DISPLAY_PREVIEW_TEXT" => "Y",
+                                "DISPLAY_TOP_PAGER" => "N",
+                                "FIELD_CODE" => array(
+                                    0 => "",
+                                    1 => "PROPERTY_TOURNAMENT.NAME",
+                                    2 => "PROPERTY_TOURNAMENT.DETAIL_PICTURE",
+                                    3 => "PROPERTY_STREAMER.NAME",
+                                    4 => "",
+                                ),
+                                "FILTER_NAME" => "arrFilterDateTime",
+                                "HIDE_LINK_WHEN_NO_DETAIL" => "N",
+                                "IBLOCK_ID" => "3",
+                                "IBLOCK_TYPE" => "matches",
+                                "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
+                                "INCLUDE_SUBSECTIONS" => "Y",
+                                "MESSAGE_404" => "",
+                                "NEWS_COUNT" => "3",
+                                "PAGER_BASE_LINK_ENABLE" => "N",
+                                "PAGER_DESC_NUMBERING" => "N",
+                                "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
+                                "PAGER_SHOW_ALL" => "N",
+                                "PAGER_SHOW_ALWAYS" => "N",
+                                "PAGER_TEMPLATE" => "ajax_pager",
+                                "PAGER_TITLE" => "Расписание игр",
+                                "PARENT_SECTION" => "",
+                                "PARENT_SECTION_CODE" => "",
+                                "PREVIEW_TRUNCATE_LEN" => "",
+                                "PROPERTY_CODE" => array(
+                                    0 => "PUBG_LOBBY_ID",
+                                    1 => "DATE_START",
+                                    2 => "TYPE_MATCH",
+                                    3 => "TOURNAMENT",
+                                    4 => "",
+                                ),
+                                "SET_BROWSER_TITLE" => "N",
+                                "SET_LAST_MODIFIED" => "N",
+                                "SET_META_DESCRIPTION" => "N",
+                                "SET_META_KEYWORDS" => "N",
+                                "SET_STATUS_404" => "Y",
+                                "SET_TITLE" => "N",
+                                "SHOW_404" => "Y",
+                                "SORT_BY1" => "PROPERTY_DATE_START",
+                                "SORT_BY2" => "SORT",
+                                "SORT_ORDER1" => "DESC",
+                                "SORT_ORDER2" => "DESC",
+                                "STRICT_SECTION_CHECK" => "N",
+                                "COMPONENT_TEMPLATE" => "game-schedule",
+                                "FILE_404" => ""
+                            ),
+                            false
+                        );
+                        ?>
+                    </div>
+                </div>
+                <!--div class="game-schedule-table__show-more">
+                  <div class="mt-3">
+                    <a href="/game-schedule/" class="btn">Поиск матча</a>
+                  </div>
+                </div-->
+            </div>
+        </div>
+    </section>
+<?php } else {
+
+    echo '<section class="game-schedule bg-blue-lighter"><div class="container">
+    <h2 class="game-schedule__heading text-center">Команда еще не имеет статистики по играм </h2>
+    </div></section>';
+
+} /* end count matches */
 ?>
+
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php"); ?>

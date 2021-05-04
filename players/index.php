@@ -105,8 +105,37 @@ function getPlayersList()
     return $players;
 }
 
-function showPlayers()
-{
+function searchPlayers($search = ""){
+    global $DB;
+    $search = trim(strip_tags($search));
+
+    $search = "WHERE r3.LOGIN LIKE '%". $search ."%' ";
+
+    $strSql = 'SELECT @rank:=0';
+    $rsData = $DB->Query($strSql);
+
+    $strSql = 'SELECT rank, r3.GROUP_ID, r3.LOGIN, r3.PERSONAL_PHOTO, r3.ID, count_matches, total, kills FROM (SELECT @rank:=@rank+1 as rank, r2.GROUP_ID, r2.LOGIN, r2.PERSONAL_PHOTO, r2.ID, count_matches, total, kills FROM (SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, count_matches, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
+			                FROM  b_user as u 
+                            LEFT JOIN (SELECT t.USER_ID, count(t.USER_ID) as count_matches, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
+                            LEFT JOIN b_uts_user AS r ON r.VALUE_ID = u.ID 
+                            INNER JOIN b_user_group AS g ON g.USER_ID = u.ID 
+                            AND g.GROUP_ID = 7 
+                            ORDER BY total DESC, kills DESC) as r2) as r3 
+                            ' . $search;
+    $rsData = $DB->Query($strSql);
+    $i = 0;
+
+    while($el = $rsData->fetch()){
+        $i+=1;
+        showRow($el, $el['rank']);
+    }
+    if($i == 0){
+        echo "По вашему запросу ничего не найдено";
+    }
+
+}
+
+function showPlayers(){
     global $DB;
     global $APPLICATION;
     //пагинация
@@ -421,11 +450,7 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
                             <?php } ?>>
                             <div class="profile__avatar-rating-bg">
                                 <div class="profile__avatar-rating">
-                                    <?php if (!$arUser['UF_RATING']) { ?>
-                                        300
-                                    <?php } else { ?>
-                                        <?php echo $arUser['UF_RATING']; ?>
-                                    <?php } ?>
+                                    <?php echo getUserRating($arUser["ID"]);?>
                                 </div>
                             </div>
                         </div>
@@ -499,13 +524,42 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
             </div>
         </div>
     </section>
+    <?php } else { ?>
 
-<? } else { ?>
-
-    <section class="py-10">
-        <div class="container">
-            <h1 class="core-team__heading"><?=GetMessage('PLAYERS_TITLE')?></h1>
+    <div class="container">
+        <h1 class="text-center"><?=GetMessage('PLAYERS_TITLE')?></h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                <div class="layout__content-anons text-center">
+                    Рейтинги KICKGAME - это система квалификации команд и игроков, которая позволяет устраивать игры с равными соперниками. Ты совершенствуешь свои навыки, получаешь опыт - и это не остаётся незамеченным. Твой навык имеет определяющее значение в победах на турнирах.
+                </div>
+            </div>
         </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-11 col-md-12">
+                <div class="rating">
+                    <form action="/players/" method="get">
+                        <div class="form-field">
+                            <label for="search-team" class="form-field__label">Никнейм игрока</label>
+                            <div class="form-field__with-btn">
+                                <?php
+                                $playerName = '';
+                                if( isset($_GET['playerName']) && $_GET['playerName'] != '' ){
+                                    $playerName = htmlspecialchars($_GET['playerName'], ENT_QUOTES, 'UTF-8');
+                                }
+                                ?>
+                                <input type="text" class="form-field__input" name="playerName" value="<?php echo $playerName;?>" autocomplete="off" id="search-team" placeholder="Введите никнейм игрока">
+                                <button class="btn" type="submit" name="">Найти игрока</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="pb-8">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-12">
@@ -529,7 +583,11 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
                         </div>
                     </div>
                     <div class="flex-table--body">
-                        <?php showPlayers(); ?>
+                        <?php   if( isset($_GET['playerName']) && $_GET['playerName'] != '' ){
+                            searchPlayers($_GET['playerName']);
+                        }else {
+                            showPlayers();
+                        }?>
                     </div>
                 </div>
             </div>

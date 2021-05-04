@@ -25,6 +25,12 @@ $(function () {
             location.href = "/dashboard?date=" + fd; // /news?date=2014-02-22
         }
     });
+    $('#calendarDashboardTournament').datepicker({
+
+        onSelect: function(fd, d, picker) {
+            location.href = "/dashboard/tournament-results?date=" + fd; // /news?date=2014-02-22
+        }
+    });
     /*
     function createNext(index) {
         

@@ -27,6 +27,11 @@ if (isset($_POST['UF_DATE_PREM_EXP'])) {
     $_POST['UF_DATE_PREM_EXP'] = $datePremExp;
     $_REQUEST['UF_DATE_PREM_EXP'] = $datePremExp;
 }
+if (!empty($_POST['REGISTER']['PERSONAL_PHONE'])) {
+	$_POST['REGISTER']['PERSONAL_PHONE'] = $_POST['full_number'];
+	$_REQUEST['REGISTER']['PERSONAL_PHONE'] = $_POST['full_number'];
+}
+
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Регистрация");
 
@@ -39,10 +44,12 @@ $APPLICATION->IncludeComponent(
 		"AUTH" => "Y",
 		"REQUIRED_FIELDS" => array(
 			0 => "EMAIL",
+			1 => "PERSONAL_PHONE",
 		),
 		"SET_TITLE" => "Y",
 		"SHOW_FIELDS" => array(
 			0 => "EMAIL",
+			1 => "PERSONAL_PHONE",
 		),
 		"SUCCESS_PAGE" => SITE_DIR.'personal/',
 		"USER_PROPERTY" => array(

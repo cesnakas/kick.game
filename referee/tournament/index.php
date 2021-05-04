@@ -3,9 +3,36 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Турнирный");
 CModule::IncludeModule('iblock');
 
+$success = [];
 // собираем все ошибки
 $errors = [];
 // create tournament
+
+function getTournaments() {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" => 7, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $tour = [];
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        $tour[] = array_merge($arFields, $arProps);
+    }
+    return $tour;
+}
+
+function getStagesTournament() {
+    $res = CIBlockPropertyEnum::GetList(Array("SORT"=>"ASC", "ID"=>"ASC"),[
+        "IBLOCK_ID" => 3,
+        "CODE" => "STAGE_TOURNAMENT"
+    ]);
+    $stages = [];
+    while ($stage = $res->Fetch()){
+        $stages[] = $stage["ID"];
+    }
+
+    return $stages;
+}
 
 function createTournament($PROP = [], $img)
 {
@@ -172,6 +199,19 @@ function createMatchChain($propsMatch, $countChainMatches, $startDateTime): arra
     return $resIds;
 }
 
+/**
+ * @return string[]
+ */
+function getModesMatch()
+{
+  return [
+      '4' => 'SQUAD',
+      '2' => 'DUO'
+  ];
+}
+
+$modesMatch = getModesMatch();
+
 
 if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
     $img = $_FILES['image'];
@@ -181,8 +221,12 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
     $props['ANONS'] = strip_tags($_POST['anonsTournament']);
     $props['DESCRIPTION'] = strip_tags($_POST['descriptionTournament']);
 
+    if($_POST["idTournament"] != "Укажите из списка"){
+        $tournamentId = $_POST["idTournament"] + 0;
+    } else {
+        $tournamentId = createTournament($props, $img);
+    }
 
-    $tournamentId = createTournament($props, $img);
     //$tournamentId = 876;
     // add winner next stage
 
@@ -212,12 +256,14 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
 
     $countCreatedMatches = [];
     if ($tournamentId) {
+        $stages = getStagesTournament();
+
         $propsMatch = [];
         $propsMatch['TOURNAMENT'] = $tournamentId;
         $propsMatch['DATE_START'] = $_POST['date_time_match'];
         $propsMatch['URL_STREAM'] = false;
         $propsMatch['PUBG_LOBBY_ID'] = false;
-        $propsMatch['COUTN_TEAMS'] = 4;
+        $propsMatch['COUTN_TEAMS'] = $_POST['modeMatch']+0;
         $propsMatch['PREV_MATCH'] =  false;
         //$propsMatch['STAGE_TOURNAMENT'] = 4; // id свойства
         $propsMatch['TYPE_MATCH'] = 5; // id свойства
@@ -271,7 +317,7 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
         $startDateTime = $_POST['date_time_match'];
         foreach ($chainMatrix as $stage => $params) {
             $propsMatch['STAGE_TOURNAMENT'] = $stage;
-
+            $propsMatch['KEY_STAGE_PASS'] = $stage == 7 ? "" : $tournamentId . "." . $stages[array_search($stage, $stages)+1];
             $countChainMatches = $params['chain'];
             for($i = 0; $i < $params['count']; $i++) {
 
@@ -284,6 +330,7 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
                 $resId = createMatchChain($propsMatch, $countChainMatches, $startDateTime);
                 //dump($resId);
                 //dump($countCreatedMatches);
+                $success[] = 'Турнирные матчи успешно созданы';
             }
 
         }
@@ -295,15 +342,16 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
     }
 
 }
+$tournaments = getTournaments();
 ?>
 <div class="container my-3">
     <?php
-    if(!empty($countCreatedMatches)) { ?>
+    if(!empty($success)) { ?>
       <div class="alert alert-success alert-dismissible fade show" role="alert">
         <h4 class="alert-heading">Well done!</h4>
-        <p>Создна цепочка из <strong><?php echo count($countCreatedMatches); ?></strong> элементов.</p>
-        <hr>
-        <p><a href="/dashboard/">Перейти в цепочку матчей</a></p>
+          <?php foreach ($success as $mes) { ?>
+            <p><strong><?php echo $mes; ?></strong></p>
+          <?php } ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -324,14 +372,54 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
   <h1>Создание сетки турнирных матчей</h1>
   <form name="formAddTournament" action="#" method="POST" enctype="multipart/form-data">
       <?=bitrix_sessid_post()?>
-    <div class="form-group">
-      <label for="nameTournament">Название турнира</label>
-      <input type="text" name="name" class="form-control" maxlength="255" id="nameTournament" value="">
-    </div>
+      <div class="row">
+          <div class="col-md-6">
+              <div class="form-group">
+                  <label for="nameTournament">Название турнира</label>
+                  <input type="text" name="name" class="form-control" maxlength="255" id="nameTournament" value="">
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="form-group">
+                  <label for="exampleFormControlSelect1">Выберите турнир</label>
+                  <select class="form-control" id="exampleFormControlSelect1" name="idTournament">
+                      <option>Укажите из списка</option>
+                      <?php foreach($tournaments as $tournament){ ?>
+
+                          <option value="<?php echo $tournament["ID"]; ?>"><?php echo $tournament["NAME"]; ?></option>
+
+                      <?php } ?>
+
+                  </select>
+              </div>
+          </div>
+      </div>
+
+
+
+
+<div class="row">
+  <div class="col-md-6">
     <div class="form-group">
       <label for="imgTournament">Картинка турнира</label>
       <input type="file" class="form-control-file" size="30" name="image" id="imgTournament" value="">
     </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="modeMatch">Выберите Режим</label>
+      <select class="form-control" id="modeMatch" name="modeMatch">
+          <?php foreach($modesMatch as $mode => $value){ ?>
+
+            <option value="<?php echo $mode; ?>"><?php echo $value; ?></option>
+
+          <?php } ?>
+
+      </select>
+    </div>
+  </div>
+</div>
+
     <div class="form-group">
       <label for="anonsTournament">Анонс турнира</label>
       <textarea name="anonsTournament" class="form-control" id="anonsTournament" rows="3"></textarea>

@@ -288,7 +288,7 @@ if( count( $points ) && !isset($_GET['teamname']) ){
     <div class="container">
         <div class="game-schedule-table">
             <div class="flex-table">
-                <div class="flex-table--header bg-blue-lighter">
+                <div class="flex-table--header bg-default">
                     <div class="flex-table--categories">
                         <span><?= GetMessage('GAME_SCHEDULE_TABLE_TEAM') ?></span>
                         <span><?= GetMessage('GAME_SCHEDULE_TABLE_POSITION') ?></span>
@@ -297,7 +297,13 @@ if( count( $points ) && !isset($_GET['teamname']) ){
                     </div>
                 </div>
                 <div class="flex-table--body">
-                    <?php showTeams(); ?>
+                    <?php
+
+                    if( isset($_GET['teamname']) && $_GET['teamname'] != '' ){
+                        searchTeams($_GET['teamname']);
+                    }else{
+                        showTeams();
+                    } ?>
                 </div>
             </div>
         </div>

@@ -14,7 +14,12 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 $this->setFrameMode(true);
 //dump($_GET['arrFilterDateTime_pf']['TYPE_MATCH']);
 ?>
-
+<style>
+    .flex-table-new--body .btn-italic{
+    text-align:center;
+        display: block;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col-lg-3 col-md-12">

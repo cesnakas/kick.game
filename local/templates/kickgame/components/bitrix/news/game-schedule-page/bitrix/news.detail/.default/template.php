@@ -192,7 +192,62 @@ function isPlace($idMatch)
     return true;
 }
 
+function getLastTournamentGameTime($tournamentId){
+
+    GLOBAL $DB;
+    $sql = "SELECT m.PROPERTY_4 as date FROM b_iblock_element_prop_s3 as m  WHERE m.PROPERTY_3 = ".$tournamentId." ORDER BY m.PROPERTY_4 DESC LIMIT 1";
+
+    $res = $DB->Query($sql);
+    $time = "";
+    if( $row = $res->Fetch() ) {
+
+        $time = $row["date"];
+    }
+    return $time;
+}
+
+if(isset($_POST["btn_reg"])){
+
+$time = $arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"];
+if($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5){
+    $tournamentId = $arResult["PROPERTY_3"];
+    $time = getLastTournamentGameTime($tournamentId);
+}
+
+if(willTeamPrem($teamID, $time) || $arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6){
+ LocalRedirect("/management-games/join-game/?mid=". $arResult["ID"]);
+} else {
+    $alertManagementSquad = 'К сожалению, мы не можем принять твою заявку на игру. <br> 
+    У тебя или у кого-то из участников твоей команды срок подписки закончится раньше, чем эта игра или турнир.
+    <br><a href="/subscription-plans/" target="_blank" class="btn-italic mt-1">Купить подписку </a>';
+    createSession('game-schedule-detail_error', $alertManagementSquad);
+}
+
+}
+
 $btnValue = GetMessage('GSP_TAKE_PART');
+switch($arResult["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]) {
+    case 4:
+        $mode = "SQUAD";
+        break;
+    case 2:
+        $mode = "DUO";
+        break;
+    case 1:
+        $mode = "SOLO";
+        break;
+}
+?>
+<?php
+    if(isset($_SESSION['game-schedule-detail_error'])){ ?>
+    <div class="alert-container">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['game-schedule-detail_error'];?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+<?php }
+unset($_SESSION['game-schedule-detail_error']);
 ?>
 
     <div class="container">

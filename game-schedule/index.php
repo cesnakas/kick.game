@@ -61,8 +61,9 @@ $APPLICATION->SetTitle("Расписание игр");
 		),
 		"FILTER_NAME" => "arrFilterDateTime",
 		"FILTER_PROPERTY_CODE" => array(
-			0 => "TYPE_MATCH",
-			1 => "",
+			0 => "COUTN_TEAMS",
+			1 => "TYPE_MATCH",
+			2 => "",
 		),
 		"HIDE_LINK_WHEN_NO_DETAIL" => "N",
 		"IBLOCK_ID" => "3",
@@ -137,7 +138,7 @@ if (isset($arUser) && $resultPrem <= 0) { ?>
                 <div class="banner__content">
                     <h2><?=GetMessage('BANNER_TITLE')?></h2>
                     <div class="banner__content-btn">
-                        <a href="/subscription-plans/" class="btn"><?= GetMessage('BANNER_BUTTON') ?></a>
+                        <a href="<?=SITE_DIR?>subscription-plans/" class="btn"><?= GetMessage('BANNER_BUTTON') ?></a>
                     </div>
                 </div>
                 <div class="banner__img">
