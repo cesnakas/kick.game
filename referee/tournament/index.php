@@ -92,6 +92,7 @@ function makeUID($PROP, $level)
     //$PROP['COUTN_TEAMS'] = 4;
     //$PROP['TYPE_MATCH'] = 6; // id свойства
 }
+
 function createMatchMembersEmpty($idMatch, $code)
 {
     $el = new CIBlockElement;
@@ -114,6 +115,7 @@ function createMatchMembersEmpty($idMatch, $code)
         return "Error: ".$el->LAST_ERROR;
     }
 }
+
 function makeUnicUrlCode($code,$IBlockId)
 {
     $separator = '-';
@@ -253,8 +255,9 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
         ],
     ];
     //dump($chainMatrix, 1);
-
     $countCreatedMatches = [];
+
+
     if ($tournamentId) {
         $stages = getStagesTournament();
 

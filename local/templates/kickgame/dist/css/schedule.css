@@ -25,7 +25,9 @@
         -webkit-box-direction: normal;
         -ms-flex-direction: column;
         flex-direction: column
+
     }
+
 }
 
 .flex-table-new [class^=flex-table--] {
@@ -35,7 +37,7 @@
     width: 100%;
     -webkit-box-align: center;
     -ms-flex-align: center;
-    align-items: center
+
 }
 
 .flex-table-new [class^=flex-table--]:not(.flex-table--body):not(.flex-table--header) {
@@ -309,6 +311,7 @@
         flex-direction: row;
         border-left: 1px solid #5f5a82;
     }
+
 }
 
 .new-game-schedule__icon-type-game {

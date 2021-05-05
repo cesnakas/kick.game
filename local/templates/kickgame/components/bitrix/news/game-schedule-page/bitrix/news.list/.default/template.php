@@ -327,7 +327,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
                 <div class="new-game-schedule__icon-type-game new-game-schedule__icon-type-game_prac">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.6 22.8"><path d="M963.34,529.28h-7.7l-4.4,12.48h6.6v8.32l11-13.52h-7.7Z" transform="translate(-950.24 -528.28)"/></svg>
               </div>
-              <div class="color-practical"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
+                <div class="color-practical"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
             <?php } elseif($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
                 <div class="new-game-schedule__icon-type-game new-game-schedule__icon-type-game_tournament">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.67 21.2">
@@ -338,7 +338,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
                 <path d="M678.77,393.6h7.68" transform="translate(-671.27 -373.4)"/>
               </svg>
             </div>
-              <div class="color-tournament"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
+                <div class="color-tournament"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
             <?php } ?>
               <?php
               if($tmp = getParticipationByMatchId($arItem["ID"])) {
@@ -350,8 +350,8 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
               ?>
           </div>
         </span>
-    <span>
-          <a href="<?php echo $arItem["DETAIL_PAGE_URL"];?>" class="game-schedule__link">
+          <span>
+          <a href="<?php echo $arItem["DETAIL_PAGE_URL"];?>" class="new-game-schedule__link">
             <?php
             $name = 'KICKGAME Scrims GROUP '.$arItem["PROPERTIES"]["GROUP"]["VALUE"];//'У меня нет названия';
 
@@ -384,7 +384,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
           <?php if (!empty($arItem["PROPERTY_STREAMER_NAME"])) { ?>
               <?php echo $arItem["PROPERTY_STREAMER_NAME"]; ?>
           <?php } else { ?>
-            -
+              -
           <?php } ?>
         </span>
         <span class="new-game-schedule__param-wrap">

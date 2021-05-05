@@ -130,9 +130,9 @@ $APPLICATION->SetTitle("Title");
             $userOb->Update($userId, $fields);
         }
     }?>
-
+	
 <div class="layout__content">
-<div class="container">
+<div class="container">	
 	<div class="content" style="text-align:center;">
  <?   if($vpResponse->Success)
     {
@@ -179,7 +179,7 @@ $APPLICATION->SetTitle("Title");
 <?    }
     else
     {?>
-
+		
      <h1 class="text-center">Что-то пошло не так</h1>
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="150" height="150">
@@ -228,7 +228,7 @@ $APPLICATION->SetTitle("Title");
 </g>
 </svg>
 		<p>Свяжитесь с администраций <a href="mailto:support@kick.game">написать на почту</a></p>
-
+		
   <?  }
 ?>
 </div></div></div>

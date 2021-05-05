@@ -197,20 +197,20 @@ function getAvailableGroup($arItem) {
     <thead>
     <tr>
       <th></th>
-      <th><?=GetMessage('GS_TYPE')?></th>
-      <th><?=GetMessage('GS_TITLE')?></th>
-      <th><?=GetMessage('GS_DATE_EVENT')?></th>
+      <th>Тип игры</th>
+      <th>Название</th>
+      <th>Дата проведения</th>
       <th>
-          <?=GetMessage('GS_RATING')?>
+        Рейтинг
         <span class="tooltip">
                   ?
                   <span class="tooltip__text">
-                    <?=GetMessage('GS_RATING_INFO')?>
+                    Рейтинг, необходимый для записи на игру
                   </span>
                 </span>
       </th>
-      <th><?=GetMessage('GS_MODE')?></th>
-      <th><?=GetMessage('GS_COMMENTATOR')?></th>
+      <th>Режим</th>
+      <th>Комментатор</th>
     </tr>
     </thead>
     <tbody>
@@ -307,7 +307,7 @@ function getAvailableGroup($arItem) {
               ?>
           </td>
           <td>
-            <?=GetMessage('GS_TABLE_TYPE')?>
+            Турнир
           </td>
           <td><a class="games__link" href="<?php echo $arItem["DETAIL_PAGE_URL"];?>">
                   <?php

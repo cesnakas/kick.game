@@ -1,76 +1,74 @@
 <?
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Игроки");
 function getUsers()
 {
-    $filter = array("GROUPS_ID" => array(7));
-    $arParams["SELECT"] = array("UF_*");
-    $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, $arParams);
-    // $elementsResult->NavStart(50);
-    $output = [];
-    while ($rsUser = $elementsResult->Fetch()) {
-        $output[] = $rsUser;
-    }
-    return $output;
+	$filter = Array("GROUPS_ID" => Array(7));
+	$arParams["SELECT"] = array("UF_*");
+	$elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, $arParams);
+   // $elementsResult->NavStart(50);
+	$output = [];
+	while ($rsUser = $elementsResult->Fetch())
+	{
+		$output[] = $rsUser;
+	}
+	return $output;
 }
-
 function getUser($key)
 {
-    if (preg_match("/^([0-9]{1,})\_(.*)$/", $key, $match)) {
-        $id = $match[1] + 0;
-        //todo xxs
-        $nic = strip_tags($match[2]);
+	if(preg_match("/^([0-9]{1,})\_(.*)$/",$key,$match)) {
+	    $id = $match[1]+0;
+	    //todo xxs
+	    $nic = strip_tags($match[2]);
 
-        $filter = array("GROUPS_ID" => array(7), 'ID' => $id, 'LOGIN' => $nic);
+        $filter = Array("GROUPS_ID" => Array(7), 'ID' => $id, 'LOGIN'=> $nic);
         $arParams["SELECT"] = array("UF_*");
         $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, $arParams);
         $output = false;
-        if ($rsUser = $elementsResult->Fetch()) {
+        if ($rsUser = $elementsResult->Fetch())
+        {
             $output = $rsUser;
         }
         return $output;
     } else {
-        return false;
+	    return false;
     }
 }
 
 
-function countPointsByUserID($userID)
-{
-    global $DB;
-    $userID += 0;
-    if ($userID) {
-        $sql = 'SELECT  sum(t.TOTAL) AS total, sum(t.KILLS) AS kills
+function countPointsByUserID( $userID ){
+	GLOBAL $DB;
+	$userID += 0;
+	if( $userID ){
+	  $sql = 'SELECT  sum(t.TOTAL) AS total, sum(t.KILLS) AS kills
 				FROM b_squad_member_result AS t 
-				WHERE t.USER_ID = ' . $userID . ' AND t.TYPE_MATCH = 6
+				WHERE t.USER_ID = '.$userID.' AND t.TYPE_MATCH = 6
 				GROUP BY t.USER_ID';
-        $res = $DB->Query($sql);
-        if ($row = $res->Fetch()) {
-            $points = ['kills' => $row['kills'], 'total' => $row['total']];
-            return $points;
-        }
-    }
-    return false;
-}
+	  $res = $DB->Query($sql);
+	  if( $row = $res->Fetch() ) {
+		$points = [ 'kills' => $row['kills'], 'total' => $row['total'] ];
+		return $points;
+	  }
+	}
+	return false;
+  }
 
-function countPointsAllUsers()
-{
-    global $DB;
-    $sql = 'SELECT t.USER_ID, count(t.USER_ID) as count_matches, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills
+function countPointsAllUsers(){
+	GLOBAL $DB;
+	$sql = 'SELECT t.USER_ID, count(t.USER_ID) as count_matches, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills
 			FROM b_squad_member_result AS t 
 			WHERE t.TYPE_MATCH = 6
 			GROUP BY t.USER_ID';
-    $res = $DB->Query($sql);
-    $points = [];
-    while ($row = $res->Fetch()) {
-        $points[$row['USER_ID']] = ['kills' => $row['kills'], 'total' => $row['total'], 'count_matches' => $row['count_matches']];
-    }
-    return $points;
+	$res = $DB->Query($sql);
+	$points = [];
+	while( $row = $res->Fetch() ) {
+		$points[ $row['USER_ID'] ] = [ 'kills' => $row['kills'], 'total' => $row['total'], 'count_matches' => $row['count_matches'] ];
+	}
+	return $points;
 }
 
-function countPlayers()
-{
-    global $DB;
+function countPlayers(){
+    GLOBAL $DB;
     $sql = 'SELECT count(g.USER_ID) as c
 			FROM  b_user_group AS g
             WHERE g.GROUP_ID = 7';
@@ -82,9 +80,8 @@ function countPlayers()
     return $count['c'];
 }
 
-function getPlayersList()
-{
-    global $DB;
+function getPlayersList(){
+    GLOBAL $DB;
     $sql = 'SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, count_matches, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
 			FROM  b_user as u 
             LEFT JOIN (SELECT t.USER_ID, count(t.USER_ID) as count_matches, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
@@ -95,12 +92,12 @@ function getPlayersList()
 
     $res = $DB->Query($sql);
     $players = [];
-    while ($row = $res->Fetch()) {
-        $players[$row['ID']] = ['kills' => $row['kills'],
-            'total' => $row['total'],
-            'count_matches' => $row['count_matches'],
-            'login' => $row['LOGIN'],
-            'photo' => $row['PERSONAL_PHOTO']];
+    while( $row = $res->Fetch() ) {
+        $players[ $row['ID'] ] = [ 'kills' => $row['kills'],
+                                        'total' => $row['total'],
+                                        'count_matches' => $row['count_matches'],
+                                        'login' => $row['LOGIN'],
+                                        'photo' => $row['PERSONAL_PHOTO']];
     }
     return $players;
 }
@@ -140,79 +137,72 @@ function showPlayers(){
     global $APPLICATION;
     //пагинация
 
-    $count_tema = 20; // выводим по 5 Записей на страницу
-    //создаем объект пагинации
-    $nav = new \Bitrix\Main\UI\PageNavigation("nav-more-players");
-    $nav->allowAllRecords(false)
-        ->setPageSize($count_tema)
-        ->initFromUri();
+    $count_tema=20; // выводим по 5 Записей на страницу
+  //создаем объект пагинации
+  $nav = new \Bitrix\Main\UI\PageNavigation("nav-more-players");
+  $nav->allowAllRecords(false)
+      ->setPageSize($count_tema)
+      ->initFromUri();
 
-    $count_zap = countPlayers(); // сделать запрос для определения количества всех строк
-    // в sql вставляем limit и Offset
-    $strSql = 'SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, count_matches, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
+  $count_zap=countPlayers(); // сделать запрос для определения количества всех строк
+  // в sql вставляем limit и Offset
+  $strSql = 'SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, count_matches, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
 			FROM  b_user as u 
             LEFT JOIN (SELECT t.USER_ID, count(t.USER_ID) as count_matches, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
             LEFT JOIN b_uts_user AS r ON r.VALUE_ID = u.ID 
             INNER JOIN b_user_group AS g ON g.USER_ID = u.ID 
             AND g.GROUP_ID = 7 
-            ORDER BY total DESC, kills DESC LIMIT ' . $nav->getLimit() . '  OFFSET ' . $nav->getOffset(); //
-    $rsData = $DB->Query($strSql);
+            ORDER BY total DESC, kills DESC LIMIT '.$nav->getLimit().'  OFFSET '.$nav->getOffset() ; //
+  $rsData = $DB->Query($strSql);
     $i = $nav->getOffset();
-    while ($el = $rsData->fetch()) {
-        $i += 1;
-        showRow($el, $i);
-    }
+  while($el = $rsData->fetch()){
+      $i+=1;
+      showRow($el, $i);
+  }
 
-    $nav->setRecordCount($count_zap);
-    $APPLICATION->IncludeComponent(
-        "bitrix:main.pagenavigation",
-        ".default",
-        array(
-            "NAV_OBJECT" => $nav,
-            "SEF_MODE" => "N",
-        ),
-        false
-    );
+  $nav->setRecordCount($count_zap);
+  $APPLICATION->IncludeComponent("bitrix:main.pagenavigation", ".default", Array(
+      "NAV_OBJECT" => $nav,
+      "SEF_MODE" => "N",
+  ),
+      false
+  );
 }
 
-function showRow($player, $rank)
-{
+function showRow($player, $rank){
     $cntMatches = isset($player["count_matches"]) ? $player["count_matches"] : '..';
     $kills = isset($player["kills"]) ? $player["kills"] : '..'; ?>
 
-    <div class="flex-table--row">
-        <span>
-            <div class="core-team__user">
-                <div class="core-team__user-avatar"
-                     <?php if (!empty($player["PERSONAL_PHOTO"])) { ?>
-                         style="background-image: url(<?php echo CFile::GetPath($player["PERSONAL_PHOTO"]); ?>)"
-                     <?php } else { ?>
-                         style="background-image: url(<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/default-avatar.svg)"
-                     <?php } ?>>
-                </div>
-                <a href="<?=SITE_DIR?>players/<?= $player["ID"] . '_' . $player["LOGIN"] . '/'; ?>"
-                   class="core-team__user-link" target="_blank">
-                    <?= $player["LOGIN"]; ?>
-                </a>
-            </div>
-        </span>
-        <span class="core-team__param-wrap">
-                  <div class="core-team__param"><?=GetMessage('PLAYERS_RANK')?></div>
+<div class="flex-table--row">
+                <span>
+                  <div class="core-team__user">
+                    <div class="core-team__user-avatar"
+                         <?php if (!empty($player["PERSONAL_PHOTO"])) { ?>
+                             style="background-image: url(<?php echo CFile::GetPath($player["PERSONAL_PHOTO"]); ?>)"
+                         <?php } else { ?>
+                             style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
+                         <?php } ?>>
+                    </div>
+                    <a href="/players/<?php echo $player["ID"].'_'.$player["LOGIN"].'/';?>" class="core-team__user-link" target="_blank"><?php echo $player["LOGIN"];?></a>
+                  </div>
+                </span>
+                                <span class="core-team__param-wrap">
+                  <div class="core-team__param">Ранк</div>
                   <?php echo $rank; ?>
                 </span>
-        <span class="core-team__param-wrap">
-                  <div class="core-team__param"><?=GetMessage('PLAYERS_RATING')?></div>
+                                <span class="core-team__param-wrap">
+                  <div class="core-team__param">Рейтинг</div>
                   <?php echo $player["total"]; ?>
                 </span>
-        <span class="core-team__param-wrap">
-                  <div class="core-team__param"><?=GetMessage('PLAYERS_KILLS')?></div>
-                  <?php echo $kills; ?>
+                                <span class="core-team__param-wrap">
+                  <div class="core-team__param">Киллы</div>
+                  <?php echo  $kills; ?>
                 </span>
-        <span class="core-team__param-wrap">
-                  <div class="core-team__param"><?=GetMessage('PLAYERS_MATCHES')?></div>
+                                <span class="core-team__param-wrap">
+                  <div class="core-team__param">Количество игр</div>
                   <?php echo $cntMatches; ?>
                 </span>
-    </div>
+                            </div>
 
 <?php }
 
@@ -429,14 +419,13 @@ if(isset($path[2]) && trim($path[2]) != '') {
 */ ?>
 
 <?php
-$path = explode('/', trim($APPLICATION->GetCurPage()) );
+$path = explode('/', trim($APPLICATION->GetCurPage()));
 
-if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) != '') {
-    $arUser = (LANGUAGE_ID == 'ru') ? getUser(trim($path[2])) : getUser(trim($path[3]));
+if(isset($path[2]) && trim($path[2]) != '') {
+    $arUser = getUser(trim($path[2]));
     //dump($arUser);
-    $points = countPointsByUserID($arUser['ID']);
+    $points = countPointsByUserID( $arUser['ID'] );
     ?>
-
     <section class="profile">
         <div class="container">
             <div class="row justify-content-center">
@@ -446,7 +435,7 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
                             <?php if (!empty($arUser["PERSONAL_PHOTO"])) { ?>
                                 style="background-image: url(<?php echo CFile::GetPath($arUser["PERSONAL_PHOTO"]); ?>)"
                             <?php } else { ?>
-                                style="background-image: url(<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/default-avatar.svg)"
+                                style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
                             <?php } ?>>
                             <div class="profile__avatar-rating-bg">
                                 <div class="profile__avatar-rating">
@@ -463,23 +452,7 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
                                     <span><?php echo $arUser["LOGIN"]; ?></span>
                                     <div class="profile-info__element">
                                         <i>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-                                                <defs>
-                                                    <style>.cls-1 {
-                                                            fill: #100b2e;
-                                                            stroke: #ff0052;
-                                                            stroke-width: 2px;
-                                                        }
-
-                                                        .cls-2 {
-                                                            fill: #ff0052;
-                                                        }</style>
-                                                </defs>
-                                                <circle class="cls-1" cx="11" cy="11" r="10"/>
-                                                <path class="cls-2"
-                                                      d="M959.62,535.52a.64.64,0,0,1,1.21,0l.82,2.49a.65.65,0,0,0,.61.44h2.67a.62.62,0,0,1,.37,1.13l-2.16,1.54a.64.64,0,0,0-.23.7l.83,2.5a.63.63,0,0,1-1,.7l-2.16-1.54a.65.65,0,0,0-.75,0L957.69,545a.63.63,0,0,1-1-.7l.82-2.5a.62.62,0,0,0-.23-.7l-2.16-1.54a.62.62,0,0,1,.38-1.13h2.67a.63.63,0,0,0,.6-.44Z"
-                                                      transform="translate(-949.22 -529.43)"/>
-                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><defs><style>.cls-1{fill:#100b2e;stroke:#ff0052;stroke-width:2px;}.cls-2{fill:#ff0052;}</style></defs><circle class="cls-1" cx="11" cy="11" r="10"/><path class="cls-2" d="M959.62,535.52a.64.64,0,0,1,1.21,0l.82,2.49a.65.65,0,0,0,.61.44h2.67a.62.62,0,0,1,.37,1.13l-2.16,1.54a.64.64,0,0,0-.23.7l.83,2.5a.63.63,0,0,1-1,.7l-2.16-1.54a.65.65,0,0,0-.75,0L957.69,545a.63.63,0,0,1-1-.7l.82-2.5a.62.62,0,0,0-.23-.7l-2.16-1.54a.62.62,0,0,1,.38-1.13h2.67a.63.63,0,0,0,.6-.44Z" transform="translate(-949.22 -529.43)"/></svg>
                                         </i>
                                     </div>
                                 </div>
@@ -490,17 +463,17 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
 
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
-                                    <div><?=GetMessage('PLAYERS_MOOD')?></div>
+                                    <div>Мое настроение</div>
                                     <div><?php echo $arUser["TITLE"]; ?></div>
                                 </div>
                             </div>
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
-                                    <div><?=GetMessage('PLAYERS_TEAM')?></div>
+                                    <div>Команда</div>
                                     <div><?php
-                                        if ($arUser['UF_ID_TEAM'] + 0) {
-                                            $team = getTeamById($arUser['UF_ID_TEAM'] + 0);
-                                            echo '<a href="'.SITE_DIR.'teams/'.$team['ID'].'/">'.$team['NAME'].'</a>';
+                                        if( $arUser['UF_ID_TEAM']+0 ){
+                                            $team = getTeamById($arUser['UF_ID_TEAM']+0);
+                                            echo '<a href="/teams/'.$team['ID'].'/">'.$team['NAME'].'</a>';
                                         }
                                         ?></div>
                                 </div>
@@ -508,13 +481,13 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
 
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
-                                    <div><?=GetMessage('PLAYERS_LANG')?></div>
+                                    <div>Язык общения</div>
                                     <div>-</div>
                                 </div>
                             </div>
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
-                                    <div><?=GetMessage('PLAYERS_ACTIVITY')?></div>
+                                    <div>Активность в игре</div>
                                     <div>-</div>
                                 </div>
                             </div>
@@ -527,7 +500,7 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
     <?php } else { ?>
 
     <div class="container">
-        <h1 class="text-center"><?=GetMessage('PLAYERS_TITLE')?></h1>
+        <h1 class="text-center">Рейтинг игроков</h1>
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12">
                 <div class="layout__content-anons text-center">
@@ -564,22 +537,24 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-12">
                     <div class="layout__content-anons text-center">
-                        <a class="btn btn_auth" href="<?=SITE_DIR?>teams/"><?=GetMessage('PLAYERS_LIST_TEAMS')?></a>
-                        <a class="btn btn_auth btn_border"><?=GetMessage('PLAYERS_LIST_PLAYERS')?></a>
+                        <a class="btn btn_auth btn_border" href="/teams/">Список команд</a>
+                        <a class="btn btn_auth">Список игроков</a>
                     </div>
                 </div>
             </div>
         </div>
+
+
         <div class="container">
             <div class="core-team">
                 <div class="flex-table">
                     <div class="flex-table--header bg-default">
                         <div class="flex-table--categories">
-                            <span><?=GetMessage('PLAYERS_TABLE_PLAYER')?></span>
-                            <span><?=GetMessage('PLAYERS_TABLE_RANK')?></span>
-                            <span><?=GetMessage('PLAYERS_TABLE_RATING')?></span>
-                            <span><?=GetMessage('PLAYERS_TABLE_KILLS')?></span>
-                            <span><?=GetMessage('PLAYERS_TABLE_TOTAL')?></span>
+                            <span>Игрок</span>
+                            <span>Ранк</span>
+                            <span>Рейтинг</span>
+                            <span>Киллы</span>
+                            <span>Количество игр</span>
                         </div>
                     </div>
                     <div class="flex-table--body">
@@ -593,9 +568,5 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
             </div>
         </div>
     </section>
-
 <?php } ?>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
-?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

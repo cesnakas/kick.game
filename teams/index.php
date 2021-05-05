@@ -2,11 +2,10 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Команды");
 ?>
-
 <?
 $APPLICATION->IncludeComponent(
-	"bitrix:news",
-	"teams_new",
+	"bitrix:news", 
+	"teams_new", 
 	array(
 		"ADD_ELEMENT_CHAIN" => "N",
 		"ADD_SECTIONS_CHAIN" => "N",
@@ -87,7 +86,7 @@ $APPLICATION->IncludeComponent(
 		"USE_SEARCH" => "N",
 		"USE_SHARE" => "N",
 		"COMPONENT_TEMPLATE" => "teams_new",
-		"SEF_FOLDER" => SITE_DIR.'teams/',
+		"SEF_FOLDER" => "/teams/",
 		"FILE_404" => "",
 		"SEF_URL_TEMPLATES" => array(
 			"news" => "",
@@ -97,7 +96,4 @@ $APPLICATION->IncludeComponent(
 	),
 	false
 );?>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

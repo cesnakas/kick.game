@@ -1,115 +1,99 @@
-<?
-if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
-    die();
+<?php
+if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED!==true)
+{
+	die();
 }
 
 use \Bitrix\Main\Localization\Loc;
-
 Loc::loadMessages(__FILE__);
 
 // \Bitrix\Main\Page\Asset::getInstance()->addCss('/bitrix/css/main/system.auth/flat/style.css');
 
-if ($arResult['AUTHORIZED']) {
-    echo Loc::getMessage('MAIN_AUTH_FORM_SUCCESS');
-    return;
+if ($arResult['AUTHORIZED'])
+{
+	echo Loc::getMessage('MAIN_AUTH_FORM_SUCCESS');
+	return;
 }
 ?>
-<div class="layout__content layout__content_full">
+  <div class="layout__content layout__content_full">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-12 col-lg-6">
-                <div class="logo-tagline">
-                    <a href="<?=SITE_DIR?>"><img src="<?= SITE_TEMPLATE_PATH; ?>/dist/images/logo-tagline.svg" alt="kickgame esports"></a>
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-6">
-                <div class="form-authentication">
-                    <h2 class="form-authentication__heading"><?=GetMessage('AUTH_FORM_TITLE')?></h2>
-                    <? if ($arResult['ERRORS']): ?>
-                        <div class="alert alert-danger">
-                            <? foreach ($arResult['ERRORS'] as $error) {
-                                echo $error;
-                            }
-                            ?>
-                        </div>
-                    <? endif; ?>
-                    <form name="<?= $arResult['FORM_ID']; ?>" method="post" action="<?= POST_FORM_ACTION_URI; ?>">
-                        <div class="form-field">
-                            <label for="auth-login" class="form-field__label">
-                                <?=GetMessage('AUTH_FORM_NICKNAME_LABEL')?>
-                            </label>
-                            <input type="text" class="form-field__input" name="<?= $arResult['FIELDS']['login']; ?>"
-                                   maxlength="255" value="<?= \htmlspecialcharsbx($arResult['LAST_LOGIN']); ?>"
-                                   autocomplete="off" id="auth-login" placeholder="<?=GetMessage('AUTH_FORM_NICKNAME_PLACEHOLDER')?>">
-                        </div>
-                        <div class="form-field">
-                            <label for="auth-pass" class="form-field__label">
-                                <?=GetMessage('AUTH_FORM_PASSWORD_LABEL')?>
-                            </label>
-                            <? if ($arResult['SECURE_AUTH']): ?>
-                                <div class="bx-authform-psw-protected" id="bx_auth_secure" style="display:none">
-                                    <div class="bx-authform-psw-protected-desc"><span></span>
-                                        <?=GetMessage('MAIN_AUTH_FORM_SECURE_NOTE');?>
-                                    </div>
-                                </div>
-                                <script type="text/javascript">
-                                    document.getElementById('bx_auth_secure').style.display = '';
-                                </script>
-                            <? endif ?>
-                            <input type="password" class="form-field__input "
-                                   name="<?= $arResult['FIELDS']['password']; ?>" maxlength="255" autocomplete="off"
-                                   id="auth-pass" placeholder="<?=GetMessage('AUTH_FORM_PASSWORD_PLACEHOLDER')?>">
-
-                        </div>
-
-                        <? if ($arResult['STORE_PASSWORD'] == 'Y'): ?>
-                            <div class="form-field">
-                                <label class="label-checkbox-main">
-                                    <input type="checkbox" name="<?= $arResult['FIELDS']['remember']; ?>" checked
-                                           value="Y">
-                                    <div class="label-checkbox-main__checkmark"></div>
-                                    <span class="label-checkbox-main__title"><?=GetMessage('AUTH_FORM_REMEMBER_ME')?></span>
-                                </label>
-                            </div>
-                        <? endif ?>
-                        <div class="form-field text-center">
-                            <a class="form-authentication__forgot-pass" href="<?= $arResult['AUTH_FORGOT_PASSWORD_URL']; ?>">
-                                <?=GetMessage('AUTH_FORGOT_PASSWORD')?>
-                            </a>
-                        </div>
-                        <div class="form-field d-flex justify-content-center">
-                            <button class="btn btn_login" type="submit" name="<?= $arResult['FIELDS']['action']; ?>"
-                                    value="<?=GetMessage('AUTH_FORM_FIELD_SUBMIT')?>">
-                                <?=GetMessage('AUTH_FORM_LOGIN')?>
-                            </button>
-                        </div>
-                        <div class="form-authentication__already text-center">
-                            <?=GetMessage('AUTH_FORM_ACCOUNT')?>
-                        </div>
-                        <div class="form-field text-center">
-                            <a class="form-authentication__forgot-pass" href="<?= $arResult['AUTH_REGISTER_URL']; ?>">
-                                <?=GetMessage('AUTH_FORM_ACCOUNT_CREATE')?>
-                            </a>
-                        </div>
-                    </form>
-                    <!--<div class="form-authentication__login-social-network">
-                      <div class="form-authentication__login-social-network-heading">Войти с помощью:</div>
-                      <div class="social-networks">
-                        <a class="social-networks__item" href="#">
-                        </a>
-                        <a class="social-networks__item" href="#">
-                        </a>
-                        <a class="social-networks__item" href="#">
-                        </a>
-                        <a class="social-networks__item" href="#">
-                        </a>
-                      </div>
-                    </div>-->
-                </div>
-            </div>
+      <div class="row align-items-center">
+        <div class="col-md-12 col-lg-6">
+          <div class="logo-tagline">
+            <a href="<?=SITE_DIR?>"><img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/logo-tagline.svg" alt="kickgame esports"></a>
+          </div>
         </div>
+        <div class="col-md-12 col-lg-6">
+          <div class="form-authentication">
+            <h2 class="form-authentication__heading"><?=GetMessage('AUTH_FORM_TITLE')?></h2>
+              <?if ($arResult['ERRORS']):?>
+                <div class="alert alert-danger">
+                    <? foreach ($arResult['ERRORS'] as $error)
+                    {
+                        echo $error;
+                    }
+                    ?>
+                </div>
+              <?endif;?>
+            <form name="<?= $arResult['FORM_ID'];?>" method="post" action="<?= POST_FORM_ACTION_URI;?>">
+              <div class="form-field">
+                <label for="auth-login" class="form-field__label"><?=GetMessage('AUTH_FORM_NICKNAME_LABEL')?></label>
+                <input type="text" class="form-field__input" name="<?= $arResult['FIELDS']['login'];?>" maxlength="255" value="<?= \htmlspecialcharsbx($arResult['LAST_LOGIN']);?>" autocomplete="off" id="auth-login" placeholder="<?=GetMessage('AUTH_FORM_NICKNAME_PLACEHOLDER')?>">
+              </div>
+              <div class="form-field">
+                <label for="auth-pass" class="form-field__label"><?=GetMessage('AUTH_FORM_PASSWORD_LABEL')?></label>
+                  <?if ($arResult['SECURE_AUTH']):?>
+                    <div class="bx-authform-psw-protected" id="bx_auth_secure" style="display:none">
+                      <div class="bx-authform-psw-protected-desc"><span></span>
+                            <?=GetMessage('MAIN_AUTH_FORM_SECURE_NOTE');?>
+                      </div>
+                    </div>
+                    <script type="text/javascript">
+                        document.getElementById('bx_auth_secure').style.display = '';
+                    </script>
+                  <?endif?>
+                <input type="password" class="form-field__input " name="<?= $arResult['FIELDS']['password'];?>" maxlength="255"  autocomplete="off" id="auth-pass" placeholder="<?=GetMessage('AUTH_FORM_PASSWORD_PLACEHOLDER')?>">
+
+              </div>
+
+              <?if ($arResult['STORE_PASSWORD'] == 'Y'):?>
+                <div class="form-field">
+                  <label class="label-checkbox-main">
+                    <input type="checkbox" name="<?= $arResult['FIELDS']['remember'];?>" checked value="Y">
+                    <div class="label-checkbox-main__checkmark"></div>
+                    <span class="label-checkbox-main__title"><?=GetMessage('AUTH_FORM_REMEMBER_ME')?></span>
+                  </label>
+                </div>
+              <?endif?>
+              <div class="form-field text-center">
+                <a class="form-authentication__forgot-pass" href="<?= $arResult['AUTH_FORGOT_PASSWORD_URL'];?>"><?=GetMessage('AUTH_FORGOT_PASSWORD')?></a>
+              </div>
+              <div class="form-field d-flex justify-content-center">
+                <button class="btn btn_login" type="submit" name="<?= $arResult['FIELDS']['action'];?>" value="<?=GetMessage('AUTH_FORM_FIELD_SUBMIT')?>"><?=GetMessage('AUTH_FORM_LOGIN')?></button>
+              </div>
+              <div class="form-authentication__already text-center"><?=GetMessage('AUTH_FORM_ACCOUNT')?></div>
+              <div class="form-field text-center">
+                <a class="form-authentication__forgot-pass" href="<?= $arResult['AUTH_REGISTER_URL'];?>"><?=GetMessage('AUTH_FORM_ACCOUNT_CREATE')?></a>
+              </div>
+            </form>
+            <!--<div class="form-authentication__login-social-network">
+              <div class="form-authentication__login-social-network-heading">Войти с помощью:</div>
+              <div class="social-networks">
+                <a class="social-networks__item" href="#">
+                </a>
+                <a class="social-networks__item" href="#">
+                </a>
+                <a class="social-networks__item" href="#">
+                </a>
+                <a class="social-networks__item" href="#">
+                </a>
+              </div>
+            </div>-->
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 <?php /*
 <div class="container">
 
@@ -207,17 +191,11 @@ if ($arResult['AUTHORIZED']) {
 
 	</form>
 </div>
- */ ?>
+ */?>
 <script type="text/javascript">
-    <?if ($arResult['LAST_LOGIN'] != ''):?>
-    try {
-        document.<?= $arResult['FORM_ID'];?>.USER_PASSWORD.focus();
-    } catch (e) {
-    }
-    <?else:?>
-    try {
-        document.<?= $arResult['FORM_ID'];?>.USER_LOGIN.focus();
-    } catch (e) {
-    }
-    <?endif?>
+	<?if ($arResult['LAST_LOGIN'] != ''):?>
+	try{document.<?= $arResult['FORM_ID'];?>.USER_PASSWORD.focus();}catch(e){}
+	<?else:?>
+	try{document.<?= $arResult['FORM_ID'];?>.USER_LOGIN.focus();}catch(e){}
+	<?endif?>
 </script>

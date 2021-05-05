@@ -51,7 +51,7 @@ $APPLICATION->IncludeComponent(
 			0 => "EMAIL",
 			1 => "PERSONAL_PHONE",
 		),
-		"SUCCESS_PAGE" => SITE_DIR.'personal/',
+		"SUCCESS_PAGE" => "/personal/",
 		"USER_PROPERTY" => array(
 			0 => "UF_RATING",
 		),
@@ -61,7 +61,4 @@ $APPLICATION->IncludeComponent(
 	),
 	false
 );?>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

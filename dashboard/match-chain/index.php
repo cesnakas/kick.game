@@ -609,6 +609,7 @@ function showMatch($match = null, $next)
     $firstMatchId = $_GET['id']+0;
     $members = getMembersByMatchId($match['ID']);
     $streamers = getStreamers();
+    $mods = getUsersByGroup(8);
 
     if ($members) {
         addMatchMembersResult($match['ID']);
@@ -638,7 +639,7 @@ function showMatch($match = null, $next)
         echo '<div class="col-md-4">
             <div class="form-group">
             
-                <label>Веберите комментатора</label>
+                <label>Выберите комментатора</label>
                 <select class="form-control" name="streamer">
                 <option value="">0</option>';
 
@@ -649,7 +650,27 @@ function showMatch($match = null, $next)
         }
         echo '</select>
               </div>
-           </div></div>';
+           </div>';
+
+        if ( CSite::InGroup( array(1) ) ){
+        echo '<div class="col-md-4">
+            <div class="form-group">
+            
+                <label>Выберите модератора</label>
+                <select class="form-control" name="mod">
+                <option value="">0</option>';
+
+        foreach ($mods as $mod) {
+            echo '<option value="'.$mod['ID'].'"';
+            if($mod['ID'] == $match["MODERATOR"]['VALUE']) { echo ' selected'; }
+            echo '>'.$mod['LOGIN'].'</option>';
+        }
+        echo '</select>
+              </div>
+           </div>';
+        }
+
+        echo '</div>';
 
         echo '<h3>Список участников команд</h3>';
         //echo '<table>';
@@ -1144,6 +1165,7 @@ if (!empty($_POST["sendResults"])) {
 
 
         $props = [];
+        $props['MODERATOR'] = $_POST['mod'];
         $props['DATE_START'] = $_POST['date_time_match'];
         $props['URL_STREAM'] = $_POST["url_stream"];
         $props['PUBG_LOBBY_ID'] = $_POST["pubg_lobby_id"];

@@ -95,6 +95,24 @@ function willTeamPrem($teamID, $matchTime){
     return true;
 }
 
+function getUsersByGroup($groupID){
+
+    if ($result = CUser::GetList(($by="ID"), ($order="ASC"),
+        array(
+            'GROUPS_ID'=>[$groupID],
+            'ACTIVE' => 'Y'
+        )
+    )){
+        $users = [];
+        while($rsUsers = $result->Fetch()){
+            $users[] = $rsUsers;
+        }
+
+        return $users;
+    }
+    return false;
+}
+
 function getMatchesByTeam($teamID) {
     $propNameMatchID = 'PROPERTY_13';
     $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", $propNameMatchID);

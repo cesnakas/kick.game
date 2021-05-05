@@ -1,5 +1,4 @@
-<?
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -25,10 +24,15 @@ function updateFieldUserbyId($userId, $fields= [])
 if(isset($_GET['leaveteam']) && $_GET['leaveteam'] != '') {
   // выкидываю из команды
   //dump($_GET['leaveteam']);
-  //dump($arResult["VARIABLES"]["ELEMENT_ID"]);
-  updateFieldUserbyId($userID+0, $fields= array("UF_ID_TEAM" => null));
-  createSession('team_success', GetMessage('TEAM_OUT'));
-  LocalRedirect(SITE_DIR."/teams/". $arResult["VARIABLES"]["ELEMENT_ID"].'/');
+
+
+    if(count(getSquadByIdPlayer($arResult["VARIABLES"]["ELEMENT_ID"], $userID)) == 0){
+        updateFieldUserbyId($userID+0, $fields= array("UF_ID_TEAM" => null));
+        createSession('team_success', 'Tы успешно вышел из команды');
+    } else {
+        createSession('team_error', 'Tы не можешь удалиться если ты зарегистрирован на матч');
+    }
+    LocalRedirect(SITE_DIR."teams/". $arResult["VARIABLES"]["ELEMENT_ID"].'/');
 }
 ?>
 <?$ElementID = $APPLICATION->IncludeComponent(

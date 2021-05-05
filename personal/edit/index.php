@@ -2,7 +2,6 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Редактирование пользователя");
 ?>
-
 <?$APPLICATION->IncludeComponent(
     "bitrix:main.profile",
     "edit",
@@ -15,7 +14,4 @@ $APPLICATION->SetTitle("Редактирование пользователя");
         "USER_PROPERTY_NAME" => ""
     )
 );?>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

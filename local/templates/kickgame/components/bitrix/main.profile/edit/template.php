@@ -4,11 +4,14 @@
  * @var array $arParams
  * @var array $arResult
  */
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
-    die();
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
+	die();
 
-if ($arResult["SHOW_SMS_FIELD"] == true) {
-    CJSCore::Init('phone_auth');
+include('functions.php');
+
+if($arResult["SHOW_SMS_FIELD"] == true)
+{
+	CJSCore::Init('phone_auth');
 }
 ?>
 <?php /*
@@ -192,157 +195,194 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
 </div>
 <?php */ ?>
 <?php if (!empty($arResult["strProfileError"])) {
-    createSession('save-profile_error', $arResult["strProfileError"]);
-    LocalRedirect(SITE_DIR."/personal/edit/");
+  createSession('save-profile_error', $arResult["strProfileError"]);
+  LocalRedirect(SITE_DIR."personal/edit/");
 }
 ?>
 <?php
 if ($arResult['DATA_SAVED'] == 'Y') {
-    createSession('save-profile_success', GetMessage('PROFILE_DATA_SAVED'));
-    LocalRedirect(SITE_DIR."personal/edit/");
+  createSession('save-profile_success', GetMessage('PROFILE_DATA_SAVED'));
+  LocalRedirect(SITE_DIR."personal/edit/");
 } ?>
 <?php
-if (isset($_SESSION['save-profile_success'])) { ?>
-    <div class="alert-container">
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?php echo $_SESSION['save-profile_success']; ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-        </div>
+if(isset($_SESSION['save-profile_success'])) { ?>
+  <div class="alert-container">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?php echo $_SESSION['save-profile_success'];?>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
     </div>
-    <?php
-    unset($_SESSION['save-profile_success']);
-} else if (isset($_SESSION['save-profile_error'])) { ?>
-    <div class="alert-container">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?php echo $_SESSION['save-profile_error']; ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-        </div>
+  </div>
+  <?php
+  unset($_SESSION['save-profile_success']);
+} else if(isset($_SESSION['save-profile_error'])){ ?>
+  <div class="alert-container">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?php echo $_SESSION['save-profile_error'];?>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
     </div>
+  </div>
 <?php }
 unset($_SESSION['save-profile_error']);
 ?>
 <section class="profile">
-    <div class="container">
-        <div class="layout__content-heading-with-btn-back">
-            <a href="<?= SITE_DIR ?>personal/" class="btn-italic-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
-                    <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z"
-                          transform="translate(-949.26 -534.62)"/>
-                </svg>
-                <?=GetMessage('PERSONAL_EDIT_BTN_BACK')?>
-            </a>
-            <h1 class="text-center"><?=GetMessage('PERSONAL_EDIT_TITLE')?></h1>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-12">
-
-                <form method="post" name="form1" action="<?= $arResult["FORM_TARGET"] ?>" enctype="multipart/form-data">
-                    <?= $arResult["BX_SESSION_CHECK"] ?>
-                    <input type="hidden" name="lang" value="<?= LANG ?>">
-                    <input type="hidden" name="ID" value=<?= $arResult["ID"] ?>>
-                    <?php if ($arResult["ID"] > 0) { ?>
-                    <div class="profile__edit-avatar">
-                        <input type="file" class="form-field__input-file inputFileAvatar" name="PERSONAL_PHOTO"
-                               id="avatar">
-                        <label for="avatar" class="form-field__upload-avatar">
-                            <div class="profile__avatar-bg">
-                                <div title="<?=GetMessage('PERSONAL_EDIT_AVATAR_TITLE')?>"
-                                     class="profile__avatar profile__avatar-edit fileAvatarUploaded"
-                                    <?php if (!empty($arResult["arUser"]["PERSONAL_PHOTO"])) { ?>
-                                        style="background-image: url(<?php echo CFile::GetPath($arResult["arUser"]["PERSONAL_PHOTO"]); ?>)"
-                                    <?php } ?>>
-                                    <div class="profile__avatar-edit-icon"></div>
-                                </div>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="profile-info">
-                        <div class="profile-info__edit">
-                            <div class="form-field">
-                                <label for="edit-nic" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_NICKNAME')?> <span>*</span></label>
-                                <input type="text" class="form-field__input" name="LOGIN"
-                                       value="<?= $arResult["arUser"]["LOGIN"] ?>" autocomplete="off" id="edit-nic"
-                                       placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>">
-
-                            </div>
-                            <div class="form-field">
-                                <label for="edit-pubgid" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_PUBGID')?> <span>*</span></label>
-                                <input type="text" class="form-field__input" name="UF_PUBG_ID"
-                                       value="<?= htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]); ?>"
-                                       autocomplete="off" id="edit-pubgid" placeholder="<?=GetMessage('PERSONAL_EDIT_PUBGID_PLACEHOLDER')?>">
-                            </div>
-                            <div class="form-field">
-                                <label for="edit-subscription" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION')?></label>
-                                <?php $resultPrem = isPrem($arResult["arUser"]["UF_DATE_PREM_EXP"]);
-                                if ($resultPrem <= 0) { ?>
-                                    <div class="form-field__with-btn">
-                                        <div class="form-field__input-wrap">
-                                            <i class="form-field__icon form-field__icon_base"></i>
-                                            <input type="text" class="form-field__input" name="authLogin"
-                                                   value="<?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC')?>" autocomplete="off" id="edit-subscription">
-                                        </div>
-                                        <a href="<?=SITE_DIR?>subscription-plans/" class="btn-italic" target="_blank"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC_BTN')?></a>
-                                    </div>
-                                <?php } else { ?>
-                                    <div class="form-field__input-wrap">
-                                        <i class="form-field__icon form-field__icon_prem"></i>
-                                        <input type="text" class="form-field__input" name="authLogin"
-                                               value="<?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM')?>, <?= num_decline($resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_REMAINING'), false); ?> <?= num_decline($resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_DAYS')); ?>"
-                                               autocomplete="off" id="edit-subscription">
-                                    </div>
-                                <?php } ?>
-                            </div>
-                            <div class="form-field">
-                                <label for="my-mood" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_MY_MOOD')?></label>
-                                <input type="text" class="form-field__input" name="TITLE"
-                                       value="<?php echo htmlspecialchars($arResult["arUser"]["TITLE"]) ?>"
-                                       autocomplete="off" id="my-mood" placeholder="<?=GetMessage('PERSONAL_EDIT_MY_MOOD_PLACEHOLDER')?>">
-                            </div>
-                            <div class="form-field">
-                                <label for="edit-email" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_EMAIL')?> <span>*</span></label>
-                                <input type="text" class="form-field__input" name="EMAIL"
-                                       value="<?= $arResult["arUser"]["EMAIL"] ?>" autocomplete="off" id="edit-email"
-                                       placeholder="<?=GetMessage('PERSONAL_EDIT_EMAIL_PLACEHOLDER')?>" readonly>
-                            </div>
-                            <div class="form-field">
-                                <label for="edit-telegramNic" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_TELEGRAM_NIK')?></label>
-                                <input type="text" class="form-field__input" name="UF_TELEGRAM_NIC"
-                                       value="<?= htmlspecialchars($arResult["arUser"]["UF_TELEGRAM_NIC"]) ?>"
-                                       autocomplete="off" id="edit-telegramNic" placeholder="<?=GetMessage('PERSONAL_EDIT_TELEGRAM_NIK_PLACEHOLDER')?>">
-                            </div>
-                            <? if ($arResult['CAN_EDIT_PASSWORD']) { ?>
-                                <div class="form-field">
-                                    <label for="edit-new-pass" class="form-field__label">
-                                        <?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD')?>
-                                    </label>
-                                    <input type="password" class="form-field__input form-field__input_pass"
-                                           name="NEW_PASSWORD" value="" autocomplete="off" id="edit-new-pass"
-                                           placeholder="<?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_PLACEHOLDER')?>">
-                                    <span class="form-field__eyes"></span>
-                                    <span class="form-field__helper"><?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_HELP')?></span>
-                                </div>
-                                <div class="form-field">
-                                    <label for="edit-confirm-new-pass" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_REPEAT')?></label>
-                                    <input type="password" class="form-field__input" name="NEW_PASSWORD_CONFIRM"
-                                           value="" autocomplete="off" id="edit-confirm-new-pass"
-                                           placeholder="<?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_REPEAT_PLACEHOLDER')?>">
-                                </div>
-                            <?php } ?>
-                            <?php } ?>
-                            <div class="form-field__button">
-                                <button type="submit" name="save" class="btn"
-                                        value="<?= (($arResult["ID"] > 0) ? GetMessage('PERSONAL_EDIT_BTN_SAVE') : GetMessage('PERSONAL_EDIT_BTN_ADD')) ?>">
-                                    <?=GetMessage('PERSONAL_EDIT_BTN_SAVE');?>
-                                </button>
-                                <button type="reset" value="<?= GetMessage('PERSONAL_EDIT_BTN_RESET'); ?>" class="btn">
-                                    <?=GetMessage('PERSONAL_EDIT_BTN_RESET');?>
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+  <div class="container">
+    <div class="layout__content-heading-with-btn-back">
+      <a href="<?=SITE_DIR?>personal/" class="btn-italic-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
+          <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z" transform="translate(-949.26 -534.62)"/>
+        </svg> <?=GetMessage('PERSONAL_EDIT_BTN_BACK')?>
+      </a>
+      <h1 class="text-center"><?=GetMessage('PERSONAL_EDIT_TITLE')?></h1>
     </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-md-12">
+
+        <form method="post" name="form1" action="<?=$arResult["FORM_TARGET"]?>" enctype="multipart/form-data">
+          <?=$arResult["BX_SESSION_CHECK"]?>
+          <input type="hidden" name="lang" value="<?=LANG?>">
+          <input type="hidden" name="ID" value=<?=$arResult["ID"]?>>
+          <?php if($arResult["ID"]>0) { ?>
+          <div class="profile__edit-avatar">
+            <input type="file" class="form-field__input-file inputFileAvatar"  name="PERSONAL_PHOTO" id="avatar">
+            <label for="avatar" class="form-field__upload-avatar">
+              <div class="profile__avatar-bg">
+                <div title="<?=GetMessage('PERSONAL_EDIT_AVATAR_TITLE')?>" class="profile__avatar profile__avatar-edit fileAvatarUploaded"
+                  <?php if (!empty($arResult["arUser"]["PERSONAL_PHOTO"])) { ?>
+                    style="background-image: url(<?php echo CFile::GetPath($arResult["arUser"]["PERSONAL_PHOTO"]); ?>)"
+                  <?php }?>>
+                  <div class="profile__avatar-edit-icon"></div>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div class="profile-info">
+            <div class="profile-info__edit">
+              <div class="form-field">
+                <label for="edit-nic" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_NICKNAME')?> <span>*</span></label>
+                <input type="text" class="form-field__input" name="LOGIN" value="<?=$arResult["arUser"]["LOGIN"]?>" autocomplete="off" id="edit-nic" placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>">
+
+              </div>
+              <div class="form-field">
+                <label for="edit-pubgid" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_PUBGID')?> <span>*</span></label>
+                <input type="text" class="form-field__input" name="UF_PUBG_ID" value="<?=htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]);?>" autocomplete="off" id="edit-pubgid" placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>">
+              </div>
+              <div class="form-field">
+                <label for="edit-subscription" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION')?></label>
+                <?
+                $resultPrem = isPrem($arResult["arUser"]['UF_DATE_PREM_EXP']);
+
+                $userId = $arResult["arUser"]["ID"];
+                $userGroups = CUser::GetUserGroup($userId);
+                $productGroups = array();$productName = ""; $productGroup = 0;
+                $res = CIBlockElement::GetList(
+                    array(),
+                    array(
+                        "IBLOCK_CODE" => "tovari"
+                    ),
+                    false,
+                    false,
+                    array(
+                        "ID",
+                        "IBLOCK_ID",
+                        "PROPERTY_USER_GROUP",
+                        "NAME",
+                    )
+                );
+                while($element = $res->Fetch())
+                {
+                    if($element["PROPERTY_USER_GROUP_VALUE"])
+                    {
+                        $productGroups[$element["PROPERTY_USER_GROUP_VALUE"]] = $element["NAME"];
+                    }
+                }
+                foreach ($userGroups as $k => $v)
+                {
+                    if($productGroups[$v])
+                    {
+                        $productName = $productGroups[$v];
+                        $productGroup = $v;
+                        break;
+                    }
+                }
+                $resultPrem = 0;
+                if($productGroup)
+                {
+                    $res = CUser::GetUserGroupList($userId);
+                    while ($group = $res->Fetch())
+                    {
+                        if($group["GROUP_ID"] == $productGroup)
+                        {
+                            $dateInsert = DateTime::createFromFormat("d.m.Y 00:00:00", $group["DATE_ACTIVE_TO"]);
+                            $dateNow = new DateTime('now');
+                            $resultPrem = $dateNow->diff($dateInsert)->days;
+                            break;
+                        }
+                    }
+                }
+                ?>
+                <?/* $resultPrem = isPrem($arResult["arUser"]["UF_DATE_PREM_EXP"])*/;
+                if ($resultPrem <= 0) { ?>
+                <div class="form-field__with-btn">
+                  <div class="form-field__input-wrap">
+                    <i class="form-field__icon form-field__icon_base"></i>
+                    <input type="text" class="form-field__input" name="authLogin" value="<?= $productName;?>" autocomplete="off" id="edit-subscription">
+                  </div>
+                  <a href="<?=SITE_DIR?>subscription-plans/" class="btn-italic"  target="_blank"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC_BTN')?></a>
+                </div>
+                <?php } else { ?>
+                  <div class="form-field__input-wrap">
+                    <i class="form-field__icon form-field__icon_prem"></i>
+                    <input type="text" class="form-field__input" name="authLogin" value="<?= $productName;?> <?php echo num_decline( $resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_REMAINING'), false );?> <?php echo num_decline( $resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_DAYS') );?>" autocomplete="off" id="edit-subscription">
+                  </div>
+                <?php } ?>
+              </div>
+              <div class="form-field">
+                <label for="my-mood" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_MY_MOOD')?></label>
+                <input type="text" class="form-field__input" name="TITLE" value="<?php echo htmlspecialchars($arResult["arUser"]["TITLE"])?>" autocomplete="off" id="my-mood" placeholder="<?=GetMessage('PERSONAL_EDIT_MY_MOOD_PLACEHOLDER')?>">
+              </div>
+              <div class="form-field">
+                <label for="edit-email" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_EMAIL')?> <span>*</span></label>
+                <input type="text" class="form-field__input" name="EMAIL" value="<?=$arResult["arUser"]["EMAIL"]?>" autocomplete="off" id="edit-email" placeholder="<?=GetMessage('PERSONAL_EDIT_EMAIL_PLACEHOLDER')?>" readonly>
+              </div>
+              <div class="form-field">
+                <label for="edit-telegramNic" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_TELEGRAM_NIK')?></label>
+                <input type="text" class="form-field__input" name="UF_TELEGRAM_NIC" value="<?=htmlspecialchars($arResult["arUser"]["UF_TELEGRAM_NIC"])?>" autocomplete="off" id="edit-telegramNic" placeholder="<?=GetMessage('PERSONAL_EDIT_TELEGRAM_NIK_PLACEHOLDER')?>">
+              </div>
+                <div class="form-field">
+                    <label for="edit-model-device" class="form-field__label">Модель устройства</label>
+                    <input type="text" class="form-field__input" name="UF_MODEL_DEVICE" value="<?=htmlspecialchars($arResult["arUser"]["UF_MODEL_DEVICE"])?>" autocomplete="off" id="edit-model-device" placeholder="iPhone 11 Pro">
+                </div>
+                <div class="form-field">
+                    <label for="edit-fps" class="form-field__label">FPS</label>
+                    <input type="text" class="form-field__input" name="UF_FPS" value="<?=htmlspecialchars($arResult["arUser"]["UF_FPS"])?>" autocomplete="off" id="edit-fps" placeholder="60">
+                </div>
+				
+
+
+				
+				
+              <?if($arResult['CAN_EDIT_PASSWORD']) { ?>
+              <div class="form-field">
+                <label for="edit-new-pass" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD')?></label>
+                <input type="password" class="form-field__input form-field__input_pass" name="NEW_PASSWORD" value="" autocomplete="off" id="edit-new-pass" placeholder="<?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_PLACEHOLDER')?>">
+                <span class="form-field__eyes"></span>
+                <span class="form-field__helper"><?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_HELP')?></span>
+              </div>
+              <div class="form-field">
+                <label for="edit-confirm-new-pass" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_REPEAT')?></label>
+                <input type="password" class="form-field__input" name="NEW_PASSWORD_CONFIRM"  value="" autocomplete="off" id="edit-confirm-new-pass" placeholder="<?=GetMessage('PERSONAL_EDIT_NEW_PASSWORD_REPEAT_PLACEHOLDER')?>">
+              </div>
+              <?php } ?>
+              <?php } ?>
+              <div class="form-field__button">
+                <button type="submit" name="save" class="btn" value="<?=(($arResult["ID"]>0) ? GetMessage("PERSONAL_EDIT_BTN_SAVE") : GetMessage("PERSONAL_EDIT_BTN_ADD"))?>"><?=GetMessage('PERSONAL_EDIT_BTN_SAVE');?></button>
+                <button type="reset" value="<?= GetMessage('PERSONAL_EDIT_BTN_RESET'); ?>" class="btn"><?=GetMessage('PERSONAL_EDIT_BTN_RESET');?></button>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </section>

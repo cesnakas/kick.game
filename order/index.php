@@ -155,8 +155,8 @@ if ($USER->IsAuthorized()) {
                                     {
                                         if($group["GROUP_ID"] == $productGroup)
                                         {
-                                            $dateInsert = \DateTime::createFromFormat("d.m.Y H:i:s", $group["DATE_ACTIVE_TO"]);
-                                            $dateNow = new \DateTime('now');
+                                            $dateInsert = DateTime::createFromFormat("d.m.Y 00:00:00", $group["DATE_ACTIVE_TO"]);
+                                            $dateNow = new DateTime('now');
                                             $restDays = $dateNow->diff($dateInsert)->days;
                                             break;
                                         }

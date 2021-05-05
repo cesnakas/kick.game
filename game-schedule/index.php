@@ -1,9 +1,7 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Расписание игр");
-?>
-
-<?$APPLICATION->IncludeComponent(
+?><?$APPLICATION->IncludeComponent(
 	"bitrix:news", 
 	"game-schedule-page", 
 	array(
@@ -100,7 +98,7 @@ $APPLICATION->SetTitle("Расписание игр");
 		"PAGER_TEMPLATE" => "ajax_pager",
 		"PAGER_TITLE" => "Новости",
 		"PREVIEW_TRUNCATE_LEN" => "",
-		"SEF_FOLDER" => SITE_DIR.'game-schedule/',
+		"SEF_FOLDER" => SITE_DIR."game-schedule/",
 		"SEF_MODE" => "Y",
 		"SET_LAST_MODIFIED" => "N",
 		"SET_STATUS_404" => "Y",
@@ -136,19 +134,16 @@ if (isset($arUser) && $resultPrem <= 0) { ?>
         <div class="container">
             <div class="banner__bg">
                 <div class="banner__content">
-                    <h2><?=GetMessage('BANNER_TITLE')?></h2>
+                  <h2><?=GetMessage('BANNER_TITLE')?></h2>
                     <div class="banner__content-btn">
                         <a href="<?=SITE_DIR?>subscription-plans/" class="btn"><?= GetMessage('BANNER_BUTTON') ?></a>
                     </div>
                 </div>
                 <div class="banner__img">
-                    <img src="<?=SITE_TEMPLATE_PATH;?>/dist/images/banner-img-2.png" alt="banner">
+                    <img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/banner-img-2.png" alt="banner">
                 </div>
             </div>
         </div>
     </section>
-<?php } ?>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+    <?php } ?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

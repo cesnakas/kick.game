@@ -26,10 +26,13 @@ $MESS['MAIN_REGISTER_EMAIL']               = 'E-mail';
 $MESS['MAIN_REGISTER_NAME']                = 'Имя';
 $MESS['MAIN_REGISTER_SECOND_NAME']         = 'Отчество';
 $MESS['MAIN_REGISTER_LAST_NAME']           = 'Фамилия';
+
 $MESS['MAIN_REGISTER_TITLE']               = 'Обращение';
+
 $MESS['MAIN_REGISTER_USER_UNKNOWN']        = 'Нет данных';
 $MESS['MAIN_REGISTER_USER_MALE']           = 'Мужской';
 $MESS['MAIN_REGISTER_USER_FEMALE']         = 'Женский';
+
 $MESS['MAIN_REGISTER_PERSONAL_PROFESSION'] = 'Профессия';
 $MESS['MAIN_REGISTER_PERSONAL_WWW']        = 'WWW-страница';
 $MESS['MAIN_REGISTER_PERSONAL_ICQ']        = 'ICQ';

@@ -29,13 +29,13 @@ function getMatchesByDate($date, $minRating, $maxRating) {
     return $output;
 }
 
-  function makeUID($PROP, $level)
-  {
+function makeUID($PROP, $level)
+{
     $str = 'MATCH';
     if ($PROP['TOURNAMENT']) {
-      $str.='TOURNAMENT';
+        $str.='TOURNAMENT';
     } else {
-      $str.='_PRAC';
+        $str.='_PRAC';
     }
     $time = new \DateTime($PROP['DATE_START']);
     $str.= '_'.$time->format('d.m.Y-H:i');
@@ -47,69 +47,75 @@ function getMatchesByDate($date, $minRating, $maxRating) {
 
     //$PROP['COUTN_TEAMS'] = 4;
     //$PROP['TYPE_MATCH'] = 6; // id свойства
-  }
-  function createMatchMembersEmpty($idMatch, $code)
-    {
-        $el = new CIBlockElement;
-        $iblock_id = 4;
-        $PROP =  array('WHICH_MATCH' => $idMatch);
-        $fields = array(
-            "DATE_CREATE" => date("d.m.Y H:i:s"), //Передаем дата создания
-            "CREATED_BY" => $GLOBALS['USER']->GetID(),    //Передаем ID пользователя кто добавляет
-            "IBLOCK_SECTION_ID" => false,
-            "IBLOCK_ID" => $iblock_id, //ID информационного блока он 24-ый
-            "PROPERTY_VALUES" => $PROP, // Передаем массив значении для свойств
-            "NAME" => 'MEMBERS_'.$code,
-            "ACTIVE" => "Y", //поумолчанию делаем активным или ставим N для отключении поумолчанию
-        );
-        //Результат в конце отработки
-        if ($ID = $el->Add($fields)) {
-            return $ID;
+}
 
-        } else {
-            return "Error: ".$el->LAST_ERROR;
-        }
+function createMatchMembersEmpty($idMatch, $code)
+{
+    $el = new CIBlockElement;
+    $iblock_id = 4;
+    $PROP =  array('WHICH_MATCH' => $idMatch);
+    $fields = array(
+        "DATE_CREATE" => date("d.m.Y H:i:s"), //Передаем дата создания
+        "CREATED_BY" => $GLOBALS['USER']->GetID(),    //Передаем ID пользователя кто добавляет
+        "IBLOCK_SECTION_ID" => false,
+        "IBLOCK_ID" => $iblock_id, //ID информационного блока он 24-ый
+        "PROPERTY_VALUES" => $PROP, // Передаем массив значении для свойств
+        "NAME" => 'MEMBERS_'.$code,
+        "ACTIVE" => "Y", //поумолчанию делаем активным или ставим N для отключении поумолчанию
+    );
+    //Результат в конце отработки
+    if ($ID = $el->Add($fields)) {
+        return $ID;
+
+    } else {
+        return "Error: ".$el->LAST_ERROR;
     }
-  function createMatchItem($PROP = [], $level = 0)
-  {
-      $el = new CIBlockElement;
-      $iblock_id = 3;
-      $params = Array(
-          "max_len" => "100", // обрезает символьный код до 100 символов
-          "change_case" => "L", // буквы преобразуются к нижнему регистру
-          "replace_space" => "-", // меняем пробелы на нижнее подчеркивание
-          "replace_other" => "-", // меняем левые символы на нижнее подчеркивание
-          "delete_repeat_replace" => "true", // удаляем повторяющиеся нижние подчеркивания
-          "use_google" => "false", // отключаем использование google
-      );
-      $code = makeUID($PROP, $level);
-      $fields = array(
-          "DATE_CREATE" => date("d.m.Y H:i:s"), //Передаем дата создания
-          "CREATED_BY" => $GLOBALS['USER']->GetID(),    //Передаем ID пользователя кто добавляет
-          "IBLOCK_SECTION_ID" => false,
-          "CODE" => CUtil::translit($code, "ru" , $params),
-          "IBLOCK_ID" => $iblock_id, //ID информационного блока он 24-ый
-          "PROPERTY_VALUES" => $PROP, // Передаем массив значении для свойств
-          "NAME" => $code,
-          "ACTIVE" => "Y", //поумолчанию делаем активным или ставим N для отключении поумолчанию
-          "PREVIEW_TEXT" => strip_tags($_REQUEST['description_team']), //Анонс
-          "PREVIEW_PICTURE" => $_FILES['image'], //изображение для анонса
-          "DETAIL_TEXT"    => strip_tags($_REQUEST['description_team']),
-          //"DETAIL_PICTURE" => $_FILES['image'] //изображение для детальной страницы
-      );
-      //Результат в конце отработки
-      if ($ID = $el->Add($fields)) {
-          createMatchMembersEmpty($ID, $code);
-          return $ID;
+}
 
-      } else {
-          return "Error: ".$el->LAST_ERROR;
-      }
-  }
+function createMatchItem($PROP = [], $level = 0)
+{
+    $el = new CIBlockElement;
+    $iblock_id = 3;
+    $params = Array(
+        "max_len" => "100", // обрезает символьный код до 100 символов
+        "change_case" => "L", // буквы преобразуются к нижнему регистру
+        "replace_space" => "-", // меняем пробелы на нижнее подчеркивание
+        "replace_other" => "-", // меняем левые символы на нижнее подчеркивание
+        "delete_repeat_replace" => "true", // удаляем повторяющиеся нижние подчеркивания
+        "use_google" => "false", // отключаем использование google
+    );
+    $code = makeUID($PROP, $level);
+    $fields = array(
+        "DATE_CREATE" => date("d.m.Y H:i:s"), //Передаем дата создания
+        "CREATED_BY" => $GLOBALS['USER']->GetID(),    //Передаем ID пользователя кто добавляет
+        "IBLOCK_SECTION_ID" => false,
+        "CODE" => CUtil::translit($code, "ru" , $params),
+        "IBLOCK_ID" => $iblock_id, //ID информационного блока он 24-ый
+        "PROPERTY_VALUES" => $PROP, // Передаем массив значении для свойств
+        "NAME" => $code,
+        "ACTIVE" => "Y", //поумолчанию делаем активным или ставим N для отключении поумолчанию
+        "PREVIEW_TEXT" => strip_tags($_REQUEST['description_team']), //Анонс
+        "PREVIEW_PICTURE" => $_FILES['image'], //изображение для анонса
+        "DETAIL_TEXT"    => strip_tags($_REQUEST['description_team']),
+        //"DETAIL_PICTURE" => $_FILES['image'] //изображение для детальной страницы
+    );
+    //Результат в конце отработки
+    if ($ID = $el->Add($fields)) {
+        createMatchMembersEmpty($ID, $code);
+        return $ID;
+
+    } else {
+        return "Error: ".$el->LAST_ERROR;
+    }
+}
 
 if (isset($_POST['create_match'])) {
 
     $PROP = [];
+    $PROP['MODERATOR'] = $_POST['idMod'];
+    if($_POST['idMod'] == "Укажите из списка"){
+        $PROP['MODERATOR'] = "";
+    }
 
     $PROP["GROUP"] = chr(65 + count(getMatchesByDate($_POST['date_time_match'], $_POST['minRating'],$_POST['maxRating'])));
     $PROP['TOURNAMENT'] = false;
@@ -150,7 +156,6 @@ if (isset($_POST['create_match'])) {
 
 
 }
-
 ?>
 <div class="container my-5">
   <?php
@@ -170,12 +175,30 @@ if (isset($_POST['create_match'])) {
       <p>Минимальный рейтинг не может превышать максимальный!</p>
       <hr>
       </div>
-      <? } ?>
+      <? }
+  $mods = getUsersByGroup(8);
+  ?>
     <h2>Создать цепочку матчей</h2>
     <div class="container">
         <div class="row">
           <div class="col-6">
             <form action="#" method="post" enctype="multipart/form-data">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Выберите рефери</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="idMod">
+                            <option>Укажите из списка</option>
+                            <?php foreach($mods as $mod){ ?>
+
+                                <option value="<?php echo $mod["ID"]; ?>"><?php echo $mod["LOGIN"]; ?></option>
+
+                            <?php } ?>
+
+                        </select>
+                    </div>
+                </div>
+
               <div class="form-group">
                 <label for="datetimepicker2" class="form-label">Введите дату и время матча</label>
                 <input type='text' class="form-control" name="date_time_match" value="" id="datetimepicker2" />

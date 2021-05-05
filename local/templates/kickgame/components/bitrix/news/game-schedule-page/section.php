@@ -11,6 +11,7 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+dump($arResult);
 ?>
 
 <?if($arParams["USE_RSS"]=="Y"):?>

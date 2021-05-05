@@ -298,13 +298,12 @@ if(!$isCaptain) {
         </span>
     <span class="game-schedule__param-wrap">
           <div class="game-schedule__param">Рейтинг</div>
-          3.0
+          <?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]?>
         </span>
     <span class="game-schedule__param-wrap">
             <div class="game-schedule__param">Режим</div>
             <div class="game-schedule__mode">
-              <i></i>
-              <div>x<?php echo $arItem["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]; ?></div>
+              <div><?php echo $type; ?></div>
             </div>
         </span>
     <span class="game-schedule__param-wrap">

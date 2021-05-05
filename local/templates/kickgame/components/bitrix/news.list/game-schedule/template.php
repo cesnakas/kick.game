@@ -268,16 +268,16 @@ function isPlace($idMatch): bool
                 <path d="M678.77,393.6h7.68" transform="translate(-671.27 -373.4)"/>
               </svg>
             </div>
-              <div class="color-tournament"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
+                <div class="color-tournament"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
             <?php } ?>
-            <?php
-            if($tmp = getParticipationByMatchId($arItem["ID"])) {
-                $tmp = array_flip($tmp);
-                if (isset($tmp[$teamID])) { ?>
-                    <div class="game-schedule__participation-label">Слот № <?php echo $tmp[$teamID];?></div>
-                <?php }
-            }
-            ?>
+              <?php
+              if($tmp = getParticipationByMatchId($arItem["ID"])) {
+                  $tmp = array_flip($tmp);
+                  if (isset($tmp[$teamID])) { ?>
+                      <div class="new-game-schedule__participation-label">Слот № <?php echo $tmp[$teamID];?></div>
+                  <?php }
+              }
+              ?>
           </div>
         </span>
         <span>
@@ -314,11 +314,16 @@ function isPlace($idMatch): bool
           <?php if (!empty($arItem["PROPERTY_STREAMER_NAME"])) { ?>
               <?php echo $arItem["PROPERTY_STREAMER_NAME"]; ?>
           <?php } else { ?>
-            -
+              -
           <?php } ?>
         </span>
-</div>
-<?php } ?>
+
+    </div>
+
+
+
+    <?php //}
+} ?>
 
 <?=$arResult["NAV_STRING"]?>
 
