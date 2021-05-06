@@ -15,7 +15,7 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
 
 ?>
 <!doctype html>
-<html lang="ru">
+<html lang="<?=LANGUAGE_ID;?>">
 <head>
   <script data-skip-moving='true'>
       !function (w, d, t) {
@@ -75,37 +75,42 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
         <div class="container">
           <nav class="navbar">
             <div class="navbar__logo">
-              <a href="/"><img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/logo.svg" alt="logo"></a>
+                <a href="<?=SITE_DIR;?>"><img src="<?=SITE_TEMPLATE_PATH;?>/dist/images/logo.svg" alt="logo"></a>
             </div>
             <div class="navbar__burger" id="navbar__burger">
               <button></button>
             </div>
             <div class="navbar-link" id="navbar-link">
               <ul class="navbar__nav">
-                <li><a href="/">Главная</a></li>
-                <li><a href="/game-schedule/">Расписание</a></li>
-                <li><a href="/teams/">Рейтинги</a></li>
-                <li><a href="/subscription-plans/">Подписка</a></li>
+                <li><a href="<?=SITE_DIR;?>"><?=GetMessage('NAV_HOME')?></a></li>
+                <li><a href="<?=SITE_DIR;?>game-schedule/"><?=GetMessage('NAV_TIMETABLE')?></a></li>
+                <li><a href="<?=SITE_DIR;?>teams/"><?=GetMessage('NAV_RATINGS')?></a></li>
+                <li><a href="<?=SITE_DIR;?>subscription-plans/"><?=GetMessage('NAV_SUBSCRIPTION')?></a></li>
                 <?php if ($USER->IsAuthorized()) { ?>
                 <li class="nav-link-exit"><a href="<?=$APPLICATION->GetCurPageParam("logout=yes&".bitrix_sessid_get(), array(
                         "login",
                         "logout",
                         "register",
                         "forgot_password",
-                        "change_password"));?>" class="color-red ">Выход</a></li>
+                        "change_password"));?>" class="color-red "><?=GetMessage('NAV_LOGOUT')?></a></li>
                 <?php } ?>
               </ul>
               <ul class="navbar__lang">
                 <li class="navbar-dropdown">
-                  <a href="#">Рус
+                    <a href="javascript:void(0);">
+                        <?=GetMessage('NAV_LANG')?>
                     <i class='navbar-dropdown__icon'></i>
                   </a>
                   <ul class="navbar-dropdown__menu navbar-dropdown__menu_lang">
                     <li class="navbar-dropdown__item">
-                      <a href="/" class="nav__link">РУС</a>
+                        <a href="<?=str_replace('/en/','/',str_replace('index.php','',$_SERVER['PHP_SELF']))?>" class="nav__link">РУС</a>
                     </li>
                     <li class="navbar-dropdown__item">
-                      <a href="#" class="nav__link">ENG</a>
+                        <? if(LANGUAGE_ID == 'en'): ?>
+                            <a href="<?=str_replace('index.php','',$_SERVER['PHP_SELF'])?>" class="nav__link">ENG</a>
+                        <? else: ?>
+                            <a href="<?=SITE_DIR?>en<?=str_replace('index.php','',$_SERVER['PHP_SELF'])?>">ENG</a>
+                        <? endif; ?>
                     </li>
                   </ul>
                 </li>
@@ -115,7 +120,7 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
             <?php if ($USER->IsAuthorized()) {
                 ?>
             <div class="navbar-user ">
-              <a href="/personal/">
+                <a href="<?=SITE_DIR;?>personal/">
                 <div class="navbar-user__avatar"
                      <?php if (!empty($arUser["PERSONAL_PHOTO"])) { ?>
                        style="background-image: url(<?php echo CFile::GetPath($arUser["PERSONAL_PHOTO"]); ?>)"
@@ -134,31 +139,31 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
               </a>
               <ul class="navbar-user__menu">
                 <li class="navbar-dropdown">
-                  <a href="/personal/"><?php echo htmlspecialchars($arUser["LOGIN"]); ?>
+                  <a href="<?=SITE_DIR?>personal/"><?php echo htmlspecialchars($arUser["LOGIN"]); ?>
                     <i class='navbar-dropdown__icon'></i>
                   </a>
                   <ul class="navbar-dropdown__menu">
                     <li class="navbar-dropdown__item">
-                      <a href="/personal/" class="nav__link">Профиль</a>
+                        <a href="<?=SITE_DIR;?>personal/" class="nav__link"><?=GetMessage('NAV_PERSONAL')?></a>
                     </li>
                     <?php if ($isCaptainHeader) { ?>
                     <li class="navbar-dropdown__item">
-                      <a href="/management-compositional/" class="nav__link">Моя команда</a>
+                      <a href="<?=SITE_DIR?>management-compositional/" class="nav__link"><?=GetMessage('NAV_MY_TEAM')?></a>
                     </li>
                         <?php if(isPrem($arUser['UF_DATE_PREM_EXP']) > 0 ) { ?>
                     <li class="navbar-dropdown__item">
-                      <a href="/management-games/" class="nav__link">Управление играми</a>
+                      <a href="<?=SITE_DIR?>management-games/" class="nav__link"><?=GetMessage('NAV_GAMES_MANAGEMENT')?></a>
                     </li>
                         <?php }?>
                     <?php }?>
                     <?php if ( CSite::InGroup( array(1,8) ) ) { ?>
                       <li class="navbar-dropdown__item">
-                        <a href="/dashboard/" class="nav__link">Dashboard</a>
+                        <a href="<?=SITE_DIR;?>dashboard/" class="nav__link"><?=GetMessage('NAV_DASHBOARD')?></a>
                       </li>
                     <?php } ?>
             <?php if ( CSite::InGroup( array(1) ) ) { ?>
                       <li class="navbar-dropdown__item">
-                        <a href="/referee/" class="nav__link">Create matches</a>
+                        <a href="<?=SITE_DIR;?>referee/" class="nav__link"><?=GetMessage('NAV_CREATE_MATCHES')?></a>
                       </li>
                     <?php } ?>
                     <li class="navbar-dropdown__item">
@@ -167,7 +172,7 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                           "logout",
                           "register",
                           "forgot_password",
-                          "change_password"));?>" class="nav__link color-red">Выход</a>
+                          "change_password"));?>" class="nav__link color-red"><?=GetMessage('NAV_LOGOUT')?></a>
                     </li>
                   </ul>
                 </li>
@@ -175,10 +180,10 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
             </div>
             <?php } else { ?>
             <div class="navbar-no-auth">
-              <a class="btn btn_auth btn_border" href="/personal/auth/reg.php">Регистрация</a> <a class="btn btn_auth" href="/personal/auth/">Вход</a>
+              <a class="btn btn_auth btn_border" href="<?=SITE_DIR?>personal/auth/reg.php"><?=GetMessage('NAV_REGISTER')?></a> <a class="btn btn_auth" href="<?=SITE_DIR?>personal/auth/"><?=GetMessage('NAV_LOGIN')?></a>
             </div>
             <div class="navbar-no-auth-mobile">
-              <a class="btn-sign-in" href="/personal/auth/"><i></i> Вход</a>
+              <a class="btn-sign-in" href="<?=SITE_DIR?>personal/auth/"><i></i> <?=GetMessage('NAV_LOGIN')?></a>
             </div>
             <?php } ?>
           </nav>

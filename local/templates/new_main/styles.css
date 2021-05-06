@@ -490,6 +490,7 @@ button {
 }
 
 .lang-selector svg:first-of-type {
+  margin-top: -4px;
   margin-right: 5px;
 }
 
@@ -514,8 +515,10 @@ button {
 }
 
 .lang-selector__menu-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  color: #FFF;
+  text-decoration: none;
 }
 
 .lang-selector__menu-item:first-child {
@@ -614,13 +617,13 @@ button {
 }
 
 .adv__text {
-  width: 100%;
+  width: 50%;
   padding: 40px;
   font-size: 20px;
 }
 
 .adv__action {
-  width: 100%;
+  width: 50%;
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -791,7 +794,7 @@ button {
 
 .games-type {
   display: flex;
-  align-items: baseline;
+  align-items: center;
 }
 
 .games__list td:nth-child(6) svg {
@@ -802,7 +805,7 @@ button {
   display: none;
 }
 .games__list-mobile-item:not(:first-child) {
-  margin-top: 10px;
+  margin-top: 60px;
 }
 
 .game-img {
@@ -820,7 +823,7 @@ button {
 }
 
 .game-link {
-  margin-right: 20px;
+  margin-top: 20px;
 }
 
 .game-type {

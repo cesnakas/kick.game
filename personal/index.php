@@ -952,8 +952,8 @@ unset($_SESSION['alert_error']);
                           <i></i>
                       </div>
                       <div class="profile-info__type-account-description">
-                          <div>Базовая</div>
-                          <div><a href="/subscription-plans/" class="btn-italic">Поменять</a></div>
+                          <div><?= GetMessage('TYPE_ACCOUNT') ?></div>
+                          <div><a href="<?=SITE_DIR?>subscription-plans/" class="btn-italic"><?= GetMessage('TYPE_ACCOUNT_CHANGE') ?></a></div>
                       </div>
                   <? } else { ?>
                       <div class="profile-info__type-account-icon profile-info__type-account-icon_prem">
@@ -961,7 +961,7 @@ unset($_SESSION['alert_error']);
                       </div>
                       <div class="profile-info__type-account-description">
                           <div><?= $productName?></div>
-                          <div class="profile-info__day-left"><?php echo num_decline($resultPrem, 'Остался, Осталось, Осталось', false); ?> <?php echo num_decline($resultPrem, 'день, дня, дней'); ?></div>
+                          <div class="profile-info__day-left"><?php echo num_decline($resultPrem, GetMessage('TYPE_ACCOUNT_PREMIUM_REMAINING'), false); ?> <?php echo num_decline($resultPrem, GetMessage('TYPE_ACCOUNT_PREMIUM_DAYS')); ?></div>
                       </div>
                   <? } ?>
                 </div>
@@ -977,9 +977,9 @@ unset($_SESSION['alert_error']);
                 </div>
               </div>
               <div class="col-md-3 profile-info__item text-lg-right text-center">
-                <a href="/personal/edit/" class="btn__edit">
+                <a href="<?=SITE_DIR?>personal/edit/" class="btn__edit">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M952.88,546.68H953l4.63-.82a.26.26,0,0,0,.15-.07l11.65-11.66a.24.24,0,0,0,.06-.09.18.18,0,0,0,0-.1.2.2,0,0,0,0-.11.24.24,0,0,0-.06-.09l-4.57-4.57a.27.27,0,0,0-.19-.08.28.28,0,0,0-.2.08l-11.65,11.66a.23.23,0,0,0-.08.14l-.81,4.63a.94.94,0,0,0,0,.44,1,1,0,0,0,.24.38A1,1,0,0,0,952.88,546.68Zm1.85-4.8,10-10,2,2-10,10-2.45.43ZM970,549H949.75a.88.88,0,0,0-.88.88v1a.22.22,0,0,0,.22.22h21.56a.22.22,0,0,0,.22-.22v-1A.87.87,0,0,0,970,549Z" transform="translate(-948.87 -529.08)"/></svg>
-                  <span>Редактировать</span>
+                  <span><?= GetMessage('PERSONAL_EDIT') ?></span>
                 </a>
               </div>
             </div>
@@ -989,7 +989,7 @@ unset($_SESSION['alert_error']);
                   <div>PUBG ID</div>
                   <div>
                     <?php if (empty($arUser['UF_PUBG_ID'])) { ?>
-                        Введите  PUBG ID
+                        <?= GetMessage('PERSONAL_ENTER_ID') ?>  PUBG ID
                     <?php } else { ?>
                         <?php echo htmlspecialchars($arUser['UF_PUBG_ID'])?>
                     <?php } ?>
@@ -998,19 +998,19 @@ unset($_SESSION['alert_error']);
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div>Мое настроение</div>
+                    <div><?= GetMessage('PERSONAL_MY_MOOD') ?></div>
                   <div><?php echo htmlspecialchars($arUser["TITLE"]); ?></div>
                 </div>
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div>Регион, город</div>
-                  <div>Введите регион, город</div>
+                    <div><?= GetMessage('PERSONAL_REGION') ?></div>
+                    <div><?= GetMessage('PERSONAL_REGION_PLACEHOLDER') ?></div>
                 </div>
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div><?if(!empty($arUser["UF_ID_TEAM"])):?>Награда<?else:?>Дивизион<?endif;?></div>
+                  <div><?if(!empty($arUser["UF_ID_TEAM"])):?>Награда<?else:?><?= GetMessage('PERSONAL_DIVISION') ?><?endif;?></div>
                   <div>
                       <?
                       $teamId = intval($arUser["UF_ID_TEAM"]);
@@ -1047,32 +1047,32 @@ unset($_SESSION['alert_error']);
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div>Язык общения</div>
+                    <div><?= GetMessage('PERSONAL_LANG') ?></div>
                   <div>Русский</div>
                 </div>
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div>Активность в игре</div>
+                    <div><?= GetMessage('PERSONAL_ACTIVITY') ?></div>
                   <div>с 02:00 до 15:00</div>
                 </div>
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div>Девайс</div>
+                    <div><?= GetMessage('PERSONAL_DEVICE') ?></div>
                   <div>Телефон</div>
                 </div>
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div>Команда</div>
+                    <div><?= GetMessage('PERSONAL_TEAM') ?></div>
                   <div>
                     <?php if (!empty($teamID)) {
-                        echo '<a href="/teams/'.$teamID.'/">';
+                        echo '<a href="'.SITE_DIR.'teams/'.$teamID.'/">';
                         echo htmlspecialchars($arrResultTeam['NAME']) . ' ['. $arrResultTeam['TAG_TEAM']['~VALUE'] . ']';
                         echo '</a>';
                     } else { ?>
-                        Команда не выбрана
+                        <?= GetMessage('PERSONAL_TEAM_NO_SELECTED') ?>
                     <?php } ?>
                   </div>
                 </div>
@@ -1080,8 +1080,8 @@ unset($_SESSION['alert_error']);
             </div>
             <?php if (empty($teamID)) { ?>
               <div class="profile-info__wrap-btn-invite">
-                <a href="#" class="btn" data-toggle="modal" data-target="#createTeam">Создать команду</a>
-                <a href="/teams/" class="btn">Найти команду</a>
+                <a href="#" class="btn" data-toggle="modal" data-target="#createTeam"><?= GetMessage('PERSONAL_CREATE_TEAM') ?></a>
+                <a href="<?=SITE_DIR?>teams/" class="btn"><?= GetMessage('PERSONAL_FIND_TEAM') ?></a>
               </div>
             <?php } ?>
           </div>
@@ -1186,17 +1186,17 @@ if (!empty($newMatchIds)) {
 
   <section class="game-schedule bg-blue-lighter">
     <div class="container">
-      <h2 class="game-schedule__heading text-center">Мои ближайшие игры</h2>
+      <h2 class="game-schedule__heading text-center"><?= GetMessage('MY_GAMES_HEADLINE') ?></h2>
       <div class="game-schedule-table">
         <div class="flex-table">
           <div class="flex-table--header bg-blue-lighter">
             <div class="flex-table--categories">
-              <span>Тип игры</span>
-              <span>Название</span>
-              <span>Дата проведения</span>
-              <span>Рейтинг</span>
-              <span>Режим</span>
-              <span>Комментатор</span>
+                <span><?= GetMessage('MY_GAMES_TYPE') ?></span>
+                <span><?= GetMessage('MY_GAMES_TITLE') ?></span>
+                <span><?= GetMessage('MY_GAMES_DATE_EVENT') ?></span>
+                <span><?= GetMessage('MY_GAMES_RATING') ?></span>
+                <span><?= GetMessage('MY_GAMES_MODE') ?></span>
+                <span><?= GetMessage('MY_GAMES_COMMENTATOR') ?></span>
             </div>
           </div>
           <div class="flex-table--body">
@@ -1223,7 +1223,7 @@ if (!empty($newMatchIds)) {
 		"CACHE_TIME" => "36000000",
 		"CACHE_TYPE" => "A",
 		"CHECK_DATES" => "Y",
-		"DETAIL_URL" => "/game-schedule/#ELEMENT_CODE#/",
+		"DETAIL_URL" => SITE_DIR."game-schedule/#ELEMENT_CODE#/",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"DISPLAY_DATE" => "Y",
 		"DISPLAY_NAME" => "Y",
@@ -1289,7 +1289,7 @@ if (!empty($newMatchIds)) {
       </div>
     </div>
         <div class="mt-3 text-center">
-            <a href="https://t.me/joinchat/4FQ3rXG9lcU3N2My" class="btn" target="_blank">Поддержка</a>
+            <a href="https://t.me/joinchat/4FQ3rXG9lcU3N2My" class="btn" target="_blank"><?= GetMessage('MY_GAMES_SUPPORT') ?></a>
         </div>
     </div>
   </section>
@@ -1299,13 +1299,13 @@ if (!empty($newMatchIds)) {
       <div class="row justify-content-center">
         <div class="col-lg-11 col-md-12">
           <div class="promo-code__wrapper">
-            <h3>У меня есть промокод</h3>
+            <h3><?= GetMessage('MY_GAMES_PROMO_CODE') ?></h3>
             <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
               <?=bitrix_sessid_post()?>
               <div class="form-field">
                 <div class="form-field__with-btn">
-                  <input type="text" class="form-field__input" name="promocode" value="" autocomplete="off" placeholder="Введите промокод">
-                  <button class="btn" type="submit" name="">Применить</button>
+                  <input type="text" class="form-field__input" name="promocode" value="" autocomplete="off" placeholder="<?= GetMessage('MY_GAMES_PROMO_CODE_PLACEHOLDER') ?>">
+                  <button class="btn" type="submit" name=""><?= GetMessage('MY_GAMES_PROMO_CODE_BTN') ?></button>
                 </div>
               </div>
             </form>
@@ -1319,9 +1319,9 @@ if (!empty($newMatchIds)) {
     <div class="container">
       <div class="banner__bg">
         <div class="banner__content">
-          <h2> Стань профи, купи <br> подписку </h2>
+            <h2><?= GetMessage('BANNER_TITLE') ?></h2>
           <div class="banner__content-btn">
-            <a href="/subscription-plans/" class="btn"> Купить подписку </a>
+            <a href="<?= SITE_DIR ?>subscription-plans/" class="btn"><?= GetMessage('BANNER_BUTTON') ?></a>
           </div>
         </div>
         <div class="banner__img">
@@ -1340,17 +1340,17 @@ if (!empty($newMatchIds)) {
     </style>
   <section class="game-schedule bg-blue-lighter">
     <div class="container">
-      <h2 class="game-schedule__heading text-center">История игр</h2>
+      <h2 class="game-schedule__heading text-center"><?= GetMessage('GS_HEADER') ?></h2>
       <div class="new-game-schedule-table">
         <div class="flex-table-new">
           <div class="flex-table--header bg-blue-lighter">
             <div class="flex-table--categories">
-              <span>Тип игры</span>
-              <span>Название</span>
-              <span>Дата проведения</span>
-              <span>Рейтинг</span>
-              <span>Режим</span>
-              <span>Комментатор</span>
+                <span><?= GetMessage('MY_GAMES_TYPE') ?></span>
+                <span><?= GetMessage('MY_GAMES_TITLE') ?></span>
+                <span><?= GetMessage('MY_GAMES_DATE_EVENT') ?></span>
+                <span><?= GetMessage('MY_GAMES_RATING') ?></span>
+                <span><?= GetMessage('MY_GAMES_MODE') ?></span>
+                <span><?= GetMessage('MY_GAMES_COMMENTATOR') ?></span>
             </div>
           </div>
           <div class="flex-table-new--body">
@@ -1384,7 +1384,7 @@ if (!empty($newMatchIds)) {
 		"CACHE_TIME" => "36000000",
 		"CACHE_TYPE" => "A",
 		"CHECK_DATES" => "Y",
-		"DETAIL_URL" => "/game-schedule/#ELEMENT_CODE#/",
+		"DETAIL_URL" => SITE_DIR."game-schedule/#ELEMENT_CODE#/",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"DISPLAY_DATE" => "Y",
 		"DISPLAY_NAME" => "Y",
@@ -1460,17 +1460,17 @@ if (!empty($newMatchIds)) {
       ?>
       <section class="py-10">
     <div class="container">
-      <h2 class="core-team__heading">Моя команда</h2>
+      <h2 class="core-team__heading"><?=GetMessage('CORE_TEAM_HEADING')?></h2>
       <h3 class="core-team__sub-heading"><?php echo $arrResultTeam['NAME'] ?> [<?php echo $arrResultTeam['TAG_TEAM']['~VALUE']; ?>]</h3>
-      <div class="core-team__heading-core-team">Основной Состав</div>
+      <div class="core-team__heading-core-team"><?=GetMessage('CORE_TEAM_SUBTITLE')?></div>
       <div class="core-team">
         <div class="flex-table">
           <div class="flex-table--header bg-default">
             <div class="flex-table--categories">
-              <span>Игрок</span>
-              <span>Количество игр</span>
-              <span>Киллы</span>
-              <span>Рейтинг</span>
+                <span><?=GetMessage('CORE_TEAM_PLAYER')?></span>
+                <span><?=GetMessage('CORE_TEAM_NUMBER_GAMES')?></span>
+                <span><?=GetMessage('CORE_TEAM_KILLS')?></span>
+                <span><?=GetMessage('CORE_TEAM_RATING')?></span>
             </div>
           </div>
           <div class="flex-table--body">
@@ -1502,19 +1502,19 @@ if (!empty($newMatchIds)) {
                       </div>
                       <?php } ?>
                     </div>
-                    <a href="/players/<?php echo $player['ID'].'_'.$player['login'].'/';?>" class="core-team__user-link"><?php echo $player['login'];?></a>
+                    <a href="<?=SITE_DIR?>players/<?php echo $player['ID'].'_'.$player['login'].'/';?>" class="core-team__user-link"><?php echo $player['login'];?></a>
                   </div>
                 </span>
               <span class="core-team__param-wrap">
-                  <div class="core-team__param">Количество игр</div>
+                  <div class="core-team__param"><?=GetMessage('CORE_TEAM_NUMBER_GAMES')?></div>
                   <?php echo $cntMatches;?>
                 </span>
               <span class="core-team__param-wrap">
-                  <div class="core-team__param">Киллы</div>
+                  <div class="core-team__param"><?=GetMessage('CORE_TEAM_KILLS')?></div>
                   <?php echo $kills;?>
                 </span>
               <span class="core-team__param-wrap">
-                  <div class="core-team__param">Рейтинг</div>
+                  <div class="core-team__param"><?=GetMessage('CORE_TEAM_RATING')?></div>
                   <?php echo $total;?>
                 </span>
             </div>
@@ -1525,9 +1525,9 @@ if (!empty($newMatchIds)) {
       <?php if($isCaptain) { ?>
         <div class="core-team__btn">
 
-          <a href="/management-compositional/" class="btn">Управление составом</a>
+          <a href="<?=SITE_DIR?>management-compositional/" class="btn"><?=GetMessage('MANAGEMENT_COMPOSITIONAL')?></a>
         <?php if(isPrem($arUser["UF_DATE_PREM_EXP"]) > 0) { ?>
-          <a href="/management-games/" class="btn">Управление играми</a>
+          <a href="<?=SITE_DIR?>management-games/" class="btn"><?=GetMessage('MANAGEMENT_GAMES')?></a>
         <?php } ?>
           <!--<a href="#" class="btn__edit mr-3">
            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M952.88,546.68H953l4.63-.82a.26.26,0,0,0,.15-.07l11.65-11.66a.24.24,0,0,0,.06-.09.18.18,0,0,0,0-.1.2.2,0,0,0,0-.11.24.24,0,0,0-.06-.09l-4.57-4.57a.27.27,0,0,0-.19-.08.28.28,0,0,0-.2.08l-11.65,11.66a.23.23,0,0,0-.08.14l-.81,4.63a.94.94,0,0,0,0,.44,1,1,0,0,0,.24.38A1,1,0,0,0,952.88,546.68Zm1.85-4.8,10-10,2,2-10,10-2.45.43ZM970,549H949.75a.88.88,0,0,0-.88.88v1a.22.22,0,0,0,.22.22h21.56a.22.22,0,0,0,.22-.22v-1A.87.87,0,0,0,970,549Z" transform="translate(-948.87 -529.08)"/></svg>
@@ -1552,16 +1552,16 @@ if (!empty($newMatchIds)) {
           </button>
         </div>
         <div class="modal-body">
-          <h3 class="modal-body__title">Создание команды</h3>
+          <h3 class="modal-body__title"><?=GetMessage('MODAL_TITLE')?></h3>
           <form class="form-team" action="<?= POST_FORM_ACTION_URI; ?>" method="post" enctype="multipart/form-data">
               <?=bitrix_sessid_post()?>
             <div class="form-field">
-              <label for="nameTeam" class="form-field__label">Название команды</label>
-              <input type="text" class="form-field__input" name="nameTeam" value="" autocomplete="off" id="nameTeam" placeholder="Введите название команды">
+              <label for="nameTeam" class="form-field__label"><?=GetMessage('MODAL_TEAM_NAME')?></label>
+              <input type="text" class="form-field__input" name="nameTeam" value="" autocomplete="off" id="nameTeam" placeholder="<?=GetMessage('MODAL_TEAM_NAME_PLACEHOLDER')?>">
             </div>
             <div class="form-field">
-              <label for="tagTeam" class="form-field__label">Тег команды</label>
-              <input type="text" class="form-field__input" name="tagTeam" value="" autocomplete="off" id="tagTeam" placeholder="Введите тег команды">
+              <label for="tagTeam" class="form-field__label"><?=GetMessage('MODAL_TEAM_TAG')?></label>
+              <input type="text" class="form-field__input" name="tagTeam" value="" autocomplete="off" id="tagTeam" placeholder="<?=GetMessage('MODAL_TEAM_TAG_PLACEHOLDER')?>">
             </div>
             <!--<div class="form-field">
               <label for="mottoTeam" class="form-field__label">Девиз команды</label>
@@ -1571,17 +1571,17 @@ if (!empty($newMatchIds)) {
 
               <input type="file" class="form-field__input-file inputFile" data-multiple-caption="выбрано {count} файла(ов)" name="logoTeam"  autocomplete="off"  id="logoTeam" >
               <label for="logoTeam" class="form-field__upload-file">
-                <i></i><span>Прикрепить логотип команды</span> <div class="fileUploaded"></div>
+                <i></i><span><?=GetMessage('MODAL_TEAM_LOGO')?></span> <div class="fileUploaded"></div>
               </label>
             </div>
             <div class="form-field">
-              <label for="descriptionTeam" class="form-field__label">Описание команды</label>
-              <textarea name="descriptionTeam" id="descriptionTeam" class="form-field__textarea" cols="30" rows="3"  placeholder="Введите описание команды"></textarea>
+              <label for="descriptionTeam" class="form-field__label"><?=GetMessage('MODAL_TEAM_DESCRIPTION')?></label>
+              <textarea name="descriptionTeam" id="descriptionTeam" class="form-field__textarea" cols="30" rows="3"  placeholder="<?=GetMessage('MODAL_TEAM_DESCRIPTION_PLACEHOLDER')?>"></textarea>
             </div>
             <input type="hidden" name="user_id" value="<?php echo $userID;?>"><br>
             <div class="modal-body__btn">
-              <button type="submit" class="btn mr-3" name="createTeam">Создать команду</button>
-              <button type="button" class="btn btn_border" data-dismiss="modal">Отмена</button>
+              <button type="submit" class="btn mr-3" name="createTeam"><?=GetMessage('MODAL_TEAM_BTN_CREATE_TEAM')?></button>
+              <button type="button" class="btn btn_border" data-dismiss="modal"><?=GetMessage('MODAL_TEAM_BTN_CANCEL')?></button>
             </div>
 
           </form>

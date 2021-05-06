@@ -501,16 +501,16 @@ if ($result->isSuccess())
     <main class="main">
         <div class="adv">
             <div class="adv__text">
-                <h3>Турнир по PUBG Mobile на 3000&euro; для команд — Регистрация открывается 1 мая</h3>
-                <p>Количество мест ограничено. Зарегистрируйся на платформе KICKGAME, чтобы подать заявку на участие одним из первых :3</p>
+                <h3><?=GetMessage('CONTENT_ADV_TEXT_H3')?></h3>
+                <p><?=GetMessage('CONTENT_ADV_TEXT_P')?></p>
             </div>
             <div class="adv__action">
-              <!-- <a href="/game-schedule/?arrFilterDateTime_pf%5BTYPE_MATCH%5D=5&set_filter=Y&set_filter=" class="button">подать заявку</a>-->
-                <a href="/regulations/" class="link link--text">Условия проведения турнира<br />и требования к участникам</a>
+              <!-- <a href="<?/*=SITE_DIR*/?>/game-schedule/?arrFilterDateTime_pf%5BTYPE_MATCH%5D=5&set_filter=Y&set_filter=" class="button"><?/*=GetMessage('CONTENT_ADV_ACTION_BUTTON')*/?></a>-->
+                <a href="<?=SITE_DIR?>regulations/" class="link link--text"><?=GetMessage('CONTENT_ADV_ACTION_P')?></a>
             </div>
         </div>
         <section class="section">
-            <h2 class="main-title">Играя с нами, ты сможешь</h2>
+            <h2 class="main-title"><?=GetMessage('CONTENT_MAIN_TITLE')?></h2>
             <div class="features">
                 <ul class="features__list">
                     <li class="features__item">
@@ -519,8 +519,8 @@ if ($result->isSuccess())
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/flash.png" alt="flash"
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/flash.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/flash@2x.png 2x"
                         >
-                        <h3>Прокачаться</h3>
-                        <p>тренироваться с tier 1 - tier 3 командами, анализировать свои результаты по готовым записям игр и совершенствовать навыки</p>
+                        <h3><?=GetMessage('CONTENT_MAIN_PUMP_UP')?></h3>
+                        <p>тренироваться с tier 1 - tier 3 командами, анализировать свои результаты по готовым записям игр и совершенствовать навыки<?/*=GetMessage('CONTENT_MAIN_PUMP_UP_TEXT')*/?></p>
                     </li>
                     <li class="features__item">
                         <img
@@ -528,8 +528,8 @@ if ($result->isSuccess())
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/first.png" alt="first"
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/first.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/first@2x.png 2x"
                         >
-                        <h3>Стать первым</h3>
-                        <p>в рейтингах игроков и команд, ежедневно соревнуясь с разными соперниками в практических играх</p>
+                        <h3><?=GetMessage('CONTENT_MAIN_FIRST')?></h3>
+                        <p><?=GetMessage('CONTENT_MAIN_FIRST_TEXT')?></p>
                     </li>
                     <li class="features__item">
                         <img
@@ -537,18 +537,18 @@ if ($result->isSuccess())
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/tournament.png" alt="tournament"
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/tournament.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/tournament@2x.png 2x"
                         >
-                        <h3>Победить в турнире</h3>
-                        <p>или нескольких, и забрать часть призового фонда размером в 1000&euro; или 10000&euro;</p>
+                        <h3><?=GetMessage('CONTENT_MAIN_WIN')?></h3>
+                        <p><?=GetMessage('CONTENT_MAIN_WIN_TEXT')?></p>
                     </li>
                 </ul>
             </div>
             <div class="section__action">
                 <?php if (!$USER->IsAuthorized()) { ?>
-                  <a href="/personal/auth/reg.php" class="button">регистрация</a>
+                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
                 <?php } else { ?>
-                  <a href="/personal/" class="button">Войти</a>
+                  <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
                 <?php } ?>
-                <span>14 дней бесплатный пробный период</span>
+                <span><?=GetMessage('CONTENT_MAIN_14DAYS')?></span>
             </div>
             <div class="features-bg"></div>
         </section>
@@ -557,7 +557,7 @@ if ($result->isSuccess())
 
         <section class="section">
             <div class="games-bg"></div>
-            <h2 class="main-title">Игры</h2>
+            <h2 class="main-title"><?=GetMessage('MAIN_GAMES')?></h2>
             <?php
             $curDate = date('Y-m-d H:i:s', time()-3600);
             GLOBAL $arrFilterDateTime;
@@ -590,7 +590,7 @@ if ($result->isSuccess())
                     "CACHE_TIME" => "36000000",
                     "CACHE_TYPE" => "A",
                     "CHECK_DATES" => "Y",
-                    "DETAIL_URL" => "/game-schedule/#ELEMENT_CODE#/",
+                    "DETAIL_URL" => SITE_DIR."/game-schedule/#ELEMENT_CODE#/",
                     "DISPLAY_BOTTOM_PAGER" => "Y",
                     "DISPLAY_DATE" => "Y",
                     "DISPLAY_NAME" => "Y",
@@ -648,14 +648,14 @@ if ($result->isSuccess())
             );
             ?>
             <div class="section__action">
-                <a href="/game-schedule/" class="button">Поиск игры</a>
+                <a href="<?=SITE_DIR?>game-schedule/" class="button"><?=GetMessage('MAIN_GAME_SEARCH')?></a>
                 <!--<span>Показать ещё 5</span>-->
             </div>
         </section>
 
 
         <section class="section about">
-            <h2 class="main-title">О платформе</h2>
+            <h2 class="main-title"><?=GetMessage('MAIN_TITLE_ABOUT')?></h2>
             <div class="separator"></div>
             <div class="video-container">
                 <div class="player">
@@ -677,13 +677,13 @@ if ($result->isSuccess())
 
         <section class="section functions">
             <div class="functions-bg"></div>
-            <h2 class="main-title">Функции</h2>
+            <h2 class="main-title"><?=GetMessage('MAIN_TITLE_FUNCTIONS')?></h2>
             <div class="functions__items">
                 <div class="functions__items-row">
                     <div class="functions__item">
                         <div class="functions__item-text">
-                            <h4>Поиск игроков и команд</h4>
-                            <p>Возможность найти свою идеальную команду, напарника для дуо или бойца в сквад</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_SEARCHING_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_SEARCHING_TEXT')?></p>
                         </div>
                         <img
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/search.png" alt="search"
@@ -696,16 +696,16 @@ if ($result->isSuccess())
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/checked.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/checked@2x.png 2x"
                         >
                         <div class="functions__item-text">
-                            <h4>Ранняя регистрация на игры</h4>
-                            <p>Начать регистрироваться на праки можно за 1-2 дня до их начала, а на турниры — за 15 дней</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_REGISTER_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_REGISTER_TEXT')?></p>
                         </div>
                     </div>
                 </div>
                 <div class="functions__items-row">
                     <div class="functions__item">
                         <div class="functions__item-text">
-                            <h4>Удобное управление командой</h4>
-                            <p>Создание команды, выбор игр, управление календарём, напоминания об играх и лёгкая замена игроков</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_MANAGEMENT_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_MANAGEMENT_TEXT')?></p>
                         </div>
                         <img
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/console.png" alt="team"
@@ -718,16 +718,16 @@ if ($result->isSuccess())
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/stream.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/stream@2x.png 2x"
                         >
                         <div class="functions__item-text">
-                            <h4>Трансляции и записи игр</h4>
-                            <p>Все наши игры проходят со стримами, и остаются в открытом доступе для просмотра после завершения</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_BROADCASTS_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_BROADCASTS_TEXT')?></p>
                         </div>
                     </div>
                 </div>
                 <div class="functions__items-row">
                     <div class="functions__item">
                         <div class="functions__item-text">
-                            <h4>Игры для сквадов, дуо и соло</h4>
-                            <p>От 15 праков ежедневно, кастомки и мини-турики каждую неделю, крупные турниры каждый месяц</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_GAMES_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_GAMES_TEXT')?></p>
                         </div>
                         <img
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/calendar.png" alt="calendar"
@@ -740,19 +740,19 @@ if ($result->isSuccess())
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/rate.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/rate@2x.png 2x"
                         >
                         <div class="functions__item-text">
-                            <h4>Рейтинги и статистика</h4>
-                            <p>Квалификация команд и игроков, которая гарантирует игру с равными соперниками и личная статистика по сыграными играм</p>
+                            <h4><?=GetMessage('MAIN_FUNCTIONS_RATINGS_TITLE')?></h4>
+                            <p><?=GetMessage('MAIN_FUNCTIONS_RATINGS_TEXT')?></p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="section__action">
                 <?php if (!$USER->IsAuthorized()) { ?>
-                  <a href="/personal/auth/reg.php" class="button">регистрация</a>
+                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
                 <?php } else { ?>
-                  <a href="/personal/" class="button">Войти</a>
+                  <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
                 <?php } ?>
-                <span>14 дней бесплатный пробный период</span>
+                <span><?=GetMessage('CONTENT_MAIN_14DAYS')?></span>
             </div>
         </section>
     </main>

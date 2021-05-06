@@ -41,15 +41,15 @@ if(isPrem($arUser["UF_DATE_PREM_EXP"]) > 0 || $arResult["sUrlPath"] == "/game-sc
 	<?endif?>
 <?else:?>
 	<?if($arResult["NavPageNomer"] < $arResult["NavPageCount"]):?>
-		<a class="btn-italic mt-5" href="<?=$arResult["sUrlPath"]?>?<?=$strNavQueryString?>PAGEN_<?=$arResult["NavNum"]?>=<?=($arResult["NavPageNomer"]+1)?>" id="ajax_next_page"><?=GetMessage("LOAD_MORE")?> <?=$rNum?></a>
+		<a class="btn-italic mt-5" href="<?=$arResult["sUrlPath"]?>?<?=$strNavQueryString?>PAGEN_<?=$arResult["NavNum"]?>=<?=($arResult["NavPageNomer"]+1)?>" id="ajax_next_page"><?=GetMessage('LOAD_MORE')?> <?=$rNum?></a>
 	<?endif?>
 <?endif?>
 
 <?php } else { ?>
     <div class="row" style="justify-content: space-around">
-    <a href="/subscription-plans/" class="btn mt-3"> Купить подписку </a>
+    <a href="<?=SITE_DIR?>subscription-plans/" class="btn mt-3"><?=GetMessage('BUTTON_SUBSCRIPTION_PLANS')?></a>
     </div>
     <div class="row" style="justify-content: space-around;">
-        <h4 class="premium-message">Чтобы просматривать полную историю игр, нужно приобрести подписку</h4>
+        <h4 class="premium-message"><?=GetMessage('HEADER_MESSAGE')?></h4>
     </div>
     <?php } ?>

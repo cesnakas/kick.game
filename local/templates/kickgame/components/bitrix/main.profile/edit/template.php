@@ -349,12 +349,12 @@ unset($_SESSION['save-profile_error']);
                 <input type="text" class="form-field__input" name="UF_TELEGRAM_NIC" value="<?=htmlspecialchars($arResult["arUser"]["UF_TELEGRAM_NIC"])?>" autocomplete="off" id="edit-telegramNic" placeholder="<?=GetMessage('PERSONAL_EDIT_TELEGRAM_NIK_PLACEHOLDER')?>">
               </div>
                 <div class="form-field">
-                    <label for="edit-model-device" class="form-field__label">Модель устройства</label>
-                    <input type="text" class="form-field__input" name="UF_MODEL_DEVICE" value="<?=htmlspecialchars($arResult["arUser"]["UF_MODEL_DEVICE"])?>" autocomplete="off" id="edit-model-device" placeholder="iPhone 11 Pro">
+                    <label for="edit-model-device" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_DEVICE')?></label>
+                    <input type="text" class="form-field__input" name="UF_MODEL_DEVICE" value="<?=htmlspecialchars($arResult["arUser"]["UF_MODEL_DEVICE"])?>" autocomplete="off" id="edit-model-device" placeholder="<?=GetMessage('PERSONAL_EDIT_DEVICE_PLACEHOLDER')?>">
                 </div>
                 <div class="form-field">
-                    <label for="edit-fps" class="form-field__label">FPS</label>
-                    <input type="text" class="form-field__input" name="UF_FPS" value="<?=htmlspecialchars($arResult["arUser"]["UF_FPS"])?>" autocomplete="off" id="edit-fps" placeholder="60">
+                    <label for="edit-fps" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_FPS')?></label>
+                    <input type="text" class="form-field__input" name="UF_FPS" value="<?=htmlspecialchars($arResult["arUser"]["UF_FPS"])?>" autocomplete="off" id="edit-fps" placeholder="<?=GetMessage('PERSONAL_EDIT_FPS_PLACEHOLDER')?>">
                 </div>
 				
 

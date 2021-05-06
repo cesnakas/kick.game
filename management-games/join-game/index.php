@@ -596,7 +596,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
                 if (isset($_POST['update_squad']) || $placeName != '') {
                     updateSquad($props, $mId);
                     createSession('management-games_success', $messages[$lang]['UPDATE_SQUAD_SUCCESS']);
-                    $redirectUrlAction = "/management-games/join-game/?mid=".$mId;
+                    $redirectUrlAction = SITE_DIR."management-games/join-game/?mid=".$mId;
                 } else {
 
 
@@ -936,7 +936,7 @@ unset($_SESSION['management-games_error']);
     <a href="javascript:history.back()" class="btn-italic-icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
         <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z" transform="translate(-949.26 -534.62)"/>
-      </svg> Назад
+      </svg> <?=GetMessage('JG_BACK')?>
     </a>
     <section class="game">
       <div class="row align-items-center justify-content-lg-center">
@@ -975,12 +975,12 @@ unset($_SESSION['management-games_error']);
                 ?>
             </h1>
               <?php if ($curMatch['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) { ?>
-                <div class="game__block-type"><i></i> Практическая игра</div>
+                <div class="game__block-type"><i></i> <?=GetMessage('JG_PRACTICAL_GAME')?></div>
               <?php } elseif($curMatch['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
-                <div class="game__block-type game__block-type_tournament"><i></i> Турнирная игра</div>
+                <div class="game__block-type game__block-type_tournament"><i></i> <?=GetMessage('JG_TOURNAMENT_GAME')?></div>
               <?php } ?>
             <div class="game__block-call">
-              <a href="#" class="btn-italic">Связаться с модератором</a>
+              <a href="#" class="btn-italic"><?=GetMessage('JG_CONTACT_MODERATOR')?></a>
             </div>
           </div>
         </div>
@@ -988,7 +988,7 @@ unset($_SESSION['management-games_error']);
           <div class="row">
             <div class="col-6 col-xl-4">
               <div class="info-item">
-                <div>Дата проведения</div>
+                <div><?=GetMessage('JG_DATE_EVENT')?></div>
                 <div>
                     <?php
                     $dateTime = explode(' ', $curMatch["DATE_START"]['VALUE']);
@@ -998,13 +998,13 @@ unset($_SESSION['management-games_error']);
             </div>
             <div class="col-6 col-xl-4">
               <div class="info-item">
-                <div>Количество матчей</div>
-                <div>3 (2 часа)</div>
+                <div><?=GetMessage('JG_TOTAL_MATCHES')?></div>
+                <div><?=GetMessage('JG_TIME')?></div>
               </div>
             </div>
             <div class="col-6 col-xl-4">
               <div class="info-item">
-                <div>Комментатор</div>
+                <div><?=GetMessage('JG_COMMENTATOR')?></div>
                 <div>
                   <?php if(!empty($curMatch["PROPERTY_STREAMER_NAME"])) {
                       echo $curMatch["PROPERTY_STREAMER_NAME"];
@@ -1016,10 +1016,10 @@ unset($_SESSION['management-games_error']);
             </div>
             <div class="col-6 col-xl-4">
               <div class="info-item">
-                <div>Ссылка на трансляцию</div>
+                <div><?=GetMessage('JG_LINK')?></div>
                 <div>
                     <?php if (!empty($curMatch["URL_STREAM"]['VALUE'])) { ?>
-                      <a href="<?php echo $curMatch["URL_STREAM"]['VALUE'];?>" target="_blank" class="btn-blue">В эфире</a>
+                      <a href="<?php echo $curMatch["URL_STREAM"]['VALUE'];?>" target="_blank" class="btn-blue"><?=GetMessage('JG_ONAIR')?></a>
                     <?php } else { ?>
                       -
                     <?php } ?>
@@ -1028,7 +1028,7 @@ unset($_SESSION['management-games_error']);
             </div>
             <div class="col-6 col-xl-4">
               <div class="info-item">
-                <div>Режим игры</div>
+                <div><?=GetMessage('JG_GAME_MODE')?></div>
                 <div>
                       <span class="info-item__mode-block">
                         <?php echo $mode;?>
@@ -1038,10 +1038,10 @@ unset($_SESSION['management-games_error']);
             </div>
             <div class="col-6 col-xl-4">
               <div class="info-item">
-                <div>Количество мест</div>
+                <div><?=GetMessage('JG_SEATS')?></div>
                 <div>
                     <?php if(!isPlace($curMatch['ID'])) { ?>
-                      мест нет
+                    <?=GetMessage('JG_NO_SEATS')?>
                     <?php } else {
                         $qtyOccupiedPlaces = getParticipationByMatchId($curMatch['ID']);
                         echo 'Занято '  . count($qtyOccupiedPlaces) . ' из 18 мест';
@@ -1059,7 +1059,7 @@ unset($_SESSION['management-games_error']);
     ?>
     <section class="pb-8">
     <div class="container">
-      <h2 class="core-team__heading">Основной Состав</h2>
+        <h2 class="core-team__heading"><?=GetMessage('JG_CORE_TEAM')?></h2>
       <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
           <?=bitrix_sessid_post()?>
         <div class="core-team">
@@ -1072,15 +1072,15 @@ unset($_SESSION['management-games_error']);
                       <input type="checkbox" id="c-all">
                       <div class="label-checkbox__checkmark"></div>
                     </label>
-                      <div>Игрок</div>
+                      <div><?=GetMessage('JG_TABLE_PLAYER')?></div>
                   </div>
 
                   </span>
-                <span>Количество игр</span>
-                <span>Киллы</span>
-                <span>Total</span>
-                <span>Рейтинг</span>
-                <span>Подписка</span>
+                <span><?=GetMessage('JG_TABLE_NUMBER_GAME')?></span>
+                <span><?=GetMessage('JG_TABLE_KILLS')?></span>
+                <span><?=GetMessage('JG_TABLE_TOTAL')?></span>
+                <span><?=GetMessage('JG_TABLE_RATING')?></span>
+                <span><?=GetMessage('JG_TABLE_SUBSCRIPTION')?></span>
               </div>
             </div>
             <div class="flex-table--body">
@@ -1117,23 +1117,23 @@ unset($_SESSION['management-games_error']);
                             </div>
                       <?php } ?>
                     </div>
-                    <a href="/players/<?php echo $player['ID'].'_'.$player['LOGIN'].'/';?>" class="core-team__user-link"><?php echo $player['LOGIN']?></a>
+                    <a href="<?=SITE_DIR?>players/<?php echo $player['ID'].'_'.$player['LOGIN'].'/';?>" class="core-team__user-link"><?php echo $player['LOGIN']?></a>
                   </div>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Количество игр</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_NUMBER_GAME')?></div>
                   <?php echo $cntMatches;?>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Киллы</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_KILLS')?></div>
                   <?php echo $kills;?>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Total</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_TOTAL')?></div>
                   <?php echo $total;?>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Рейтинг</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_RATING')?></div>
                   <?php if(!$player['UF_RATING']) { ?>
                     300
                   <?php } else { ?>
@@ -1141,13 +1141,13 @@ unset($_SESSION['management-games_error']);
                   <?php } ?>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Подписка</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_SUBSCRIPTION')?></div>
                     <?php $resultPrem = isPrem($player['UF_DATE_PREM_EXP']); ?>
                   <?php if ($resultPrem <= 0) { ?>
-                  нет подписки
+                      <?=GetMessage('JG_TABLE_NO_SUBSCRIPTION')?>
                 <?php  } else { ?>
 
-                    <?php echo num_decline( $resultPrem, 'Остался, Осталось, Осталось', false );?> <?php echo num_decline( $resultPrem, 'день, дня, дней' );?>
+                    <?php echo num_decline( $resultPrem, GetMessage('JG_TABLE_SUBSCRIPTION_REMAINED'), false );?> <?php echo num_decline( $resultPrem, GetMessage('JG_TABLE_SUBSCRIPTION_DAYS') );?>
 
                 <?php  } ?>
                 </span>
@@ -1158,13 +1158,13 @@ unset($_SESSION['management-games_error']);
         </div>
         <div class="core-team__btn-flex">
             <?php if (!empty($squadMembers)) { ?>
-              <button type="submit" name="removeTeam" value="1" class="btn-icon btn-icon_red btn-icon_close-red mr-1"><i></i> Снять команду с матча</button>
+              <button type="submit" name="removeTeam" value="1" class="btn-icon btn-icon_red btn-icon_close-red mr-1"><i></i> <?=GetMessage('JG_BTN_REMOVE')?></button>
             <?php } ?>
 
             <?php
-            $btnTitle = 'Сформировать команду';
+                $btnTitle = GetMessage('JG_BTN_CREATE');
             if (count($squadMembers) > 0) {
-                $btnTitle = 'Обновить команду';
+                $btnTitle = GetMessage('JG_BTN_UPDATE');
                 echo '<input type="hidden" name="update_squad" value="1">';
             }
             ?>

@@ -51,7 +51,7 @@ $APPLICATION->IncludeComponent(
 			0 => "EMAIL",
 			1 => "PERSONAL_PHONE",
 		),
-		"SUCCESS_PAGE" => "/personal/",
+		"SUCCESS_PAGE" => SITE_DIR.'personal/',
 		"USER_PROPERTY" => array(
 			0 => "UF_RATING",
 		),

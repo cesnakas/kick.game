@@ -524,8 +524,8 @@ if (!empty($teamIds)) {
   $matchKills = countKillsByMatchesIDs($chainMatches['chain']);
 
   //dump($wins);
-    $titleParticipants = 'Участники игры';
-    if(!empty( $points)) $titleParticipants = 'Результаты игры';
+    $titleParticipants = GetMessage('GSP_PARTICIPANTS');
+    if (!empty($points)) $titleParticipants = GetMessage('GSP_RESULTS');
 
     //dump($points);
 

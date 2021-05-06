@@ -326,7 +326,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_accept'])) {
         }
 
         createSession('management-players_success', $alertManagementTeam);
-        $redirectUrlAction = '/management-compositional/';
+        $redirectUrlAction = SITE_DIR.'management-compositional/';
     }
 
 } else if(check_bitrix_sessid() && isset($_REQUEST['btn_reject'])){
@@ -341,7 +341,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_accept'])) {
             updateFieldUserbyId($userId+0, $fields= array("UF_REQUEST_ID_TEAM" => null));
         }
         createSession('management-players_success', $alertManagementTeam);
-        $redirectUrlAction = '/management-compositional/';
+        $redirectUrlAction = SITE_DIR.'management-compositional/';
     }
 }
 
@@ -564,7 +564,7 @@ if (!empty($teamID)) {
     ?>
     <section class="team py-8">
         <div class="container">
-            <h1 class="text-center">Моя команда</h1>
+            <h1 class="text-center"><?=GetMessage('MC_TITLE')?></h1>
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-12">
                     <div class="team__logo-bg">
@@ -588,7 +588,7 @@ if (!empty($teamID)) {
                         <div class="team-info__btn-edit">
                             <a href="#" class="btn__edit" data-toggle="modal" data-target="#editTeam">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M952.88,546.68H953l4.63-.82a.26.26,0,0,0,.15-.07l11.65-11.66a.24.24,0,0,0,.06-.09.18.18,0,0,0,0-.1.2.2,0,0,0,0-.11.24.24,0,0,0-.06-.09l-4.57-4.57a.27.27,0,0,0-.19-.08.28.28,0,0,0-.2.08l-11.65,11.66a.23.23,0,0,0-.08.14l-.81,4.63a.94.94,0,0,0,0,.44,1,1,0,0,0,.24.38A1,1,0,0,0,952.88,546.68Zm1.85-4.8,10-10,2,2-10,10-2.45.43ZM970,549H949.75a.88.88,0,0,0-.88.88v1a.22.22,0,0,0,.22.22h21.56a.22.22,0,0,0,.22-.22v-1A.87.87,0,0,0,970,549Z" transform="translate(-948.87 -529.08)"/></svg>
-                                <span>Редактировать</span>
+                                <span><?=GetMessage('MC_EDIT')?></span>
                             </a>
                         </div>
 
@@ -604,16 +604,16 @@ if (!empty($teamID)) {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <h3 class="modal-body__title">Редактирование команды</h3>
+                            <h3 class="modal-body__title"><?=GetMessage('MC_EDIT_TEAM_TITLE')?></h3>
                             <form action="<?= POST_FORM_ACTION_URI; ?>" method="post" enctype="multipart/form-data">
                                 <?=bitrix_sessid_post()?>
                                 <div class="form-field">
-                                    <label for="nameTeam" class="form-field__label">Название команды</label>
-                                    <input type="text" class="form-field__input" name="nameTeam" value="<?php echo $resTeam["NAME_TEAM"]['VALUE']; ?>" autocomplete="off" id="nameTeam" placeholder="Введите название команды">
+                                    <label for="nameTeam" class="form-field__label"><?=GetMessage('MC_EDIT_TEAM_NAME')?></label>
+                                    <input type="text" class="form-field__input" name="nameTeam" value="<?php echo $resTeam["NAME_TEAM"]['VALUE']; ?>" autocomplete="off" id="nameTeam" placeholder="<?=GetMessage('MC_EDIT_TEAM_NAME_PLACEHOLDER')?>">
                                 </div>
                                 <div class="form-field">
-                                    <label for="tagTeam" class="form-field__label">Тег команды</label>
-                                    <input type="text" class="form-field__input" name="tagTeam" value="<?php echo $resTeam["TAG_TEAM"]['VALUE']; ?>" autocomplete="off" id="tagTeam" placeholder="Введите тег команды">
+                                    <label for="tagTeam" class="form-field__label"><?=GetMessage('MC_EDIT_TEAM_TAG')?></label>
+                                    <input type="text" class="form-field__input" name="tagTeam" value="<?php echo $resTeam["TAG_TEAM"]['VALUE']; ?>" autocomplete="off" id="tagTeam" placeholder="<?=GetMessage('MC_EDIT_TEAM_TAG_PLACEHOLDER')?>">
                                 </div>
                                 <!--<div class="form-field">
                                   <label for="mottoTeam" class="form-field__label">Девиз команды</label>
@@ -623,17 +623,17 @@ if (!empty($teamID)) {
 
                                     <input type="file" class="form-field__input-file inputFile" data-multiple-caption="выбрано {count} файла(ов)" name="logoTeam"  autocomplete="off"  id="logoTeam" >
                                     <label for="logoTeam" class="form-field__upload-file">
-                                        <i></i><span>Прикрепить логотип команды</span> <div class="fileUploaded" style="background-image: url(<?php echo CFile::GetPath($resTeam["LOGO_TEAM"]['VALUE']); ?>)"></div>
+                                        <i></i><span><?=GetMessage('MC_EDIT_TEAM_LOGO')?></span> <div class="fileUploaded" style="background-image: url(<?php echo CFile::GetPath($resTeam["LOGO_TEAM"]['VALUE']); ?>)"></div>
                                     </label>
                                 </div>
                                 <div class="form-field">
-                                    <label for="descriptionTeam" class="form-field__label">Описание команды</label>
-                                    <textarea name="descriptionTeam" id="descriptionTeam" class="form-field__textarea" cols="30" rows="3"  placeholder="Введите описание команды"><?php echo $resTeam["DESCRIPTION_TEAM"]['VALUE']["TEXT"]; ?></textarea>
+                                    <label for="descriptionTeam" class="form-field__label"><?=GetMessage('MC_EDIT_TEAM_DESCRIPTION')?></label>
+                                    <textarea name="descriptionTeam" id="descriptionTeam" class="form-field__textarea" cols="30" rows="3"  placeholder="<?=GetMessage('MC_EDIT_TEAM_DESCRIPTION_PLACEHOLDER')?>"><?php echo $resTeam["DESCRIPTION_TEAM"]['VALUE']["TEXT"]; ?></textarea>
                                 </div>
                                 <input type="hidden" name="team_id" value="<?php echo $resTeam['ID'];?>"><br>
                                 <div class="modal-body__btn">
-                                    <button type="submit" class="btn mr-3" name="updateTeam">Изменить команду</button>
-                                    <button type="button" class="btn btn_border" data-dismiss="modal">Отмена</button>
+                                    <button type="submit" class="btn mr-3" name="updateTeam"><?=GetMessage('MC_EDIT_TEAM_BTN_UPDATE')?></button>
+                                    <button type="button" class="btn btn_border" data-dismiss="modal"><?=GetMessage('MC_EDIT_TEAM_BTN_CANCEL')?></button>
                                 </div>
 
                             </form>
@@ -645,17 +645,17 @@ if (!empty($teamID)) {
     </section>
     <section class="pb-8">
         <div class="container">
-            <h2 class="core-team__heading">Основной Состав</h2>
+            <h2 class="core-team__heading"><?=GetMessage('MC_TEAM_TITLE')?></h2>
             <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
                 <?=bitrix_sessid_post()?>
                 <div class="core-team">
                     <div class="flex-table">
                         <div class="flex-table--header bg-default">
                             <div class="flex-table--categories">
-                                <span>Игрок</span>
-                                <span>Количество игр</span>
-                                <span>Киллы</span>
-                                <span>Рейтинг</span>
+                                <span><?=GetMessage('MC_TEAM_PLAYER')?></span>
+                                <span><?=GetMessage('MC_TEAM_GAMES')?></span>
+                                <span><?=GetMessage('MC_TEAM_KILLS')?></span>
+                                <span><?=GetMessage('MC_TEAM_RATING')?></span>
                             </div>
                         </div>
                         <div class="flex-table--body">
@@ -709,20 +709,19 @@ if (!empty($teamID)) {
                             </div>
                           <?php } ?>
                         </div>
-                        <a href="/players/<?php echo $player['ID'].'_'.$player['login'].'/';?>" class="core-team__user-link"><?php echo $player['login']?></a>
+                        <a href="<?=SITE_DIR?>players/<?php echo $player['ID'].'_'.$player['login'].'/';?>" class="core-team__user-link"><?php echo $player['login']?></a>
                       </div>
                     </span>
                                     <span class="core-team__param-wrap">
-                      <div class="core-team__param">Количество игр</div>
+                      <div class="core-team__param"><?=GetMessage('MC_TEAM_GAMES')?></div>
                       <?php echo $cntMatches;?>
                     </span>
                                     <span class="core-team__param-wrap">
-                      <div class="core-team__param">Киллы</div>
+                      <div class="core-team__param"><?=GetMessage('MC_TEAM_KILLS')?></div>
                       <?php echo $kills;?>
                     </span>
                                     <span class="core-team__param-wrap">
-                      <div class="core-team__param">Рейтинг</div>
-
+                      <div class="core-team__param"><?=GetMessage('MC_TEAM_TOTAL')?></div>
                           <?php echo $total;?>
                     </span>
                                 </div>
@@ -735,7 +734,7 @@ if (!empty($teamID)) {
 
 
                         <div class="core-team__btn">
-                            <button type="submit" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_delete"><i></i> Удалить из команды</button>
+                            <button type="submit" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_delete"><i></i> <?=GetMessage('MC_TEAM_BTN_REMOVE')?></button>
                         </div>
 
                         <div class="core-team__btn">
@@ -764,10 +763,10 @@ if (!empty($teamID)) {
                         <div class="flex-table">
                             <div class="flex-table--header bg-blue-lighter">
                                 <div class="flex-table--categories">
-                                    <span>Игрок</span>
-                                    <span>Количество игр</span>
-                                    <span>Киллы</span>
-                                    <span>Рейтинг</span>
+                                    <span><?=GetMessage('MC_TEAM_PLAYER')?></span>
+                                    <span><?=GetMessage('MC_TEAM_GAMES')?></span>
+                                    <span><?=GetMessage('MC_TEAM_KILLS')?></span>
+                                    <span><?=GetMessage('MC_TEAM_RATING')?></span>
                                 </div>
                             </div>
                             <div class="flex-table--body">
@@ -795,19 +794,19 @@ if (!empty($teamID)) {
                                  style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
                              <?php } ?>>
                         </div>
-                        <a href="/players/<?php echo $recruit['ID'].'_'.$recruit['login'].'/';?>" class="core-team__user-link"><?php echo $recruit['login'];?></a>
+                        <a href="<?=SITE_DIR?>players/<?php echo $recruit['ID'].'_'.$recruit['login'].'/';?>" class="core-team__user-link"><?php echo $recruit['login'];?></a>
                       </div>
                     </span>
                                         <span class="core-team__param-wrap">
-                      <div class="core-team__param">Количество игр</div>
+                      <div class="core-team__param"><?=GetMessage('MC_TEAM_GAMES')?></div>
                       <?php echo $cntMatches;?>
                     </span>
                                         <span class="core-team__param-wrap">
-                      <div class="core-team__param">Киллы</div>
+                      <div class="core-team__param"><?=GetMessage('MC_TEAM_KILLS')?></div>
                       <?php echo $kills;?>
                     </span>
                                         <span class="core-team__param-wrap">
-                      <div class="core-team__param">Рейтинг</div>
+                      <div class="core-team__param"><?=GetMessage('MC_TEAM_RATING')?></div>
                       <?php echo $total;?>
                     </span>
                                     </div>
@@ -820,8 +819,8 @@ if (!empty($teamID)) {
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M952.88,546.68H953l4.63-.82a.26.26,0,0,0,.15-.07l11.65-11.66a.24.24,0,0,0,.06-.09.18.18,0,0,0,0-.1.2.2,0,0,0,0-.11.24.24,0,0,0-.06-.09l-4.57-4.57a.27.27,0,0,0-.19-.08.28.28,0,0,0-.2.08l-11.65,11.66a.23.23,0,0,0-.08.14l-.81,4.63a.94.94,0,0,0,0,.44,1,1,0,0,0,.24.38A1,1,0,0,0,952.88,546.68Zm1.85-4.8,10-10,2,2-10,10-2.45.43ZM970,549H949.75a.88.88,0,0,0-.88.88v1a.22.22,0,0,0,.22.22h21.56a.22.22,0,0,0,.22-.22v-1A.87.87,0,0,0,970,549Z" transform="translate(-948.87 -529.08)"/></svg>
                           <span>Управление составом</span>
                         </a>-->
-                        <button type="submit" class="btn-icon btn-icon_check mr-1" name="btn_accept"><i></i> Принять</button>
-                        <button type="submit" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_reject"><i></i> Отклонить</button>
+                        <button type="submit" class="btn-icon btn-icon_check mr-1" name="btn_accept"><i></i> <?=GetMessage('MC_TEAM_BTN_ACCEPT')?></button>
+                        <button type="submit" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_reject"><i></i> <?=GetMessage('MC_TEAM_BTN_DISMISS')?></button>
                         <!--<a href="#" class="btn__edit">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M952.88,546.68H953l4.63-.82a.26.26,0,0,0,.15-.07l11.65-11.66a.24.24,0,0,0,.06-.09.18.18,0,0,0,0-.1.2.2,0,0,0,0-.11.24.24,0,0,0-.06-.09l-4.57-4.57a.27.27,0,0,0-.19-.08.28.28,0,0,0-.2.08l-11.65,11.66a.23.23,0,0,0-.08.14l-.81,4.63a.94.94,0,0,0,0,.44,1,1,0,0,0,.24.38A1,1,0,0,0,952.88,546.68Zm1.85-4.8,10-10,2,2-10,10-2.45.43ZM970,549H949.75a.88.88,0,0,0-.88.88v1a.22.22,0,0,0,.22.22h21.56a.22.22,0,0,0,.22-.22v-1A.87.87,0,0,0,970,549Z" transform="translate(-948.87 -529.08)"/></svg>
                           <span>Управление играми</span>

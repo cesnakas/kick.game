@@ -3,6 +3,7 @@ $MESS['AUTH_REGISTER'] = "Registration";
 $MESS['MAIN_REGISTER_LINK_BEFORE'] = 'Go to';
 $MESS['MAIN_REGISTER_LINK'] = 'profile';
 $MESS['MAIN_REGISTER_LOGIN'] = 'NicName';
+$MESS['MAIN_INPUT_TOOLTIP'] = 'Be sure to specify the same nickname as in the game. If the nicknames do not match, you will not be able to use the platform, as we will not find you in pubg mobile';
 $MESS['MAIN_REGISTER_LOGIN_PLACEHOLDER'] = 'Come up with your NickName';
 $MESS['MAIN_REGISTER_LOGIN_HELPER'] = 'After registration, you can not change';
 $MESS['MAIN_REGISTER_EMAIL_PLACEHOLDER'] = 'Enter your email address';

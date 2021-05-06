@@ -183,23 +183,23 @@ function showRow($player, $rank){
                              style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
                          <?php } ?>>
                     </div>
-                    <a href="/players/<?php echo $player["ID"].'_'.$player["LOGIN"].'/';?>" class="core-team__user-link" target="_blank"><?php echo $player["LOGIN"];?></a>
+                    <a href="<?=SITE_DIR?>players/<?php echo $player["ID"].'_'.$player["LOGIN"].'/';?>" class="core-team__user-link" target="_blank"><?php echo $player["LOGIN"];?></a>
                   </div>
                 </span>
                                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Ранк</div>
+                  <div class="core-team__param"><?=GetMessage('PLAYERS_RANK')?></div>
                   <?php echo $rank; ?>
                 </span>
                                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Рейтинг</div>
+                  <div class="core-team__param"><?=GetMessage('PLAYERS_RATING')?></div>
                   <?php echo $player["total"]; ?>
                 </span>
                                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Киллы</div>
+                  <div class="core-team__param"><?=GetMessage('PLAYERS_KILLS')?></div>
                   <?php echo  $kills; ?>
                 </span>
                                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Количество игр</div>
+                  <div class="core-team__param"><?=GetMessage('PLAYERS_MATCHES')?></div>
                   <?php echo $cntMatches; ?>
                 </span>
                             </div>
@@ -421,8 +421,8 @@ if(isset($path[2]) && trim($path[2]) != '') {
 <?php
 $path = explode('/', trim($APPLICATION->GetCurPage()));
 
-if(isset($path[2]) && trim($path[2]) != '') {
-    $arUser = getUser(trim($path[2]));
+if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) != '') {
+    $arUser = (LANGUAGE_ID == 'ru') ? getUser(trim($path[2])) : getUser(trim($path[3]));
     //dump($arUser);
     $points = countPointsByUserID( $arUser['ID'] );
     ?>
@@ -463,17 +463,17 @@ if(isset($path[2]) && trim($path[2]) != '') {
 
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
-                                    <div>Мое настроение</div>
+                                    <div><?=GetMessage('PLAYERS_MOOD')?></div>
                                     <div><?php echo $arUser["TITLE"]; ?></div>
                                 </div>
                             </div>
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
-                                    <div>Команда</div>
+                                    <div><?=GetMessage('PLAYERS_TEAM')?></div>
                                     <div><?php
                                         if( $arUser['UF_ID_TEAM']+0 ){
                                             $team = getTeamById($arUser['UF_ID_TEAM']+0);
-                                            echo '<a href="/teams/'.$team['ID'].'/">'.$team['NAME'].'</a>';
+                                            echo '<a href="'.SITE_DIR.'teams/'.$team['ID'].'/">'.$team['NAME'].'</a>';
                                         }
                                         ?></div>
                                 </div>
@@ -481,13 +481,13 @@ if(isset($path[2]) && trim($path[2]) != '') {
 
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
-                                    <div>Язык общения</div>
+                                    <div><?=GetMessage('PLAYERS_LANG')?></div>
                                     <div>-</div>
                                 </div>
                             </div>
                             <div class="col-6 col-md-3">
                                 <div class="profile-info__next-item">
-                                    <div>Активность в игре</div>
+                                    <div><?=GetMessage('PLAYERS_ACTIVITY')?></div>
                                     <div>-</div>
                                 </div>
                             </div>
@@ -500,7 +500,7 @@ if(isset($path[2]) && trim($path[2]) != '') {
     <?php } else { ?>
 
     <div class="container">
-        <h1 class="text-center">Рейтинг игроков</h1>
+        <h1 class="text-center">Рейтинг игроков<?/*=GetMessage('PLAYERS_TITLE')*/?></h1>
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12">
                 <div class="layout__content-anons text-center">
@@ -537,8 +537,8 @@ if(isset($path[2]) && trim($path[2]) != '') {
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-12">
                     <div class="layout__content-anons text-center">
-                        <a class="btn btn_auth btn_border" href="/teams/">Список команд</a>
-                        <a class="btn btn_auth">Список игроков</a>
+                        <a class="btn btn_auth btn_border" href="<?=SITE_DIR?>teams/"><?=GetMessage('PLAYERS_LIST_TEAMS')?></a>
+                        <a class="btn btn_auth"><?=GetMessage('PLAYERS_LIST_PLAYERS')?></a>
                     </div>
                 </div>
             </div>
@@ -550,11 +550,11 @@ if(isset($path[2]) && trim($path[2]) != '') {
                 <div class="flex-table">
                     <div class="flex-table--header bg-default">
                         <div class="flex-table--categories">
-                            <span>Игрок</span>
-                            <span>Ранк</span>
-                            <span>Рейтинг</span>
-                            <span>Киллы</span>
-                            <span>Количество игр</span>
+                            <span><?=GetMessage('PLAYERS_TABLE_PLAYER')?></span>
+                            <span><?=GetMessage('PLAYERS_TABLE_RANK')?></span>
+                            <span><?=GetMessage('PLAYERS_TABLE_RATING')?></span>
+                            <span><?=GetMessage('PLAYERS_TABLE_KILLS')?></span>
+                            <span><?=GetMessage('PLAYERS_TABLE_TOTAL')?></span>
                         </div>
                     </div>
                     <div class="flex-table--body">

@@ -70,7 +70,7 @@ function getMatchesByDate($date) {
               if (isGameMod($match["PROPERTY_62"], $userID)){?>
 
 
-            <li><a href="/dashboard/match-chain/?id=<?php echo $match['ID']?>"><?php echo $match['NAME'];  echo $match["PROPERTY_23"] == 6 ? " GROUP " . $match["PROPERTY_53"] : ""; ?></a></li>
+            <li><a href="<?=SITE_DIR?>dashboard/match-chain/?id=<?php echo $match['ID']?>"><?php echo $match['NAME'];  echo $match["PROPERTY_23"] == 6 ? " GROUP " . $match["PROPERTY_53"] : ""; ?></a></li>
           <?php }
               } ?>
       </ul>

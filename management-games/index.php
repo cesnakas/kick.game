@@ -30,7 +30,7 @@ $APPLICATION->SetTitle("Управление играми");
   <div class="row">
   <div class="col-lg-3 col-md-12">
     <div class="filter-param">
-      <h3>Фильтры</h3>
+    <h3><?=GetMessage('MG_FILTERS_TITLE')?></h3>
       <form action="" method="get">
         <div class="form-field-wrap">
           <div class="form-field__row">
@@ -41,12 +41,12 @@ $APPLICATION->SetTitle("Управление играми");
             <label class="label-checkbox-main">
               <input type="checkbox" name="arrFilterDateTime_pf[TYPE_MATCH]" value="6" <?php if($_GET['arrFilterDateTime_pf']['TYPE_MATCH'] == 6) echo 'checked' ?> >
               <div class="label-checkbox-main__checkmark label-checkbox-main__checkmark_filter"></div>
-              <span class="label-checkbox-main__title label-checkbox-main__title_filter">Праки</span>
+              <span class="label-checkbox-main__title label-checkbox-main__title_filter"><?=GetMessage('MG_FILTERS_LABEL_PRAKI')?></span>
             </label>
             <label class="label-checkbox-main">
               <input type="checkbox" name="arrFilterDateTime_pf[TYPE_MATCH]" value="5" <?php if($_GET['arrFilterDateTime_pf']['TYPE_MATCH'] == 5) echo 'checked' ?> >
               <div class="label-checkbox-main__checkmark label-checkbox-main__checkmark_filter"></div>
-              <span class="label-checkbox-main__title label-checkbox-main__title_filter">Турниры</span>
+              <span class="label-checkbox-main__title label-checkbox-main__title_filter"><?=GetMessage('MG_FILTERS_LABEL_TOURNAMENTS')?></span>
             </label>
             <!--<div class="form-field form-field__checkbox form-field__checkbox_filter">
               <input type="checkbox" class="form-field__checkbox " name="practical" id="custom">
@@ -76,8 +76,8 @@ $APPLICATION->SetTitle("Управление играми");
         </div>-->
         <div class="form-field  text-center">
           <input type="hidden" name="set_filter" value="Y" />
-          <button class="btn mr-1" type="submit" name="set_filter">Фильтр</button>
-          <button class="btn" type="submit" name="arrFilterDateTime_pf[TYPE_MATCH]" value="">Сбросить</button>
+          <button class="btn mr-1" type="submit" name="set_filter"><?=GetMessage('MG_FILTERS_BTN_FILTER')?></button>
+          <button class="btn" type="submit" name="arrFilterDateTime_pf[TYPE_MATCH]" value=""><?=GetMessage('MG_FILTERS_BTN_RESET')?></button>
         </div>
       </form>
         <?/*if($arParams["USE_FILTER"]=="Y"):?>
@@ -102,17 +102,17 @@ $APPLICATION->SetTitle("Управление играми");
     </div>
   </div>
   <div class="col-lg-9 col-md-12">
-  <h1 class="game-schedule__heading mt-3">Расписание игр</h1>
+    <h1 class="game-schedule__heading mt-3"><?=GetMessage('MG_HEADING')?></h1>
   <div class="game-schedule-table">
   <div class="flex-table">
   <div class="flex-table--header bg-default">
     <div class="flex-table--categories">
-      <span>Тип игры</span>
-      <span>Название</span>
-      <span>Дата проведения</span>
-      <span>Рейтинг</span>
-      <span>Режим</span>
-      <span>Комментатор</span>
+        <span><?= GetMessage('MG_TYPE') ?></span>
+        <span><?= GetMessage('MG_TITLE') ?></span>
+        <span><?= GetMessage('MG_DATE_EVENT') ?></span>
+        <span><?= GetMessage('MG_RATING') ?></span>
+        <span><?= GetMessage('MG_MODE') ?></span>
+        <span><?= GetMessage('MG_COMMENTATOR') ?></span>
     </div>
   </div>
   <div class="flex-table--body">

@@ -374,7 +374,7 @@ if (!empty($teamIds)) {
             <td><?php echo $rank ?></td>
             <td>
                 <?php if(isset($teamRank['team'])) { ?>
-                    <a href="/teams/<?php echo $teamRank['team']['ID'];?>/" class="match-participants__team-link"><?php echo $teamRank['team']['NAME']; ?> [<?php echo $teamRank['team']["TAG_TEAM"]['VALUE']; ?>]</a>
+                    <a href="<?=SITE_DIR?>teams/<?php echo $teamRank['team']['ID'];?>/" class="match-participants__team-link"><?php echo $teamRank['team']['NAME']; ?> [<?php echo $teamRank['team']["TAG_TEAM"]['VALUE']; ?>]</a>
                 <?php } else {
                     echo "Команда удалена";
                 }?>

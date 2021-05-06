@@ -16,7 +16,7 @@ $userID = CUser::GetID();
 //echo '</pre>';
 ?>
 <div class="container">
-  <form name="iblock_add" action="/personal/sozdat-novuyu-komandu/add-form-result.php" method="POST" enctype="multipart/form-data">
+  <form name="iblock_add" action="<?=SITE_DIR?>personal/sozdat-novuyu-komandu/add-form-result.php" method="POST" enctype="multipart/form-data">
 
     <div class="form-group">
       <label for="nameTeam">Название команды</label>

@@ -25,7 +25,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
 <?php if($USER->IsAuthorized()) { ?>
 
   <p class="text-center"><?echo GetMessage("MAIN_REGISTER_AUTH")?></p>
-  <p class="text-center">Перейти в <a  href="<?=SITE_DIR?>personal/"><?= GetMessage("MAIN_REGISTER_LINK") ?></a>.</p>
+  <p class="text-center"><?= GetMessage('MAIN_REGISTER_LINK_BEFORE') ?> <a  href="<?=SITE_DIR?>personal/"><?= GetMessage("MAIN_REGISTER_LINK") ?></a>.</p>
 
 <?php } else { ?>
   <div class="layout__content layout__content_full">
@@ -73,7 +73,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                   <input type="hidden" name="backurl" value="<?= $arResult["BACKURL"]; ?>" />
                 <?php endif; ?>
                     <div class="form-field">
-                      <label for="auth-login" class="form-field__label"><?= GetMessage('MAIN_REGISTER_LOGIN') ?></label><div class="form-field__question">? <span class="tooltiptext">Обязательно укажи такой же nickname, как в игре. Если ники не совпадут, ты не сможешь пользоваться платформой, тк мы не найдем тебя в pubg mobile</span></div>
+                      <label for="auth-login" class="form-field__label"><?= GetMessage('MAIN_REGISTER_LOGIN') ?></label><div class="form-field__question">? <span class="tooltiptext"><?=GetMessage('MAIN_INPUT_TOOLTIP')?></span></div>
                       <input type="text" class="form-field__input" name="REGISTER[LOGIN]" value="<?= $arResult["VALUES"]['LOGIN'] ?>" autocomplete="off" id="auth-login" placeholder="<?= GetMessage('MAIN_REGISTER_LOGIN_PLACEHOLDER') ?>">
                       <span class="form-field__helper" style="margin-bottom: -15px; display: block">Обязательно укажи такой же nickname, как в PUBG Mobile<?/*= GetMessage('MAIN_REGISTER_LOGIN_HELPER') */?></span>
                     </div>
