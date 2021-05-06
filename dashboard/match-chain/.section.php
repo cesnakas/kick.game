@@ -5,3 +5,4 @@ $arDirProperties = Array(
    "keywords" => "Цепочка матчей",
    "TITLE" => "Цепочка матчей"
 );
+?>

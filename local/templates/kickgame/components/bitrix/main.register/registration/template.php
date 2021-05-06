@@ -75,7 +75,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                     <div class="form-field">
                       <label for="auth-login" class="form-field__label"><?= GetMessage('MAIN_REGISTER_LOGIN') ?></label><div class="form-field__question">? <span class="tooltiptext"><?=GetMessage('MAIN_INPUT_TOOLTIP')?></span></div>
                       <input type="text" class="form-field__input" name="REGISTER[LOGIN]" value="<?= $arResult["VALUES"]['LOGIN'] ?>" autocomplete="off" id="auth-login" placeholder="<?= GetMessage('MAIN_REGISTER_LOGIN_PLACEHOLDER') ?>">
-                      <span class="form-field__helper" style="margin-bottom: -15px; display: block">Обязательно укажи такой же nickname, как в PUBG Mobile<?/*= GetMessage('MAIN_REGISTER_LOGIN_HELPER') */?></span>
+                      <span class="form-field__helper" style="margin-bottom: -15px; display: block"><?= GetMessage('MAIN_REGISTER_LOGIN_HELPER') ?></span>
                     </div>
                     <div class="form-field">
                       <label for="auth-email" class="form-field__label">Email</label>

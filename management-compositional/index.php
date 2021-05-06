@@ -205,16 +205,16 @@ if (isset($_REQUEST['updateTeam']) && check_bitrix_sessid()) {
     $teamIdPost = $_POST['team_id']+0;
     if($teamID == $teamIdPost && !empty($_POST['nameTeam'])) {
         if(updateTeam($PROP, $teamIdPost)) {
-            createSession('management-players_success', 'Твоя команда успешно обновлена');
+            createSession('management-players_success', GetMessage('ALERTS_TEAM_UPDATE_SUCCESS'));
         } else {
-            createSession('management-players_error', 'Команда с таким именем уже существует');
+            createSession('management-players_error', GetMessage('ALERTS_TEAM_UPDATE_ERROR'));
         }
 
     } else {
-        $alertUpdateTeam = 'Ошибка, команда не обновлена';
+        $alertUpdateTeam = GetMessage('ALERTS_TEAM_ERROR_NO_UPDATE');
         createSession('management-players_error', $alertUpdateTeam);
     }
-    $redirectUrlAction = '/management-compositional/';
+    $redirectUrlAction = SITE_DIR.'management-compositional/';
 
 }
 
@@ -226,12 +226,12 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_chg_cap'])) {
             $PROP["AUTHOR"] = $userId+0;
             updateCaptain($PROP, $teamID+0);
         }
-        createSession('team_success', 'Ты успешно передал права капитана');
-        LocalRedirect("/personal/");
+        createSession('team_success', GetMessage('ALERTS_SUCCESS_CAPTAIN_RIGHTS'));
+        LocalRedirect(SITE_DIR.'personal/');
     } else {
-        $alertManagementSquad = 'Ошибка при выборе нового капитана';
+        $alertManagementSquad = GetMessage('ALERTS_ERROR_CAPTAIN_RIGHTS');
         createSession('management-players_error', $alertManagementSquad);
-        $redirectUrlAction = '/management-compositional/';
+        $redirectUrlAction = SITE_DIR.'management-compositional/';
     }
 }
 
@@ -254,22 +254,22 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_drop_team'])) {
         updateCaptain($PROP, $teamID);
         deactivateTeam($teamID);
 
-    createSession('team_success', 'Ты успешно распустил свой состав');
-    LocalRedirect("/personal/");
+    createSession('team_success', GetMessage('ALERTS_SUCCESS_DISBANDED_SQUAD'));
+    LocalRedirect(SITE_DIR.'personal/');
     } else {
         $br = "";
         if(count($coreTeam) > 1){
-            $alertManagementSquad = 'Ты не можешь распустить команду пока не удалил всех игроков';
+            $alertManagementSquad = GetMessage('ALERTS_ERROR_DISBAND_DELETE_PLAYERS');
             $br = "<br>";
         }
 
         if($squadsCount > 0){
-            $alertManagementSquad = $alertManagementSquad . $br .'Ты не можешь распустить команду пока не снял ee с предстоящих матчей';
+            $alertManagementSquad = $alertManagementSquad . $br . GetMessage('ALERTS_ERROR_DISBAND_REMOVE_UPCOMING_MATCHES');
         }
 
 
         createSession('management-players_error', $alertManagementSquad);
-        $redirectUrlAction = '/management-compositional/';
+        $redirectUrlAction = SITE_DIR.'management-compositional/';
     }
 
 }
@@ -295,7 +295,7 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_delete'])) {
         $br = "";
         if(count($success)>0){
         foreach ($success as $succ){
-            $successManagementTeam = $successManagementTeam . $br . "<h style='color: #FFE500;'>". $succ . "</h>" . ' успешно удален из команды';
+            $successManagementTeam = $successManagementTeam . $br . "<h style='color: #FFE500;'>". $succ . "</h>" . GetMessage('ALERTS_SUCCESS_REMOVED_FROM_TEAM');
             $br = "<br>";
         }
         createSession('management-players_success', $successManagementTeam);
@@ -303,12 +303,12 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_delete'])) {
         $br = "";
         if(count($alerts)>0) {
             foreach ($alerts as $alert) {
-                $alertManagementTeam = $alertManagementTeam . $br . "<h style='color: #ffe500;'>" . $alert . "</h>" . ' записан на предстоящий матч. Снимите его с участия прежде чем удалять его из команды';
+                $alertManagementTeam = $alertManagementTeam . $br . "<h style='color: #ffe500;'>" . $alert . "</h>" . GetMessage('ALERTS_ERROR_REMOVE_PARTICIPATION');
                 $br = "<br>";
             }
             createSession('management-players_error', $alertManagementTeam);
         }
-        $redirectUrlAction = '/management-compositional/';
+        $redirectUrlAction = SITE_DIR.'management-compositional/';
     }
 }
 
@@ -317,9 +317,9 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_accept'])) {
     if (!empty($_POST['accept_in_team'])) {
         $userIds = $_POST['accept_in_team'];
         if (count($userIds) > 1) {
-            $alertManagementTeam = 'Игроки успешно приняты в команду';
+            $alertManagementTeam = GetMessage('ALERTS_SUCCESS_PLAYERS_ACCEPTED');
         } else {
-            $alertManagementTeam = 'Игрок успешно принят в команду';
+            $alertManagementTeam = GetMessage('ALERTS_SUCCESS_PLAYER_ACCEPTED');
         }
         foreach ($userIds as $userId) {
             updateFieldUserbyId($userId+0, $fields= array("UF_REQUEST_ID_TEAM" => null, "UF_ID_TEAM" => $teamID));
@@ -333,9 +333,9 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_accept'])) {
     if (!empty($_POST['accept_in_team'])) {
         $userIds = $_POST['accept_in_team'];
         if (count($userIds) > 1) {
-            $alertManagementTeam = 'Запросы игроков успешно отклонены';
+            $alertManagementTeam = GetMessage('ALERTS_SUCCESS_PLAYERS_REJECTED');
         } else {
-            $alertManagementTeam = 'Запрос игрока успешно отклонен';
+            $alertManagementTeam = GetMessage('ALERTS_SUCCESS_PLAYER_REJECTED');
         }
         foreach ($userIds as $userId) {
             updateFieldUserbyId($userId+0, $fields= array("UF_REQUEST_ID_TEAM" => null));
@@ -412,7 +412,7 @@ function getRecruitTeam($teamID)
 
 $isCaptain = isCaptain($userID, $teamID);
 if(!$isCaptain) {
-    LocalRedirect("/personal/");
+    LocalRedirect(SITE_DIR.'personal/');
 }
 
 if (!empty($teamID)) {
@@ -738,7 +738,7 @@ if (!empty($teamID)) {
                         </div>
 
                         <div class="core-team__btn">
-                            <button type="submit" class="btn-icon btn-icon_check" name="btn_chg_cap"><i></i> Передать права капитана</button>
+                            <button type="submit" class="btn-icon btn-icon_check" name="btn_chg_cap"><i></i> <?=GetMessage('BUTTON_CAPTAIN_RIGHTS')?></button>
                         </div>
 
 
@@ -747,7 +747,7 @@ if (!empty($teamID)) {
 
                 <?php } ?>
                 <div class="core-team__btn">
-                    <button type="submit" onclick="if (!confirm('Ты собираешься удалить команду, ты уверен?')) return false" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_drop_team"><i></i> Распустить состав</button>
+                    <button type="submit" onclick="if (!confirm(<?=GetMessage('ALERTS_BUTTON_DISBAND_TEAM')?>)) return false" class="btn-icon btn-icon_red btn-icon_close-red" name="btn_drop_team"><i></i> <?=GetMessage('BUTTON_DISBAND_TEAM')?></button>
                 </div>
                     </div>
             </form>
@@ -756,7 +756,7 @@ if (!empty($teamID)) {
     <?php if(!empty($recruits)) { ?>
         <section class="py-8 bg-blue-lighter">
             <div class="container">
-                <h2 class="core-team__heading">Запросы игроков <span class="core-team__heading-badge"><?php echo count($recruits); ?></span></h2>
+                <h2 class="core-team__heading"><?=GetMessage('HEADER_PLAYERS_REQUESTS')?> <span class="core-team__heading-badge"><?php echo count($recruits); ?></span></h2>
                 <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
                     <?=bitrix_sessid_post()?>
                     <div class="core-team">
@@ -830,7 +830,7 @@ if (!empty($teamID)) {
             </div>
         </section>
     <?php } ?>
-    <?php } ?>
+<?php } ?>
 
 <?php
     $matches = getMatchesByTeam($teamID);
@@ -855,17 +855,17 @@ if (!empty($teamID)) {
     </style>
     <section class="game-schedule bg-blue-lighter">
         <div class="container py-8">
-            <h2 class="game-schedule__heading text-center">Игры команды</h2>
+            <h2 class="game-schedule__heading text-center"><?=GetMessage('HEADER_GAME_SCHEDULE')?></h2>
             <div class="game-schedule-table">
                 <div class="flex-table-new">
                     <div class="flex-table--header bg-blue-lighter">
                         <div class="flex-table--categories">
-                            <span>Тип игры</span>
-                            <span>Название</span>
-                            <span>Дата проведения</span>
-                            <span>Рейтинг</span>
-                            <span>Режим</span>
-                            <span>Комментатор</span>
+                            <span><?=GetMessage('TABLE_GAME_SCHEDULE_TYPE')?></span>
+                            <span><?=GetMessage('TABLE_GAME_SCHEDULE_TITLE')?></span>
+                            <span><?=GetMessage('TABLE_GAME_SCHEDULE_DATE')?></span>
+                            <span><?=GetMessage('TABLE_GAME_SCHEDULE_RATING')?></span>
+                            <span><?=GetMessage('TABLE_GAME_SCHEDULE_MODE')?></span>
+                            <span><?=GetMessage('TABLE_GAME_SCHEDULE_COMMENTATOR')?></span>
                         </div>
                     </div>
                     <div class="flex-table-new--body">
@@ -897,7 +897,7 @@ if (!empty($teamID)) {
                                 "CACHE_TIME" => "36000000",
                                 "CACHE_TYPE" => "A",
                                 "CHECK_DATES" => "Y",
-                                "DETAIL_URL" => "/game-schedule/#ELEMENT_CODE#/",
+                                "DETAIL_URL" => SITE_DIR."game-schedule/#ELEMENT_CODE#/",
                                 "DISPLAY_BOTTOM_PAGER" => "Y",
                                 "DISPLAY_DATE" => "Y",
                                 "DISPLAY_NAME" => "Y",
@@ -967,7 +967,7 @@ if (!empty($teamID)) {
 <?php } else {
 
     echo '<section class="game-schedule bg-blue-lighter"><div class="container">
-    <h2 class="game-schedule__heading text-center">Команда еще не имеет статистики по играм </h2>
+    <h2 class="game-schedule__heading text-center">'.GetMessage('TEAM_NO_STATISTICS').'</h2>
     </div></section>';
 
 } /* end count matches */
