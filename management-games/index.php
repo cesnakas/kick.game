@@ -233,9 +233,9 @@ if (isset($arUser) && $resultPrem <= 0) { ?>
     <div class="container">
       <div class="banner__bg">
         <div class="banner__content">
-          <h2>Стань профи, купи<br> подписку</h2>
+          <h2><?=GetMessage('BANNER_TITLE')?></h2>
           <div class="banner__content-btn">
-            <a href="/subscription-plans/" class="btn">Купить подписку</a>
+            <a href="<?=SITE_DIR?>subscription-plans/" class="btn"><?=GetMessage('BANNER_BUTTON')?></a>
           </div>
         </div>
         <div class="banner__img">

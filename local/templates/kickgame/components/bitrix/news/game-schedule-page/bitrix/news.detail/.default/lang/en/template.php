@@ -25,3 +25,9 @@ $MESS['GSP_RANK'] = 'Rank';
 $MESS['GSP_TEAM'] = 'Team';
 
 $MESS['GSP_NO_TEAMS'] = 'There are no teams participating in this match yet';
+
+$MESS['ALERTS_MANAGEMENT_SQUAD'] = 'Unfortunately, we can\'t accept your application for the game. <br> You or one of your team members has ended their subscription period before the end of this game or tournament.';
+$MESS['BUTTON_BUY_SUBSCRIPTION'] = 'Buy a subscription';
+$MESS['HEADING_PREMIUM_MESSAGE'] = 'To participate in the game, all players of the participating team need to buy ';
+$MESS['HEADING_PREMIUM_MESSAGE_LINK'] = ' a subscription';
+$MESS['ALERTS_TEAM_DELETED'] = 'Team deleted';

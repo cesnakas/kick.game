@@ -12,3 +12,6 @@ $MESS['MG_DATE_EVENT'] = 'Date event';
 $MESS['MG_RATING'] = 'Rating';
 $MESS['MG_MODE'] = 'Mode';
 $MESS['MG_COMMENTATOR'] = 'Commentator';
+
+$MESS['BANNER_TITLE'] = 'Become a pro, buy<br>a subscription';
+$MESS['BANNER_BUTTON'] = 'Buy a subscription';

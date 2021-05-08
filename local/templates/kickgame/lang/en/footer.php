@@ -31,3 +31,6 @@ $MESS['MODAL_ITEM_05'] = 'My personal rating';
 $MESS['MODAL_ITEM_06'] = 'My Team rating';
 $MESS['MODAL_FOOTER_TEXT'] = 'To keep access to the benefits of the platform, sign up for a paid subscription.';
 $MESS['MODAL_BUTTON'] = 'Buy a subscription';
+
+$MESS['MODAL_COOKIE_BTN_DISABLE'] = 'Disable all';
+$MESS['MODAL_COOKIE_BTN_ACCEPT'] = 'Accept';

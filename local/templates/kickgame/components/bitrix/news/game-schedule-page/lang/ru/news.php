@@ -12,3 +12,4 @@ $MESS['GS_DATE_EVENT'] = 'Дата проведения';
 $MESS['GS_RATING'] = 'Рейтинг';
 $MESS['GS_MODE'] = 'Режим';
 $MESS['GS_COMMENTATOR'] = 'Комментатор';
+$MESS['GS_SEATS'] = 'Свободные места';

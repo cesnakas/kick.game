@@ -212,12 +212,10 @@ if($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5){
 $willPrem = (willTeamPrem($teamID, $time) || $arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6);
 
 if($willPrem){
-$redirectLink = "/management-games/join-game/?mid=". $arResult["ID"];
+$redirectLink = SITE_DIR."management-games/join-game/?mid=". $arResult["ID"];
 } else {
     $redirectLink = $arResult["DETAIL_PAGE_URL"];
-    $alertManagementSquad = 'К сожалению, мы не можем принять твою заявку на игру. <br> 
-    У тебя или у кого-то из участников твоей команды срок подписки закончится раньше, чем эта игра или турнир.
-    <br><a href="/subscription-plans/" target="_blank" class="btn-italic mt-1">Купить подписку </a>';
+    $alertManagementSquad = GetMessage('ALERTS_MANAGEMENT_SQUAD').'<br><a href="'.SITE_DIR.'subscription-plans/" target="_blank" class="btn-italic mt-1">'.GetMessage('BUTTON_BUY_SUBSCRIPTION').'</a>';
 
     if($_SERVER['HTTP_REFERER'] == "http://".$_SERVER['HTTP_HOST'].$arResult["DETAIL_PAGE_URL"]){
         createSession('game-schedule-detail_error', $alertManagementSquad);
@@ -276,7 +274,7 @@ unset($_SESSION['game-schedule-detail_error']);
             }
             ?>
           <h1><?php
-              $name = 'KICKGAME Scrims';// GetMessage('GSP_HEADLINE') 'У меня нет названия';
+              $name = GetMessage('GSP_HEADLINE'); // 'У меня нет названия';
 
               if ($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) {
                   $name = $arResult["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arResult["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')';
@@ -303,7 +301,9 @@ unset($_SESSION['game-schedule-detail_error']);
                         <button class="btn-disabled"><?php echo $btnValue; ?></button>
                   </div>
                   <div class="row" style="justify-content: space-around;">
-                      <h4 class="premium-message">Чтобы принять участие в игре, всем игрокам команды-участника нужно купить <a href="/subscription-plans/" target="_blank" class="btn-italic"> подписку </a></h4>
+                      <h4 class="premium-message">
+                          <?=GetMessage('HEADING_PREMIUM_MESSAGE')?><a href="<?=SITE_DIR?>subscription-plans/" target="_blank" class="btn-italic"><?=GetMessage('HEADING_PREMIUM_MESSAGE_LINK')?></a>
+                      </h4>
                   </div>
                   <?php }?>
 
@@ -330,7 +330,7 @@ unset($_SESSION['game-schedule-detail_error']);
           </div>
           <div class="col-6 col-xl-4">
             <div class="info-item">
-              <div>Комментатор</div>
+              <div><?=GetMessage('GSP_COMMENTATOR')?></div>
               <div>
                 <?php if (!empty($arResult["PROPERTY_STREAMER_NAME"])) { ?>
                     <?php echo $arResult["PROPERTY_STREAMER_NAME"]; ?>
@@ -667,7 +667,7 @@ if (!empty($teamIds)) {
                       <?php if(isset($teamRank['team'])) { ?>
                     <a href="<?=SITE_DIR?>teams/<?php echo $teamRank['team']['ID'];?>/" class="match-participants__team-link"><?php echo $teamRank['team']['NAME']; ?> [<?php echo $teamRank['team']["TAG_TEAM"]['VALUE']; ?>]</a>
                       <?php } else {
-                          echo "Команда удалена";
+                          echo GetMessage('ALERTS_TEAM_DELETED');
                       }?>
                   </div>
                 </span>

@@ -81,7 +81,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                       <label for="auth-email" class="form-field__label">Email</label>
                       <input type="email" class="form-field__input" name="REGISTER[EMAIL]" value="<?= $arResult["VALUES"]['EMAIL'] ?>" autocomplete="off" id="auth-email" placeholder="<?= GetMessage('MAIN_REGISTER_EMAIL_PLACEHOLDER') ?>">
                     </div>
-                    <div> <label for="auth-phone" class="form-field__label">Телефон</label></div>
+                    <div> <label for="auth-phone" class="form-field__label"><?=GetMessage('MAIN_REGISTER_PHONE')?></label></div>
                     <input type="tel" class="form-field__input" name="REGISTER[PERSONAL_PHONE]" value="<?= $arResult["VALUES"]['PERSONAL_PHONE'] ?>" autocomplete="off" id="auth-phone">
                     <div class="form-field">
                       <label for="auth-pass" class="form-field__label"><?= GetMessage('MAIN_REGISTER_PASSWORD') ?></label>

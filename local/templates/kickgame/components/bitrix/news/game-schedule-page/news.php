@@ -107,7 +107,7 @@ $this->setFrameMode(true);
           <span><?= GetMessage('GS_RATING') ?></span>
           <span><?= GetMessage('GS_MODE') ?></span>
           <span><?= GetMessage('GS_COMMENTATOR') ?></span>
-          <span>Свободные места</span>
+          <span><?=GetMessage('GS_SEATS')?></span>
       </div>
     </div>
     <div class="flex-table-new--body">

@@ -203,7 +203,7 @@ function getAvailableGroup($arItem) {
     //заменяем данные выводимой строки на данные матча со свободными местами
 if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
     //URL
-    $arItem["DETAIL_PAGE_URL"] = "/game-schedule/".$freeGroup["CODE"]."/";
+    $arItem["DETAIL_PAGE_URL"] = SITE_DIR."game-schedule/".$freeGroup["CODE"]."/";
     //ID
     $arItem['ID'] = $freeGroup['ID'];
     //GROUP
@@ -253,7 +253,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
           <div class="game-info__row">
               <div class="game-info__item-row">
                   <div class="game-info__item">
-                      <span>Дата проведения: </span>
+                      <span><?=GetMessage('DATE_EVENT_COLON')?></span>
                       <?php
                       $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
                       echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
@@ -262,12 +262,12 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
               <div class="game-info__item-row">
                   <?php if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) { ?>
                       <div class="game-info__item">
-                          <span>Рейтинг: </span>
+                          <span><?=GetMessage('RATING_COLON')?></span>
                   <?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]?>
                       </div>
                   <?php } elseif($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
                       <div class="game-info__item">
-                          <span>Этап: </span>
+                          <span><?=GetMessage('STAGE_COLON')?></span>
                           <?php
                           $name = $arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'];
                           echo $name;
@@ -283,7 +283,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
 
                       if (isset($tmp[$teamID])) {
                           ?>
-                          <span class="slot-span">Слот № <?php echo $tmp[$teamID];?></span>
+                          <span class="slot-span"><?=GetMessage('SLOT_NO')?><?php echo $tmp[$teamID];?></span>
                       <?php } else {
                           $freeSlots = 18 - count($tmp);
                           if($freeSlots > 0){
@@ -291,7 +291,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
                               <span class="place-span"> <?php echo count($tmp);?>/18 Занято</span><?php
                           } else {
                               ?>
-                              <span class="no-slots-span">Мест нет</span><?php
+                              <span class="no-slots-span"><?=GetMessage('NO_SEATS')?></span><?php
                           }
                       }
                       ?>
@@ -364,23 +364,23 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
           </a>
         </span>
           <span class="new-game-schedule__param-wrap">
-          <div class="new-game-schedule__param">Дата проведения</div>
+          <div class="new-game-schedule__param"><?=GetMessage('DATE_EVENT')?></div>
           <?php
           $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
           echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
         </span>
           <span class="new-game-schedule__param-wrap">
-          <div class="new-game-schedule__param">Рейтинг</div>
+          <div class="new-game-schedule__param"><?=GetMessage('RATING')?></div>
           <?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]?>
         </span>
           <span class="new-game-schedule__param-wrap">
-            <div class="new-game-schedule__param">Режим</div>
+            <div class="new-game-schedule__param"><?=GetMessage('MODE')?></div>
             <div class="new-game-schedule__mode">
               <div><?php echo $type; ?></div>
             </div>
         </span>
           <span class="new-game-schedule__param-wrap">
-          <div class="new-game-schedule__param">Комментатор</div>
+          <div class="new-game-schedule__param"><?=GetMessage('COMMENTATOR')?></div>
           <?php if (!empty($arItem["PROPERTY_STREAMER_NAME"])) { ?>
               <?php echo $arItem["PROPERTY_STREAMER_NAME"]; ?>
           <?php } else { ?>

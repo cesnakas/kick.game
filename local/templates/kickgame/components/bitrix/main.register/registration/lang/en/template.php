@@ -7,6 +7,7 @@ $MESS['MAIN_INPUT_TOOLTIP'] = 'Be sure to specify the same nickname as in the ga
 $MESS['MAIN_REGISTER_LOGIN_PLACEHOLDER'] = 'Come up with your NickName';
 $MESS['MAIN_REGISTER_LOGIN_HELPER'] = 'Be sure to specify the same nickname as in PUBG Mobile';
 $MESS['MAIN_REGISTER_EMAIL_PLACEHOLDER'] = 'Enter your email address';
+$MESS['MAIN_REGISTER_PHONE'] = 'Phone';
 $MESS['MAIN_REGISTER_PASSWORD'] = 'Password';
 $MESS['MAIN_REGISTER_PASSWORD_PLACEHOLDER'] = 'Enter your password';
 $MESS['MAIN_REGISTER_CONFIRM_PASSWORD'] = 'Repeat Password';

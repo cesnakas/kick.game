@@ -25,6 +25,18 @@ $MESS['JG_TABLE_NO_SUBSCRIPTION'] = 'No subscription';
 $MESS['JG_TABLE_SUBSCRIPTION_REMAINED'] = 'Remained, Remained, Remained';
 $MESS['JG_TABLE_SUBSCRIPTION_DAYS'] = 'day, days, days';
 
+$MESS['JG_BADGE'] = 'Your place in match No. ';
+
 $MESS['JG_BTN_REMOVE'] = 'Remove the team from the match';
 $MESS['JG_BTN_CREATE'] = 'Create a team';
 $MESS['JG_BTN_UPDATE'] = 'Update the team';
+
+$MESS['ALERTS_NOT_ACCESS_STAGE'] = 'You don\'t have access to this stage yet';
+$MESS['ALERTS_SUCCESS_FORMED_TEAM_FROM_GAME'] = 'You have successfully formed a team for the game';
+$MESS['ALERTS_LATE_NO_SEATS'] = 'You\'re late, there are no seats';
+$MESS['ALERTS_SUCCESS_FORMED_TEAM'] = 'You have successfully formed a team';
+$MESS['ALERTS_ERROR_REGISTERED_FOR_ANOTHER_GAME'] = 'You are already registered for another game at this time';
+$MESS['ALERTS_ERROR_TEAM_MIN_RATING'] = 'Your team\'s rating is below the minimum rating for this game';
+$MESS['ALERTS_ERROR_TEAM_MAX_RATING'] = 'Your team\'s rating is higher than the maximum rating for this game';
+$MESS['ALERTS_ERROR_SUBSCRIPTION_EXPIRES'] = 'Unfortunately, we can\'t accept your application for the game.<br>You or someone on your team\'s subscription expires earlier than is game or tournament.';
+$MESS['ALERTS_LINK_BUY_SUBSCRIPTION'] = 'Buy a subscription ';

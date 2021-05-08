@@ -31,3 +31,6 @@ $MESS['MODAL_ITEM_05'] = 'Мой личный рейтинг';
 $MESS['MODAL_ITEM_06'] = 'Рейтинг моей команды';
 $MESS['MODAL_FOOTER_TEXT'] = 'Чтобы сохранить доступ к преимуществам платформы, оформи платную подписку.';
 $MESS['MODAL_BUTTON'] = 'Купить подписку';
+
+$MESS['MODAL_COOKIE_BTN_DISABLE'] = 'Отключить все';
+$MESS['MODAL_COOKIE_BTN_ACCEPT'] = 'Принять';

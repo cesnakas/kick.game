@@ -136,8 +136,8 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn mr-3" data-dismiss="modal">Отключить все</button>
-        <button type="button" class="btn cookieAccept" data-dismiss="modal">Принять</button>
+        <button type="button" class="btn mr-3" data-dismiss="modal"><?=GetMessage('MODAL_COOKIE_BTN_DISABLE')?></button>
+        <button type="button" class="btn cookieAccept" data-dismiss="modal"><?=GetMessage('MODAL_COOKIE_BTN_ACCEPT')?></button>
       </div>
     </div>
   </div>

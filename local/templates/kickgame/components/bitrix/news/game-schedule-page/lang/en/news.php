@@ -12,3 +12,4 @@ $MESS['GS_DATE_EVENT'] = 'Date event';
 $MESS['GS_RATING'] = 'Rating';
 $MESS['GS_MODE'] = 'Mode';
 $MESS['GS_COMMENTATOR'] = 'Commentator';
+$MESS['GS_SEATS'] = 'Available seats';

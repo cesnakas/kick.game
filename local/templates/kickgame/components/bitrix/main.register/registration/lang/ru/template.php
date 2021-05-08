@@ -7,6 +7,7 @@ $MESS['MAIN_INPUT_TOOLTIP'] = 'Обязательно укажи такой же
 $MESS['MAIN_REGISTER_LOGIN_PLACEHOLDER'] = 'Придумайте свой NickName';
 $MESS['MAIN_REGISTER_LOGIN_HELPER'] = 'Обязательно укажи такой же nickname, как в PUBG Mobile';
 $MESS['MAIN_REGISTER_EMAIL_PLACEHOLDER'] = 'Введите свой email';
+$MESS['MAIN_REGISTER_PHONE'] = 'Телефон';
 $MESS['MAIN_REGISTER_PASSWORD'] = 'Пароль';
 $MESS['MAIN_REGISTER_PASSWORD_PLACEHOLDER'] = 'Введите свой пароль';
 $MESS['MAIN_REGISTER_CONFIRM_PASSWORD'] = 'Повторить Пароль';
