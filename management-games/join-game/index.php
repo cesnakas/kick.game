@@ -679,7 +679,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
                     }
                     }
             } else {
-              $alertManagementSquad = 'Состав команды выбран не полностью, должно быть от '.$minLimPlayers.' до '. $maxLimPlayers .' участников';
+              $alertManagementSquad = GetMessage('ALERTS_NOT_FULLY_FROM') . $minLimPlayers . GetMessage('ALERTS_NOT_FULLY_TO') . $maxLimPlayers . GetMessage('ALERTS_NOT_FULLY_PARTICIPANTS');
               createSession('management-games_error', $alertManagementSquad);
               //LocalRedirect("/management-games/join-game/?mid=".$mId);
                 $redirectUrlAction = SITE_DIR."management-games/join-game/?mid=".$mId;
@@ -700,13 +700,13 @@ if (check_bitrix_sessid() && !empty($_REQUEST['removeTeam'])) {
     $dateB = DateTime::createFromFormat('d.m.Y H:i:s', $dateStartMatch);
 
     if ($results) {
-        $alertManagementSquad = 'По матчу уже сформированы результаты';
+        $alertManagementSquad = GetMessage('ALERTS_RESULTS_ALREADY');
         createSession('management-games_error', $alertManagementSquad);
-        $redirectUrlAction = '/management-games/join-game/?mid='.$mId;
+        $redirectUrlAction = SITE_DIR.'management-games/join-game/?mid='.$mId;
     } else if($dateA > $dateB) {
-        $alertManagementSquad = 'Матч уже прошел';
+        $alertManagementSquad = GetMessage('ALERTS_MATCH_ALREADY_PASSED');
         createSession('management-games_error', $alertManagementSquad);
-        $redirectUrlAction = '/management-games/join-game/?mid='.$mId;
+        $redirectUrlAction = SITE_DIR.'management-games/join-game/?mid='.$mId;
     } else {
         // получаем squad
         $curSquadId = getSquadByIdMatch($mId, $teamID);
@@ -736,9 +736,9 @@ if (check_bitrix_sessid() && !empty($_REQUEST['removeTeam'])) {
                 // удаляем squd
                 if (!empty($curSquadId)) {
                     CIBlockElement::Delete($curSquadId['ID']);
-                    $alertManagementSquad = 'Ты успешно снял команду с игры';
+                    $alertManagementSquad = GetMessage('ALERTS_REMOVED_TEAM_FROM_GAME');
                     createSession('management-games_success', $alertManagementSquad);
-                    $redirectUrlAction = '/management-games/join-game/?mid='.$mId;
+                    $redirectUrlAction = SITE_DIR.'management-games/join-game/?mid='.$mId;
                 }
             }
 
@@ -788,9 +788,9 @@ if ($emptyPlace != false) {
     }
 } else {
     CIBlockElement::Delete($squadId);
-    $alertManagementSquad = 'Разместить команду не удалось';
+    $alertManagementSquad = GetMessage('ALERTS_TEAM_NOT_PLACED');
     createSession('management-games_success', $alertManagementSquad);
-    $redirectUrlAction = '/management-games/join-game/?mid='.$mId;
+    $redirectUrlAction = SITE_DIR.'management-games/join-game/?mid='.$mId;
 }
 
 }
@@ -799,7 +799,7 @@ if ($emptyPlace != false) {
 // капитан или нет
 $isCaptain = isCaptain($userID, $teamID);
 if(!$isCaptain) {
-    LocalRedirect("/personal/");
+    LocalRedirect(SITE_DIR."personal/");
 }
 $resTeam = getTeamById($teamID);
 // получаем список команды

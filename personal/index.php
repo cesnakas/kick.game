@@ -199,7 +199,7 @@ if (isset($_POST['join_submit'])) {
     );
     if ($user->Update($userID, $fields)) {
         header('Location: /personal/');
-        echo 'вы присоединились в команду';
+        echo GetMessage('ALERTS_JOINED_TEAM');
     } else {
         echo 'Error: ' . $user->LAST_ERROR;
     }
@@ -252,8 +252,8 @@ if (isset($_REQUEST['createTeam']) && check_bitrix_sessid()) {
             "UF_ID_TEAM"        => $ID,
         );
         if ($user->Update($userID, $fields)) {
-            createSession('team_success', 'Команда успешно создана');
-            LocalRedirect("/personal/");
+            createSession('team_success', GetMessage('ALERTS_CREATE_TEAM'));
+            LocalRedirect(SITE_DIR."personal/");
             //echo 'ID_Team заполнен';
         } else {
             echo 'Error: ' . $user->LAST_ERROR;
@@ -262,7 +262,7 @@ if (isset($_REQUEST['createTeam']) && check_bitrix_sessid()) {
     } else {
         //echo "Error: ".$el->LAST_ERROR;
         createSession('team_error', $el->LAST_ERROR);
-        LocalRedirect("/personal/");
+        LocalRedirect(SITE_DIR."personal/");
     }
 }
 

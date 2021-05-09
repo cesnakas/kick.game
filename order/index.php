@@ -43,13 +43,13 @@ if ($USER->IsAuthorized()) {
 
 
         if ($counttake == 0) {
-            echo 'Предложение не найдено';
+            echo GetMessage('ALERTS_OFFER_NOT_FOUND');
             exit();
         }
 
 
     } else {
-        echo 'Не правильный запрос';
+        echo GetMessage('ALERTS_INVALID_REQUEST');
         exit();
     }
     ?>
@@ -60,13 +60,13 @@ if ($USER->IsAuthorized()) {
             <div class="row align-items-center">
                 <div class="col-md-12 col-lg-6">
                     <div class="logo-tagline">
-                        <a href="/"><img src="/local/templates/kickgame/dist/images/logo-tagline.svg"
+                        <a href="<?=SITE_DIR?>"><img src="/local/templates/kickgame/dist/images/logo-tagline.svg"
                                          alt="kickgame esports"></a>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-6">
                     <div class="form-authentication">
-                        <h2 class="form-authentication__heading">Оплатить заявку</h2>
+                        <h2 class="form-authentication__heading"><?=GetMessage('HEADING_AUTHENTICATION')?></h2>
                         <script src="https://www.vivapayments.com/web/checkout/js"></script>
                         <form id="myform" action="/check.php" method="post">
                         <!--<form class="jssetorder" id="jssetorder" method="post" action="/local/api/order.php"
@@ -79,15 +79,14 @@ if ($USER->IsAuthorized()) {
 
 
                             <span class="form-field__helper textstyle">
-Выбран тариф <span><? echo $datatarrif[NAME]; ?></span> на <? echo $datatarrif[PROPERTY_COL_VALUE]; ?> месяц
-</span>
+<?=GetMessage('FORM_FIELDS_HELPER_TARIFF')?><span><?= $datatarrif[NAME]; ?></span><?=GetMessage('FORM_FIELDS_HELPER_FOR')?><?= $datatarrif[PROPERTY_COL_VALUE]; ?><?=GetMessage('FORM_FIELDS_HELPER_MONTH')?></span>
 
                             <?
                             $tosumm = $datatarrif["CATALOG_PRICE_1"] * $datatarrif[PROPERTY_COL_VALUE];
                             ?>
                             <br>
                             <span class="form-field__helper textstyle">
-Сумма <span><? echo $tosumm; ?></span> €
+<?=GetMessage('FORM_FIELDS_HELPER_SUM')?><span><? echo $tosumm; ?></span> €
 </span>
 
                             <br><br>
@@ -169,9 +168,9 @@ if ($USER->IsAuthorized()) {
 
                                 if (/*$diff->format('%r')*/$restDays) {
                                     //echo $diff->format('Текущая подписка будет завершена через %y лет, %m месяцев, %d дней');
-                                    echo("Текущая подписка будет завершена через " . num_decline($restDays, 'день, дня, дней'));
+                                    echo(GetMessage('CURRENT_SUBSCRIPTION') . num_decline($restDays, GetMessage('CURRENT_SUBSCRIPTION_DAYS')));
                                 } else {
-                                    echo 'Прошлая подписка завершена ' . $arUser['UF_DATE_PREM_EXP'];
+                                    echo GetMessage('LAST_SUBSCRIPTION') . $arUser['UF_DATE_PREM_EXP'];
                                 }
                                 echo '</span><br><br>';
                             /*} else {*/
@@ -179,7 +178,7 @@ if ($USER->IsAuthorized()) {
                                 $result = date('d.m.Y', strtotime($input . ' + ' . $days . ' days'));
                             /*}*/
 
-                            echo '<span class="form-field__helper" >После оплаты подписка будет доступна до ' . $result . '</span><br><br>';
+                            echo '<span class="form-field__helper" >'. GetMessage('AFTER_PAYMENT') . $result . '</span><br><br>';
                             ?>
 
 
@@ -201,14 +200,13 @@ if ($USER->IsAuthorized()) {
 
 
                             <div class="form-authentication__rules text-center">
-                                Оплачивая заявку, я принимаю следующие документы: <a href="/terms-conditions/"
-                                                                                     target="_blank">Условия
-                                    обслуживания</a> и
-                                <a href="/privacy-policy/" target="_blank">Конфиденциальность</a>.
+                                <?=GetMessage('PAYMENT_RULES')?><a href="<?=SITE_DIR?>terms-conditions/" target="_blank"><?=GetMessage('PAYMENT_RULES_LINK_TERMS_CONDITIONS')?></a>
+                                <?=GetMessage('PAYMENT_RULES_AND')?>
+                                <a href="<?=SITE_DIR?>privacy-policy/" target="_blank"><?=GetMessage('PAYMENT_RULES_LINK_PRIVACY_POLICY')?></a>.
                             </div>
 
                             <div class="form-authentication__rules text-center">
-                                <br>1 месяц равен 30-ти календарным дням.
+                                <br><?=GetMessage('PAYMENT_RULES_ONE_MONTH')?>
                             </div>
 							
                       <a href="https://www.vivawallet.com/" target="_blank"><img src="/order/viva.png"
@@ -224,7 +222,7 @@ if ($USER->IsAuthorized()) {
 
     <?
 } else {
-    echo 'Авторизуйтесь для подписки';
+    echo GetMessage('LOGIN_TO_SUBSCRIBE');
 }
 ?>
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

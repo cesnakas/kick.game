@@ -36,7 +36,19 @@ $MESS['ALERTS_SUCCESS_FORMED_TEAM_FROM_GAME'] = 'You have successfully formed a 
 $MESS['ALERTS_LATE_NO_SEATS'] = 'You\'re late, there are no seats';
 $MESS['ALERTS_SUCCESS_FORMED_TEAM'] = 'You have successfully formed a team';
 $MESS['ALERTS_ERROR_REGISTERED_FOR_ANOTHER_GAME'] = 'You are already registered for another game at this time';
+
 $MESS['ALERTS_ERROR_TEAM_MIN_RATING'] = 'Your team\'s rating is below the minimum rating for this game';
 $MESS['ALERTS_ERROR_TEAM_MAX_RATING'] = 'Your team\'s rating is higher than the maximum rating for this game';
+
 $MESS['ALERTS_ERROR_SUBSCRIPTION_EXPIRES'] = 'Unfortunately, we can\'t accept your application for the game.<br>You or someone on your team\'s subscription expires earlier than is game or tournament.';
 $MESS['ALERTS_LINK_BUY_SUBSCRIPTION'] = 'Buy a subscription ';
+
+$MESS['ALERTS_NOT_FULLY_FROM'] = 'The team composition is not fully selected, there must be from ';
+$MESS['ALERTS_NOT_FULLY_TO'] = ' to ';
+$MESS['ALERTS_NOT_FULLY_PARTICIPANTS'] = ' participants';
+
+$MESS['ALERTS_RESULTS_ALREADY'] = 'The results of the match have already been formed';
+$MESS['ALERTS_MATCH_ALREADY_PASSED'] = 'The match has already passed';
+$MESS['ALERTS_REMOVED_TEAM_FROM_GAME'] = 'You have successfully removed the team from the game';
+
+$MESS['ALERTS_TEAM_NOT_PLACED'] = 'The team could not be placed';

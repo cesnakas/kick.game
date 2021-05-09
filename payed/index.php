@@ -34,7 +34,7 @@ if ($USER->IsAuthorized()) {
         if($gnx ==$gnx2) {
 
         } else {
-            echo 'Ошибка обратитесь к разработчикам';
+            echo GetMessage('ERROR_CONTACT_DEVELOPERS');
             exit();
         }
 
@@ -107,7 +107,7 @@ if ($USER->IsAuthorized()) {
         );
         if ($userbb->Update($USER->GetID(), $fieldsbb)) {
 
-            echo 'Подписка продлена';
+            echo GetMessage('SUBSCRIPTION_RENEWED');
 
             $arFields1 = array(
                 "ORDER_ID" => $arSales[ID],     /////////ид заказа
@@ -189,7 +189,7 @@ function basketitm($orderid) {
 function orredinfos($idorder) {
     if (!($arOrderingo = CSaleOrder::GetByID($idorder)))
     {
-        echo "Заказ с кодом ".$idorder." не найден";
+        echo GetMessage('ORDER_WIDTH') . $idorder . GetMessage('ORDER_NOT_FOUNT');
     }
     else {
         $arPropsord = array();

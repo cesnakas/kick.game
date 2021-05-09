@@ -520,7 +520,7 @@ if ($result->isSuccess())
                                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/flash.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/flash@2x.png 2x"
                         >
                         <h3><?=GetMessage('CONTENT_MAIN_PUMP_UP')?></h3>
-                        <p>тренироваться с tier 1 - tier 3 командами, анализировать свои результаты по готовым записям игр и совершенствовать навыки<?/*=GetMessage('CONTENT_MAIN_PUMP_UP_TEXT')*/?></p>
+                        <p><?=GetMessage('CONTENT_MAIN_PUMP_UP_TEXT')?></p>
                     </li>
                     <li class="features__item">
                         <img

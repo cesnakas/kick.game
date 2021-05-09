@@ -222,7 +222,7 @@ $redirectLink = SITE_DIR."management-games/join-game/?mid=". $arResult["ID"];
     }
 }
 
-$btnValue = "Принять участие";
+$btnValue = GetMessage('BUTTON_VALUE');
 switch($arResult["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]) {
     case 4:
         $mode = "SQUAD";

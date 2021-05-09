@@ -31,3 +31,5 @@ $MESS['BUTTON_BUY_SUBSCRIPTION'] = 'Купить подписку';
 $MESS['HEADING_PREMIUM_MESSAGE'] = 'Чтобы принять участие в игре, всем игрокам команды-участника нужно купить ';
 $MESS['HEADING_PREMIUM_MESSAGE_LINK'] = ' подписку';
 $MESS['ALERTS_TEAM_DELETED'] = 'Команда удалена';
+
+$MESS['BUTTON_VALUE'] = 'Принять участие';

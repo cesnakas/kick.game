@@ -31,3 +31,5 @@ $MESS['BUTTON_BUY_SUBSCRIPTION'] = 'Buy a subscription';
 $MESS['HEADING_PREMIUM_MESSAGE'] = 'To participate in the game, all players of the participating team need to buy ';
 $MESS['HEADING_PREMIUM_MESSAGE_LINK'] = ' a subscription';
 $MESS['ALERTS_TEAM_DELETED'] = 'Team deleted';
+
+$MESS['BUTTON_VALUE'] = 'Take part';

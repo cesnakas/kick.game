@@ -1,4 +1,7 @@
 <?
+$MESS['ALERTS_JOINED_TEAM'] = 'вы присоединились в команду';
+$MESS['ALERTS_CREATE_TEAM'] = 'Команда успешно создана';
+
 $MESS['TYPE_ACCOUNT'] = 'Базовая';
 $MESS['TYPE_ACCOUNT_PREMIUM'] = 'Премиум';
 $MESS['TYPE_ACCOUNT_PREMIUM_REMAINING'] = 'Остался, Осталось, Осталось';

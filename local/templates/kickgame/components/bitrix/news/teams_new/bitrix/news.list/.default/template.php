@@ -118,7 +118,7 @@ function searchTeams($search = ""){
     showRow($el, $el['rank']);
   }
     if($i == 0){
-        echo "По вашему запросу ничего не найдено";
+        echo GetMessage('ALERTS_SEARCH_NOT_FOUND');
     }
 
 }
@@ -135,19 +135,19 @@ function showRow($team, $rank){
                     </div>
                   </span>
     <span class="flex-table__param-wrap">
-                   <div class="flex-table__param">Позиция в рейтинге</div>
+                   <div class="flex-table__param"><?=GetMessage('GAME_SCHEDULE_TABLE_POSITION')?></div>
                     <?php
                     echo $rank;
                     ?>
                   </span>
     <span class="flex-table__param-wrap">
-                   <div class="flex-table__param">Рейтинг</div>
+                   <div class="flex-table__param"><?=GetMessage('GAME_SCHEDULE_TABLE_RATING')?></div>
                     <?php
                     echo ceil($team["total"]);
                     ?>
                   </span>
     <span class="flex-table__param-wrap">
-                   <div class="flex-table__param">Киллы</div>
+                   <div class="flex-table__param"><?=GetMessage('GAME_SCHEDULE_TABLE_KILLS')?></div>
                    <?php
                    echo $kills;
                    ?>

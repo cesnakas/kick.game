@@ -127,7 +127,7 @@ function searchPlayers($search = ""){
         showRow($el, $el['rank']);
     }
     if($i == 0){
-        echo "По вашему запросу ничего не найдено";
+        echo GetMessage('ALERTS_SEARCH_NOT_FOUND');
     }
 
 }
@@ -500,11 +500,11 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
     <?php } else { ?>
 
     <div class="container">
-        <h1 class="text-center">Рейтинг игроков<?/*=GetMessage('PLAYERS_TITLE')*/?></h1>
+        <h1 class="text-center"><?=GetMessage('PLAYERS_TITLE')?></h1>
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12">
                 <div class="layout__content-anons text-center">
-                    Рейтинги KICKGAME - это система квалификации команд и игроков, которая позволяет устраивать игры с равными соперниками. Ты совершенствуешь свои навыки, получаешь опыт - и это не остаётся незамеченным. Твой навык имеет определяющее значение в победах на турнирах.
+                    <?=GetMessage('PLAYERS_SUBTITLE')?>
                 </div>
             </div>
         </div>
@@ -512,9 +512,9 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
         <div class="row justify-content-center">
             <div class="col-lg-11 col-md-12">
                 <div class="rating">
-                    <form action="/players/" method="get">
+                    <form action="<?=SITE_DIR?>players/" method="get">
                         <div class="form-field">
-                            <label for="search-team" class="form-field__label">Никнейм игрока</label>
+                            <label for="search-team" class="form-field__label"><?=GetMessage('PLAYERS_LABEL_NICKNAME')?></label>
                             <div class="form-field__with-btn">
                                 <?php
                                 $playerName = '';
@@ -522,8 +522,8 @@ if (isset($path[2]) && (LANGUAGE_ID == 'ru') ? trim($path[2]) : trim($path[3]) !
                                     $playerName = htmlspecialchars($_GET['playerName'], ENT_QUOTES, 'UTF-8');
                                 }
                                 ?>
-                                <input type="text" class="form-field__input" name="playerName" value="<?php echo $playerName;?>" autocomplete="off" id="search-team" placeholder="Введите никнейм игрока">
-                                <button class="btn" type="submit" name="">Найти игрока</button>
+                                <input type="text" class="form-field__input" name="playerName" value="<?php echo $playerName;?>" autocomplete="off" id="search-team" placeholder="<?=GetMessage('PLAYERS_SEARCH_PLACEHOLDER')?>">
+                                <button class="btn" type="submit" name=""><?=GetMessage('PLAYERS_SEARCH_BTN')?></button>
                             </div>
                         </div>
                     </form>

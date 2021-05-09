@@ -28,9 +28,9 @@ if(isset($_GET['leaveteam']) && $_GET['leaveteam'] != '') {
 
     if(count(getSquadByIdPlayer($arResult["VARIABLES"]["ELEMENT_ID"], $userID)) == 0){
         updateFieldUserbyId($userID+0, $fields= array("UF_ID_TEAM" => null));
-        createSession('team_success', 'Tы успешно вышел из команды');
+        createSession('team_success', GetMessage('TEAM_SUCCESS_OUT'));
     } else {
-        createSession('team_error', 'Tы не можешь удалиться если ты зарегистрирован на матч');
+        createSession('team_error', GetMessage('TEAM_ERROR_OUT'));
     }
     LocalRedirect(SITE_DIR."teams/". $arResult["VARIABLES"]["ELEMENT_ID"].'/');
 }

@@ -1,4 +1,7 @@
 <?
+$MESS['ALERTS_JOINED_TEAM'] = 'you joined the team';
+$MESS['ALERTS_CREATE_TEAM'] = 'Team created successfully';
+
 $MESS['TYPE_ACCOUNT'] = 'Base';
 $MESS['TYPE_ACCOUNT_PREMIUM'] = 'Premium';
 $MESS['TYPE_ACCOUNT_PREMIUM_REMAINING'] = 'Remaining, Remaining, Remaining';
