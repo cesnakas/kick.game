@@ -91,7 +91,7 @@ function debugLogout() {
     global $USER, $APPLICATION;
     if($APPLICATION->GetCurDir() != SITE_DIR){
        // LocalRedirect("/?logout=yes");
-        LocalRedirect("/?logout=yes&sessid=".$_SESSION["fixed_session_id"], true);
+        LocalRedirect(SITE_DIR."?logout=yes&sessid=".$_SESSION["fixed_session_id"], true);
     }
 }
 

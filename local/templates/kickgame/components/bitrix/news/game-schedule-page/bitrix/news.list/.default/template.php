@@ -288,7 +288,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
                           $freeSlots = 18 - count($tmp);
                           if($freeSlots > 0){
                               ?>
-                              <span class="place-span"> <?php echo count($tmp);?>/18 Занято</span><?php
+                              <span class="place-span"> <?php echo count($tmp);?>/18 <?=GetMessage('RATING_SEATS_OCCUPIED')?></span><?php
                           } else {
                               ?>
                               <span class="no-slots-span"><?=GetMessage('NO_SEATS')?></span><?php

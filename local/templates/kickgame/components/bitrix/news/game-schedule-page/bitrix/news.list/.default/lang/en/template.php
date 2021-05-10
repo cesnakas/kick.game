@@ -11,3 +11,5 @@ $MESS['DATE_EVENT'] = 'Date of the event';
 $MESS['RATING'] = 'Rating';
 $MESS['MODE'] = 'Mode';
 $MESS['COMMENTATOR'] = 'Commentator';
+
+$MESS['RATING_SEATS_OCCUPIED'] = 'occupied';

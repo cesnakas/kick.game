@@ -1,5 +1,4 @@
 <?
-
 if (!empty($_POST['REGISTER']['EMAIL'])) {
 
 	require_once __DIR__ . '/../../vendor/autoload.php';
@@ -35,7 +34,6 @@ if (!empty($_POST['REGISTER']['PERSONAL_PHONE'])) {
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Регистрация");
 
-
 //die;
 $APPLICATION->IncludeComponent(
 	"bitrix:main.register", 
@@ -61,4 +59,7 @@ $APPLICATION->IncludeComponent(
 	),
 	false
 );?>
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+
+<?
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
+?>

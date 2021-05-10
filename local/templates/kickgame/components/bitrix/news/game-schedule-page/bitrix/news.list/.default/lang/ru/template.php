@@ -11,3 +11,5 @@ $MESS['DATE_EVENT'] = 'Дата проведения';
 $MESS['RATING'] = 'Рейтинг';
 $MESS['MODE'] = 'Режим';
 $MESS['COMMENTATOR'] = 'Комментатор';
+
+$MESS['RATING_SEATS_OCCUPIED'] = 'Занято';
