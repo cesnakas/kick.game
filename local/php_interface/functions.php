@@ -178,3 +178,86 @@ function isCaptainHeader($idUser, $idTeam)
     }
     return  false;
 }
+
+/* Status
+13 - Unverified /19
+14 - Checking / 20
+15 - Verified / 21
+16 - CheckingNext / 22
+17 - Rejected / 23
+18 - VerifiedTouchOk  / 24
+*/
+function updateStatusChekingPubgId($userId, $statusId)
+{
+  $user = new CUser;
+  $fields = Array(
+    "UF_PUBG_ID_CHECK" => $statusId,
+  );
+  $user->Update($userId, $fields);
+}
+
+// $action true or false
+function updatePubgIdVerified($userId, $action)
+{
+    $user = new CUser;
+    $user->Update($userId, Array("UF_PUBG_ID_VERIFIED" => $action));
+}
+
+function addScreenshot($file, $userId, $statusId)
+{
+  $arFile = array();
+  $arFile['name']     = $file['scrinPubg']['name'];
+  $arFile['size']     = $file['scrinPubg']['size'];
+  $arFile['tmp_name'] = $file['scrinPubg']['tmp_name'];
+  $arFile['type']     = $file['scrinPubg']['type'];
+  $arFile['del'] = "Y";
+  $arFile['old_file'] = "";
+  $arFile["MODULE_ID"] = "";
+  $fields = Array(
+    "WORK_LOGO" => $arFile,
+  );
+  $user = new CUser;
+  $res = $user->Update($userId, $fields);
+
+  if ($res) {
+    updateStatusChekingPubgId($userId, $statusId);
+    return true;
+  } else {
+    return false;
+  }
+}
+function addReasonRejected($userId, $reason)
+{
+  $fields = Array(
+    "PERSONAL_NOTES" => $reason,
+  );
+  $user = new CUser;
+  $res = $user->Update($userId, $fields);
+}
+function addCommentRejected($userId, $comment)
+{
+  $fields = Array(
+    "WORK_NOTES" => $comment,
+  );
+  $user = new CUser;
+  $res = $user->Update($userId, $fields);
+}
+
+function existsPubgId($userId, $pubgId)
+{
+  $filter = array(
+    '!ID'=>$userId,
+    'UF_PUBG_ID' => $pubgId,
+    "ACTIVE" => 'Y',
+  );
+  $arParams["SELECT"] = array("UF_*");
+  $elementsResult = CUser::GetList(($by="ID"), ($order="DESC"), $filter, $arParams);
+  $users = [];
+  while ($rsUser = $elementsResult->Fetch())
+  {
+    $users[] = $rsUser;
+    //updateUserPrem($rsUser["ID"], 10);
+    //echo $rsUser["ID"] . $rsUser["LOGIN"] . " - " . $rsUser["UF_DATE_PREM_EXP"] . "<br>";
+  }
+  return $users;
+}

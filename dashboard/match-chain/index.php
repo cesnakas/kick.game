@@ -1165,7 +1165,7 @@ if (!empty($_POST["sendResults"])) {
 
 
         $props = [];
-        $props['MODERATOR'] = $_POST['mod'];
+        if (CSite::InGroup( array(1))) $props['MODERATOR'] = $_POST['mod'];
         $props['DATE_START'] = $_POST['date_time_match'];
         $props['URL_STREAM'] = $_POST["url_stream"];
         $props['PUBG_LOBBY_ID'] = $_POST["pubg_lobby_id"];
@@ -1247,12 +1247,15 @@ if (!empty($_POST["sendResults"])) {
                 if(isset($_POST["last"]) && isMatchRes($matchId) && ($firstMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 5)){
                    setStagePass($firstMatchId, $stageKeyPass);
                 }
-                //header('Location: /dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
+                LocalRedirect(SITE_DIR.'dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
+
             } else {
-                echo 'С данными что-то не то!';
+                createSession("match-chain_error",'С данными что-то не то!');
+                LocalRedirect(SITE_DIR.'dashboard/match-chain/?id='.$firstMatchId);
             }
         } else {
-            echo 'Данные не однородные';
+            createSession("match-chain_error",'Данные не однородные');
+            LocalRedirect(SITE_DIR.'dashboard/match-chain/?id='.$firstMatchId);
         }
 
 
@@ -1270,18 +1273,18 @@ if (!empty($_POST["sendResults"])) {
 
 ?>
     <div class="container my-5">
-        <?php if (!empty($errors)) { ?>
+        <?php if (isset($_SESSION["match-chain_error"])) { ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <h4 class="alert-heading">Error!</h4>
-                <?php foreach ($errors as $error) { ?>
-                    <p><strong><?php echo $error; ?></strong></p>
-                <?php } ?>
+                    <p><strong><?php echo $_SESSION["match-chain_error"]; ?></strong></p>
                 <hr>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        <?php } ?>
+        <?php
+            unset($_SESSION['match-chain_error']);
+        } ?>
         <?php showMatch($firstMatch, false); ?>
     </div>
 <?php $parentId = $firstMatch['ID'];
