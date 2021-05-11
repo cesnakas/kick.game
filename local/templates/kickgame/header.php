@@ -102,14 +102,15 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
                     <i class='navbar-dropdown__icon'></i>
                   </a>
                   <ul class="navbar-dropdown__menu navbar-dropdown__menu_lang">
+                  <? $le = substr($_SERVER['REQUEST_URI'], 3); ?>
                     <li class="navbar-dropdown__item">
-                        <a href="<?=str_replace('/en/','/',str_replace('index.php','',$_SERVER['PHP_SELF']))?>" class="nav__link">РУС</a>
+                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$le.'">РУС</a>';?>
                     </li>
                     <li class="navbar-dropdown__item">
-                        <? if(LANGUAGE_ID == 'en'): ?>
-                            <a href="<?=str_replace('index.php','',$_SERVER['PHP_SELF'])?>" class="nav__link">ENG</a>
+                        <? if (SITE_DIR == '/en/'): ?>
+                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].'">ENG</a>';?>
                         <? else: ?>
-                            <a href="<?=SITE_DIR?>en<?=str_replace('index.php','',$_SERVER['PHP_SELF'])?>">ENG</a>
+                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].'/en'.$_SERVER['REQUEST_URI'].'">ENG</a>';?>
                         <? endif; ?>
                     </li>
                   </ul>

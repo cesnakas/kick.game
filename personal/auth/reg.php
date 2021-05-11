@@ -36,7 +36,7 @@ $APPLICATION->SetTitle("Регистрация");
 
 //die;
 $APPLICATION->IncludeComponent(
-	"bitrix:main.register", 
+	"bitrix:main.register",
 	"registration", 
 	array(
 		"AUTH" => "Y",
@@ -49,7 +49,7 @@ $APPLICATION->IncludeComponent(
 			0 => "EMAIL",
 			1 => "PERSONAL_PHONE",
 		),
-		"SUCCESS_PAGE" => SITE_DIR.'personal/',
+		"SUCCESS_PAGE" => '/personal/',
 		"USER_PROPERTY" => array(
 			0 => "UF_RATING",
 		),
