@@ -36,9 +36,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Регистрация");
 
 //die;
+/*
 $APPLICATION->IncludeComponent(
 	"bitrix:main.register",
-	"registration", 
+	"registration",
 	array(
 		"AUTH" => "Y",
 		"REQUIRED_FIELDS" => array(
@@ -50,7 +51,7 @@ $APPLICATION->IncludeComponent(
 			0 => "EMAIL",
 			1 => "PERSONAL_PHONE",
 		),
-		"SUCCESS_PAGE" => '/personal/',
+		"SUCCESS_PAGE" => SITE_DIR.'personal/',
 		"USER_PROPERTY" => array(
 			0 => "UF_RATING",
 		),
@@ -59,6 +60,32 @@ $APPLICATION->IncludeComponent(
 		"COMPONENT_TEMPLATE" => "registration"
 	),
 	false
+);*/?>
+
+<?$APPLICATION->IncludeComponent(
+	"bitrix:main.register",
+	"registration",
+	Array(
+		"AUTH" => "Y",
+		"SET_TITLE" => "Y",
+		"USER_PROPERTY_NAME" => "",
+		"SEF_MODE" => "Y",
+		"SHOW_FIELDS" => Array(
+			0 => "EMAIL",
+			1 => "PERSONAL_PHONE",
+		),
+		"REQUIRED_FIELDS" => Array(
+			0 => "EMAIL",
+			1 => "PERSONAL_PHONE",
+		),
+		"USE_BACKURL" => "Y",
+		"SUCCESS_PAGE" => SITE_DIR.'personal/',
+		"USER_PROPERTY" => Array(
+			0 => "UF_RATING",
+		),
+		"SEF_FOLDER" => SITE_DIR."personal/auth/reg.php",
+		"VARIABLE_ALIASES" => Array()
+	)
 );?>
 
 <?
