@@ -1,4 +1,5 @@
 <?
+
 if (!empty($_POST['REGISTER']['EMAIL'])) {
 
 	require_once __DIR__ . '/../../vendor/autoload.php';
