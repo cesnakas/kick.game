@@ -20,13 +20,7 @@ if (!empty($_POST['REGISTER']['EMAIL'])) {
 	//print_r($response);
 }
 
-if (isset($_POST['UF_DATE_PREM_EXP'])) {
-    $days = 14;
-    $now = date('d.m.Y');
-    $datePremExp = date( 'd.m.Y', strtotime( $now ." +" . $days . "days" ));
-    $_POST['UF_DATE_PREM_EXP'] = $datePremExp;
-    $_REQUEST['UF_DATE_PREM_EXP'] = $datePremExp;
-}
+
 if (!empty($_POST['REGISTER']['PERSONAL_PHONE'])) {
 	$_POST['REGISTER']['PERSONAL_PHONE'] = $_POST['full_number'];
 	$_REQUEST['REGISTER']['PERSONAL_PHONE'] = $_POST['full_number'];
@@ -35,11 +29,19 @@ if (!empty($_POST['REGISTER']['PERSONAL_PHONE'])) {
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Регистрация");
 
+if (isset($_POST['REGISTER']['LOGIN'])) {
+	$_POST['UF_DATE_PREM_EXP'] = new \Bitrix\Main\Type\DateTime();
+    $_REQUEST['UF_DATE_PREM_EXP'] = new \Bitrix\Main\Type\DateTime();
+}
 //die;
-/*
+$urlRedirect = '/personal/';
+if (LANGUAGE_ID == 'en') {
+	$urlRedirect = '/en/personal/';
+}
+
 $APPLICATION->IncludeComponent(
-	"bitrix:main.register",
-	"registration",
+	"bitrix:main.register", 
+	"registration", 
 	array(
 		"AUTH" => "Y",
 		"REQUIRED_FIELDS" => array(
@@ -51,7 +53,7 @@ $APPLICATION->IncludeComponent(
 			0 => "EMAIL",
 			1 => "PERSONAL_PHONE",
 		),
-		"SUCCESS_PAGE" => SITE_DIR.'personal/',
+		"SUCCESS_PAGE" => $urlRedirect,
 		"USER_PROPERTY" => array(
 			0 => "UF_RATING",
 		),
@@ -60,34 +62,5 @@ $APPLICATION->IncludeComponent(
 		"COMPONENT_TEMPLATE" => "registration"
 	),
 	false
-);*/?>
-
-<?$APPLICATION->IncludeComponent(
-	"bitrix:main.register",
-	"registration",
-	Array(
-		"AUTH" => "Y",
-		"SET_TITLE" => "Y",
-		"USER_PROPERTY_NAME" => "",
-		"SEF_MODE" => "Y",
-		"SHOW_FIELDS" => Array(
-			0 => "EMAIL",
-			1 => "PERSONAL_PHONE",
-		),
-		"REQUIRED_FIELDS" => Array(
-			0 => "EMAIL",
-			1 => "PERSONAL_PHONE",
-		),
-		"USE_BACKURL" => "Y",
-		"SUCCESS_PAGE" => SITE_DIR.'personal/',
-		"USER_PROPERTY" => Array(
-			0 => "UF_RATING",
-		),
-		"SEF_FOLDER" => SITE_DIR."personal/auth/reg.php",
-		"VARIABLE_ALIASES" => Array()
-	)
 );?>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

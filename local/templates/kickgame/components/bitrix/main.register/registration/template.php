@@ -68,7 +68,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                 </a>
               </div>
             </div>-->
-            <form method="post" action="<?=$arResult["AUTH_URL"]?><?/*= POST_FORM_ACTION_URI; */?>" name="regform" enctype="multipart/form-data">
+            <form method="post" action="<?= POST_FORM_ACTION_URI; ?>" name="regform" enctype="multipart/form-data">
                 <?php if ($arResult["BACKURL"] <> ''): ?>
                   <input type="hidden" name="backurl" value="<?= $arResult["BACKURL"]; ?>" />
                 <?php endif; ?>
@@ -92,7 +92,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                       <label for="auth-pass-repeat" class="form-field__label"><?= GetMessage('MAIN_REGISTER_CONFIRM_PASSWORD') ?></label>
                       <input type="password" class="form-field__input" name="REGISTER[CONFIRM_PASSWORD]" value="<?= $arResult["VALUES"]['CONFIRM_PASSWORD'] ?>" autocomplete="off" id="auth-pass-repeat" placeholder="<?= GetMessage('MAIN_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER') ?>">
                     </div>
-                  <input type="hidden" name="UF_DATE_PREM_EXP" value="<?php echo date('d.m.Y');?>">
+                  <!--<input type="hidden" name="UF_DATE_PREM_EXP" value="<?php echo date('d.m.Y');?>">-->
                 <?
                 if ($arResult["USE_CAPTCHA"] == "Y"):?>
                   <div class="form-field">

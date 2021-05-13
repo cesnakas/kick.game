@@ -115,6 +115,37 @@ function getPlayersSquadByIdMatch($idMatch, $teamId)
     }
     return false;
 }
+
+function getChainMatches( $firstMatchID ){
+    GLOBAL $DB;
+    $firstMatchID += 0;
+    $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
+                    ,m.PROPERTY_8 AS parentMatchID
+                    ,m.PROPERTY_22 AS stageMatch
+                    ,m.PROPERTY_23 AS typeMatch
+              FROM b_iblock_element_prop_s3 AS m 
+              WHERE m.IBLOCK_ELEMENT_ID = '.$firstMatchID;
+    $res = $DB->Query($sql);
+    if($row = $res->Fetch()) {
+        $chain = $row;
+        $chain[ 'chain' ] = [ $firstMatchID ];
+        $mID = $firstMatchID;
+        do {
+            $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
+                  FROM b_iblock_element_prop_s3 AS m 
+                  WHERE m.PROPERTY_8 = '.$mID;
+            $res = $DB->Query($sql);
+            if($row = $res->Fetch()) {
+                $mID = $row['matchID']+0;
+                $chain[ 'chain' ][] = $mID;
+            } else {
+                $mID = false;
+            }
+        } while( $mID );
+        return $chain;
+    }
+    return false;
+}
 //dump($arResult);
 function isCaptain($idUser, $idTeam)
 {
@@ -233,6 +264,15 @@ switch($arResult["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]) {
     case 1:
         $mode = "SOLO";
         break;
+}
+
+$matches = getChainMatches( $arResult["ID"] );
+$gamesCount = count($matches["chain"]);
+$hours = $gamesCount*40/60;
+$hour = "G ".num_decline($hours, "час, часа, часов", false);
+$minutes = "";
+if($gamesCount*40 % 60 != 0){
+    $minutes = " i минут";
 }
 ?>
 <?php
@@ -384,37 +424,6 @@ unset($_SESSION['game-schedule-detail_error']);
 <?php
 $teamIds = getMembersIdsTeamByMatchId($arResult["ID"]);
 $teamIds = array_diff($teamIds, array(''));
-
-function getChainMatches( $firstMaitchID ){
-  GLOBAL $DB;
-  $firstMaitchID += 0;
-  $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
-                    ,m.PROPERTY_8 AS parentMatchID
-                    ,m.PROPERTY_22 AS stageMatch
-                    ,m.PROPERTY_23 AS typeMatch
-              FROM b_iblock_element_prop_s3 AS m 
-              WHERE m.IBLOCK_ELEMENT_ID = '.$firstMaitchID;
-  $res = $DB->Query($sql);
-  if($row = $res->Fetch()) {
-    $chain = $row;
-    $chain[ 'chain' ] = [ $firstMaitchID ];
-    $mID = $firstMaitchID;
-    do {
-      $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
-                  FROM b_iblock_element_prop_s3 AS m 
-                  WHERE m.PROPERTY_8 = '.$mID;
-      $res = $DB->Query($sql);
-      if($row = $res->Fetch()) {
-        $mID = $row['matchID']+0;
-        $chain[ 'chain' ][] = $mID;
-      } else {
-        $mID = false;
-      }
-    } while( $mID );
-    return $chain;
-  }
-  return false;
-}
 
 
 function countPointsByMatchesIDs( $IDs = array() ){

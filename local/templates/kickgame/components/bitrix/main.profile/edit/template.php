@@ -252,6 +252,11 @@ unset($_SESSION['save-profile_error']);
                   <?php }?>>
                   <div class="profile__avatar-edit-icon"></div>
                 </div>
+                <?php if($arResult["arUser"]['UF_PUBG_ID_CHECK'] == 20 || $arResult["arUser"]['UF_PUBG_ID_CHECK'] == 22) { ?>
+                <div class="profile__checking">
+                  Идет проверка аккаунта
+                </div>
+                <?php } ?>
               </div>
             </label>
           </div>

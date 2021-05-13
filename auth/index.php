@@ -21,25 +21,8 @@ if (!$userName)
 <?
 $APPLICATION->SetTitle("Авторизация");
 ?>
-
-    <!--<div class="container" style="position: relative; z-index: 2; padding-bottom: 60px">
-        <p><?/*= GetMessage('AUTH_SUCCESS') */?></p>
-        <p><a href="<?/*= SITE_DIR */?>"><?/*= GetMessage('AUTH_LINK') */?></a></p>
-    </div>-->
-
-<?
-$logout = $APPLICATION->GetCurPageParam(
-    'logout=yes',
-    [
-        'login',
-        'logout',
-        'register',
-        'forgot_password',
-        'change_password'
-    ]
-);
-?>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+    <div class="container" style="position: relative; z-index: 2; padding-bottom: 60px">
+        <p><?= GetMessage('AUTH_SUCCESS') ?></p>
+        <p><a href="<?= SITE_DIR ?>"><?= GetMessage('AUTH_LINK') ?></a></p>
+    </div>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
