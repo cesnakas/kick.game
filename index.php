@@ -548,7 +548,7 @@ if ($result->isSuccess())
                 <?php } else { ?>
                   <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
                 <?php } ?>
-                <span><?=GetMessage('CONTENT_MAIN_14DAYS')?></span>
+
             </div>
             <div class="features-bg"></div>
         </section>
@@ -752,7 +752,6 @@ if ($result->isSuccess())
                 <?php } else { ?>
                   <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
                 <?php } ?>
-                <span><?=GetMessage('CONTENT_MAIN_14DAYS')?></span>
             </div>
         </section>
     </main>

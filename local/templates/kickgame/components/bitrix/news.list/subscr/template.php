@@ -54,9 +54,12 @@ while($ob_price = $res_price->GetNextElement())
                                     <div class="subscription-plans-item__heading">
                                         <? echo $arItem['PROPERTIES']['INFO']['~VALUE'];?>
                                     </div>
+                                    <?
+                                    if(!empty($arItem['PROPERTIES']['SIGN']['~VALUE'])){?>
                                     <div class="subscription-plans-item__sub-heading">
                                         <? echo $arItem['PROPERTIES']['SIGN']['~VALUE'];?>
                                     </div>
+                                    <? } ?>
                                 </div>
                             </a>
                         </div>
@@ -81,6 +84,10 @@ while($ob_price = $res_price->GetNextElement())
                                 ?>
 
                             </ul>
+
+
+                        </div>
+                    </div>
                             <?
                             $sprice = $elems_price[$arItem[ID]]["CATALOG_PRICE_1"];
 
@@ -90,9 +97,6 @@ while($ob_price = $res_price->GetNextElement())
                                     <a data-id="" href="/order/?orderid=<? echo $arItem[ID];?>" class="btn jsaddtoorder">Купить подписку</a>
                                 </div>
                             <? } ?>
-
-                        </div>
-                    </div>
                 </div>
             </div>
 

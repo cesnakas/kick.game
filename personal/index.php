@@ -367,19 +367,19 @@ if( isset( $_POST['promocode'] )  && check_bitrix_sessid() ){
     if( $promoCodeItem = getPromo( $_POST['promocode'] ) ){
         $days = $promoCodeItem['SORT'];
         if( $promoCodeUsed = checkUsedPromo( $_POST['promocode'] ) ){
-            $alertPromoCode = 'Код уже использовался Вами '.$promoCodeUsed['DATE_CREATE'];
+            $alertPromoCode = 'Код уже использовался Вами '.$promoCodeUsed['DATE_CREATE']; // TODO: lang
         } else {
             if( addDaysToPremlimit( $days ) ){
                 addUsedCodeToHistory( $_POST['promocode'] );
-                $alertPromoCode = 'Код активирован. Тебе добавлено '.$days.' дней прем аккаунта';
+                $alertPromoCode = 'Код активирован. Тебе добавлено '.$days.' дней прем аккаунта'; // TODO: lang
                 createSession('alert_success', $alertPromoCode);
                 $alertPromoCode = '';
             } else {
-                $alertPromoCode = 'Что-то пошло не так. Свяжись со службой технической поддержки.';
+                $alertPromoCode = 'Что-то пошло не так. Свяжись со службой технической поддержки.'; // TODO: lang
             }
         }
     } else {
-        $alertPromoCode = 'Код не существует';
+        $alertPromoCode = 'Код не существует'; // TODO: lang
     }
 }
 if ($alertPromoCode != '') {
@@ -863,7 +863,7 @@ unset($_SESSION['alert_error']);
       <div class="row justify-content-center">
         <div class="col-lg-11 col-md-12">
           <div class="profile__avatar-bg">
-            <div class="profile__avatar"
+            <div class="profile__avatar <?php if(!$arUser['UF_PUBG_ID_CHECK'] || $arUser['UF_PUBG_ID_CHECK'] == 19 || $arUser['UF_PUBG_ID_CHECK'] == 23) { ?> profile__avatar_unverified<?php } ?>"
                 <?php if (!empty($arUser["PERSONAL_PHOTO"])) { ?>
                   style="background-image: url(<?php echo CFile::GetPath($arUser["PERSONAL_PHOTO"]); ?>)"
                 <?php } else { ?>
@@ -877,15 +877,25 @@ unset($_SESSION['alert_error']);
                 </div>
               </div>
             </div>
+              <?php if(!$arUser['UF_PUBG_ID_CHECK'] || $arUser['UF_PUBG_ID_CHECK'] == 19 ) { ?>
+                  <div class="profile__confirm">
+                      <a href="#" data-toggle="modal" data-target="#pubgIdVerified" class="btn-icon btn_pubg-alet btn-icon_yellow"><span>Подтвердить pubg id</span></a>
+                  </div>
+              <?php } else if($arUser['UF_PUBG_ID_CHECK'] == 20 || $arUser['UF_PUBG_ID_CHECK'] == 22) { ?>
+                  <div class="profile__checking">
+                      Идет проверка аккаунта
+                  </div>
+              <?php } ?>
           </div>
           <div class="profile-info">
             <div class="row profile-info__row align-items-center ">
               <div class="col-md-3 profile-info__item">
                 <div class="profile-info__type-account">
                   <?
-                  $resultPrem = isPrem($arUser['UF_DATE_PREM_EXP']);
-
-                  $userId = $arUser["ID"];
+                  //$resultPrem = isPrem($arUser['UF_DATE_PREM_EXP']);
+                  $date = CustomSubscribes::getActualUserSubscribeGroup($arUser["ID"]);
+                  $resultPrem = isPrem($date[0]["DATE_ACTIVE_TO"]);
+                  /*$userId = $arUser["ID"];
                   $userGroups = CUser::GetUserGroup($userId);
                   $productGroups = array();$productName = ""; $productGroup = 0;
                   $res = CIBlockElement::GetList(
@@ -945,9 +955,10 @@ unset($_SESSION['alert_error']);
                               break;
                           }
                       }
-                  }
+                  }*/
 
-                  if ($resultPrem <= 0) { ?>
+
+                  /*if ($resultPrem <= 0) { ?>
                       <div class="profile-info__type-account-icon profile-info__type-account-icon_base">
                           <i></i>
                       </div>
@@ -963,7 +974,10 @@ unset($_SESSION['alert_error']);
                           <div><?= $productName?></div>
                           <div class="profile-info__day-left"><?php echo num_decline($resultPrem, GetMessage('TYPE_ACCOUNT_PREMIUM_REMAINING'), false); ?> <?php echo num_decline($resultPrem, GetMessage('TYPE_ACCOUNT_PREMIUM_DAYS')); ?></div>
                       </div>
-                  <? } ?>
+                  <? } ?>*/
+
+				  ?>
+
                 </div>
               </div>
               <div class="col-md-6 profile-info__item">
@@ -1355,8 +1369,11 @@ if (!empty($newMatchIds)) {
           </div>
           <div class="flex-table-new--body">
         <?php
+        //dump($userID);
         //dump(getUserGames($userId));
-        $userGamesIds = getUserGames($userId);
+        $userGamesIds = getUserGames($userID);
+
+
         $curDate = date('Y-m-d H:i:s', time()-3600);
         GLOBAL $arrFilterDateTime;
         $arrFilterDateTime=Array(

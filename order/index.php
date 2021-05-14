@@ -101,17 +101,18 @@ if ($USER->IsAuthorized()) {
 
 
                             <?
-                            $days = 30 * $datatarrif[PROPERTY_COL_VALUE];
+                            $days = /*30 * */$datatarrif[PROPERTY_COL_VALUE];
+                            $date = CustomSubscribes::getActualUserSubscribeGroup($arUser["ID"]);
 
-                            /*if (!empty($arUser['UF_DATE_PREM_EXP'])) {*/
+                            if (!empty(/*$arUser['UF_DATE_PREM_EXP']*/$date[0]["DATE_ACTIVE_TO"])) {
 
-                                /*$input = $arUser['UF_DATE_PREM_EXP'];
-                                $result = date('d.m.Y', strtotime($input . ' + ' . $days . ' days'));*/
+                                $input = /*$arUser['UF_DATE_PREM_EXP']*/$date[0]["DATE_ACTIVE_TO"];
+                                $result = date('d.m.Y', strtotime($input . ' + ' . $days . ' days'));
 
 
                                 echo ' <span class="form-field__helper textstyle" >';
 
-                                $userId = $arUser["ID"];
+                                /*$userId = $arUser["ID"];
                                 $userGroups = CUser::GetUserGroup($userId);
                                 $productGroups = array();
                                 $productName = "";
@@ -160,12 +161,12 @@ if ($USER->IsAuthorized()) {
                                             break;
                                         }
                                     }
-                                }
+                                }*/
 
                                 /*$deadline = new DateTime($arUser['UF_DATE_PREM_EXP']);
                                 $now = new DateTime();
                                 $diff = $deadline->diff($now);*/
-
+                                $restDays = isPrem($date[0]["DATE_ACTIVE_TO"]);
                                 if (/*$diff->format('%r')*/$restDays) {
                                     //echo $diff->format('Текущая подписка будет завершена через %y лет, %m месяцев, %d дней');
                                     echo(GetMessage('CURRENT_SUBSCRIPTION') . num_decline($restDays, GetMessage('CURRENT_SUBSCRIPTION_DAYS')));
@@ -173,10 +174,10 @@ if ($USER->IsAuthorized()) {
                                     echo GetMessage('LAST_SUBSCRIPTION') . $arUser['UF_DATE_PREM_EXP'];
                                 }
                                 echo '</span><br><br>';
-                            /*} else {*/
+                            } else {
                                 $input = date("d.m.Y");
                                 $result = date('d.m.Y', strtotime($input . ' + ' . $days . ' days'));
-                            /*}*/
+                            }
 
                             echo '<span class="form-field__helper" >'. GetMessage('AFTER_PAYMENT') . $result . '</span><br><br>';
                             ?>

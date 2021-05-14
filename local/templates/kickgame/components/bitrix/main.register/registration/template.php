@@ -78,10 +78,10 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                       <span class="form-field__helper" style="margin-bottom: -15px; display: block"><?= GetMessage('MAIN_REGISTER_LOGIN_HELPER') ?></span>
                     </div>
                     <div class="form-field">
-                      <label for="auth-email" class="form-field__label">Email</label>
+                      <label for="auth-email" class="form-field__label"><?=Getmessage('MAIN_REGISTER_EMAIL')?></label>
                       <input type="email" class="form-field__input" name="REGISTER[EMAIL]" value="<?= $arResult["VALUES"]['EMAIL'] ?>" autocomplete="off" id="auth-email" placeholder="<?= GetMessage('MAIN_REGISTER_EMAIL_PLACEHOLDER') ?>">
                     </div>
-                    <div> <label for="auth-phone" class="form-field__label"><?=GetMessage('MAIN_REGISTER_PHONE')?></label></div>
+                    <div> <label for="auth-phone" class="form-field__label"><?=GetMessage('MAIN_REGISTER_PERSONAL_PHONE')?></label></div>
                     <input type="tel" class="form-field__input" name="REGISTER[PERSONAL_PHONE]" value="<?= $arResult["VALUES"]['PERSONAL_PHONE'] ?>" autocomplete="off" id="auth-phone">
                     <div class="form-field">
                       <label for="auth-pass" class="form-field__label"><?= GetMessage('MAIN_REGISTER_PASSWORD') ?></label>

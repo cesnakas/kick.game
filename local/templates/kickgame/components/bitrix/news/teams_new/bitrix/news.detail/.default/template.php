@@ -207,6 +207,37 @@ if(isset($_SESSION['team_success'])) { ?>
         </div>
         <div class="team-info">
           <h2 class="team-info__name"><?php echo $arResult['PROPERTIES']["NAME_TEAM"]['VALUE']; ?> [<?php echo $arResult['PROPERTIES']["TAG_TEAM"]['VALUE']; ?>]</h2>
+          <?
+          $teamId = $arResult["ID"];
+          $users = getCoreTeam($teamId);
+          $userId = $USER->GEtID();
+          $dateFinish = "";
+          $isMyCommand = false;
+          if($users[0]["UF_DATE_PREM_EXP"])
+          {
+              $dateFinish = $users[0]["UF_DATE_PREM_EXP"];
+          }
+          foreach ($users as $k => $v)
+          {
+              if($v["ID"] == $userId)
+              {
+                  $isMyCommand = true;
+                  break;
+              }
+          }
+          ?>
+          <?if($isMyCommand):?>
+              <?$userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userId);?>
+                <?if(empty($userProductGroups)):?>
+                  <div class="date-finish">У вас нет активных подписок</div>
+                <?else:?>
+                  <div class="date-finish">Дата окончания подписки команды: <?= $dateFinish;?></div>
+                <?endif;?>
+              <div class="buttons">
+                  <a class="btn btn_border extend" href="/subscription-plans/">Продлить</a>
+                  <a class="conditions" href="#">Условия использования подписки</a>
+              </div>
+          <?endif;?>
           <div class="team-info__description">
               <?php echo $arResult['PROPERTIES']["DESCRIPTION_TEAM"]['VALUE']["TEXT"]; ?>
           </div>

@@ -2,13 +2,28 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Управление составом");
 
+CModule::IncludeModule("main");
+
 $userID = CUser::GetID();
 $rsUser = CUser::GetByID($userID);
 $arUser = $rsUser->Fetch();
 $teamID = $arUser['UF_ID_TEAM'];
 $redirectUrlAction = false;
 $alertManagementTeam = '';
+$coreTeam = getCoreTeam($teamID);
 
+function getCoreTeam($teamID)
+{
+    $filter = Array("GROUPS_ID" => Array(7), ["UF_ID_TEAM" => $teamID]);
+    $arParams["SELECT"] = array("UF_*");
+    $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, $arParams);
+    $output = [];
+    while ($rsUser = $elementsResult->Fetch())
+    {
+        $output[] = $rsUser;
+    }
+    return $output;
+}
 
 function getRating($arResult)
 {
@@ -238,7 +253,7 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_chg_cap'])) {
 
 if(check_bitrix_sessid() && isset($_REQUEST['btn_drop_team'])) {
     if (!empty($teamID)) {
-        $coreTeam = getCoreTeam($teamID);
+
         $recruits = getRecruitTeam($teamID);
         $squadsCount = count(getSquadByIdTeam($teamID));
     }
@@ -247,9 +262,11 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_drop_team'])) {
 
     foreach ($recruits as $recruit){
         updateFieldUserbyId($recruit["ID"]+0, $fields= array("UF_REQUEST_ID_TEAM" => null));
+        CustomSubscribes::deleteUserTeam($recruit["ID"]);
     }
 
         updateFieldUserbyId($userID, $fields= array("UF_ID_TEAM" => null));
+        CustomSubscribes::deleteUserTeam($userID);
         $PROP["AUTHOR"] = "";
         updateCaptain($PROP, $teamID);
         deactivateTeam($teamID);
@@ -280,12 +297,12 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_delete'])) {
         $userIds = $_POST['delete_player_from_team'];
         $success = [];
         $alerts = [];
-        dump( $teamID);
 
         foreach ($userIds as $userId) {
             $user = getUserById($userId);
             if(count(getSquadByIdPlayer($teamID, $userId)) == 0){
                 updateFieldUserbyId($userId+0, $fields= array("UF_ID_TEAM" => null));
+                CustomSubscribes::deleteUserTeam($userId);
                 $success[] = $user["LOGIN"];
             } else {
                 $alerts[] = $user["LOGIN"];
@@ -313,9 +330,10 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_delete'])) {
 }
 
 if (check_bitrix_sessid() && isset($_REQUEST['btn_accept'])) {
-
-    if (!empty($_POST['accept_in_team'])) {
         $userIds = $_POST['accept_in_team'];
+    if(count($coreTeam) + count($userIds) <= 7){
+    if (!empty($_POST['accept_in_team'])) {
+
         if (count($userIds) > 1) {
             $alertManagementTeam = GetMessage('ALERTS_SUCCESS_PLAYERS_ACCEPTED');
         } else {
@@ -323,9 +341,15 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_accept'])) {
         }
         foreach ($userIds as $userId) {
             updateFieldUserbyId($userId+0, $fields= array("UF_REQUEST_ID_TEAM" => null, "UF_ID_TEAM" => $teamID));
+            CustomSubscribes::addUserTeam($userId, $teamID);
         }
 
         createSession('management-players_success', $alertManagementTeam);
+        $redirectUrlAction = SITE_DIR.'management-compositional/';
+    }
+    } else {
+        $alertManagementSquad = "В команде может быть не больше 7 игроков. Чтобы принять нового игрока необходимо освободить для него место в команде."; // TODO: lang
+        createSession('management-players_error', $alertManagementSquad);
         $redirectUrlAction = SITE_DIR.'management-compositional/';
     }
 
@@ -384,18 +408,7 @@ function isCaptain($idUser, $idTeam)
     return  false;
 }
 
-function getCoreTeam($teamID)
-{
-    $filter = Array("GROUPS_ID" => Array(7), ["UF_ID_TEAM" => $teamID]);
-    $arParams["SELECT"] = array("UF_*");
-    $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, $arParams);
-    $output = [];
-    while ($rsUser = $elementsResult->Fetch())
-    {
-        $output[] = $rsUser;
-    }
-    return $output;
-}
+
 
 function getRecruitTeam($teamID)
 {
@@ -418,7 +431,6 @@ if(!$isCaptain) {
 if (!empty($teamID)) {
 
     $resTeam = getTeamById($teamID);
-    $coreTeam = getCoreTeam($teamID);
 
     if ($redirectUrlAction != false) {
         LocalRedirect($redirectUrlAction);
@@ -574,6 +586,7 @@ if (!empty($teamID)) {
 
                                     <?php
                                     $ratingTeam = getRating($resTeam);
+                                    dump($coreTeam);
                                     echo $ratingTeam != false ? $ratingTeam : 300;
                                     ?>
                                 </div>

@@ -14,6 +14,7 @@ $userID = CUser::GetID();
 //echo '<pre>';
 //var_dump( $arUser);
 //echo '</pre>';
+// TODO: lang
 ?>
 <div class="container">
   <form name="iblock_add" action="<?=SITE_DIR?>personal/sozdat-novuyu-komandu/add-form-result.php" method="POST" enctype="multipart/form-data">

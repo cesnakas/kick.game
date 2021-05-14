@@ -11,6 +11,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
 <script src="<?php echo SITE_TEMPLATE_PATH; ?>/dist/js/all.min.js"></script>
 <script src="<?php echo SITE_TEMPLATE_PATH; ?>/dist/js/bootstrap-datetimepicker.min.js"></script>
 <script src="<?php echo SITE_TEMPLATE_PATH; ?>/dist/js/datepicker.min.js"></script>
+<script src="<?php echo SITE_TEMPLATE_PATH; ?>/dist/js/lity.min.js"></script>
 <script src="<?php echo SITE_TEMPLATE_PATH; ?>/dist/js/main.js?v=1"></script>
 	</body>
 </html>

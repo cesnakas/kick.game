@@ -12,7 +12,33 @@ $arUser = $rsUser->Fetch();
 $teamID = $arUser['UF_ID_TEAM'];
 $datePremExp = $arUser['UF_DATE_PREM_EXP'];
 $isCaptainHeader = isCaptainHeader($userID, $teamID);
+if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
+    updateStatusChekingPubgId($userID, 21);
+    LocalRedirect('');
+} else if (isset($_REQUEST['scrinPubgFirst']) && check_bitrix_sessid()) {
+  if(addScreenshot($_FILES, $userID, 20)) {
+    $alertSendScreen = 'Ты успешно отправил скриншот, твой аккаунт на проверке';
+    createSession('send-screen_success', $alertSendScreen);
+    LocalRedirect('');
+  } else {
+    $alertSendScreen = 'Что то пошло не так';
+    createSession('send-screen_error', $alertSendScreen);
+    LocalRedirect('');
+  }
 
+} else if(isset($_REQUEST['scrinPubgYet']) && check_bitrix_sessid()) {
+  if(addScreenshot($_FILES, $userID, 22)) {
+    $comments = strip_tags(trim($_POST['comments']));
+    addCommentRejected($userID, $comments);
+    $alertSendScreen = 'Ты успешно отправил скриншот, твой аккаунт на проверке';
+    createSession('send-screen_success', $alertSendScreen);
+    LocalRedirect('');
+  } else {
+    $alertSendScreen = 'Что то пошло не так';
+    createSession('send-screen_error', $alertSendScreen);
+    LocalRedirect('');
+  }
+}
 ?>
 <!doctype html>
 <html lang="<?=LANGUAGE_ID;?>">
@@ -191,4 +217,54 @@ $isCaptainHeader = isCaptainHeader($userID, $teamID);
         </div>
       </header>
       <div class="layout__content">
+        <?php if ($USER->IsAuthorized()) {
+          if(!$arUser['UF_PUBG_ID_CHECK'] || $arUser['UF_PUBG_ID_CHECK'] == 19) { ?>
+          <div class="alert-container">
+            <div class="alert alert-warning alert-dismissible fade show alert-dismissible_pubg_verified" role="alert">
+              Пройди проверку pubg id и nickname для того чтобы начать играть на платформе.
+              <a href="#" data-toggle="modal" data-target="#pubgIdVerified" class="btn-icon btn_pubg-alet btn-icon_yellow"><i></i> <span>Смотреть</span></a>
+            </div>
+          </div>
+          <?php } else if($arUser['UF_PUBG_ID_CHECK'] == 23) { ?>
+              <div class="alert-container">
+                  <div class="alert alert-warning alert-dismissible fade show alert-dismissible_pubg_verified" role="alert">
+                      К сожалению, твой аккаунт не прошёл проверку pubg id и nickname.
+                      <a href="#" data-toggle="modal" data-target="#pubgIdRejected" class="btn-icon btn_pubg-alet btn-icon_yellow"><i></i> <span>Смотреть</span></a>
+                  </div>
+              </div>
+          <?php } else if($arUser['UF_PUBG_ID_CHECK'] == 24) { ?>
+              <div class="alert-container">
+                  <div class="alert alert-warning alert-dismissible fade show alert-dismissible_pubg_verified_ok" role="alert">
+                      Твой аккаунт успешно прошёл проверку pubg id и nickname.
+                      <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
+                          <?=bitrix_sessid_post()?>
+                          <button type="submit" name="pubgIdVerifiedOk" class="btn-icon btn_pubg-alet btn-icon_yellow">Ok</button>
+                      </form>
+
+                  </div>
+              </div>
+          <?php }  ?>
+        <?php } ?>
+      <?php
+
+      if(isset($_SESSION['send-screen_success'])) { ?>
+        <div class="alert-container" style="position: relative !important; margin-bottom: 7px;">
+          <div class="alert alert-success alert-dismissible fade show"  role="alert">
+            <?php echo $_SESSION['send-screen_success'];?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+        <?php
+      }
+      if(isset($_SESSION['send-screen_error'])){ ?>
+        <div class="alert-container" style="position: relative !important;">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['send-screen_error'];?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <?php }
+      unset($_SESSION['send-screen_success']);
+      unset($_SESSION['send-screen_error']);
+      ?>
       <?php } ?>

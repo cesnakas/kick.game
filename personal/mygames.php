@@ -137,7 +137,7 @@ $matches = getFutureMatchesByUser( $userID );
         return null;
     }
 
-if( count($matches) ){ ?>
+if( count($matches) ){ // TODO: lang ?>
   <style>
     .game-schedule__my-games .flex-table--body {
         margin-bottom: 30px;

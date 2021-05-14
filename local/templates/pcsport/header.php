@@ -22,6 +22,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
     </style>
         <?php
         $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/dist/css/bootstrap-datetimepicker.min.css');
+        $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/dist/css/lity.min.css');
         $asset = \Bitrix\Main\Page\Asset::getInstance();
 
 

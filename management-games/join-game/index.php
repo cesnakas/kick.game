@@ -27,6 +27,37 @@ $mId = $_GET['mid']+0;
 // собираем все ошибки
 $errors = [];
 
+function getChainMatches( $firstMatchID ){
+    GLOBAL $DB;
+    $firstMatchID += 0;
+    $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
+                    ,m.PROPERTY_8 AS parentMatchID
+                    ,m.PROPERTY_22 AS stageMatch
+                    ,m.PROPERTY_23 AS typeMatch
+              FROM b_iblock_element_prop_s3 AS m 
+              WHERE m.IBLOCK_ELEMENT_ID = '.$firstMatchID;
+    $res = $DB->Query($sql);
+    if($row = $res->Fetch()) {
+        $chain = $row;
+        $chain[ 'chain' ] = [ $firstMatchID ];
+        $mID = $firstMatchID;
+        do {
+            $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
+                  FROM b_iblock_element_prop_s3 AS m 
+                  WHERE m.PROPERTY_8 = '.$mID;
+            $res = $DB->Query($sql);
+            if($row = $res->Fetch()) {
+                $mID = $row['matchID']+0;
+                $chain[ 'chain' ][] = $mID;
+            } else {
+                $mID = false;
+            }
+        } while( $mID );
+        return $chain;
+    }
+    return false;
+}
+
 function getLastTournamentGameTime($tournamentId){
 
     GLOBAL $DB;
@@ -976,7 +1007,18 @@ unset($_SESSION['management-games_error']);
                 <div class="game__block-type"><i></i> <?=GetMessage('JG_PRACTICAL_GAME')?></div>
               <?php } elseif($curMatch['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
                 <div class="game__block-type game__block-type_tournament"><i></i> <?=GetMessage('JG_TOURNAMENT_GAME')?></div>
-              <?php } ?>
+              <?php }
+
+              $matches = getChainMatches( $curMatch["ID"] );
+              $gamesCount = count($matches["chain"]);
+              $hours = $gamesCount*40/60;
+              $hour = "G ".num_decline($hours, "час, часа, часов", false); // TODO: lang
+              $minutes = "";
+              if($gamesCount*40 % 60 != 0){
+                  $minutes = " i минут";
+              }
+
+              ?>
             <div class="game__block-call">
               <a href="#" class="btn-italic"><?=GetMessage('JG_CONTACT_MODERATOR')?></a>
             </div>
@@ -990,7 +1032,7 @@ unset($_SESSION['management-games_error']);
                 <div>
                     <?php
                     $dateTime = explode(' ', $curMatch["DATE_START"]['VALUE']);
-                    echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
+                    echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); // TODO: lang ?>
                 </div>
               </div>
             </div>
@@ -1042,7 +1084,7 @@ unset($_SESSION['management-games_error']);
                     <?=GetMessage('JG_NO_SEATS')?>
                     <?php } else {
                         $qtyOccupiedPlaces = getParticipationByMatchId($curMatch['ID']);
-                        echo 'Занято '  . count($qtyOccupiedPlaces) . ' из 18 мест';
+                        echo 'Занято '  . count($qtyOccupiedPlaces) . ' из 18 мест'; // TODO: lang
                     } ?>
                 </div>
               </div>

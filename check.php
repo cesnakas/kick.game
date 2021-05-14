@@ -41,9 +41,7 @@ $APPLICATION->SetTitle("Title");
         //создадим заказ
         require($_SERVER["DOCUMENT_ROOT"] . "/local/api/order.php");
         $iblockId = CIBlockElement::GetIBlockByID($productId);
-        //группа в соответсвии с тарифом
-        //$productGroupId = intval(CIBlockElement::GetProperty($iblockId, $productId, array("sort" => "asc"), array("CODE" => "USER_GROUP"))->Fetch()["VALUE"]);
-        //
+        /*//группа в соответсвии с тарифом
         $productGroups = array(); $productGroupId = 0;
         $res = CIBlockElement::GetList(
             array(),
@@ -84,20 +82,14 @@ $APPLICATION->SetTitle("Title");
             $remainderDate = 0;
             foreach ($groups as $k => $v)
             {
-                if(in_array($v["GROUP_ID"], $productGroups)/*$v["GROUP_ID"] == $productGroupId*/)
+                if(in_array($v["GROUP_ID"], $productGroups))
                 {
-                    //if($v["DATE_ACTIVE_FROM"])
-                    //{
-                    //    $dateFrom = $v["DATE_ACTIVE_FROM"];
-                    //}
                     if($v["DATE_ACTIVE_TO"])
                     {
                         $now = (new DateTime('now'))->getTimestamp();
-                        //$dateOne = DateTime::createFromFormat("d.m.Y 00:00:00", date("d.m.Y 00:00:00", strtotime("+" . 1 . " month")))->getTimestamp();
                         $dateTwo = DateTime::createFromFormat("d.m.Y H:i:s", $v["DATE_ACTIVE_TO"])->getTimestamp();
                         if($now < $dateTwo)
                         {
-                            //$dateTo = date('d.m.Y 00:00:00', $dateOne + ($dateTwo - $now));
                             $remainderDate += ($dateTwo - $now);
                         }
                     }
@@ -124,11 +116,27 @@ $APPLICATION->SetTitle("Title");
             CUser::SetUserGroup($userId, $params);
             $userOb = new CUser;
             $fields = array(
-                "UF_PAY_TRANSACION" => $vpResponse->TransactionId/*""*/,
+                "UF_PAY_TRANSACION" => $vpResponse->TransactionId,
                 "UF_DATE_PREM_EXP" => $dateTo
             );
             $userOb->Update($userId, $fields);
+        }*/
+        //$subscribes = CustomSubscribes::setUserSubscribeGroup($userId, $productId);
+        $teamId = CustomSubscribes::getUserTeam($userId);
+        //$teamId = $user["UF_ID_TEAM"];
+        if($teamId)
+        {
+            $users = CustomSubscribes::getCoreTeam($teamId);
+            foreach ($users as $k => $v)
+            {
+                $subscribes = CustomSubscribes::setUserSubscribeGroup($v["ID"], $productId);
         }
+        }
+        $userOb = new CUser;
+        $fields = array(
+            "UF_PAY_TRANSACION" => $vpResponse->TransactionId,
+        );
+        $userOb->Update($userId, $fields);
     }?>
 	
 <div class="layout__content">

@@ -2,16 +2,13 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Подписка");
 ?>
+
     <div class="container">
-        <h1 class="text-center">Подписка</h1>
+        <h1 class="text-center"><?=GetMessage('SP_HEADER')?></h1>
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12">
                 <div class="subscription-plans__description text-center">
-                    Базовая подписка позволяет играть в кастомки, смотреть трансляции игр и играть в открытых
-                    квартальных турнирах. Чтобы играть в праки, участвовать в ежемесячных турнирах на 1000€ и иметь
-                    доступ к личной статистике, нужно приобрести любой вариант платной подписки. Это так, потому что у
-                    нас на платформе нет рекламы, и подписка - единственный источник ресурсов, чтобы развивать платформу
-                    дальше
+                    <?=GetMessage('SP_HEADER_TEXT')?>
                 </div>
             </div>
         </div>
@@ -25,14 +22,13 @@ $APPLICATION->SetTitle("Подписка");
                                    aria-controls="accordionCollapse1">
                                     <div class="subscription-plans-item">
                                         <div class="subscription-plans-item__icon">
-                                            <img src="<?php echo SITE_TEMPLATE_PATH; ?>/dist/images/plan-basic.svg"
-                                                 alt="basic">
+                                            <img src="<?= SITE_TEMPLATE_PATH; ?>/dist/images/plan-basic.svg" alt="basic">
                                         </div>
                                         <div class="subscription-plans-item__name">
-                                            Базовая подписка
+                                            <?=GetMessage('SP_SUBSCRIPTION_PLAN_BASIC')?>
                                         </div>
                                         <div class="subscription-plans-item__heading">
-                                            БЕСПЛАТНО
+                                            <?=GetMessage('SP_SUBSCRIPTION_PLAN_BASIC_PRICE')?>
                                         </div>
                                         <div class="subscription-plans-item__sub-heading">
 
@@ -45,22 +41,22 @@ $APPLICATION->SetTitle("Подписка");
                              aria-labelledby="accordionHeading1" data-parent="#accordion">
                             <div class="card-custom-body">
                                 <ul>
-                                    <li>Участие в кастомках</li>
-                                    <li>Поиск игроков и команд</li>
-                                    <li>Создание и управление командой</li>
-                                    <li>Полная статистика игроков</li>
-                                    <li>Полная статистика команд</li>
-                                    <li>Просмотр трансляций</li>
-                                    <li>Участие в квартальном турнире от 10000 €</li>
-                                    <li class="not">Участие в практических играх</li>
-                                    <li class="not">Участие в ежемесячном турнире от 1000 €</li>
-                                    <li class="not">Участие в еженедельном турнире от 100 €</li>
-                                    <li class="not">Участие в играх со стримами и коммента- торами</li>
-                                    <li class="not">Мой личный рейтинг</li>
-                                    <li class="not">Рейтинг моей команды</li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_1')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_2')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_3')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_4')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_5')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_6')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_7')?></li>
+                                    <li class="not"><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_8')?></li>
+                                    <li class="not"><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_9')?></li>
+                                    <li class="not"><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_10')?></li>
+                                    <li class="not"><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_11')?></li>
+                                    <li class="not"><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_12')?></li>
+                                    <li class="not"><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_13')?></li>
                                 </ul>
                                 <div class="subscription-plans-item__btn text-center" style="opacity: 0;">
-                                    <a href="#" class="btn">Купить подписку</a>
+                                    <a href="#" class="btn"><?=GetMessage('SP_SUBSCRIPTION_PLAN_BUY')?></a>
                                 </div>
                             </div>
                         </div>
@@ -78,10 +74,10 @@ $APPLICATION->SetTitle("Подписка");
                                                  alt="basic">
                                         </div>
                                         <div class="subscription-plans-item__name">
-                                            Стандарт
+                                            <?=GetMessage('SP_SUBSCRIPTION_PLAN_STANDARD')?>
                                         </div>
                                         <div class="subscription-plans-item__heading">
-                                            € 3,99<span>/мес</span>
+                                            € 3,99<span>/<?=GetMessage('SP_SUBSCRIPTION_PLAN_MONTH')?></span>
                                         </div>
                                         <div class="subscription-plans-item__sub-heading">
 
@@ -94,22 +90,22 @@ $APPLICATION->SetTitle("Подписка");
                              role="tabpanel" aria-labelledby="accordionHeading2">
                             <div class="card-custom-body">
                                 <ul>
-                                    <li>Участие в кастомках</li>
-                                    <li>Поиск игроков и команд</li>
-                                    <li>Создание и управление командой</li>
-                                    <li>Полная статистика игроков</li>
-                                    <li>Полная статистика команд</li>
-                                    <li>Просмотр трансляций</li>
-                                    <li>Участие в квартальном турнире от 10000 €</li>
-                                    <li>Участие в практических играх</li>
-                                    <li>Участие в ежемесячном турнире от 1000 €</li>
-                                    <li>Участие в еженедельном турнире от 100 €</li>
-                                    <li>Участие в играх со стримами и коммента- торами</li>
-                                    <li>Мой личный рейтинг</li>
-                                    <li>Рейтинг моей команды</li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_1')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_2')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_3')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_4')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_5')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_6')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_7')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_8')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_9')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_10')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_11')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_12')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_13')?></li>
                                 </ul>
                                 <div class="subscription-plans-item__btn text-center">
-                                    <a href="#" class="btn">Купить подписку</a>
+                                    <a href="#" class="btn"><?=GetMessage('SP_SUBSCRIPTION_PLAN_BUY')?></a>
                                 </div>
                             </div>
                         </div>
@@ -127,13 +123,13 @@ $APPLICATION->SetTitle("Подписка");
                                                  alt="basic">
                                         </div>
                                         <div class="subscription-plans-item__name">
-                                            Премиум
+                                            <?=GetMessage('SP_SUBSCRIPTION_PLAN_PREMIUM')?>
                                         </div>
                                         <div class="subscription-plans-item__heading">
-                                            € 3,59<span>/мес</span>
+                                            € 3,59<span>/<?=GetMessage('SP_SUBSCRIPTION_PLAN_MONTH')?></span>
                                         </div>
                                         <div class="subscription-plans-item__sub-heading">
-                                            (Действительно при покупке на 6 мес)
+                                            <?=GetMessage('SP_SUBSCRIPTION_PLAN_PREMIUM_INFO')?>
                                         </div>
                                     </div>
                                 </a>
@@ -143,22 +139,22 @@ $APPLICATION->SetTitle("Подписка");
                              role="tabpanel" aria-labelledby="accordionHeading3">
                             <div class="card-custom-body">
                                 <ul>
-                                    <li>Участие в кастомках</li>
-                                    <li>Поиск игроков и команд</li>
-                                    <li>Создание и управление командой</li>
-                                    <li>Полная статистика игроков</li>
-                                    <li>Полная статистика команд</li>
-                                    <li>Просмотр трансляций</li>
-                                    <li>Участие в квартальном турнире от 10000 €</li>
-                                    <li>Участие в практических играх</li>
-                                    <li>Участие в ежемесячном турнире от 1000 €</li>
-                                    <li>Участие в еженедельном турнире от 100 €</li>
-                                    <li>Участие в играх со стримами и коммента- торами</li>
-                                    <li>Мой личный рейтинг</li>
-                                    <li>Рейтинг моей команды</li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_1')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_2')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_3')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_4')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_5')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_6')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_7')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_8')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_9')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_10')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_11')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_12')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_13')?></li>
                                 </ul>
                                 <div class="subscription-plans-item__btn text-center">
-                                    <a href="#" class="btn">Купить подписку</a>
+                                    <a href="#" class="btn"><?=GetMessage('SP_SUBSCRIPTION_PLAN_BUY')?></a>
                                 </div>
                             </div>
                         </div>
@@ -176,13 +172,13 @@ $APPLICATION->SetTitle("Подписка");
                                                  alt="basic">
                                         </div>
                                         <div class="subscription-plans-item__name">
-                                            Элайт
+                                            <?=GetMessage('SP_SUBSCRIPTION_PLAN_ELITE')?>
                                         </div>
                                         <div class="subscription-plans-item__heading">
-                                            € 3,39<span>/мес</span>
+                                            € 3,39<span>/<?=GetMessage('SP_SUBSCRIPTION_PLAN_MONTH')?></span>
                                         </div>
                                         <div class="subscription-plans-item__sub-heading">
-                                            (Действительно при покупке на 12 мес)
+                                            <?=GetMessage('SP_SUBSCRIPTION_PLAN_ELITE_INFO')?>
                                         </div>
                                     </div>
                                 </a>
@@ -192,35 +188,22 @@ $APPLICATION->SetTitle("Подписка");
                              role="tabpanel" aria-labelledby="accordionHeading4">
                             <div class="card-custom-body">
                                 <ul>
-                                    <li>Участие в кастомках</li>
-                                    <li>Поиск игроков и команд</li>
-                                    <li>Создание и управление командой</li>
-                                    <li>Полная статистика игроков</li>
-                                    <li>Полная статистика команд</li>
-                                    <li>Просмотр трансляций</li>
-                                    <li>Участие в квартальном турнире от 10000 €</li>
-                                    <li>Участие в практических играх</li>
-                                    <li>Участие в ежемесячном турнире от 1000 €</li>
-                                    <li>Участие в еженедельном турнире от 100 €</li>
-                                    <li>Участие в играх со стримами и коммента- торами</li>
-                                    <li>Мой личный рейтинг</li>
-                                    <li>Рейтинг моей команды</li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_1')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_2')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_3')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_4')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_5')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_6')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_7')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_8')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_9')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_10')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_11')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_12')?></li>
+                                    <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_13')?></li>
                                 </ul>
                                 <div class="subscription-plans-item__btn text-center">
-                                    <a href="/order/?orderid=" class="btn">Купить подписку</a>
-                                    <!--<script src="https://www.vivapayments.com/web/checkout/js"></script>
-                                    <form id="myform" action="/success.php" method="post">
-                                        <button type="button"
-                                                data-vp-publickey="8KvNFc04zx3/U3LmOSEjpq/z7OFM7iqdJVNcqVsvozQ="
-                                                data-vp-baseurl=""
-                                                data-vp-lang="en"
-                                                data-vp-amount="100"
-                                                data-vp-sourcecode="1180"
-                                                data-vp-description="My product"
-                                                data-vp-disablewallet="false"
-                                                data-vp-expandcard="true">
-                                        </button>
-                                    </form>-->
+                                    <a href="#" class="btn"><?=GetMessage('SP_SUBSCRIPTION_PLAN_BUY')?></a>
                                 </div>
                             </div>
                         </div>
@@ -229,4 +212,7 @@ $APPLICATION->SetTitle("Подписка");
             </div>
         </div>
     </div>
-<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+
+<?
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
+?>

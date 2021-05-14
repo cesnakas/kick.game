@@ -42,7 +42,9 @@ $points = countTeamsRating();
 function countTeams(){
   GLOBAL $DB;
   $sql = 'SELECT count(u.IBLOCK_ELEMENT_ID) as c 
-			FROM  b_iblock_element_prop_s1 AS u';
+			FROM  b_iblock_element_prop_s1 AS u
+			INNER JOIN b_iblock_element AS a ON a.ID = u.IBLOCK_ELEMENT_ID 
+            WHERE a.ACTIVE = "Y"';
 
   $res = $DB->Query($sql);
   $count = [];

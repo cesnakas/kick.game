@@ -7,4 +7,3 @@ $arTemplateParameters = array(
 		"DEFAULT" => "",	
 	),
 );
-?>
