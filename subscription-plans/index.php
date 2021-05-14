@@ -5,12 +5,12 @@ $APPLICATION->SetTitle("Подписка");
     <div class="container">
         <h1 class="text-center"><?=GetMessage('SP_HEADER')?></h1>
         <div class="row justify-content-center text-center">
-            <p><b>Подписка покупается на команду и действует на всех игроков команды</b></p>
+            <p><b><?=GetMessage('SUBSCRIPTION_TITLE')?></b></p>
             <div class="col-lg-10 col-md-12">
                 <div class="subscription-plans__description text-center">
-                    Бесплатная регистрация на праки открывается за 1 час до их начала. Чтобы получить доступ к ранней регистрации на праки, достаточно оплатить подписку одному участнику команды - доступ к регистрации откроется для всей команды. То есть, подписка оплачивается за команду, и предоставляется для всех текущих игроков команды.
-
-                    Обрати внимание: Чтобы принять участие в турнире, требуется оплаченная подписка на 7 дней с момента начала турнирных игр. Оплатить подписку может любой участник команды.
+                    <?=GetMessage('SUBSCRIPTION_TEXT-1')?>
+                    <br>
+                    <?=GetMessage('SUBSCRIPTION_TEXT-2')?>
                 </div>
             </div>
         </div>

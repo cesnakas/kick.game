@@ -191,21 +191,21 @@ function isPlace($idMatch): bool
             <div class="game-info__row">
                 <div class="game-info__item-row">
                     <div class="game-info__item">
-                        <span>Дата проведения: </span>
+                        <span><?=GetMessage('SCHEDULE_DATE')?>: </span>
                         <?php
                         $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-                        echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
+                        echo $dateTime[0] . GetMessage('SCHEDULE_DATE_AT') . substr($dateTime[1], 0, 5); ?>
                     </div>
                 </div>
                 <div class="game-info__item-row">
                     <?php if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) { ?>
                         <div class="game-info__item">
-                            <span>Рейтинг: </span>
+                            <span><?=GetMessage('SCHEDULE_RATING')?>: </span>
                             <?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]?>
                         </div>
                     <?php } elseif($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
                         <div class="game-info__item">
-                            <span>Этап: </span>
+                            <span><?=GetMessage('SCHEDULE_STAGE')?>: </span>
                             <?php
                             $name = $arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'];
                             echo $name;
@@ -221,7 +221,7 @@ function isPlace($idMatch): bool
 
                         if (isset($tmp[$teamID])) {
                             ?>
-                            <span class="slot-span">Слот № <?php echo $tmp[$teamID];?></span>
+                            <span class="slot-span"><?=GetMessage('SCHEDULE_SLOT_N')?><?php echo $tmp[$teamID];?></span>
                         <?php }
 
                         ?>
@@ -274,7 +274,7 @@ function isPlace($idMatch): bool
               if($tmp = getParticipationByMatchId($arItem["ID"])) {
                   $tmp = array_flip($tmp);
                   if (isset($tmp[$teamID])) { ?>
-                      <div class="new-game-schedule__participation-label">Слот № <?php echo $tmp[$teamID];?></div>
+                      <div class="new-game-schedule__participation-label"><?=GetMessage('SCHEDULE_SLOT_N')?><?php echo $tmp[$teamID];?></div>
                   <?php }
               }
               ?>
@@ -294,23 +294,23 @@ function isPlace($idMatch): bool
           </a>
         </span>
         <span class="new-game-schedule__param-wrap">
-          <div class="new-game-schedule__param">Дата проведения</div>
+          <div class="new-game-schedule__param"><?=GetMessage('SCHEDULE_DATE')?></div>
           <?php
           $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-          echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
+          echo $dateTime[0] . GetMessage('SCHEDULE_DATE_AT') . substr($dateTime[1], 0, 5); ?>
         </span>
         <span class="new-game-schedule__param-wrap">
-          <div class="new-game-schedule__param">Рейтинг</div>
+          <div class="new-game-schedule__param"><?=GetMessage('SCHEDULE_RATING')?></div>
           <?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]?>
         </span>
         <span class="new-game-schedule__param-wrap">
-            <div class="new-game-schedule__param">Режим</div>
+            <div class="new-game-schedule__param"><?=GetMessage('SCHEDULE_MODE')?></div>
             <div class="new-game-schedule__mode">
               <div><?php echo $type; ?></div>
             </div>
         </span>
         <span class="new-game-schedule__param-wrap">
-          <div class="new-game-schedule__param">Комментатор</div>
+          <div class="new-game-schedule__param"><?=GetMessage('SCHEDULE_COMMENTATOR')?></div>
           <?php if (!empty($arItem["PROPERTY_STREAMER_NAME"])) { ?>
               <?php echo $arItem["PROPERTY_STREAMER_NAME"]; ?>
           <?php } else { ?>

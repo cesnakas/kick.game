@@ -1,5 +1,9 @@
 <?
 $MESS['SP_HEADER'] = 'Subscription';
+$MESS['SUBSCRIPTION_TITLE'] = 'The subscription is purchased for the team and is valid for all players of the team';
+$MESS['SUBSCRIPTION_TEXT-1'] = 'Free registration for scrims opens 1 hour before the start of the competition. To get access to early registration on scrims, it is enough to pay for a subscription to one team member - access to registration will open for the entire team. That is, the subscription is paid for the team, and is provided for all current players of the team.';
+$MESS['SUBSCRIPTION_TEXT-2'] = 'Please note: To participate in the tournament, a paid subscription is required for 7 days from the start of the tournament games. Any team member can pay for a subscription.';
+
 $MESS['SP_HEADER_TEXT'] = 'The basic subscription allows you to play custom games, watch game broadcasts, and play in open quarterly tournaments. To play in parks, participate in monthly tournaments for €1000 and have access to personal statistics, you need to purchase any paid subscription option. This is so because we have no ads on the platform, and the subscription is the only source of resources to develop the platform further';
 
 $MESS['SP_SUBSCRIPTION_PLAN_BASIC'] = 'Basic subscription';

@@ -1024,7 +1024,7 @@ unset($_SESSION['alert_error']);
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div><?if(!empty($arUser["UF_ID_TEAM"])):?>Награда<?else:?><?= GetMessage('PERSONAL_DIVISION') ?><?endif;?></div>
+                  <div><?if(!empty($arUser["UF_ID_TEAM"])):?><?=GetMessage('PERSONAL_AWARD')?><?else:?><?= GetMessage('PERSONAL_DIVISION') ?><?endif;?></div>
                   <div>
                       <?
                       $teamId = intval($arUser["UF_ID_TEAM"]);
@@ -1062,19 +1062,19 @@ unset($_SESSION['alert_error']);
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
                     <div><?= GetMessage('PERSONAL_LANG') ?></div>
-                  <div>Русский</div>
+                    <div><?=GetMessage('PERSONAL_LANG_SELECTED')?></div>
                 </div>
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
                     <div><?= GetMessage('PERSONAL_ACTIVITY') ?></div>
-                  <div>с 02:00 до 15:00</div>
+                  <div><?=GetMessage('PERSONAL_ACTIVITY_FROM')?>02:00<?=GetMessage('PERSONAL_ACTIVITY_TO')?>15:00</div>
                 </div>
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
                     <div><?= GetMessage('PERSONAL_DEVICE') ?></div>
-                  <div>Телефон</div>
+                    <div><?= GetMessage('PERSONAL_DEVICE_SELECTED') ?></div>
                 </div>
               </div>
               <div class="col-6 col-md-3">
