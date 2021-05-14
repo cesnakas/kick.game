@@ -879,11 +879,11 @@ unset($_SESSION['alert_error']);
             </div>
               <?php if(!$arUser['UF_PUBG_ID_CHECK'] || $arUser['UF_PUBG_ID_CHECK'] == 19 ) { ?>
                   <div class="profile__confirm">
-                      <a href="#" data-toggle="modal" data-target="#pubgIdVerified" class="btn-icon btn_pubg-alet btn-icon_yellow"><span>Подтвердить pubg id</span></a>
+                      <a href="#" data-toggle="modal" data-target="#pubgIdVerified" class="btn-icon btn_pubg-alet btn-icon_yellow"><span><?=GetMessage('PROFILE_VERIFIED_PUBG_ID')?></span></a>
                   </div>
               <?php } else if($arUser['UF_PUBG_ID_CHECK'] == 20 || $arUser['UF_PUBG_ID_CHECK'] == 22) { ?>
                   <div class="profile__checking">
-                      Идет проверка аккаунта
+                      <?=GetMessage('PROFILE_VERIFIED_PUBG_ID_PROGRESS')?>
                   </div>
               <?php } ?>
           </div>

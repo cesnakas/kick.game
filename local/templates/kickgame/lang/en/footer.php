@@ -34,3 +34,25 @@ $MESS['MODAL_BUTTON'] = 'Buy a subscription';
 
 $MESS['MODAL_COOKIE_BTN_DISABLE'] = 'Disable all';
 $MESS['MODAL_COOKIE_BTN_ACCEPT'] = 'Accept';
+
+$MESS['MODAL_VERIFIED_TITLE'] = 'Checking pubg id and nickname';
+$MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Please pass the pubg id and nickname check to start playing on the platform. This is the only way we can understand that it was you who entered the lobby of the game and guarantee you a game with opponents equal in level.';
+$MESS['MODAL_VERIFIED_SUBTITLE_P2'] = 'How to pass verification:';
+$MESS['MODAL_VERIFIED_LIST_ITEM-1'] = 'Log in to your pubg mobile player profile';
+$MESS['MODAL_VERIFIED_LIST_ITEM-2'] = 'Take a screenshot of the screen';
+$MESS['MODAL_VERIFIED_LIST_ITEM-3'] = 'Upload here';
+$MESS['MODAL_VERIFIED_LIST_ITEM-4'] = 'Click "Send"';
+$MESS['MODAL_VERIFIED_INPUT_FILE-1'] = 'selected ';
+$MESS['MODAL_VERIFIED_INPUT_FILE-2'] = ' file(s)';
+$MESS['MODAL_VERIFIED_UPLOAD_FILE'] = 'Attach a screenshot';
+$MESS['MODAL_VERIFIED_BUTTON_SUBMIT'] = 'Send a screenshot';
+$MESS['MODAL_VERIFIED_BUTTON_CANCEL'] = 'Cancel';
+$MESS['MODAL_VERIFIED_FOOTER_CONTENT-1'] = 'What should I do if I have already specified a nickname or pubg id in my profile that is different from the ones I use in pubg mobile?';
+$MESS['MODAL_VERIFIED_FOOTER_CONTENT-2'] = 'Before you submit the data for verification, you can change your pubg id and nickname in the <a href="'.SITE_DIR.'personal/edit/" target="_blank">profile settings</a> to match what you have in the game. Then, go back to this window and send the screenshot for verification.';
+
+$MESS['MODAL_REJECTED_TITLE'] = 'Account rejected';
+$MESS['MODAL_REJECTED_CONTENT-1'] = 'Unfortunately, your account didn\'t pass pubg id and/or nickname verification.';
+$MESS['MODAL_REJECTED_CONTENT-2'] = 'Reason for rejection:';
+$MESS['MODAL_REJECTED_COMMENT_LABEL'] = 'Comment';
+$MESS['MODAL_REJECTED_COMMENT_PLACEHOLDER'] = 'Enter a comment';
+$MESS['MODAL_REJECTED_BUTTON_SUBMIT'] = 'Send again';

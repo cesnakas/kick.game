@@ -2,6 +2,9 @@
 $MESS['ALERTS_JOINED_TEAM'] = 'you joined the team';
 $MESS['ALERTS_CREATE_TEAM'] = 'Team created successfully';
 
+$MESS['PROFILE_VERIFIED_PUBG_ID'] = 'Confirm pub id';
+$MESS['PROFILE_VERIFIED_PUBG_ID_PROGRESS'] = 'Account verification in progress';
+
 $MESS['TYPE_ACCOUNT'] = 'Base';
 $MESS['TYPE_ACCOUNT_PREMIUM'] = 'Premium';
 $MESS['TYPE_ACCOUNT_PREMIUM_REMAINING'] = 'Remaining, Remaining, Remaining';

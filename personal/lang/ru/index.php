@@ -2,6 +2,9 @@
 $MESS['ALERTS_JOINED_TEAM'] = 'вы присоединились в команду';
 $MESS['ALERTS_CREATE_TEAM'] = 'Команда успешно создана';
 
+$MESS['PROFILE_VERIFIED_PUBG_ID'] = 'Подтвердить pubg id';
+$MESS['PROFILE_VERIFIED_PUBG_ID_PROGRESS'] = 'Идет проверка аккаунта';
+
 $MESS['TYPE_ACCOUNT'] = 'Базовая';
 $MESS['TYPE_ACCOUNT_PREMIUM'] = 'Премиум';
 $MESS['TYPE_ACCOUNT_PREMIUM_REMAINING'] = 'Остался, Осталось, Осталось';

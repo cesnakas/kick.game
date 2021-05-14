@@ -221,24 +221,24 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
           if(!$arUser['UF_PUBG_ID_CHECK'] || $arUser['UF_PUBG_ID_CHECK'] == 19) { ?>
           <div class="alert-container">
             <div class="alert alert-warning alert-dismissible fade show alert-dismissible_pubg_verified" role="alert">
-              Пройди проверку pubg id и nickname для того чтобы начать играть на платформе.
-              <a href="#" data-toggle="modal" data-target="#pubgIdVerified" class="btn-icon btn_pubg-alet btn-icon_yellow"><i></i> <span>Смотреть</span></a>
+              <?=GetMessage('HEADER_ALERT_VERIFIED')?>
+              <a href="#" data-toggle="modal" data-target="#pubgIdVerified" class="btn-icon btn_pubg-alet btn-icon_yellow"><i></i> <span><?=GetMessage('HEADER_ALERT_VERIFIED_BUTTON')?></span></a>
             </div>
           </div>
           <?php } else if($arUser['UF_PUBG_ID_CHECK'] == 23) { ?>
               <div class="alert-container">
                   <div class="alert alert-warning alert-dismissible fade show alert-dismissible_pubg_verified" role="alert">
-                      К сожалению, твой аккаунт не прошёл проверку pubg id и nickname.
-                      <a href="#" data-toggle="modal" data-target="#pubgIdRejected" class="btn-icon btn_pubg-alet btn-icon_yellow"><i></i> <span>Смотреть</span></a>
+                      <?=GetMessage('HEADER_ALERT_VERIFIED_ERROR')?>
+                      <a href="#" data-toggle="modal" data-target="#pubgIdRejected" class="btn-icon btn_pubg-alet btn-icon_yellow"><i></i> <span><?=GetMessage('HEADER_ALERT_VERIFIED_BUTTON')?></span></a>
                   </div>
               </div>
           <?php } else if($arUser['UF_PUBG_ID_CHECK'] == 24) { ?>
               <div class="alert-container">
                   <div class="alert alert-warning alert-dismissible fade show alert-dismissible_pubg_verified_ok" role="alert">
-                      Твой аккаунт успешно прошёл проверку pubg id и nickname.
+                      <?=GetMessage('HEADER_ALERT_VERIFIED_SUCCESS')?>
                       <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
                           <?=bitrix_sessid_post()?>
-                          <button type="submit" name="pubgIdVerifiedOk" class="btn-icon btn_pubg-alet btn-icon_yellow">Ok</button>
+                          <button type="submit" name="pubgIdVerifiedOk" class="btn-icon btn_pubg-alet btn-icon_yellow"><?=GetMessage('HEADER_ALERT_VERIFIED_BUTTON_SUCCESS')?></button>
                       </form>
 
                   </div>

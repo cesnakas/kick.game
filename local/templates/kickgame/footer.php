@@ -1,6 +1,5 @@
 <?
-if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
-	die();
+if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 ?>
 
 <?php if(!CSite::InDir('/personal/auth/')) { ?>
@@ -152,15 +151,15 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
       </div>
       <div class="modal-body">
 
-        <h3 class="modal-body__title">Проверка pubg id и nickname</h3>
+        <h3 class="modal-body__title"><?=GetMessage('MODAL_VERIFIED_TITLE')?></h3>
         <div class="modal-body__content">
-          <p>Пожалуйста, пройди проверку pubg id и nickname для того чтобы начать играть на платформе. Только так мы сможем понять, что это именно ты зашел в лобби игры и гарантировать тебе игру с соперниками, равными по уровню.</p>
-          <p>Как пройти проверку:</p>
+          <p><?=GetMessage('MODAL_VERIFIED_SUBTITLE_P1')?></p>
+          <p><?=GetMessage('MODAL_VERIFIED_SUBTITLE_P2')?></p>
           <ul>
-            <li>Зайди в свой профиль игрока в pubg mobile</li>
-            <li>Сделай скриншот экрана</li>
-            <li>Загрузи его сюда</li>
-            <li>Нажимай “Отправить”</li>
+            <li><?=GetMessage('MODAL_VERIFIED_LIST_ITEM-1')?></li>
+            <li><?=GetMessage('MODAL_VERIFIED_LIST_ITEM-2')?></li>
+            <li><?=GetMessage('MODAL_VERIFIED_LIST_ITEM-3')?></li>
+            <li><?=GetMessage('MODAL_VERIFIED_LIST_ITEM-4')?></li>
           </ul>
         </div>
 
@@ -169,25 +168,29 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
         <form action="<?= POST_FORM_ACTION_URI; ?>" method="post" class="form-scrin-pubgid" enctype="multipart/form-data" novalidate="novalidate">
           <?=bitrix_sessid_post()?>
           <div class="form-field">
-            <input type="file" class="form-field__input-file inputFileScrinPubg inputFile" data-multiple-caption="выбрано {count} файла(ов)"  name="scrinPubg" id="scrinPubgId">
+            <input type="file" class="form-field__input-file inputFileScrinPubg inputFile" data-multiple-caption="<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-1')?>{count}<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-2')?>" name="scrinPubg" id="scrinPubgId">
             <label for="scrinPubgId" class="form-field__upload-file">
-              <i></i><span>Прикрепить скриншот </span> <div class="fileUploadedImg fileUploadedScrinPubg"></div>
+              <i></i><span><?=GetMessage('MODAL_VERIFIED_UPLOAD_FILE')?></span> <div class="fileUploadedImg fileUploadedScrinPubg"></div>
             </label>
           </div>
 
           <div class="modal-body__btn">
-            <button type="submit" name="scrinPubgFirst" class="btn mr-3">Отправить скриншот</button>
-            <button type="button" class="btn btn_border" data-dismiss="modal">Отмена</button>
+            <button type="submit" name="scrinPubgFirst" class="btn mr-3"><?=GetMessage('MODAL_VERIFIED_BUTTON_SUBMIT')?></button>
+            <button type="button" class="btn btn_border" data-dismiss="modal"><?=GetMessage('MODAL_VERIFIED_BUTTON_CANCEL')?></button>
           </div>
         <div class="modal-body__content modal-body__content_sub">
-            <p>Что делать, если я уже указал в своём профиле nickname или pubg id, которые отличаются от тех, что я использую в pubg mobile?<br>
-            Пока ты не отправил данные на проверку, ты можешь поменять свои pubg id и nickname в <a href="/personal/edit/" target="_blank">настройках профиля</a>, чтобы они соответствовали тем, что у тебя в игре. Затем, вернись в это окно и отправь скриншот на проверку.</p>
+            <p>
+                <?=GetMessage('MODAL_VERIFIED_FOOTER_CONTENT-1')?>
+                <br>
+                <?=GetMessage('MODAL_VERIFIED_FOOTER_CONTENT-2')?>
+            </p>
         </div>
         </form>
       </div>
       </div>
     </div>
   </div>
+
 <div class="modal fade " id="pubgIdRejected" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -195,13 +198,13 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                 <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
                     <i></i>
                 </button>
-</div>
+            </div>
             <div class="modal-body">
 
-                <h3 class="modal-body__title">Аккаунт отклонен</h3>
+                <h3 class="modal-body__title"><?=GetMessage('MODAL_REJECTED_TITLE')?></h3>
                 <div class="modal-body__content">
-                    <p>К сожалению, твой аккаунт не прошёл проверку pubg id и/или nickname.</p>
-                    <p>Причина отклонения аккаунта:</p>
+                    <p><?=GetMessage('MODAL_REJECTED_CONTENT-1')?></p>
+                    <p><?=GetMessage('MODAL_REJECTED_CONTENT-2')?></p>
                     <ul>
                       <?php if(!empty($arUser["PERSONAL_NOTES"])) { ?>
                         <li><?php echo $arUser["PERSONAL_NOTES"];?></li>
@@ -214,19 +217,19 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                 <form action="<?= POST_FORM_ACTION_URI; ?>" method="post" class="form-scrin-pubgidnext" enctype="multipart/form-data" >
                   <?=bitrix_sessid_post()?>
                     <div class="form-field">
-                        <label for="comments" class="form-field__label">Комментарий</label>
-                        <textarea name="comments" id="comments" class="form-field__textarea" cols="30" rows="3" placeholder="Введите комментарий"></textarea>
+                        <label for="comments" class="form-field__label"><?=GetMessage('MODAL_REJECTED_COMMENT_LABEL')?></label>
+                        <textarea name="comments" id="comments" class="form-field__textarea" cols="30" rows="3" placeholder="<?=GetMessage('MODAL_REJECTED_COMMENT_PLACEHOLDER')?>"></textarea>
                     </div>
                     <div class="form-field">
-                        <input type="file" class="form-field__input-file inputFileScrinPubgNext inputFile" data-multiple-caption="выбрано {count} файла(ов)"  name="scrinPubg" id="scrinPubgIdNext">
+                        <input type="file" class="form-field__input-file inputFileScrinPubgNext inputFile" data-multiple-caption="<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-1')?>{count}<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-2')?>" name="scrinPubg" id="scrinPubgIdNext">
                         <label for="scrinPubgIdNext" class="form-field__upload-file">
-                            <i></i><span>Прикрепить скриншот </span> <div class="fileUploadedImg fileUploadedScrinPubgNext"></div>
+                            <i></i><span><?=GetMessage('MODAL_VERIFIED_UPLOAD_FILE')?></span> <div class="fileUploadedImg fileUploadedScrinPubgNext"></div>
                         </label>
                     </div>
 
                     <div class="modal-body__btn">
-                        <button type="submit" name="scrinPubgYet" class="btn mr-3">Отправить еще раз</button>
-                        <button type="button" class="btn btn_border" data-dismiss="modal">Отмена</button>
+                        <button type="submit" name="scrinPubgYet" class="btn mr-3"><?=GetMessage('MODAL_REJECTED_BUTTON_SUBMIT')?></button>
+                        <button type="button" class="btn btn_border" data-dismiss="modal"><?=GetMessage('MODAL_VERIFIED_BUTTON_CANCEL')?></button>
                     </div>
                 </form>
             </div>
