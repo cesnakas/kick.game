@@ -261,3 +261,4 @@ function existsPubgId($userId, $pubgId)
   }
   return $users;
 }
+

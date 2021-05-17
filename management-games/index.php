@@ -26,6 +26,13 @@ $APPLICATION->SetTitle("Управление играми");
 если все заняты(мест нет и удаляю squad(отряд из 5.1))
 если есть free place например place 8, берем и заносим id команды в place 8 попадает в каждую запись инфоблока участников матчей из пункта 5.3 -->
 
+    <style>
+        .flex-table-new--body .btn-italic{
+            text-align:center;
+            display: block;
+        }
+    </style>
+
   <div class="container">
   <div class="row">
   <div class="col-lg-3 col-md-12">
@@ -104,7 +111,7 @@ $APPLICATION->SetTitle("Управление играми");
   <div class="col-lg-9 col-md-12">
     <h1 class="game-schedule__heading mt-3"><?=GetMessage('MG_HEADING')?></h1>
   <div class="game-schedule-table">
-  <div class="flex-table">
+      <div class="flex-table-new">
   <div class="flex-table--header bg-default">
     <div class="flex-table--categories">
         <span><?= GetMessage('MG_TYPE') ?></span>
@@ -113,21 +120,42 @@ $APPLICATION->SetTitle("Управление играми");
         <span><?= GetMessage('MG_RATING') ?></span>
         <span><?= GetMessage('MG_MODE') ?></span>
         <span><?= GetMessage('MG_COMMENTATOR') ?></span>
+        <span>Свободные места</span>
     </div>
   </div>
-  <div class="flex-table--body">
+  <div class="flex-table-new--body">
 <?
 
-$curDate = date('Y-m-d H:i:s', time()-3600);
+$curDate = date('Y-m-d H:i:s', time());
+$finalsDate = date('Y-m-d H:i:s', time()-(3600*24*3));
 GLOBAL $arrFilterDateTime;
 $arrFilterDateTime=Array(
-        "ACTIVE" => "Y",
-        ">=PROPERTY_DATE_START" => $curDate,
+    "ACTIVE" => "Y",
+    array(
+        "LOGIC" => "OR",
+        array(
+            "LOGIC" => "AND",
+            array("PROPERTY_GROUP" => "A"),
+            ">=PROPERTY_DATE_START" => $curDate,),
+
+        array(
+            "LOGIC" => "AND",
+            array("PROPERTY_TYPE_MATCH" => 5),
+            ">=PROPERTY_DATE_START" => $curDate,),
+
+        array(
+            "LOGIC" => "AND",
+            array("PROPERTY_STAGE_TOURNAMENT" => 1),
+            array(">=PROPERTY_DATE_START" => $finalsDate),
+        )
+    ),
+
     "PROPERTY_PREV_MATCH" => false,
+    //"PROPERTY_TYPE_MATCH" => 5
     //"PROPERTY_STAGE_TOURNAMENT" => 4,
     //"!=PROPERTY_TOURNAMENT" => false, // турниры
     //"=PROPERTY_TOURNAMENT" => false, // праки
-    );
+);
 //dump($arrFilterDateTime);
 if (isset($_GET['arrFilterDateTime_pf']['COUTN_TEAMS'])) {
     //dump($_GET['arrFilterDateTime_pf']);

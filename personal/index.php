@@ -367,19 +367,19 @@ if( isset( $_POST['promocode'] )  && check_bitrix_sessid() ){
     if( $promoCodeItem = getPromo( $_POST['promocode'] ) ){
         $days = $promoCodeItem['SORT'];
         if( $promoCodeUsed = checkUsedPromo( $_POST['promocode'] ) ){
-            $alertPromoCode = 'Код уже использовался Вами '.$promoCodeUsed['DATE_CREATE']; // TODO: lang
+            $alertPromoCode = 'Код уже использовался Вами '.$promoCodeUsed['DATE_CREATE'];
         } else {
             if( addDaysToPremlimit( $days ) ){
                 addUsedCodeToHistory( $_POST['promocode'] );
-                $alertPromoCode = 'Код активирован. Тебе добавлено '.$days.' дней прем аккаунта'; // TODO: lang
+                $alertPromoCode = 'Код активирован. Тебе добавлено '.$days.' дней прем аккаунта';
                 createSession('alert_success', $alertPromoCode);
                 $alertPromoCode = '';
             } else {
-                $alertPromoCode = 'Что-то пошло не так. Свяжись со службой технической поддержки.'; // TODO: lang
+                $alertPromoCode = 'Что-то пошло не так. Свяжись со службой технической поддержки.';
             }
         }
     } else {
-        $alertPromoCode = 'Код не существует'; // TODO: lang
+        $alertPromoCode = 'Код не существует';
     }
 }
 if ($alertPromoCode != '') {
@@ -642,8 +642,8 @@ if ($alertPromoCode != '') {
           $arrFilterDateTime = array("ACTIVE" => "Y", ">=PROPERTY_DATE_START" => $curDate, "PROPERTY_PREV_MATCH" => false,);
           //dump($arrFilterDateTime);
           $APPLICATION->IncludeComponent(
-	"bitrix:news.list", 
-	"matches_list", 
+	"bitrix:news.list",
+	"matches_list",
 	array(
 		"ACTIVE_DATE_FORMAT" => "d.m.Y",
 		"ADD_SECTIONS_CHAIN" => "Y",
@@ -977,7 +977,7 @@ unset($_SESSION['alert_error']);
                   <? } ?>*/
 
 				  ?>
-
+				  <a href="https://t.me/kickgamemessengerbot?start=<?= $arUser["ID"]?>">Подключить Telgeram</a>
                 </div>
               </div>
               <div class="col-md-6 profile-info__item">
@@ -1222,8 +1222,8 @@ if (!empty($newMatchIds)) {
             $arrFilterIdsMatches = array("ID" => $ids, ">=PROPERTY_DATE_START" => $curDate);
 
             $APPLICATION->IncludeComponent(
-	"bitrix:news.list", 
-	"my_matches_list", 
+	"bitrix:news.list",
+	"my_matches_list",
 	array(
 		"ACTIVE_DATE_FORMAT" => "d.m.Y",
 		"ADD_SECTIONS_CHAIN" => "Y",

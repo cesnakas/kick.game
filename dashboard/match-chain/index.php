@@ -6,7 +6,17 @@ CModule::IncludeModule("iblock");
 
 <?php
 $firstMatchId = $_GET['id']+0;
-
+$activeRes = " show active ";
+$activeR = " active ";
+$activeInfo = "";
+$activeI = "";
+if($_SESSION["activeInfo"]){
+    $activeRes = "";
+    $activeR = "";
+    $activeInfo = " show active ";
+    $activeI = " active ";
+    unset($_SESSION["activeInfo"]);
+}
 // собираем все ошибки
 $errors = [];
 // переделать в singleton
@@ -603,7 +613,7 @@ function makeFormSquadResult($firstMatchId, $matchId, $teamId)
     }*/
 }
 
-function showMatch($match = null, $next)
+function showMatchInfo($match = null)
 {
 
     $firstMatchId = $_GET['id']+0;
@@ -653,26 +663,45 @@ function showMatch($match = null, $next)
            </div>';
 
         if ( CSite::InGroup( array(1) ) ){
-        echo '<div class="col-md-4">
+            echo '<div class="col-md-4">
             <div class="form-group">
             
                 <label>Выберите модератора</label>
                 <select class="form-control" name="mod">
                 <option value="">0</option>';
 
-        foreach ($mods as $mod) {
-            echo '<option value="'.$mod['ID'].'"';
-            if($mod['ID'] == $match["MODERATOR"]['VALUE']) { echo ' selected'; }
-            echo '>'.$mod['LOGIN'].'</option>';
-        }
-        echo '</select>
+            foreach ($mods as $mod) {
+                echo '<option value="'.$mod['ID'].'"';
+                if($mod['ID'] == $match["MODERATOR"]['VALUE']) { echo ' selected'; }
+                echo '>'.$mod['LOGIN'].'</option>';
+            }
+            echo '</select>
               </div>
            </div>';
         }
 
         echo '</div>';
+        echo '<input type="submit" class="btn btn-success my-3" name="sendInfo" value="Сохранить и отправить данные">';
+        echo '<input type="hidden" value="'.$match['ID'].'" name="matchId">';
+        echo '</form>';
 
-        echo '<h3>Список участников команд</h3>';
+
+    }
+}
+
+function showMatchResults($match = null, $next)
+{
+
+    $firstMatchId = $_GET['id']+0;
+    $members = getMembersByMatchId($match['ID']);
+    $streamers = getStreamers();
+    $mods = getUsersByGroup(8);
+
+    if ($members) {
+        addMatchMembersResult($match['ID']);
+        echo '<form id="deleteForm" action="'.POST_FORM_ACTION_URI.'" method="post">'. bitrix_sessid_post() .'</form>
+<form  action="#" method="post">';
+
         //echo '<table>';
         $tmpKeys = [
             '03',
@@ -771,6 +800,7 @@ function showMatch($match = null, $next)
         }
         echo '<input type="hidden" value="'.$match['ID'].'" name="matchId">';
         echo '</form>';
+
     }
 }
 
@@ -1113,9 +1143,9 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["removeTeamFromMatch"]))) {
 
     $results = getResultByMatchTeam($firstMatchId, $_POST["removeTeamFromMatch"]);
     if ($results) {
-        $errors[] = 'По матчу уже сформированы результаты';
+        createSession("match-chain_error", 'По матчу уже сформированы результаты');
     } else if($dateA > $dateB) {
-        $errors[] = 'Матч уже прошел';
+        createSession("match-chain_error", 'Матч уже прошел');
     } else {
         // получаем squad
         $curSquadId = getSquadByIdMatch($firstMatchId, $_POST["removeTeamFromMatch"]);
@@ -1157,22 +1187,7 @@ if (!empty($_POST["sendResults"])) {
     $matchId = $_POST['matchId']+0;
     addMatchMembersResult($matchId);
 
-
-
-
-
-    if (!empty($matchId) && !empty($_POST['date_time_match'])) {
-
-
-        $props = [];
-        if (CSite::InGroup( array(1))) $props['MODERATOR'] = $_POST['mod'];
-        $props['DATE_START'] = $_POST['date_time_match'];
-        $props['URL_STREAM'] = $_POST["url_stream"];
-        $props['PUBG_LOBBY_ID'] = $_POST["pubg_lobby_id"];
-        $props['STREAMER'] = $_POST["streamer"];
-
-        updateMatch($props, $matchId, $firstMatchId);
-
+    if (!empty($matchId)) {
 
         $scoreError = false;
         $scoreKeys = [
@@ -1247,15 +1262,15 @@ if (!empty($_POST["sendResults"])) {
                 if(isset($_POST["last"]) && isMatchRes($matchId) && ($firstMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 5)){
                    setStagePass($firstMatchId, $stageKeyPass);
                 }
-                LocalRedirect(SITE_DIR.'dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
+                LocalRedirect('/dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
 
             } else {
                 createSession("match-chain_error",'С данными что-то не то!');
-                LocalRedirect(SITE_DIR.'dashboard/match-chain/?id='.$firstMatchId);
+                LocalRedirect('/dashboard/match-chain/?id='.$firstMatchId);
             }
         } else {
             createSession("match-chain_error",'Данные не однородные');
-            LocalRedirect(SITE_DIR.'dashboard/match-chain/?id='.$firstMatchId);
+            LocalRedirect('/dashboard/match-chain/?id='.$firstMatchId);
         }
 
 
@@ -1263,6 +1278,29 @@ if (!empty($_POST["sendResults"])) {
 
 }
 
+if (!empty($_POST["sendInfo"])) {
+    $matchId = $_POST['matchId']+0;
+    addMatchMembersResult($matchId);
+
+    if (!empty($matchId) && !empty($_POST['date_time_match'])) {
+
+        $props = [];
+        if (CSite::InGroup( array(1))) $props['MODERATOR'] = $_POST['mod'];
+        $props['DATE_START'] = $_POST['date_time_match'];
+        $props['URL_STREAM'] = $_POST["url_stream"];
+        $props['PUBG_LOBBY_ID'] = $_POST["pubg_lobby_id"];
+        $props['STREAMER'] = $_POST["streamer"];
+
+        updateMatch($props, $matchId, $firstMatchId);
+        $_SESSION["activeInfo"] =  true;
+        LocalRedirect('/dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
+
+    } else {
+        createSession("match-chain_error",'Укажите время матча');
+        LocalRedirect('/dashboard/match-chain/?id='.$firstMatchId);
+    }
+
+}
 
 
 
@@ -1285,30 +1323,74 @@ if (!empty($_POST["sendResults"])) {
         <?php
             unset($_SESSION['match-chain_error']);
         } ?>
-        <?php showMatch($firstMatch, false); ?>
-    </div>
-<?php $parentId = $firstMatch['ID'];
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link <?php echo $activeR ; ?>" id="pills-results-tab" data-toggle="pill" href="#pills-results" role="tab" aria-controls="pills-results" aria-selected="true">Результаты</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link <?php echo $activeI ; ?>" id="pills-info-tab" data-toggle="pill" href="#pills-info" role="tab" aria-controls="pills-info" aria-selected="false">Данные матча</a>
+        </li>
+    </ul>
+      <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade <?php echo $activeRes ; ?>" id="pills-results" role="tabpanel" aria-labelledby="pills-results-tab">
+                <h3>Матч 1</h3>
+                <?php showMatchResults($firstMatch, false); ?>
+
+                <?php $parentId = $firstMatch['ID'];
 
 
+                $num = 1;
+                do {
+                    $match = getMatchByParentId($parentId);
+                    $next = (getMatchByParentId($parentId+2) == null);
+                    if ($match != null) {
 
-do {
-    $match = getMatchByParentId($parentId);
-    $next = (getMatchByParentId($parentId+2) == null);
-    if ($match != null) {
+                        ?>
+                        <div class="container">
+                            <h3>Матч <?php echo $num; ?></h3>
+                            <?php showMatchResults($match, $next); ?>
+                        </div>
+                        <?php $nextMatch = true;
+                        $parentId = $match['ID'];
+                    } else {
+                        $nextMatch = false;
+                    }
 
-        ?>
-        <div class="container">
-            <?php showMatch($match, $next); ?>
+                $num=+1;
+                } while($nextMatch == true);
+
+                ?>
+            </div>
+            <div class="tab-pane fade <?php echo $activeInfo ; ?>" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
+                <?php
+                showMatchInfo($firstMatch); ?>
+
+                <?php $parentId = $firstMatch['ID'];
+
+                do {
+                    $match = getMatchByParentId($parentId);
+                    if ($match != null) {
+
+                        ?>
+                        <div class="container">
+                            <?php showMatchInfo($match); ?>
+                        </div>
+                        <?php $nextMatch = true;
+                        $parentId = $match['ID'];
+                    } else {
+                        $nextMatch = false;
+                    }
+
+
+                } while($nextMatch == true);
+
+                ?>
+            </div>
         </div>
-        <?php $nextMatch = true;
-        $parentId = $match['ID'];
-    } else {
-        $nextMatch = false;
-    }
 
 
-} while($nextMatch == true);
+    </div>
 
-?>
 
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+<?
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

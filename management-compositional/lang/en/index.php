@@ -13,6 +13,7 @@ $MESS['ALERTS_SUCCESS_PLAYERS_ACCEPTED'] = 'Players have been successfully accep
 $MESS['ALERTS_SUCCESS_PLAYER_ACCEPTED'] = 'The player was successfully accepted into the team';
 $MESS['ALERTS_SUCCESS_PLAYERS_REJECTED'] = 'Player requests successfully rejected';
 $MESS['ALERTS_SUCCESS_PLAYER_REJECTED'] = 'The player\'s request was successfully rejected';
+$MESS['ALERTS_MANAGEMENT_SQUAD'] = 'A team can have no more than 7 players. To accept a new player, you need to make room for him in the team.';
 
 $MESS['MC_TITLE'] = 'My team';
 $MESS['MC_EDIT'] = 'Edit';

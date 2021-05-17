@@ -13,6 +13,7 @@ $MESS['ALERTS_SUCCESS_PLAYERS_ACCEPTED'] = 'Игроки успешно прин
 $MESS['ALERTS_SUCCESS_PLAYER_ACCEPTED'] = 'Игрок успешно принят в команду';
 $MESS['ALERTS_SUCCESS_PLAYERS_REJECTED'] = 'Запросы игроков успешно отклонены';
 $MESS['ALERTS_SUCCESS_PLAYER_REJECTED'] = 'Запрос игрока успешно отклонен';
+$MESS['ALERTS_MANAGEMENT_SQUAD'] = 'В команде может быть не больше 7 игроков. Чтобы принять нового игрока необходимо освободить для него место в команде.';
 
 $MESS['MC_TITLE'] = 'Моя команда';
 $MESS['MC_EDIT'] = 'Редактировать';

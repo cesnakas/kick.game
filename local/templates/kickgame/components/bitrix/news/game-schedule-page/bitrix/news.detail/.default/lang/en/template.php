@@ -10,6 +10,7 @@ $MESS['GSP_CONTACT_MODERATOR'] = 'Contact the moderator';
 $MESS['GSP_DATE_EVENT'] = 'Date of the event';
 $MESS['GSP_AT'] = ' at ';
 $MESS['GSP_MATCHES'] = 'Number of matches';
+$MESS['GSP_MATCHES_HOUR'] = '3 (2 hours)';
 $MESS['GSP_COMMENTATOR'] = 'Commentator';
 $MESS['GSP_BROADCAST_LINK'] = 'Broadcast link';
 $MESS['GSP_ONAIR'] = 'On the air';

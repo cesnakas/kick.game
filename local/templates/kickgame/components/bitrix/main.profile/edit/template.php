@@ -224,6 +224,7 @@ if(isset($_SESSION['save-profile_success'])) { ?>
 <?php }
 unset($_SESSION['save-profile_error']);
 ?>
+
 <section class="profile">
   <div class="container">
     <div class="layout__content-heading-with-btn-back">
@@ -264,19 +265,21 @@ unset($_SESSION['save-profile_error']);
             <div class="profile-info__edit">
               <div class="form-field">
                 <label for="edit-nic" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_NICKNAME')?> <span>*</span></label>
-                <input type="text" class="form-field__input" name="LOGIN" value="<?=$arResult["arUser"]["LOGIN"]?>" autocomplete="off" id="edit-nic" placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>">
+                <input type="text" class="form-field__input" name="LOGIN" value="<?=$arResult["arUser"]["LOGIN"]?>" autocomplete="off" id="edit-nic" placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>" <?php if($arResult["arUser"]['UF_PUBG_ID_CHECK'] == 20 || $arResult["arUser"]['UF_PUBG_ID_CHECK'] == 22) { ?> readonly <?php } ?>>
 
               </div>
               <div class="form-field">
                 <label for="edit-pubgid" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_PUBGID')?> <span>*</span></label>
-                <input type="text" class="form-field__input" name="UF_PUBG_ID" value="<?=htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]);?>" autocomplete="off" id="edit-pubgid" placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>">
+                <input type="text" class="form-field__input" name="UF_PUBG_ID" value="<?=htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]);?>" autocomplete="off" id="edit-pubgid" <?php if($arResult["arUser"]['UF_PUBG_ID_CHECK'] == 20 || $arResult["arUser"]['UF_PUBG_ID_CHECK'] == 22) { ?> readonly <?php } ?> placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>">
               </div>
               <div class="form-field">
                 <label for="edit-subscription" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION')?></label>
                 <?
-                $resultPrem = isPrem($arResult["arUser"]['UF_DATE_PREM_EXP']);
+                $date = CustomSubscribes::getActualUserSubscribeGroup($arResult["arUser"]["ID"]);
+                $resultPrem = isPrem($date[0]["DATE_ACTIVE_TO"]);
+                //$resultPrem = isPrem($arResult["arUser"]['UF_DATE_PREM_EXP']);
 
-                $userId = $arResult["arUser"]["ID"];
+                /*$userId = $arResult["arUser"]["ID"];
                 $userGroups = CUser::GetUserGroup($userId);
                 $productGroups = array();$productName = ""; $productGroup = 0;
                 $res = CIBlockElement::GetList(
@@ -323,21 +326,22 @@ unset($_SESSION['save-profile_error']);
                             break;
                         }
                     }
-                }
+                }*/
                 ?>
-                <?/* $resultPrem = isPrem($arResult["arUser"]["UF_DATE_PREM_EXP"])*/;
+                <?
+                /* $resultPrem = isPrem($arResult["arUser"]["UF_DATE_PREM_EXP"])*/;
                 if ($resultPrem <= 0) { ?>
                 <div class="form-field__with-btn">
                   <div class="form-field__input-wrap">
                     <i class="form-field__icon form-field__icon_base"></i>
-                    <input type="text" class="form-field__input" name="authLogin" value="<?= $productName;?>" autocomplete="off" id="edit-subscription">
+                    <input type="text" class="form-field__input" name="authLogin" value="<?/*= $productName;*/?>Базовая" autocomplete="off" id="edit-subscription">
                   </div>
                   <a href="<?=SITE_DIR?>subscription-plans/" class="btn-italic"  target="_blank"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_BASIC_BTN')?></a>
                 </div>
                 <?php } else { ?>
                   <div class="form-field__input-wrap">
                     <i class="form-field__icon form-field__icon_prem"></i>
-                    <input type="text" class="form-field__input" name="authLogin" value="<?= $productName;?> <?php echo num_decline( $resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_REMAINING'), false );?> <?php echo num_decline( $resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_DAYS') );?>" autocomplete="off" id="edit-subscription">
+                    <input type="text" class="form-field__input" name="authLogin" value="<?/*= $productName;*/?>Преимиум <?php echo num_decline( $resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_REMAINING'), false );?> <?php echo num_decline( $resultPrem, GetMessage('PERSONAL_EDIT_SUBSCRIPTION_VALUE_PREMIUM_DAYS') );?>" autocomplete="off" id="edit-subscription">
                   </div>
                 <?php } ?>
               </div>

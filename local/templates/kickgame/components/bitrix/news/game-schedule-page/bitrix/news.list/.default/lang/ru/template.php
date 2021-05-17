@@ -7,6 +7,8 @@ $MESS['STAGE_COLON'] = 'Этап: ';
 $MESS['SLOT_NO'] = 'Слот № ';
 $MESS['NO_SEATS'] = 'Мест нет';
 
+$MESS['DATE_EVENT_COLON_AT'] = ' в ';
+
 $MESS['DATE_EVENT'] = 'Дата проведения';
 $MESS['RATING'] = 'Рейтинг';
 $MESS['MODE'] = 'Режим';

@@ -11,6 +11,7 @@ $rsUser = CUser::GetByID($userID);
 $arUser = $rsUser->Fetch();
 $teamID = $arUser['UF_ID_TEAM'];
 $datePremExp = $arUser['UF_DATE_PREM_EXP'];
+
 $isCaptainHeader = isCaptainHeader($userID, $teamID);
 if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
     updateStatusChekingPubgId($userID, 21);
@@ -221,7 +222,7 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
           if(!$arUser['UF_PUBG_ID_CHECK'] || $arUser['UF_PUBG_ID_CHECK'] == 19) { ?>
           <div class="alert-container">
             <div class="alert alert-warning alert-dismissible fade show alert-dismissible_pubg_verified" role="alert">
-              <?=GetMessage('HEADER_ALERT_VERIFIED')?>
+                <?=GetMessage('HEADER_ALERT_VERIFIED')?>
               <a href="#" data-toggle="modal" data-target="#pubgIdVerified" class="btn-icon btn_pubg-alet btn-icon_yellow"><i></i> <span><?=GetMessage('HEADER_ALERT_VERIFIED_BUTTON')?></span></a>
             </div>
           </div>

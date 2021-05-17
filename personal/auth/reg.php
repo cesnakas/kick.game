@@ -21,6 +21,13 @@ if (!empty($_POST['REGISTER']['EMAIL'])) {
 }
 
 
+if (isset($_POST['UF_DATE_PREM_EXP'])) { // after require
+    $days = 0;
+    $now = date('d.m.Y');
+    $datePremExp = date( 'd.m.Y', strtotime( $now ." +" . $days . "days" ));
+    $_POST['UF_DATE_PREM_EXP'] = $datePremExp;
+    $_REQUEST['UF_DATE_PREM_EXP'] = $datePremExp;
+}
 if (!empty($_POST['REGISTER']['PERSONAL_PHONE'])) {
 	$_POST['REGISTER']['PERSONAL_PHONE'] = $_POST['full_number'];
 	$_REQUEST['REGISTER']['PERSONAL_PHONE'] = $_POST['full_number'];

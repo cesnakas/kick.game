@@ -30,6 +30,7 @@ $APPLICATION->SetTitle("Title");
     curl_close($curl);
     $vpResponse = json_decode($vpResponse);
     //////////////////////////////////////////////////////////////////////
+
     CModule::IncludeModule("iblock");
     global $USER;
     $productId = intval($_REQUEST["data"]["id"]);
@@ -130,7 +131,7 @@ $APPLICATION->SetTitle("Title");
             foreach ($users as $k => $v)
             {
                 $subscribes = CustomSubscribes::setUserSubscribeGroup($v["ID"], $productId);
-        }
+            }
         }
         $userOb = new CUser;
         $fields = array(

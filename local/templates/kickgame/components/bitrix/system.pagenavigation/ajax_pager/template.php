@@ -27,7 +27,7 @@ $strNavQueryString = ($arResult["NavQueryString"] != "" ? $arResult["NavQueryStr
 
 <?php
 $rNum = 3;
-if($arResult["sUrlPath"] == "/game-schedule/"){
+if(($arResult["sUrlPath"] == "/game-schedule/") || ($arResult["sUrlPath"] == "/management-games/")){
     $rNum = 5;
 }
 ?>

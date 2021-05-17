@@ -79,10 +79,11 @@ if ($USER->IsAuthorized()) {
 
 
                             <span class="form-field__helper textstyle">
-<?=GetMessage('FORM_FIELDS_HELPER_TARIFF')?><span><?= $datatarrif[NAME]; ?></span><?=GetMessage('FORM_FIELDS_HELPER_FOR')?><?= $datatarrif[PROPERTY_COL_VALUE]; ?><?=GetMessage('FORM_FIELDS_HELPER_MONTH')?></span>
+<?=GetMessage('FORM_FIELDS_HELPER_TARIFF')?> <span><? echo $datatarrif[NAME]; ?></span><?=GetMessage('FORM_FIELDS_HELPER_FOR')?><?= num_decline($datatarrif[PROPERTY_COL_VALUE], GetMessage('FORM_FIELDS_HELPER_MONTH')); ?>
+</span>
 
                             <?
-                            $tosumm = $datatarrif["CATALOG_PRICE_1"] * $datatarrif[PROPERTY_COL_VALUE];
+                            $tosumm = $datatarrif["CATALOG_PRICE_1"]/* * $datatarrif[PROPERTY_COL_VALUE]*/;
                             ?>
                             <br>
                             <span class="form-field__helper textstyle">

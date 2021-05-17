@@ -88,15 +88,15 @@ while($ob_price = $res_price->GetNextElement())
 
                         </div>
                     </div>
-                            <?
-                            $sprice = $elems_price[$arItem[ID]]["CATALOG_PRICE_1"];
+                    <?
+                   $sprice = $elems_price[$arItem[ID]]["CATALOG_PRICE_1"];
 
-                            if(!empty($sprice) && $sprice >0) {
-                                ?>
-                                <div class="subscription-plans-item__btn text-center" >
-                                    <a data-id="" href="/order/?orderid=<? echo $arItem[ID];?>" class="btn jsaddtoorder">Купить подписку</a>
-                                </div>
-                            <? } ?>
+                  if(!empty($sprice) && $sprice >0) {
+                      ?>
+                        <div class="subscription-plans-item__btn text-center" >
+                            <a data-id="" href="<?+SITE_DIR?>order/?orderid=<? echo $arItem[ID];?>" class="btn jsaddtoorder">Купить подписку</a>
+                        </div>
+                    <? } ?>
                 </div>
             </div>
 

@@ -638,7 +638,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
                         $time = getLastTournamentGameTime($tournamentId);
                     }
 
-                    if(willTeamPrem($teamID, $time) || $curMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 6){
+                   // if(willTeamPrem($teamID, $time) || $curMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 6){
 
                     //Проверка регистрации на одно время
                     $teamRating = getRating($teamID);
@@ -703,11 +703,11 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
                     }
                     $redirectUrlAction = SITE_DIR."management-games/join-game/?mid=".$mId;
                     //LocalRedirect("/management-games/join-game/?mid=".$mId);
-                    } else {
-
-                        $alertManagementSquad = GetMessage('ALERTS_ERROR_SUBSCRIPTION_EXPIRES').'<br><a href="'.SITE_DIR.'subscription-plans/" target="_blank" class="btn-italic mt-1">'.GetMessage('ALERTS_LINK_BUY_SUBSCRIPTION').'</a>';
-                        createSession('management-games_error', $alertManagementSquad);
-                    }
+//                    } else {
+//
+//                        $alertManagementSquad = GetMessage('ALERTS_ERROR_SUBSCRIPTION_EXPIRES').'<br><a href="'.SITE_DIR.'subscription-plans/" target="_blank" class="btn-italic mt-1">'.GetMessage('ALERTS_LINK_BUY_SUBSCRIPTION').'</a>';
+//                        createSession('management-games_error', $alertManagementSquad);
+//                    }
                     }
             } else {
               $alertManagementSquad = GetMessage('ALERTS_NOT_FULLY_FROM') . $minLimPlayers . GetMessage('ALERTS_NOT_FULLY_TO') . $maxLimPlayers . GetMessage('ALERTS_NOT_FULLY_PARTICIPANTS');
@@ -980,7 +980,7 @@ unset($_SESSION['management-games_error']);
                    style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/profile-avatar.jpg)"
                  <?php } ?>>
               <div class="game__block-img-rating-bg">
-                <div class="game__block-img-rating">3.00</div>
+                <div class="game__block-img-rating" style="font-size: 14.5px"><?php echo $curMatch["MIN_RATING"]["VALUE"] . " - " . $curMatch["MAX_RATING"]["VALUE"] ?></div>
               </div>
             </div>
               <?php
@@ -1012,7 +1012,7 @@ unset($_SESSION['management-games_error']);
               $matches = getChainMatches( $curMatch["ID"] );
               $gamesCount = count($matches["chain"]);
               $hours = $gamesCount*40/60;
-              $hour = "G ".num_decline($hours, "час, часа, часов", false); // TODO: lang
+              $hour = "G ".num_decline($hours, "час, часа, часов", false);
               $minutes = "";
               if($gamesCount*40 % 60 != 0){
                   $minutes = " i минут";
@@ -1032,14 +1032,14 @@ unset($_SESSION['management-games_error']);
                 <div>
                     <?php
                     $dateTime = explode(' ', $curMatch["DATE_START"]['VALUE']);
-                    echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); // TODO: lang ?>
+                    echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
                 </div>
               </div>
             </div>
             <div class="col-6 col-xl-4">
               <div class="info-item">
                 <div><?=GetMessage('JG_TOTAL_MATCHES')?></div>
-                <div><?=GetMessage('JG_TIME')?></div>
+                <div><?php echo $gamesCount ?> (<?php echo date($hour.$minutes, mktime(0,$gamesCount * 40)); ?>)</div>
               </div>
             </div>
             <div class="col-6 col-xl-4">

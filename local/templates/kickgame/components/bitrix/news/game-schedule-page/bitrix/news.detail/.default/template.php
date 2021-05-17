@@ -299,9 +299,10 @@ unset($_SESSION['game-schedule-detail_error']);
         <div class="game__block">
           <div class="game__block-img" style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/profile-avatar.jpg)">
             <div class="game__block-img-rating-bg">
-              <div class="game__block-img-rating">3.00</div>
+              <div class="game__block-img-rating " style="font-size: 14.5px"><?php echo $arResult["DISPLAY_PROPERTIES"]["MIN_RATING"]["VALUE"] . " - " . $arResult["DISPLAY_PROPERTIES"]["MAX_RATING"]["VALUE"] ?></div>
             </div>
           </div>
+
             <?php
             if($tmp = getParticipationByMatchId($arResult["ID"])) {
                 $tmp = array_flip($tmp);
@@ -320,36 +321,51 @@ unset($_SESSION['game-schedule-detail_error']);
                   $name = $arResult["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arResult["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')';
               }
               echo $name;
-
               ?></h1>
             <?php if ($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) { ?>
               <div class="game__block-type"><i></i> <?=GetMessage('GSP_GAME_PRACTICAL')?></div>
             <?php } elseif($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
               <div class="game__block-type game__block-type_tournament"><i></i> <?=GetMessage('GSP_GAME_TOURNAMENT')?></div>
             <?php } ?>
-          <?php if ($isCaptain) {
-              if(isTeamPrem($teamID) || $arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6){ ?>
-
-                  <a href="<?php echo $redirectLink; ?>" class="btn" ><?php echo $btnValue; ?></a>
-                  <?php if($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5){ ?>
-                      <div class="game__block-call">
-                          <a href="https://t.me/joinchat/A6NtPGx53YNlODBi" target="_blank" class="btn-italic"><?=GetMessage('GSP_CONTACT_MODERATOR')?></a>
-                      </div>
-                  <?php } ?>
-              <?php } else { ?>
-                    <div class="row desktop-btn">
-                        <button class="btn-disabled"><?php echo $btnValue; ?></button>
-                  </div>
-                  <div class="row" style="justify-content: space-around;">
-                      <h4 class="premium-message">
-                          <?=GetMessage('HEADING_PREMIUM_MESSAGE')?><a href="<?=SITE_DIR?>subscription-plans/" target="_blank" class="btn-italic"><?=GetMessage('HEADING_PREMIUM_MESSAGE_LINK')?></a>
-                      </h4>
-                  </div>
-                  <?php }?>
-
-          <?php } ?>
+            <!--если юзер в группе ироков-->
+            <?if ($arUser["UF_ID_TEAM"] && $isCaptain):?>
+                <?if($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5):?>
+                    <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
+                    <?/*if ($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5):*/?>
+                        <div class="game__block-call">
+                            <a href="https://t.me/joinchat/mRicMNoqO4pkOTgy" target="_blank" class="btn-italic"><?=GetMessage('GSP_CONTACT_MODERATOR')?></a>
+                        </div>
+                    <?/*endif;*/?>
+                <?elseif($arResult["DISPLAY_PROPERTIES"]["TYPE_MATCH"]["VALUE_ENUM_ID"] == 6):?>
+                    <?$userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userID);?>
+                    <?if(!empty($userProductGroups) && count($userProductGroups)):?>
+                        <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
+                    <?else:?>
+                        <?
+                        $now = (new DateTime('now'))->getTimestamp();
+                        $dateFrom = DateTime::createFromFormat("d.m.Y H:i:s", $arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"])->modify('-1 hours')->getTimestamp();
+                        $dateTo = DateTime::createFromFormat("d.m.Y H:i:s", $arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"])->getTimestamp();
+                        ?>
+                        <?if($now >= $dateFrom && $now <= $dateTo):?>
+                            <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
+                        <?else:?>
+                            <p>                        <p>Бесплатная запись на праки открывается за 1 час до начала при наличии свободных мест. Чтобы записаться на прак заранее, выбери удобный вариант подписки на команду. <a href="/subscription-plans/" class="btn-italic">Выбрать подписку</a></p></p>
+                        <?endif;?>
+                    <?endif;?>
+                <?endif;?>
+            <?else:?>
+                <p>
+                    <?if(!$arUser["UF_ID_TEAM"]):?>
+                        Для участия в игре ты должен быть частью команды.
+                    <?endif;?>
+                    <?if(!$isCaptain):?>
+                        Только капитан может зарегистрироваться на игру.&nbsp;
+                    <?endif;?>
+                </p>
+            <?endif;?>
         </div>
       </div>
+
       <div class="col-lg-6">
         <div class="row">
           <div class="col-6 col-xl-4">
@@ -365,7 +381,7 @@ unset($_SESSION['game-schedule-detail_error']);
           <div class="col-6 col-xl-4">
             <div class="info-item">
               <div><?=GetMessage('GSP_MATCHES')?></div>
-              <div>3 (2 часа)</div>
+              <div><?php echo $gamesCount ?> (<?php echo date($hour.$minutes, mktime(0,$gamesCount * 40)); ?>)</div>
             </div>
           </div>
           <div class="col-6 col-xl-4">
@@ -520,8 +536,6 @@ function countWWCD( $IDs = array() ){
 
 
 //function
-
-
 
 if (!empty($teamIds)) {
   $chainMatches = getChainMatches( $arResult['ID'] );

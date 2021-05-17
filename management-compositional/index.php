@@ -330,7 +330,7 @@ if(check_bitrix_sessid() && isset($_REQUEST['btn_delete'])) {
 }
 
 if (check_bitrix_sessid() && isset($_REQUEST['btn_accept'])) {
-        $userIds = $_POST['accept_in_team'];
+    $userIds = $_POST['accept_in_team'];
     if(count($coreTeam) + count($userIds) <= 7){
     if (!empty($_POST['accept_in_team'])) {
 
@@ -348,7 +348,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_accept'])) {
         $redirectUrlAction = SITE_DIR.'management-compositional/';
     }
     } else {
-        $alertManagementSquad = "В команде может быть не больше 7 игроков. Чтобы принять нового игрока необходимо освободить для него место в команде."; // TODO: lang
+        $alertManagementSquad = GetMessage('ALERTS_MANAGEMENT_SQUAD');
         createSession('management-players_error', $alertManagementSquad);
         $redirectUrlAction = SITE_DIR.'management-compositional/';
     }

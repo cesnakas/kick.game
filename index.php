@@ -501,8 +501,11 @@ if ($result->isSuccess())
     <main class="main">
         <div class="adv">
             <div class="adv__text">
-                <h3><?=GetMessage('CONTENT_ADV_TEXT_H3')?></h3>
-                <p><?=GetMessage('CONTENT_ADV_TEXT_P')?></p>
+                <h3>Турнир по PUBG Mobile на 3000&euro; для команд — Регистрация закрывается 20 мая</h3>
+                <p>Количество мест ограничено. Зарегистрируйся на платформе KICKGAME, чтобы подать заявку на участие одним из первых :3</p>
+			<p>* Для участия в турнире требуется оплаченная подписка на 7 дней с момента начала турнирных игр.</p>
+                <!--<h3><?/*=GetMessage('CONTENT_ADV_TEXT_H3')*/?></h3>
+                <p><?/*=GetMessage('CONTENT_ADV_TEXT_P')*/?></p>-->
             </div>
             <div class="adv__action">
               <!-- <a href="<?/*=SITE_DIR*/?>/game-schedule/?arrFilterDateTime_pf%5BTYPE_MATCH%5D=5&set_filter=Y&set_filter=" class="button"><?/*=GetMessage('CONTENT_ADV_ACTION_BUTTON')*/?></a>-->
@@ -544,7 +547,7 @@ if ($result->isSuccess())
             </div>
             <div class="section__action">
                 <?php if (!$USER->IsAuthorized()) { ?>
-                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
+                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button">Принять участие</a>
                 <?php } else { ?>
                   <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
                 <?php } ?>
@@ -726,8 +729,8 @@ if ($result->isSuccess())
                 <div class="functions__items-row">
                     <div class="functions__item">
                         <div class="functions__item-text">
-                            <h4><?=GetMessage('MAIN_FUNCTIONS_GAMES_TITLE')?></h4>
-                            <p><?=GetMessage('MAIN_FUNCTIONS_GAMES_TEXT')?></p>
+                            <h4>Праки для сквадов каждый день</h4>
+                            <p>От 5 праков ежедневно, крупные турниры каждый месяц</p>
                         </div>
                         <img
                                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/calendar.png" alt="calendar"
@@ -748,7 +751,7 @@ if ($result->isSuccess())
             </div>
             <div class="section__action">
                 <?php if (!$USER->IsAuthorized()) { ?>
-                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
+                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button">Принять участие</a>
                 <?php } else { ?>
                   <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
                 <?php } ?>

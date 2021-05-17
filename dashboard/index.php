@@ -68,9 +68,8 @@ function getMatchesByDate($date) {
       <ul>
           <?php foreach ($resMatches as $match) {
               if (isGameMod($match["PROPERTY_62"], $userID)){?>
+            <li><a href="<?=SITE_DIR?>dashboard/match-chain/?id=<?php echo $match['ID']?>"><?php echo $match['NAME'];  echo $match["PROPERTY_23"] == 6 ? " GROUP " . $match["PROPERTY_53"] . " Rating | ".ceil($match["PROPERTY_29"])." - ".ceil($match["PROPERTY_30"]) : "";   ?></a></li>
 
-
-            <li><a href="<?=SITE_DIR?>dashboard/match-chain/?id=<?php echo $match['ID']?>"><?php echo $match['NAME'];  echo $match["PROPERTY_23"] == 6 ? " GROUP " . $match["PROPERTY_53"] : ""; ?></a></li>
           <?php }
               } ?>
       </ul>

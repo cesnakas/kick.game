@@ -5,7 +5,7 @@ $APPLICATION->SetTitle("Подписка");
     <div class="container">
         <h1 class="text-center"><?=GetMessage('SP_HEADER')?></h1>
         <div class="row justify-content-center text-center">
-            <p><b><?=GetMessage('SUBSCRIPTION_TITLE')?></b></p>
+			<p><b><?=GetMessage('SUBSCRIPTION_TITLE')?></b></p>
             <div class="col-lg-10 col-md-12">
                 <div class="subscription-plans__description text-center">
                     <?=GetMessage('SUBSCRIPTION_TEXT-1')?>

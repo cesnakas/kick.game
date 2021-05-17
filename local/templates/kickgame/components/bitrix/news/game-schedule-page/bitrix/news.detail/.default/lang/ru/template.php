@@ -10,6 +10,7 @@ $MESS['GSP_CONTACT_MODERATOR'] = 'Связаться с модератором';
 $MESS['GSP_DATE_EVENT'] = 'Дата проведения';
 $MESS['GSP_AT'] = ' в ';
 $MESS['GSP_MATCHES'] = 'Количество матчей';
+$MESS['GSP_MATCHES_HOUR'] = '3 (2 часа)';
 $MESS['GSP_COMMENTATOR'] = 'Комментатор';
 $MESS['GSP_BROADCAST_LINK'] = 'Ссылка на трансляцию';
 $MESS['GSP_ONAIR'] = 'В эфире';

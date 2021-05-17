@@ -1,15 +1,4 @@
-<?php
-
-/**
- * Module REST API
- * 
- * @install  13.05.2021 16:25:48
- * @package  artamonov.rest
- * @author   Компания Webco <hello@webco.io>
- * @website  http://webco.io/
- */
-if (Bitrix\Main\Loader::includeModule('artamonov.rest')) \Artamonov\Rest\Foundation\Core::getInstance()->run();
-
+<?
 
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/functions.php'))
     require_once $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/functions.php';
@@ -100,7 +89,7 @@ function debugLogout() {
     global $USER, $APPLICATION;
     if($APPLICATION->GetCurDir() != SITE_DIR){
        // LocalRedirect("/?logout=yes");
-        LocalRedirect(SITE_DIR."?logout=yes&sessid=".$_SESSION["fixed_session_id"], true);
+        LocalRedirect("/?logout=yes&sessid=".$_SESSION["fixed_session_id"], true);
     }
 }
 
