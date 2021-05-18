@@ -1,6 +1,11 @@
 <?
 $MESS['ALERTS_JOINED_TEAM'] = 'you joined the team';
 $MESS['ALERTS_CREATE_TEAM'] = 'Team created successfully';
+$MESS['ALERTS_ERROR_PROMO_CODE_USED'] = 'The code has already been used by you ';
+$MESS['ALERTS_ERROR_PROMO_CODE_SUPPORT'] = 'Something went wrong. Contact technical support.';
+$MESS['ALERTS_ERROR_PROMO_CODE'] = 'The code does not exist';
+$MESS['ALERTS_SUCCESS_PROMO_CODE_P1'] = 'The code is activated. You added ';
+$MESS['ALERTS_SUCCESS_PROMO_CODE_P2'] = ' days of premium account';
 
 $MESS['PROFILE_VERIFIED_PUBG_ID'] = 'Confirm pub id';
 $MESS['PROFILE_VERIFIED_PUBG_ID_PROGRESS'] = 'Account verification in progress';

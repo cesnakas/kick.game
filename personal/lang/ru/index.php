@@ -1,6 +1,11 @@
 <?
 $MESS['ALERTS_JOINED_TEAM'] = 'вы присоединились в команду';
 $MESS['ALERTS_CREATE_TEAM'] = 'Команда успешно создана';
+$MESS['ALERTS_ERROR_PROMO_CODE_USED'] = 'Код уже использовался Вами ';
+$MESS['ALERTS_ERROR_PROMO_CODE_SUPPORT'] = 'Что-то пошло не так. Свяжись со службой технической поддержки.';
+$MESS['ALERTS_ERROR_PROMO_CODE'] = 'Код не существует';
+$MESS['ALERTS_SUCCESS_PROMO_CODE_P1'] = 'Код активирован. Тебе добавлено ';
+$MESS['ALERTS_SUCCESS_PROMO_CODE_P2'] = ' дней прем аккаунта';
 
 $MESS['PROFILE_VERIFIED_PUBG_ID'] = 'Подтвердить pubg id';
 $MESS['PROFILE_VERIFIED_PUBG_ID_PROGRESS'] = 'Идет проверка аккаунта';

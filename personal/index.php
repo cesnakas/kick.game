@@ -367,19 +367,19 @@ if( isset( $_POST['promocode'] )  && check_bitrix_sessid() ){
     if( $promoCodeItem = getPromo( $_POST['promocode'] ) ){
         $days = $promoCodeItem['SORT'];
         if( $promoCodeUsed = checkUsedPromo( $_POST['promocode'] ) ){
-            $alertPromoCode = 'Код уже использовался Вами '.$promoCodeUsed['DATE_CREATE'];
+            $alertPromoCode = GetMessage('ALERTS_ERROR_PROMO_CODE_USED').$promoCodeUsed['DATE_CREATE'];
         } else {
             if( addDaysToPremlimit( $days ) ){
                 addUsedCodeToHistory( $_POST['promocode'] );
-                $alertPromoCode = 'Код активирован. Тебе добавлено '.$days.' дней прем аккаунта';
+                $alertPromoCode = GetMessage('ALERTS_SUCCESS_PROMO_CODE_P1').$days.GetMessage('ALERTS_SUCCESS_PROMO_CODE_P2');
                 createSession('alert_success', $alertPromoCode);
                 $alertPromoCode = '';
             } else {
-                $alertPromoCode = 'Что-то пошло не так. Свяжись со службой технической поддержки.';
+                $alertPromoCode = GetMessage('ALERTS_ERROR_PROMO_CODE_SUPPORT');
             }
         }
     } else {
-        $alertPromoCode = 'Код не существует';
+        $alertPromoCode = GetMessage('ALERTS_ERROR_PROMO_CODE');
     }
 }
 if ($alertPromoCode != '') {
@@ -977,7 +977,7 @@ unset($_SESSION['alert_error']);
                   <? } ?>*/
 
 				  ?>
-				  <a href="https://t.me/kickgamemessengerbot?start=<?= $arUser["ID"]?>"><?=GetMessage('PERSONAL_CONNECT_TELEGRAM')?></a>
+				  <a href="https://t.me/kickgamemessengerbot?start=<?= $arUser["ID"]?>" target="_blank"><?=GetMessage('PERSONAL_CONNECT_TELEGRAM')?></a>
                 </div>
               </div>
               <div class="col-md-6 profile-info__item">
@@ -1608,4 +1608,5 @@ if (!empty($newMatchIds)) {
   </div>
     <?php }
 ?>
+
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
