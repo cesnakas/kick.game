@@ -12,6 +12,7 @@ $MESS['TYPE_ACCOUNT_PREMIUM_DAYS'] = 'day, day, days';
 $MESS['TYPE_ACCOUNT_CHANGE'] = 'Change';
 
 $MESS['PERSONAL_EDIT'] = 'Edit';
+$MESS['PERSONAL_CONNECT_TELEGRAM'] = 'Connect Telegram';
 $MESS['PERSONAL_ENTER_ID'] = 'Enter';
 $MESS['PERSONAL_MY_MOOD'] = 'My mood';
 $MESS['PERSONAL_REGION'] = 'Region, city';

@@ -12,6 +12,7 @@ $MESS['TYPE_ACCOUNT_PREMIUM_DAYS'] = 'день, дня, дней';
 $MESS['TYPE_ACCOUNT_CHANGE'] = 'Поменять';
 
 $MESS['PERSONAL_EDIT'] = 'Редактировать';
+$MESS['PERSONAL_CONNECT_TELEGRAM'] = 'Подключить Telgeram';
 $MESS['PERSONAL_ENTER_ID'] = 'Введите';
 $MESS['PERSONAL_MY_MOOD'] = 'Мое настроение';
 $MESS['PERSONAL_REGION'] = 'Регион, город';

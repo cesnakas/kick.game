@@ -1,6 +1,8 @@
 <?
-$MESS['CONTENT_ADV_TEXT_H3'] = 'PUBG Mobile tournament for €1000 for teams — registration is open';
-$MESS['CONTENT_ADV_TEXT_P'] = 'The number of seats is limited. Register on the KICKGAME platform to apply for participation today :3';
+$MESS['CONTENT_ADV_TEXT_H3'] = 'PUBG Mobile tournament for €3000 for teams — Registration closes on May 20';
+$MESS['CONTENT_ADV_TEXT_P'] = 'The number of seats is limited. Register on the KICKGAME platform to be one of the first to apply :3';
+$MESS['CONTENT_ADV_TEXT_PS'] = 'To participate in the tournament, you need a paid subscription for 7 days from the start of the tournament games.';
+
 $MESS['CONTENT_ADV_ACTION_BUTTON'] = 'submit an application';
 $MESS['CONTENT_ADV_ACTION_P'] = 'Conditions of the tournament<br/>and requirements for participants';
 
@@ -16,6 +18,7 @@ $MESS['CONTENT_MAIN_WIN'] = 'Win the tournament';
 $MESS['CONTENT_MAIN_WIN_TEXT'] = 'or several, and take a part of the prize pool in the amount of €1000 or €10000';
 
 $MESS['CONTENT_MAIN_REGISTER'] = 'Registration';
+$MESS['CONTENT_MAIN_LOGIN_TAKE_PART'] = 'Take part';
 $MESS['CONTENT_MAIN_LOGIN'] = 'Login';
 $MESS['CONTENT_MAIN_14DAYS'] = '14 days free trial period';
 
@@ -34,7 +37,7 @@ $MESS['MAIN_FUNCTIONS_MANAGEMENT_TITLE'] = 'Convenient team management';
 $MESS['MAIN_FUNCTIONS_MANAGEMENT_TEXT'] = 'Team building, game selection, calendar management, game reminders, and easy player swapping';
 $MESS['MAIN_FUNCTIONS_BROADCASTS_TITLE'] = 'Broadcasts and recordings of games';
 $MESS['MAIN_FUNCTIONS_BROADCASTS_TEXT'] = 'All of our games are streamed, and remain publicly available for viewing after completion';
-$MESS['MAIN_FUNCTIONS_GAMES_TITLE'] = 'Games for squads, duos, and solos';
-$MESS['MAIN_FUNCTIONS_GAMES_TEXT'] = 'From 15 praks daily, customizations and mini-tours every week, major tournaments every month';
+$MESS['MAIN_FUNCTIONS_GAMES_TITLE'] = 'Scrims for squads every day';
+$MESS['MAIN_FUNCTIONS_GAMES_TEXT'] = 'From 5 scrims daily, major tournaments every month';
 $MESS['MAIN_FUNCTIONS_RATINGS_TITLE'] = 'Ratings and statistics';
 $MESS['MAIN_FUNCTIONS_RATINGS_TEXT'] = 'Qualification of teams and players, which guarantees a game with equal opponents and personal statistics on the games played';

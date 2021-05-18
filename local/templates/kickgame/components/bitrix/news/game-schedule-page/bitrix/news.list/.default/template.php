@@ -343,7 +343,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
               if($tmp = getParticipationByMatchId($arItem["ID"])) {
                   $tmp = array_flip($tmp);
                   if (isset($tmp[$teamID])) { ?>
-                      <div class="new-game-schedule__participation-label">Слот № <?php echo $tmp[$teamID];?></div>
+                      <div class="new-game-schedule__participation-label"><?=GetMessage('SLOT_NO')?><?php echo $tmp[$teamID];?></div>
                   <?php }
               }
               ?>

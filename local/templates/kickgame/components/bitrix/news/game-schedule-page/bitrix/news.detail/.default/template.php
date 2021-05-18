@@ -349,17 +349,17 @@ unset($_SESSION['game-schedule-detail_error']);
                         <?if($now >= $dateFrom && $now <= $dateTo):?>
                             <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
                         <?else:?>
-                            <p>                        <p>Бесплатная запись на праки открывается за 1 час до начала при наличии свободных мест. Чтобы записаться на прак заранее, выбери удобный вариант подписки на команду. <a href="/subscription-plans/" class="btn-italic">Выбрать подписку</a></p></p>
+                            <p><?=GetMessage("GSP_ITEM_FREE_REG") ?><a href="<?=SIT_DIR?>subscription-plans/" class="btn-italic"><?=GetMessage('GSP_BUTTON_SUBSCRIPTION')?></a></p>
                         <?endif;?>
                     <?endif;?>
                 <?endif;?>
             <?else:?>
                 <p>
                     <?if(!$arUser["UF_ID_TEAM"]):?>
-                        Для участия в игре ты должен быть частью команды.
+                        <?=GetMessage('GSP_ITEM_PART_TEAM')?>
                     <?endif;?>
                     <?if(!$isCaptain):?>
-                        Только капитан может зарегистрироваться на игру.&nbsp;
+                        <?=GetMessage('GSP_ITEM_CAPTAIN_REG')?>
                     <?endif;?>
                 </p>
             <?endif;?>

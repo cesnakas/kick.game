@@ -1,6 +1,8 @@
 <?
-$MESS['CONTENT_ADV_TEXT_H3'] = 'Турнир по PUBG Mobile на 1000€ для команд — регистрация открыта';
-$MESS['CONTENT_ADV_TEXT_P'] = 'Количество мест ограничено. Зарегистрируйся на платформе KICKGAME, чтобы подать заявку на участие сегодня :3';
+$MESS['CONTENT_ADV_TEXT_H3'] = 'Турнир по PUBG Mobile на 3000€ для команд — Регистрация закрывается 20 мая';
+$MESS['CONTENT_ADV_TEXT_P'] = 'Количество мест ограничено. Зарегистрируйся на платформе KICKGAME, чтобы подать заявку на участие одним из первых :3';
+$MESS['CONTENT_ADV_TEXT_PS'] = 'Для участия в турнире требуется оплаченная подписка на 7 дней с момента начала турнирных игр.';
+
 $MESS['CONTENT_ADV_ACTION_BUTTON'] = 'подать заявку';
 $MESS['CONTENT_ADV_ACTION_P'] = 'Условия проведения турнира<br/>и требования к участникам';
 
@@ -16,6 +18,7 @@ $MESS['CONTENT_MAIN_WIN'] = 'Победить в турнире';
 $MESS['CONTENT_MAIN_WIN_TEXT'] = 'или нескольких, и забрать часть призового фонда размером в 1000€ или 10000€';
 
 $MESS['CONTENT_MAIN_REGISTER'] = 'Регистрация';
+$MESS['CONTENT_MAIN_LOGIN_TAKE_PART'] = 'Принять участие';
 $MESS['CONTENT_MAIN_LOGIN'] = 'Войти';
 $MESS['CONTENT_MAIN_14DAYS'] = '14 дней бесплатный пробный период';
 
@@ -34,7 +37,7 @@ $MESS['MAIN_FUNCTIONS_MANAGEMENT_TITLE'] = 'Удобное управление 
 $MESS['MAIN_FUNCTIONS_MANAGEMENT_TEXT'] = 'Создание команды, выбор игр, управление календарём, напоминания об играх и лёгкая замена игроков';
 $MESS['MAIN_FUNCTIONS_BROADCASTS_TITLE'] = 'Трансляции и записи игр';
 $MESS['MAIN_FUNCTIONS_BROADCASTS_TEXT'] = 'Все наши игры проходят со стримами, и остаются в открытом доступе для просмотра после завершения';
-$MESS['MAIN_FUNCTIONS_GAMES_TITLE'] = 'Игры для сквадов, дуо и соло';
-$MESS['MAIN_FUNCTIONS_GAMES_TEXT'] = 'От 15 праков ежедневно, кастомки и мини-турики каждую неделю, крупные турниры каждый месяц';
+$MESS['MAIN_FUNCTIONS_GAMES_TITLE'] = 'Праки для сквадов каждый день';
+$MESS['MAIN_FUNCTIONS_GAMES_TEXT'] = 'От 5 праков ежедневно, крупные турниры каждый месяц';
 $MESS['MAIN_FUNCTIONS_RATINGS_TITLE'] = 'Рейтинги и статистика';
 $MESS['MAIN_FUNCTIONS_RATINGS_TEXT'] = 'Квалификация команд и игроков, которая гарантирует игру с равными соперниками и личная статистика по сыгранным играм';

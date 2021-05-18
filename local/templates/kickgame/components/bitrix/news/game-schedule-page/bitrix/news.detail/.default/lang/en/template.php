@@ -34,3 +34,7 @@ $MESS['HEADING_PREMIUM_MESSAGE_LINK'] = ' a subscription';
 $MESS['ALERTS_TEAM_DELETED'] = 'Team deleted';
 
 $MESS['BUTTON_VALUE'] = 'Take part';
+$MESS["GSP_ITEM_FREE_REG"] = "Free registration for scrims opens 1 hour before the start, subject to availability. To sign up for SCRIM in advance, choose the convenient option of subscribing to the team.";
+$MESS['GSP_BUTTON_SUBSCRIPTION'] = 'Choose a subscription';
+$MESS['GSP_ITEM_PART_TEAM'] = 'To participate in the game, you must be part of the team.';
+$MESS['GSP_ITEM_CAPTAIN_REG'] = 'Only the captain can register for the game.&nbsp;';

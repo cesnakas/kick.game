@@ -977,7 +977,7 @@ unset($_SESSION['alert_error']);
                   <? } ?>*/
 
 				  ?>
-				  <a href="https://t.me/kickgamemessengerbot?start=<?= $arUser["ID"]?>">Подключить Telgeram</a>
+				  <a href="https://t.me/kickgamemessengerbot?start=<?= $arUser["ID"]?>"><?=GetMessage('PERSONAL_CONNECT_TELEGRAM')?></a>
                 </div>
               </div>
               <div class="col-md-6 profile-info__item">
