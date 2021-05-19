@@ -168,7 +168,7 @@ $teamID = $arUser['UF_ID_TEAM'];
         </div>
         <div class="cta__action">
             <?php if (!$USER->IsAuthorized()) { ?>
-                    <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button button"><?=GetMessage('NAV_REGISTER')?></a>
+                    <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button button"><?=GetMessage('MAIN_BTN_ACTION')?></a>
             <?php } else { ?>
                     <a href="<?=SITE_DIR?>personal/" class="button button"><?=GetMessage('NAV_LOGIN')?></a>
             <?php } ?>

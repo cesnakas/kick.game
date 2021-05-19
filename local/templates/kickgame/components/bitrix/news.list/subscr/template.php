@@ -94,7 +94,9 @@ while($ob_price = $res_price->GetNextElement())
                   if(!empty($sprice) && $sprice >0) {
                       ?>
                         <div class="subscription-plans-item__btn text-center" >
-                            <a data-id="" href="<?+SITE_DIR?>order/?orderid=<? echo $arItem[ID];?>" class="btn jsaddtoorder">Купить подписку</a>
+                            <a data-id="" href="<?=SITE_DIR?>order/?orderid=<? echo $arItem[ID];?>" class="btn jsaddtoorder">
+                                <?=GetMessage('SUBSCRIPTION_BTN_ORDER')?>
+                            </a>
                         </div>
                     <? } ?>
                 </div>

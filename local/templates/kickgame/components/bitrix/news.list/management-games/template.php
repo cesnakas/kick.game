@@ -259,15 +259,33 @@ function getMatchesByDate($date, $minRating, $maxRating) {
 }
 
 function getAvailableGroup($arItem) {
+    $diff =  strtotime($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) - time();
 
-//Через функцию getMatchesByDate возвращаем массив и разбиваем его в foreach
-    foreach(getMatchesByDate($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], $arItem["PROPERTIES"]['MIN_RATING']["VALUE"], $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]) as $match){
-//Проверяем есть ли свободные места в матче, если да то сохраняем match и выходим из цикла c break
-        $freeGroup = $match;
+    $matches = getMatchesByDate($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], $arItem["PROPERTIES"]['MIN_RATING']["VALUE"], $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]);
+    //Через функцию getMatchesByDate возвращаем массив и разбиваем его в foreach
+    // $k это позиция на которой мы сейчас находимся
+    $k = 0;
+    // $n это позиция последней полной группы
+    $n = -1;
+    foreach($matches as $match){
 
-        if(isPlace($match['ID'])){
+//Ставим группу в переменную возврата, в случае того если не будет брейка, возвращается именно эта группа
+        $freeGroup  = $matches[$n];
+        $tmp = getParticipationByMatchId($match["ID"]);
+        $tmp = array_flip($tmp);
+        $fill = 18 - count($tmp);
+        if(count($tmp) == 18) $n = $n + 1;
+// Случай если осталось меньше часа, отображаем новые группы только если в них до этого регались
+        if($fill <= 17 && $diff < 3600 && count($tmp) != 18){
+            $freeGroup  = $matches[$k];
             break;
         }
+// Случай если осталось больше часа, отображаем новые группы если в них вообще есть свободное место
+        if(($fill > 0 && $diff > 3600)){
+            $freeGroup  = $matches[$k];
+            break;
+        }
+        $k= $k+1;
     }
 
     return $freeGroup;
@@ -279,16 +297,19 @@ function getAvailableGroup($arItem) {
     $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
 
 
-    $freeGroup = getAvailableGroup($arItem);
-    //заменяем данные выводимой строки на данные матча со свободными местами
-    if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"]) {
-        //URL
-        $arItem["DETAIL_PAGE_URL"] = "/game-schedule/".$freeGroup["CODE"]."/";
-        //ID
-        $arItem['ID'] = $freeGroup['ID'];
-        //GROUP
-        $arItem["PROPERTIES"]["GROUP"]["VALUE"] = $freeGroup["PROPERTY_53"];
-    }
+    $diff =  strtotime($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) - time();
+        //Если группа возвращаемая нам функцией равна группе в arItems то мы выводим элемент в расписании
+        $freeGroup = getAvailableGroup($arItem);
+        //заменяем данные выводимой строки на данные матча со свободными местами
+        if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) {
+            //URL
+            $arItem["DETAIL_PAGE_URL"] = "/game-schedule/".$freeGroup["CODE"]."/";
+            //ID
+            $arItem['ID'] = $freeGroup['ID'];
+            //GROUP
+            $arItem["PROPERTIES"]["GROUP"]["VALUE"] = $freeGroup["PROPERTY_53"];
+        }
+
 
     switch($arItem["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]) {
         case 4:

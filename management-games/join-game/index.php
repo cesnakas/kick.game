@@ -270,13 +270,31 @@ function getMembersByMatchId($matchId) {
 
 
 //Проверяем учавствует ли комманда в другом матче в это же время
-function isSameTime($teamID, $gameTime){
+function isSameTime($teamID, $gameTime, $matchID){
     global $DB;
-    $sql = " SELECT t.PROPERTY_27 as matchid, t.PROPERTY_28 as teamid, m.PROPERTY_4
-    FROM b_iblock_element_prop_s6 as t, b_iblock_element_prop_s3 as m
-    WHERE m.IBLOCK_ELEMENT_ID = t.PROPERTY_27
-    AND t.PROPERTY_28 = " . $teamID . "
-    AND UNIX_TIMESTAMP(m.PROPERTY_4) BETWEEN (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') - 6600) AND (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') + 6600)";
+    $matches = getChainMatches( $matchID );
+    $gamesCount = count($matches["chain"]);
+    $noRegTime = $gamesCount * 2100;
+
+    $sql = "SELECT m.IBLOCK_ELEMENT_ID as matchID, m.PROPERTY_4  FROM b_iblock_element_prop_s4 as t
+    INNER JOIN b_iblock_element_prop_s3 as m ON m.IBLOCK_ELEMENT_ID = t.PROPERTY_13
+    WHERE UNIX_TIMESTAMP(m.PROPERTY_4) BETWEEN (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') - 2100) AND (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') + ". $noRegTime. ")
+    AND (t.PROPERTY_36 = " . $teamID . "
+    OR t.PROPERTY_35 = " . $teamID . "
+    OR t.PROPERTY_33 = " . $teamID . "
+    OR t.PROPERTY_34 = " . $teamID . "
+    OR t.PROPERTY_9 = " . $teamID . "
+    OR t.PROPERTY_10 = " . $teamID . "
+    OR t.PROPERTY_11 = " . $teamID . "
+    OR t.PROPERTY_12 = " . $teamID . "
+    OR t.PROPERTY_39 = " . $teamID . "
+    OR t.PROPERTY_40 = " . $teamID . "
+    OR t.PROPERTY_41 = " . $teamID . "
+    OR t.PROPERTY_42 = " . $teamID . "
+    OR t.PROPERTY_43 = " . $teamID . "
+    OR t.PROPERTY_51 = " . $teamID . "
+    OR t.PROPERTY_52 = " . $teamID . ")";
+
     $rsData = $DB->Query($sql);
     $matches = [];
         while($res = $rsData->fetch()){
@@ -645,7 +663,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
 
                     if (($teamRating['rating']>= $curMatch['MIN_RATING']['VALUE'] && $teamRating['rating'] <= $curMatch['MAX_RATING']['VALUE']) || $curMatch['TYPE_MATCH']["VALUE_ENUM_ID"] != 6) {
 
-                        if (isSameTime($teamID, $objDateTime) == 0) {
+                        if (isSameTime($teamID, $objDateTime, $curMatch["ID"]) == 0) {
                             if ($idTournament = isTournament($mId)) {
 
                                 $registeredMatchId = checkRegistrationTeamOnTournament($teamID, $idTournament, $curMatch["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"]);

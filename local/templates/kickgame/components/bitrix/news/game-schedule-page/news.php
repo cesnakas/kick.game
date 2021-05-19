@@ -112,7 +112,7 @@ $this->setFrameMode(true);
     </div>
     <div class="flex-table-new--body">
 <?php
-$curDate = date('Y-m-d H:i:s', time()+600);
+$curDate = date('Y-m-d H:i:s', time());
 $finalsDate = date('Y-m-d H:i:s', time()-(3600*24*3));
 GLOBAL $arrFilterDateTime;
 $arrFilterDateTime=Array(
