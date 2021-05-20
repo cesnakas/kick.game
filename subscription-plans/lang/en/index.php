@@ -25,8 +25,8 @@ $MESS['SP_SUBSCRIPTION_PLAN_ITEM_7'] = 'Participation in the quarterly tournamen
 $MESS['SP_SUBSCRIPTION_PLAN_ITEM_8'] = 'Participation in practical games';
 $MESS['SP_SUBSCRIPTION_PLAN_ITEM_9'] = 'Participation in the monthly tournament from €1000';
 $MESS['SP_SUBSCRIPTION_PLAN_ITEM_10'] = 'Participation in the weekly tournament from €100';
-$MESS['SP_SUBSCRIPTION_PLAN_ITEM_11'] = 'Participation in games with streams and commentators';
-$MESS['SP_SUBSCRIPTION_PLAN_ITEM_12'] = 'My personal rating';
-$MESS['SP_SUBSCRIPTION_PLAN_ITEM_13'] = 'My team rating';
+$MESS['SP_SUBSCRIPTION_PLAN_ITEM_11'] = 'My personal rating';
+$MESS['SP_SUBSCRIPTION_PLAN_ITEM_12'] = 'My team rating';
+$MESS['SP_SUBSCRIPTION_PLAN_ITEM_13'] = 'Participation in games with streams and commentators';
 
 $MESS['SP_SUBSCRIPTION_PLAN_BUY'] = 'Buy a subscription';

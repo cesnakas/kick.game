@@ -2,6 +2,7 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Подписка");
 ?>
+
     <div class="container">
         <h1 class="text-center"><?=GetMessage('SP_HEADER')?></h1>
         <div class="row justify-content-center text-center">
@@ -85,8 +86,11 @@ $APPLICATION->SetTitle("Подписка");
                 "COMPONENT_TEMPLATE" => ".default"
             ),
             false
-        ); ?><br>
-
+        ); ?>
+        <br>
 
     </div>
-<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+
+<?
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
+?>
