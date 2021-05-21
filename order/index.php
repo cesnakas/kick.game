@@ -31,7 +31,7 @@ if ($USER->IsAuthorized()) {
         CModule::IncludeModule("iblock");
         CModule::IncludeModule("catalog");
 
-        $arSelect = array("ID", "NAME", "CATALOG_PRICE_1", "CATALOG_GROUP_1", "PROPERTY_COL");
+        $arSelect = array("ID", "NAME", "CATALOG_PRICE_1", "CATALOG_GROUP_1", "PROPERTY_COL", "PROPERTY_NAME_ENG");
         $arFilter = array("IBLOCK_CODE" => "tovari", "ID" => $userbe, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
         $res = CIBlockElement::GetList(array(), $arFilter, false, array("nTopCount" => 1), $arSelect);
         $counttake = $res->SelectedRowsCount();
@@ -79,16 +79,24 @@ if ($USER->IsAuthorized()) {
 
 
                             <span class="form-field__helper textstyle">
-<?=GetMessage('FORM_FIELDS_HELPER_TARIFF')?> <span><? echo $datatarrif[NAME]; ?></span><?=GetMessage('FORM_FIELDS_HELPER_FOR')?><?= num_decline($datatarrif[PROPERTY_COL_VALUE], GetMessage('FORM_FIELDS_HELPER_MONTH')); ?>
-</span>
+                                <?=GetMessage('FORM_FIELDS_HELPER_TARIFF')?>
+                                <? if (LANGUAGE_ID == 'ru'): ?>
+                                    <span><?=$datatarrif[NAME];?></span>
+                                <? elseif (LANGUAGE_ID == 'en'): ?>
+                                    <span><?=$datatarrif[PROPERTY_NAME_ENG_VALUE];?></span>
+                                <? endif; ?>
+                                <?=GetMessage('FORM_FIELDS_HELPER_FOR')?>
+                                <?=num_decline($datatarrif[PROPERTY_COL_VALUE], GetMessage('CURRENT_SUBSCRIPTION_DAYS'));?>
+                            </span>
 
                             <?
                             $tosumm = $datatarrif["CATALOG_PRICE_1"]/* * $datatarrif[PROPERTY_COL_VALUE]*/;
                             ?>
                             <br>
                             <span class="form-field__helper textstyle">
-<?=GetMessage('FORM_FIELDS_HELPER_SUM')?><span><? echo $tosumm; ?></span> €
-</span>
+                                <?=GetMessage('FORM_FIELDS_HELPER_SUM')?>
+                                <span><? echo $tosumm; ?></span> €
+                            </span>
 
                             <br><br>
                             <!--

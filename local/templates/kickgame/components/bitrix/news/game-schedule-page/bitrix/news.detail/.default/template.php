@@ -337,14 +337,22 @@ unset($_SESSION['game-schedule-detail_error']);
                         </div>
                     <?/*endif;*/?>
                 <?elseif($arResult["DISPLAY_PROPERTIES"]["TYPE_MATCH"]["VALUE_ENUM_ID"] == 6):?>
-                    <?$userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userID);?>
+                    <?php $userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userID);?>
                     <?if(!empty($userProductGroups) && count($userProductGroups)):?>
                         <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
                     <?else:?>
                         <?
                         $now = (new DateTime('now'))->getTimestamp();
-                        $dateFrom = DateTime::createFromFormat("d.m.Y H:i:s", $arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"])->modify('-1 hours')->getTimestamp();
-                        $dateTo = DateTime::createFromFormat("d.m.Y H:i:s", $arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"])->getTimestamp();
+
+                        $convertDate = ConvertDateTime($arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], "DD.MM.YYYY HH:MI:SS");
+                        $dateTo = MakeTimeStamp($convertDate, "DD.MM.YYYY HH:MI:SS");
+                        $dateFrom = AddToTimeStamp(array("HH" => -1), $dateTo);
+                        //echo $convertDate.'<br>';
+                        //echo $dateFrom.'<br>';
+                        //echo $dateTo;
+                        //echo "Результат: ".date("d.m.Y H:i:s", $dateFrom);
+                        //$dateFrom = DateTime::createFromFormat("d.m.Y H:i:s", $arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"])->modify('-1 hours')->getTimestamp();
+                        //$dateTo = DateTime::createFromFormat("d.m.Y H:i:s", $arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"])->getTimestamp();
                         ?>
                         <?if($now >= $dateFrom && $now <= $dateTo):?>
                             <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>

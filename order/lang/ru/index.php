@@ -6,7 +6,7 @@ $MESS['HEADING_AUTHENTICATION'] = 'Оплатить заявку';
 $MESS['FORM_FIELDS_HELPER_TARIFF'] = 'Выбран тариф ';
 $MESS['FORM_FIELDS_HELPER_FOR'] = ' на ';
 $MESS['FORM_FIELDS_HELPER_MONTH'] = ' месяц';
-$MESS['FORM_FIELDS_HELPER_SUM'] = 'Сумма ';
+$MESS['FORM_FIELDS_HELPER_SUM'] = 'Сумма: ';
 
 $MESS['CURRENT_SUBSCRIPTION'] = 'Текущая подписка будет завершена через ';
 $MESS['CURRENT_SUBSCRIPTION_DAYS'] = 'день, дня, дней';

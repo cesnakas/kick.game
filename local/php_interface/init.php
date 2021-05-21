@@ -126,15 +126,24 @@ class CustomSubscribes
                 $productsIds[] = intval($v["PROPERTY_USER_GROUP_VALUE"]);
             }*/
             $res = CUser::GetUserGroupList($userId);
+
             while ($group = $res->Fetch())
             {
+              //dump($userId, 1);
+              //dump($group, 1);
+                //dump($group["GROUP_ID"]);
+                //dump(in_array($group["GROUP_ID"], $productsIds));
                 if(in_array($group["GROUP_ID"], $productsIds))
                 {
                     if($group["DATE_ACTIVE_TO"] && $group["DATE_ACTIVE_FROM"])
                     {
                         $now = (new DateTime('now'))->getTimestamp();
-                        $dateFrom = DateTime::createFromFormat("d.m.Y H:i:s", $group["DATE_ACTIVE_FROM"])->getTimestamp();
-                        $dateTo = DateTime::createFromFormat("d.m.Y H:i:s", $group["DATE_ACTIVE_TO"])->getTimestamp();
+
+                        $convertDateFrom = ConvertDateTime($group["DATE_ACTIVE_FROM"], "DD.MM.YYYY HH:MI:SS");
+                        $convertDateTo = ConvertDateTime($group["DATE_ACTIVE_TO"], "DD.MM.YYYY HH:MI:SS");
+                        $dateFrom = MakeTimeStamp($convertDateFrom, "DD.MM.YYYY HH:MI:SS");
+                        $dateTo = MakeTimeStamp($convertDateTo, "DD.MM.YYYY HH:MI:SS");
+
                         if($now >= $dateFrom && $now <= $dateTo)
                         {
                             $result[] = $group;
