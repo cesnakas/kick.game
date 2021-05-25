@@ -131,26 +131,6 @@ function getMatchById($matchId) {
     return null;
 }
 
-// получаем турнир по id
-function getTournamentById($tournamentId) {
-    $arSelect = Array("ID",
-        "NAME",
-        "DATE_ACTIVE_FROM",
-        "PREVIEW_TEXT",
-        "PREVIEW_PICTURE",
-        "DETAIL_TEXT",
-        "PROPERTY_*"
-    );//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-    $arFilter = Array("IBLOCK_ID" =>7, "ID" => $tournamentId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-    if ($ob = $res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        return array_merge($arFields, $arProps);
-    }
-    return null;
-}
-
 // получаем состав команды
 function getCoreTeam($teamID)
 {
@@ -840,10 +820,7 @@ foreach ($propertiesCases as $case) {
     }
 }
 
-
-//dump($emptyPlace);
 // сделать проверку, что моей команды еще нет в участниках матча, если моя команду существует в этом матче, то $emptyplace = falce
-
 if ($emptyPlace != false) {
     foreach ($membersMatches as $membersMatchId) {
         CIBlockElement::SetPropertyValues($membersMatchId, 4, $teamID, $emptyPlace);

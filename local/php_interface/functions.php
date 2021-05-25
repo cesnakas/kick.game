@@ -12,6 +12,124 @@ function getTeamById($teamID) {
     return null;
 }
 
+function getUsrById($id)
+{
+    $filter = Array("GROUPS_ID" => Array(7), 'ID' => $id);
+    $arParams["SELECT"] = array("UF_*");
+    $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, $arParams);
+    $output = false;
+    if ($rsUser = $elementsResult->Fetch())
+    {
+        $output = $rsUser;
+    }
+    return $output;
+
+}
+
+function getSquad($idMatch, $idTeam)
+{
+    $squadIds = getSquadByIdMatch($idMatch, $idTeam);
+
+
+    if(!$squadIds) return false;
+    for ($i = 1; $i < 7 ; $i++){
+        $squad[] = getUsrById($squadIds["PLAYER_".$i]["VALUE"]);
+    }
+    return $squad;
+}
+
+// получаем турнир по id
+function getTournamentById($tournamentId) {
+    $arSelect = Array("ID",
+        "NAME",
+        "DATE_ACTIVE_FROM",
+        "PREVIEW_TEXT",
+        "PREVIEW_PICTURE",
+        "DETAIL_TEXT",
+        "PROPERTY_*"
+    );//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" =>7, "ID" => $tournamentId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    if ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        return array_merge($arFields, $arProps);
+    }
+    return null;
+}
+
+function getMatchesByTournamentID($tournamentID, $stageID){
+    GLOBAL $DB;
+
+    $sql = "SELECT m.IBLOCK_ELEMENT_ID as IDs FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ". $tournamentID." AND m.PROPERTY_8 is NULL AND m.PROPERTY_22 =". $stageID;
+
+    $res = $DB->Query($sql);
+    $matches = [];
+    while( $row = $res->Fetch() ) {
+        $matches[] = $row["IDs"];
+    }
+    return $matches;
+
+}
+
+function findFreeGame($tournamentID, $stageID){
+
+$IDs = getMatchesByTournamentID($tournamentID, $stageID);
+foreach($IDs as $gameID){
+    $match = getMembersByMatchId($gameID);
+    $match = $match[0];
+//dump($match);
+
+    $propertiesCases = getPlacesKeys();
+    foreach ($propertiesCases as $case) {
+        if ($match[$case]+0 == 0) {
+            return $gameID;
+        }
+    }
+}
+    return false;
+
+}
+
+function formDate($date, $format){
+    global $intlFormatter;
+    $date = new DateTime($date);
+    $intlFormatter->setPattern($format);
+    $fDate = $intlFormatter->format($date);
+
+    return $fDate;
+}
+
+function getNextGame($teamID, $tournamentID){
+    GLOBAL $DB;
+    if(!$teamID) return false;
+    $sql = "SELECT m.IBLOCK_ELEMENT_ID as matchID FROM b_iblock_element_prop_s6 as t 
+            INNER JOIN b_iblock_element_prop_s3 as m ON t.PROPERTY_27 = m.IBLOCK_ELEMENT_ID
+            WHERE t.PROPERTY_28 =" .$teamID. "
+            AND m.PROPERTY_3 =" .$tournamentID. "
+            ORDER BY 1 DESC LIMIT 1";
+
+    $res = $DB->Query($sql);
+    if( $row = $res->Fetch() ) {
+        $game = $row["matchID"];
+        return $game;
+    }
+    return false;
+}
+
+function countTeams($matchID){
+    GLOBAL $DB;
+    $sql = "SELECT count(*) as teamsCount FROM b_iblock_element_prop_s6 as t 
+WHERE t.PROPERTY_27 = ".$matchID;
+
+    $res = $DB->Query($sql);
+    if( $row = $res->Fetch() ) {
+        $count = $row["teamsCount"];
+        return $count;
+    }
+    return false;
+}
+
 function getSquadByIdPlayer($idTeam, $idUser)
 {
     GLOBAL $DB;
@@ -93,6 +211,33 @@ function willTeamPrem($teamID, $matchTime){
         }
     }
     return true;
+}
+
+function getStagePeriod($stage, $tournament){
+    GLOBAL $DB;
+    $sql = "SELECT count(*) as gamesCount, min(m.PROPERTY_4) as min, max(m.PROPERTY_4) as max FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ".$tournament." AND m.PROPERTY_8 is NULL AND m.PROPERTY_22 = ".$stage;
+    $res = $DB->Query($sql);
+
+    if($row = $res->Fetch()){
+        $dates["min"] = formDate($row["min"], 'd MMMM');
+        $dates["max"] = formDate($row["max"], 'd MMMM yyyy');
+        $dates["games"] = $row["gamesCount"];
+        return $dates;
+    }
+    return false;
+}
+
+function getTournamentPeriod($tournament){
+    GLOBAL $DB;
+    $sql = "SELECT min(m.PROPERTY_4) as min, max(m.PROPERTY_4) as max FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ".$tournament;
+    $res = $DB->Query($sql);
+
+    if($row = $res->Fetch()){
+        $dates["min"] = formDate($row["min"], 'd MMMM');
+        $dates["max"] = formDate($row["max"], 'd MMMM yyyy');
+        return $dates;
+    }
+    return false;
 }
 
 function getUsersByGroup($groupID){

@@ -141,56 +141,6 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
     </div>
   </div>
 </div>
-<div class="modal fade " id="pubgIdVerified" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
-          <i></i>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <h3 class="modal-body__title"><?=GetMessage('MODAL_VERIFIED_TITLE')?></h3>
-        <div class="modal-body__content">
-          <p><?=GetMessage('MODAL_VERIFIED_SUBTITLE_P1')?></p>
-          <p><?=GetMessage('MODAL_VERIFIED_SUBTITLE_P2')?></p>
-          <ul>
-            <li><?=GetMessage('MODAL_VERIFIED_LIST_ITEM-1')?></li>
-            <li><?=GetMessage('MODAL_VERIFIED_LIST_ITEM-2')?></li>
-            <li><?=GetMessage('MODAL_VERIFIED_LIST_ITEM-3')?></li>
-            <li><?=GetMessage('MODAL_VERIFIED_LIST_ITEM-4')?></li>
-          </ul>
-        </div>
-
-
-
-        <form action="<?= POST_FORM_ACTION_URI; ?>" method="post" class="form-scrin-pubgid" enctype="multipart/form-data" novalidate="novalidate">
-          <?=bitrix_sessid_post()?>
-          <div class="form-field">
-            <input type="file" class="form-field__input-file inputFileScrinPubg inputFile" data-multiple-caption="<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-1')?>{count}<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-2')?>" name="scrinPubg" id="scrinPubgId">
-            <label for="scrinPubgId" class="form-field__upload-file">
-              <i></i><span><?=GetMessage('MODAL_VERIFIED_UPLOAD_FILE')?></span> <div class="fileUploadedImg fileUploadedScrinPubg"></div>
-            </label>
-          </div>
-
-          <div class="modal-body__btn">
-            <button type="submit" name="scrinPubgFirst" class="btn mr-3"><?=GetMessage('MODAL_VERIFIED_BUTTON_SUBMIT')?></button>
-            <button type="button" class="btn btn_border" data-dismiss="modal"><?=GetMessage('MODAL_VERIFIED_BUTTON_CANCEL')?></button>
-          </div>
-        <div class="modal-body__content modal-body__content_sub">
-            <p>
-                <?=GetMessage('MODAL_VERIFIED_FOOTER_CONTENT-1')?>
-                <br>
-                <?=GetMessage('MODAL_VERIFIED_FOOTER_CONTENT-2')?>
-            </p>
-        </div>
-        </form>
-      </div>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="modal fade " id="pubgIdRejected" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -260,12 +210,12 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
 
 
-        <form action="<?= POST_FORM_ACTION_URI; ?>" method="post" class="form-scrin-pubgid" enctype="multipart/form-data" novalidate="novalidate">
+        <form action="<?= POST_FORM_ACTION_URI; ?>111" method="post" class="form-scrin-pubgid" enctype="multipart/form-data" novalidate="novalidate">
           <?=bitrix_sessid_post()?>
           <div class="form-field">
             <input type="file" class="form-field__input-file inputFileScrinPubg inputFile" data-multiple-caption="<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-1')?>{count}<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-2')?>"  name="scrinPubg" id="scrinPubgId">
             <label for="scrinPubgId" class="form-field__upload-file">
-              <i></i><span><?=GetMesssage('MODAL_VERIFIED_UPLOAD_FILE')?></span> <div class="fileUploadedImg fileUploadedScrinPubg"></div>
+              <i></i><span><?=GetMessage('MODAL_VERIFIED_UPLOAD_FILE')?></span> <div class="fileUploadedImg fileUploadedScrinPubg"></div>
             </label>
           </div>
 

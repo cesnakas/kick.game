@@ -39,7 +39,7 @@ $this->setFrameMode(true);
 $points = countTeamsRating();
 //dump( $points ); */
 
-function countTeams(){
+function countAllTeams(){
   GLOBAL $DB;
   $sql = 'SELECT count(u.IBLOCK_ELEMENT_ID) as c 
 			FROM  b_iblock_element_prop_s1 AS u
@@ -64,7 +64,7 @@ function showTeams(){
         ->setPageSize($count_tema)
         ->initFromUri();
 
-    $count_zap=countTeams(); // сделать запрос для определения количества всех строк
+    $count_zap=countAllTeams(); // сделать запрос для определения количества всех строк
     // в sql вставляем limit и Offset
     $strSql = 'SELECT a.ACTIVE, u.PROPERTY_19 as avatar, u.PROPERTY_21 AS name, u.IBLOCK_ELEMENT_ID as id_team, IF(total IS NOT Null,total, 0) + IF(u.PROPERTY_31 IS NOT Null, u.PROPERTY_31, 300) as total, kills 
                                 FROM b_iblock_element_prop_s1 as u 

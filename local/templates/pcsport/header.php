@@ -5,6 +5,17 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
 <!DOCTYPE html>
 <html>
 	<head>
+        <script type="text/javascript">
+            function getTeams(matchID) {
+                PageMethods.getRegisteredTeams(matchID, onSuccess, onFailure);
+            }
+            function onSuccess(results) {
+                alert(results);
+            }
+            function onFailure(error) {
+                alert(error);
+            }
+        </script>
 		<?$APPLICATION->ShowHead();?>
 		<title><?$APPLICATION->ShowTitle();?></title>
 		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />

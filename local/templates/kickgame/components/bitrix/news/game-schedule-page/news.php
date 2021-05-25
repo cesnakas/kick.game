@@ -122,18 +122,19 @@ $arrFilterDateTime=Array(
         array(
             "LOGIC" => "AND",
       array("PROPERTY_GROUP" => "A"),
-            ">=PROPERTY_DATE_START" => $curDate,),
+      array(">=PROPERTY_DATE_START" => $curDate)),
 
-        array(
-            "LOGIC" => "AND",
-      array("PROPERTY_TYPE_MATCH" => 5),
-            ">=PROPERTY_DATE_START" => $curDate,),
-
-        array(
+        /*array(
             "LOGIC" => "AND",
             array("PROPERTY_STAGE_TOURNAMENT" => 1),
-            array(">=PROPERTY_DATE_START" => $finalsDate),
-        )
+            array("PROPERTY_GROUP" => 1),
+            array(">=PROPERTY_DATE_START" => $finalsDate))
+        */
+        array(
+            "LOGIC" => "AND",
+            array("PROPERTY_TYPE_MATCH" => 5),
+            //array("PROPERTY_GROUP" => 1),
+            array(">=PROPERTY_DATE_START" => $finalsDate))
     ),
 
     "PROPERTY_PREV_MATCH" => false,

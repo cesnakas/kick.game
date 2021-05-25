@@ -75,55 +75,7 @@ while($ob_price = $res_price->GetNextElement())
                     </div>
                 </div>
                 <!--//-->
-                <div class="card-custom-collapse collapse <? if($elms == 1) {?>show<? }?>" id="accordionCollapse<? echo $arItem['ID'];?>" role="tabpanel" aria-labelledby="accordionHeading<? echo $arItem['ID'];?>" data-parent="#accordion">
-                    <div class="card-custom-body">
-                        <?
-                        unset($stvalsall);
-                        foreach($arItem['PROPERTIES']['CHAR']['VALUE'] as $stvals) {
-                            $stvalsall[$stvals] = $stvals;
-                        }
-                        ?>
-                        <ul>
-                            <? if (LANGUAGE_ID == 'ru'): ?>
 
-                                <? foreach($elems as $ker => $rvals): ?>
-                                    <? if(in_array($ker,$stvalsall)) { ?>
-                                        <li><?=$rvals?></li>
-                                    <? } else { ?>
-                                        <li class="not"><?=$rvals?></li>
-                                    <? } ?>
-                                <? endforeach; ?>
-
-                            <? elseif (LANGUAGE_ID == 'en'): ?>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_1')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_2')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_3')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_4')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_5')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_6')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_7')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_8')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_9')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_10')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_11')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_12')?></li>
-                                <li><?=GetMessage('SP_SUBSCRIPTION_PLAN_ITEM_13')?></li>
-                            <? endif; ?>
-
-                            <?/*
-                            foreach($elems as $ker => $rvals) {
-                                if(in_array($ker,$stvalsall)) {
-                                    echo '<li>'.$rvals.'</li>';
-                                } else {
-                                    echo '<li class="not">'.$rvals.'</li>';
-                                }
-                            }
-                            */?>
-
-                        </ul>
-                    </div>
-                </div>
-                <!--//-->
                 <?
                 $sprice = $elems_price[$arItem[ID]]["CATALOG_PRICE_1"];
                 if(!empty($sprice) && $sprice >0) {

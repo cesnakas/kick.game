@@ -1,4 +1,4 @@
-<?
+я<?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Турнирный");
 CModule::IncludeModule('iblock');
@@ -7,6 +7,50 @@ $success = [];
 // собираем все ошибки
 $errors = [];
 // create tournament
+
+function getMatchesByDate($date, $tournamentID) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array(
+        "IBLOCK_ID" =>3,
+        "PROPERTY_PREV_MATCH" => false,
+        "PROPERTY_TYPE_MATCH" => 5,
+        "PROPERTY_TOURNAMENT" => $tournamentID,
+        "PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD HH:MI:SS"),
+        //  "<=PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD")." 23:59:59",
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $output = [];
+
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        //$arProps = $ob->GetProperties();
+        $output[] = $arFields;
+    }
+    return $output;
+}
+
+function getFinalsMatches($tournamentID, $stage) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array(
+        "IBLOCK_ID" =>3,
+        "PROPERTY_PREV_MATCH" => false,
+        "PROPERTY_TYPE_MATCH" => 5,
+        "PROPERTY_TOURNAMENT" => $tournamentID,
+        "PROPERTY_STAGE_TOURNAMENT" => 1,
+        //  "<=PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD")." 23:59:59",
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $output = [];
+
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        //$arProps = $ob->GetProperties();
+        $output[] = $arFields;
+    }
+    return $output;
+}
 
 function getTournaments() {
     $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
@@ -129,6 +173,11 @@ function makeUnicUrlCode($code,$IBlockId)
 
 function createMatchItem($PROP = [], $level = 0)
 {
+//    $PROP['GROUP'] = 1 + count( getMatchesByDate( $PROP['DATE_START'],  $PROP['TOURNAMENT']));
+//    if ($PROP['STAGE_TOURNAMENT'] == 1){
+//        $PROP['GROUP'] = 1 + count(getFinalsMatches($PROP['TOURNAMENT'], $PROP['STAGE_TOURNAMENT']));
+//    }
+
     $el = new CIBlockElement;
     $iblock_id = 3;
     $params = Array(
@@ -172,6 +221,10 @@ function createMatchItem($PROP = [], $level = 0)
 
 function createMatchChain($propsMatch, $countChainMatches, $startDateTime): array
 {
+    $propsMatch['GROUP'] = 1 + count( getMatchesByDate( $propsMatch['DATE_START'],  $propsMatch['TOURNAMENT']));
+    if ($propsMatch['STAGE_TOURNAMENT'] == 1){
+        $propsMatch['GROUP'] = 1 + count(getFinalsMatches($propsMatch['TOURNAMENT'], $propsMatch['STAGE_TOURNAMENT']));
+    }
     $matchDuration = 40; // 30 min
     $resIds = [];
     //dump($countChainMatches, 1);

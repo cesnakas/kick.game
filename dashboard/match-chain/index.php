@@ -266,6 +266,80 @@ function setStagePass($firstMatchID, $stageKeyPass){
         updateTeam($props, $arrForRank[$i]["id"]);
     }
 }
+
+
+function moveWinners($match, $teamIds){
+
+    $playerKeys = [
+        'PLAYER_1',
+        'PLAYER_2',
+        'PLAYER_3',
+        'PLAYER_4',
+        'PLAYER_5',
+        'PLAYER_6',
+    ];
+
+    $squad = $_POST['squad'];
+    $props = [];
+    $tmp = [];
+    foreach ($playerKeys as $key => $name) {
+        $props[$name] = $squad[$key]+0;
+        if ($props[$name] > 0) {
+            $tmp[] = $key;
+        }
+    }
+    $props['MATCH_STAGE_ONE'] = $mId;
+    $props['TEAM_ID'] = $teamID;
+    $code = 'SQUAD_' . $match['NAME'];
+
+    $squadId = createSquad($props, $code);
+
+    if ($squadId) {
+//dump($squadId);
+// получаем участников матчей
+        $resMembersMatches = getMembersByMatchId($chainMatches);
+        $membersMatches = [];
+
+        if ($resMembersMatches) {
+            foreach ($resMembersMatches as $membersMatch) {
+                $membersMatches[] = $membersMatch['ID'];
+            }
+        }
+
+//dump($membersMatches);
+        $match = getMembersByMatchId($match["ID"]);
+        $match = $match[0];
+//dump($match);
+
+        $propertiesCases = getPlacesKeys();
+
+        $emptyPlace = false;
+        foreach ($propertiesCases as $case) {
+            if ($match[$case]+0 == 0) {
+                $emptyPlace = $case;
+                break;
+            }
+        }
+
+
+//dump($emptyPlace);
+// сделать проверку, что моей команды еще нет в участниках матча, если моя команду существует в этом матче, то $emptyplace = falce
+
+        if ($emptyPlace != false) {
+            foreach ($membersMatches as $membersMatchId) {
+                CIBlockElement::SetPropertyValues($membersMatchId, 4, $teamID, $emptyPlace);
+            }
+        } else {
+            CIBlockElement::Delete($squadId);
+            $alertManagementSquad = 'Разместить команду не удалось';
+            createSession('management-games_success', $alertManagementSquad);
+        }
+
+    }
+
+
+}
+
 function isMatchRes($matchID){
     GLOBAL $DB;
     $sql = 'SELECT * FROM b_iblock_element_prop_s5 as t WHERE t.PROPERTY_14 = '.$matchID;
