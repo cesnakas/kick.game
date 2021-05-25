@@ -624,6 +624,7 @@ $minLimPlayers = 4;
 $maxLimPlayers = 6;
 $alertManagementSquad = '';
 $objDateTime = new DateTime($curMatch['DATE_START']['VALUE']);
+$userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userID);
 if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
     if (!empty($_POST['squad'])) {
             $squad = $_POST['squad'];
@@ -668,8 +669,20 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
 
                                 $registeredMatchId = checkRegistrationTeamOnTournament($teamID, $idTournament, $curMatch["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"]);
                                 //dump($registeredMatchId, 1);
-                                if ($registeredMatchId > 0) {
+                                if(!empty($userProductGroups) && count($userProductGroups)) {
+                                    $convertDateSubscribeTo = ConvertDateTime($userProductGroups[0]["DATE_ACTIVE_TO"], "DD.MM.YYYY HH:MI:SS");
+                                    $convertDateStartTournament = ConvertDateTime($curMatch["DATE_START"]['VALUE'], "DD.MM.YYYY HH:MI:SS");
+                                    $dateStartTournament = DateTime::createFromFormat('d.m.Y H:i:s', $convertDateStartTournament);
+                                    $datePremTo = new DateTime($convertDateSubscribeTo);
+                                    $dayDiffToStartTournament = $dateStartTournament->diff($datePremTo)->format('%R%a') + 0;
 
+                                }
+
+                                if ($dayDiffToStartTournament < 7) {
+                                    $alertManagementSquad = GetMessage('JG_BEFORE_TOURNAMENT_REGISTER');
+                                    createSession('management-games_error', $alertManagementSquad);
+                                    //dump($dayDiffToStartTournament, 1);
+                                } else if ($registeredMatchId > 0) {
                                     $alertManagementSquad = $messages[$lang]['YOU_ALREADY_ADDED_ON_TOURNAMENT'] . '<br>
                                 <a href="'.SITE_DIR.'management-games/join-game/?mid=' . $registeredMatchId . '">' . $messages[$lang]['GO_TO_MATCH'] . '</a>';
                                     createSession('management-games_error', $alertManagementSquad);
@@ -1012,6 +1025,8 @@ unset($_SESSION['management-games_error']);
               ?>
             <h1>
                 <?php
+
+
                 $name = 'KICKGAME Scrims';
                 if ($tournamentId) {
 
@@ -1037,8 +1052,21 @@ unset($_SESSION['management-games_error']);
               }
 
               ?>
+            <?php if ($curMatch['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
+                <?php if(!empty($userProductGroups) && count($userProductGroups)) { ?>
+                    <?php
+                    $convertDateSubscribeTo = ConvertDateTime($userProductGroups[0]["DATE_ACTIVE_TO"], "DD.MM.YYYY HH:MI:SS");
+                    $convertDateStartTournament = ConvertDateTime($curMatch["DATE_START"]['VALUE'], "DD.MM.YYYY HH:MI:SS");
+                    $dateStartTournament = DateTime::createFromFormat('d.m.Y H:i:s', $convertDateStartTournament);
+                    $datePremTo = new DateTime($convertDateSubscribeTo);
+                    $dayDiffToStartTournament = $dateStartTournament->diff($datePremTo)->format('%R%a')+0;
+                    if ($dayDiffToStartTournament < 7) { ?>
+                      <p><?=GetMessage('JG_BEFORE_TOURNAMENT_REGISTER');?></p>
+                    <?php } ?>
+                <?php } ?>
+            <?php } ?>
             <div class="game__block-call">
-              <a href="#" class="btn-italic"><?=GetMessage('JG_CONTACT_MODERATOR')?></a>
+              <a href="https://t.me/joinchat/mRicMNoqO4pkOTgy" target="_blank" class="btn-italic"><?=GetMessage('JG_CONTACT_MODERATOR')?></a>
             </div>
           </div>
         </div>

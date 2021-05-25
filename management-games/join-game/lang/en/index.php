@@ -6,6 +6,7 @@ $MESS['JG_CONTACT_MODERATOR'] = 'Contact the moderator';
 $MESS['JG_DATE_EVENT'] = 'Date of the event';
 $MESS['JG_TOTAL_MATCHES'] = 'Number of matches';
 $MESS['JG_TIME'] = '3 (2 hours)';
+$MESS['JG_BEFORE_TOURNAMENT_REGISTER'] = 'To participate in the tournament, a paid subscription is required for 7 days from the start of tournament games';
 $MESS['JG_COMMENTATOR'] = 'Commentator';
 $MESS['JG_LINK'] = 'Link to the broadcast';
 $MESS['JG_ONAIR'] = 'On the air';

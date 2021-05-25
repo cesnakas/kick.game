@@ -19,6 +19,7 @@ $MESS['GSP_SEATS'] = 'Количество мест';
 $MESS['GSP_NO_SEATS'] = 'мест нет';
 $MESS['GSP_OCCUPIED'] = 'Занято ';
 $MESS['GSP_OUT_OF'] = ' из 18 мест';
+$MESS['GSP_BEFORE_TOURNAMENT_REGISTER'] = 'Для участия в турнире требуется оплаченная подписка на 7 дней с момента начала турнирных игр';
 
 $MESS['GSP_PARTICIPANTS'] = 'Участники игры';
 $MESS['GSP_RESULTS'] = 'Результаты игры';
@@ -38,3 +39,4 @@ $MESS['GSP_ITEM_FREE_REG'] = 'Бесплатная запись на праки 
 $MESS['GSP_BUTTON_SUBSCRIPTION'] = 'Выбрать подписку';
 $MESS['GSP_ITEM_PART_TEAM'] = 'Для участия в игре ты должен быть частью команды.';
 $MESS['GSP_ITEM_CAPTAIN_REG'] = 'Только капитан может зарегистрироваться на игру.&nbsp;';
+

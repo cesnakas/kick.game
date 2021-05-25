@@ -3,6 +3,7 @@ $MESS['JG_BACK'] = 'Назад';
 $MESS['JG_PRACTICAL_GAME'] = 'Практическая игра';
 $MESS['JG_TOURNAMENT_GAME'] = 'Турнирная игра';
 $MESS['JG_CONTACT_MODERATOR'] = 'Связаться с модератором';
+$MESS['JG_BEFORE_TOURNAMENT_REGISTER'] = 'Для участия в турнире требуется оплаченная подписка на 7 дней с момента начала турнирных игр';
 $MESS['JG_DATE_EVENT'] = 'Дата проведения';
 $MESS['JG_TOTAL_MATCHES'] = 'Количество матчей';
 $MESS['JG_TIME'] = '3 (2 часа)';

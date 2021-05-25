@@ -62,7 +62,7 @@ $teamID = $arUser['UF_ID_TEAM'];
         <nav class="header__links">
           <a href="" class="back-link js-back">
             <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 36"><g filter="url(#filter0_d)"><path d="M17.959 10.464a.999.999 0 01-.003 1.325l-3.015 3.274h18.2c.474 0 .859.42.859.937 0 .518-.385.938-.86.938h-18.2l3.016 3.273a.999.999 0 01.003 1.325.81.81 0 01-1.216.003l-4.49-4.875a1 1 0 01-.001-1.328l4.491-4.876a.81.81 0 011.216.004z" fill="#FFE500"/></g><defs><filter id="filter0_d" x="-1" y="-6" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/><feOffset dy="2"/><feGaussianBlur stdDeviation="6"/><feColorMatrix values="0 0 0 0 0.811765 0 0 0 0 0.72549 0 0 0 0 0.0352941 0 0 0 1 0"/><feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter></defs></svg>
-            Назад
+            <?=GetMessage('NAV_BACK')?>
           </a>
             <a href="<?=SITE_DIR;?>" class="link"><?=GetMessage('NAV_HOME')?></a>
             <a href="<?=SITE_DIR;?>game-schedule/" class="link"><?=GetMessage('NAV_GAME_SCHEDULE')?></a>

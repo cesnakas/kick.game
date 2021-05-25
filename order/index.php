@@ -196,18 +196,69 @@ if ($USER->IsAuthorized()) {
                                 <!--<button class="btn" type="submit" name="register_submit_button" value="Оплатить">
                                     Оплатить
                                 </button>-->
-                                <button type="button"
+                                <!--<button type="button"
                                         data-vp-publickey="8KvNFc04zx3/U3LmOSEjpq/z7OFM7iqdJVNcqVsvozQ="
                                         data-vp-baseurl=""
                                         data-vp-lang="en"
-                                        data-vp-amount="<?= $tosumm * 100?>"
+                                        data-vp-amount="<?/*= $tosumm * 100*/?>"
                                         data-vp-sourcecode="1180"
-                                        data-vp-description="Тариф <?= $datatarrif["NAME"];?>"
+                                        data-vp-description="Тариф <?/*= $datatarrif["NAME"];*/?>"
                                         data-vp-disablewallet="false"
                                         data-vp-expandcard="true">
+                                </button>-->
+                                <button
+                                    class="vp-pay btn"
+                                    data-amount="<?= $tosumm * 100?>"
+                                    data-email="customer@example.com"
+                                    data-full-name="Customer full name"
+                                    data-customer-trns="Short description of items/services purchased to display to your customer"
+                                    data-request-lang="en-GB"
+                                    data-source-code="3841">
+                                    <?=GetMessage('PAYMENT_BUTTON')?>
                                 </button>
                             </div>
+                            <script>
+                                $(function(){
+                                    $('.vp-pay').on('click', function(e){
+                                        e.preventDefault();
+                                        let data = {
+                                            action: 'getOrderCode',
+                                            amount: $(this).data('amount'),
+                                            email: $(this).data('email'),
+                                            fullName: $(this).data('full-name'),
+                                            customerTrns: $(this).data('customer-trns'),
+                                            requestLang: $(this).data('request-lang'),
+                                            sourceCode: $(this).data('source-code'),
+                                            tags: [
+                                                JSON.stringify({
+                                                    id: <?= $datatarrif[ID]?>,
+                                                    email: '<?= $datatarrif[EMAIL]?>',
+                                                    name: 'Не требуется',//NAME
+                                                    phone: '89533921212'//PHONE]
+                                                })
+                                            ]
+                                        };
 
+                                        $.ajax({
+                                            type: 'post',
+                                            url: '/ajax/vivapayments.php',
+                                            data: data,
+                                            //datatype: 'json',
+                                            cache: false,
+                                            async: false,
+                                            success: function (data)
+                                            {
+                                                let response = JSON.parse(data);
+                                                if(response.OrderCode)
+                                                {
+                                                    location.href = "https://www.vivapayments.com/web/checkout?ref=" + response.OrderCode + "&productId=12";
+                                                }
+                                            }
+                                        });
+                                        return false;
+                                    });
+                                });
+                            </script>
 
                             <div class="form-authentication__rules text-center">
                                 <?=GetMessage('PAYMENT_RULES')?><a href="<?=SITE_DIR?>terms-conditions/" target="_blank"><?=GetMessage('PAYMENT_RULES_LINK_TERMS_CONDITIONS')?></a>

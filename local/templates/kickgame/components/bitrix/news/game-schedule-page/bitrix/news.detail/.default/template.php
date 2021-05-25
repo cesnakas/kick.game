@@ -315,6 +315,7 @@ unset($_SESSION['game-schedule-detail_error']);
             }
             ?>
           <h1><?php
+              $userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userID);
               $name = GetMessage('GSP_HEADLINE'); // 'У меня нет названия';
 
               if ($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) {
@@ -330,14 +331,31 @@ unset($_SESSION['game-schedule-detail_error']);
             <!--если юзер в группе ироков-->
             <?if ($arUser["UF_ID_TEAM"] && $isCaptain):?>
                 <?if($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5):?>
-                    <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
+
+                    <?php if(!empty($userProductGroups) && count($userProductGroups)) { ?>
+                  <?php
+                        $convertDateSubscribeTo = ConvertDateTime($userProductGroups[0]["DATE_ACTIVE_TO"], "DD.MM.YYYY HH:MI:SS");
+                        $convertDateStartTournament = ConvertDateTime($arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], "DD.MM.YYYY HH:MI:SS");
+                        $dateStartTournament = DateTime::createFromFormat('d.m.Y H:i:s', $convertDateStartTournament);
+                        $datePremTo = new DateTime($convertDateSubscribeTo);
+                        $dayDiffToStartTournament = $dateStartTournament->diff($datePremTo)->format('%R%a')+0;
+                        if ($dayDiffToStartTournament >= 7) {
+                        ?>
+                          <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
+                        <?php } else { ?>
+                          <p><?=GetMessage('GSP_BEFORE_TOURNAMENT_REGISTER');?></p>
+                        <?php } ?>
+                    <?php } ?>
+
+
+
                     <?/*if ($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5):*/?>
                         <div class="game__block-call">
                             <a href="https://t.me/joinchat/mRicMNoqO4pkOTgy" target="_blank" class="btn-italic"><?=GetMessage('GSP_CONTACT_MODERATOR')?></a>
                         </div>
                     <?/*endif;*/?>
                 <?elseif($arResult["DISPLAY_PROPERTIES"]["TYPE_MATCH"]["VALUE_ENUM_ID"] == 6):?>
-                    <?php $userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userID);?>
+
                     <?if(!empty($userProductGroups) && count($userProductGroups)):?>
                         <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
                     <?else:?>
@@ -357,7 +375,7 @@ unset($_SESSION['game-schedule-detail_error']);
                         <?if($now >= $dateFrom && $now <= $dateTo):?>
                             <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
                         <?else:?>
-                            <p><?=GetMessage("GSP_ITEM_FREE_REG") ?><a href="<?=SIT_DIR?>subscription-plans/" class="btn-italic"><?=GetMessage('GSP_BUTTON_SUBSCRIPTION')?></a></p>
+                            <p><?=GetMessage("GSP_ITEM_FREE_REG") ?><a href="<?=SITE_DIR?>subscription-plans/" class="btn-italic"><?=GetMessage('GSP_BUTTON_SUBSCRIPTION')?></a></p>
                         <?endif;?>
                     <?endif;?>
                 <?endif;?>

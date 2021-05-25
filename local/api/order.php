@@ -21,6 +21,13 @@ use Bitrix\Main,
 
 $siteId = \Bitrix\Main\Context::getCurrent()->getSite();
 
+$tags = json_decode($vpResponse["Transactions"][0]["Order"]["Tags"][0], true);
+
+$_POST["data"]["id"] = $tags["id"];
+$_POST["data"]["email"] = $tags["email"];
+$_POST["data"]["name"] = $tags["name"];
+$_POST["data"]["phone"] = $tags["phone"];
+
 $currencyCode = CurrencyManager::getBaseCurrency();
 
 

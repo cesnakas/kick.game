@@ -19,6 +19,7 @@ $MESS['GSP_SEATS'] = 'Number of seats';
 $MESS['GSP_NO_SEATS'] = 'no seats';
 $MESS['GSP_OCCUPIED'] = 'Occupied ';
 $MESS['GSP_OUT_OF'] = ' out of 18 seats';
+$MESS['GSP_BEFORE_TOURNAMENT_REGISTER'] = 'To participate in the tournament, a paid subscription is required for 7 days from the start of tournament games';
 
 $MESS['GSP_PARTICIPANTS'] = 'Participants of the game';
 $MESS['GSP_RESULTS'] = 'Game results';

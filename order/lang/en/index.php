@@ -15,6 +15,8 @@ $MESS['LAST_SUBSCRIPTION'] = 'The last subscription over ';
 
 $MESS['AFTER_PAYMENT'] = 'After the payment, the subscription will be available until ';
 
+$MESS['PAYMENT_BUTTON'] = 'Pay';
+
 $MESS['PAYMENT_RULES'] = 'When paying for an application, I accept the following documents: ';
 $MESS['PAYMENT_RULES_LINK_TERMS_CONDITIONS'] = 'Terms of Service';
 $MESS['PAYMENT_RULES_AND'] = ' and ';

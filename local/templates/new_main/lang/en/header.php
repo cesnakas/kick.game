@@ -7,7 +7,9 @@ $MESS['NAV_REGISTER']           = 'Register';
 $MESS['NAV_LOGIN']              = 'Login';
 $MESS['NAV_PERSONAL']           = 'Profile';
 
-$MESS['NAV_LANG']          = 'Рус';
+$MESS['NAV_LANG'] = 'Рус';
+
+$MESS['NAV_BACK'] = 'Back';
 
 $MESS['MAIN_SUBTITLE'] = 'Your eSports pass, PUBGer'; // Твой пропуск в киберспорт, пабгер
 $MESS['MAIN_DUO'] = 'Free scrims every day'; // Турниры дуо на 100€ каждую неделю

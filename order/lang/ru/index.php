@@ -15,6 +15,8 @@ $MESS['LAST_SUBSCRIPTION'] = 'Прошлая подписка завершена
 
 $MESS['AFTER_PAYMENT'] = 'После оплаты подписка будет доступна до ';
 
+$MESS['PAYMENT_BUTTON'] = 'Оплатить';
+
 $MESS['PAYMENT_RULES'] = 'Оплачивая заявку, я принимаю следующие документы: ';
 $MESS['PAYMENT_RULES_LINK_TERMS_CONDITIONS'] = 'Условия обслуживания';
 $MESS['PAYMENT_RULES_AND'] = ' и ';

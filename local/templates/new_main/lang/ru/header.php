@@ -9,6 +9,8 @@ $MESS['NAV_PERSONAL']           = 'Профиль';
 
 $MESS['NAV_LANG'] = 'Eng';
 
+$MESS['NAV_BACK'] = 'Назад';
+
 $MESS['MAIN_SUBTITLE'] = 'Твой пропуск в киберспорт, пабгер';
 $MESS['MAIN_DUO'] = 'Бесплатные праки каждый день';
 $MESS['MAIN_SQUAD'] = 'Турниры для сквадов с призовым фондом от 1000€';
