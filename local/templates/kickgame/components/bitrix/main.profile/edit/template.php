@@ -270,7 +270,7 @@ unset($_SESSION['save-profile_error']);
               </div>
               <div class="form-field">
                 <label for="edit-pubgid" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_PUBGID')?> <span>*</span></label>
-                <input type="text" class="form-field__input" name="UF_PUBG_ID" value="<?=htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]);?>" autocomplete="off" id="edit-pubgid" <?php if($arResult["arUser"]['UF_PUBG_ID_CHECK'] == 20 || $arResult["arUser"]['UF_PUBG_ID_CHECK'] == 22) { ?> readonly <?php } ?> placeholder="<?=GetMessage('PERSONAL_EDIT_NICKNAME_PLACEHOLDER')?>">
+                <input type="text" class="form-field__input" name="UF_PUBG_ID" value="<?=htmlspecialchars($arResult["arUser"]["UF_PUBG_ID"]);?>" autocomplete="off" id="edit-pubgid" <?php if($arResult["arUser"]['UF_PUBG_ID_CHECK'] == 20 || $arResult["arUser"]['UF_PUBG_ID_CHECK'] == 22) { ?> readonly <?php } ?> placeholder="<?=GetMessage('PERSONAL_EDIT_PUBGID_PLACEHOLDER')?>">
               </div>
               <div class="form-field">
                 <label for="edit-subscription" class="form-field__label"><?=GetMessage('PERSONAL_EDIT_SUBSCRIPTION')?></label>

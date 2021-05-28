@@ -23,36 +23,6 @@ $tournamentId = $_GET["tournamentID"];
     $tournament = getTournamentById($tournamentId);
 }
 
-function createSquad($props = [], $code)
-{
-    $el = new CIBlockElement;
-    $iblock_id = 6;
-    $params = Array(
-        "max_len" => "100", // обрезает символьный код до 100 символов
-        "change_case" => "L", // буквы преобразуются к нижнему регистру
-        "replace_space" => "-", // меняем пробелы на нижнее подчеркивание
-        "replace_other" => "-", // меняем левые символы на нижнее подчеркивание
-        "delete_repeat_replace" => "true", // удаляем повторяющиеся нижние подчеркивания
-        "use_google" => "false", // отключаем использование google
-    );
-    $fields = array(
-        "DATE_CREATE" => date("d.m.Y H:i:s"), //Передаем дата создания
-        "CREATED_BY" => $GLOBALS['USER']->GetID(),    //Передаем ID пользователя кто добавляет
-        "IBLOCK_SECTION_ID" => false,
-        "CODE" => CUtil::translit($code, "ru" , $params),
-        "IBLOCK_ID" => $iblock_id, //ID информационного блока он 24-ый
-        "PROPERTY_VALUES" => $props, // Передаем массив значении для свойств
-        "NAME" => $code,
-        "ACTIVE" => "Y", //поумолчанию делаем активным или ставим N для отключении поумолчанию
-    );
-    //Результат в конце отработки
-    if ($ID = $el->Add($fields)) {
-        return $ID;
-    } else {
-        return "Error: ".$el->LAST_ERROR;
-    }
-}
-
 function isCaptain($idUser, $idTeam)
 {
     if ($idTeam) {
@@ -143,6 +113,11 @@ function getMatchById($matchId) {
                                                 <div class="tournament-info__list-type">
                                                     Статус:
                                                 </div>
+                                                <?php
+                                                 $tournamentDates = getTournamentPeriod($tournamentId);
+                                                 if ($tournamentDates){
+
+                                                 }?>
                                                 <div class="tournament-info__list-description">
                                                     Идёт регистрация до 23 апреля 2021, 15:00
                                                 </div>
@@ -175,7 +150,7 @@ function getMatchById($matchId) {
                                                                 <div class="match-participants__team-logo" style="background-image: url(<?php echo CFile::GetPath($team["LOGO_TEAM"]["VALUE"]); ?>)">
                                                                 </div>
                                                                 <div>
-                                                                    <a href="#" class="match-participants__team-link"><?php echo $team["NAME_TEAM"]["VALUE"]. " [".$team["TAG_TEAM"]["VALUE"]; ?>]</a>
+                                                                    <a href="/teams/<?php echo $teamID ?>/" class="match-participants__team-link"><?php echo $team["NAME_TEAM"]["VALUE"]. " [".$team["TAG_TEAM"]["VALUE"]; ?>]</a>
                                                                 </div>
                                                             </div>
                                                             <a href="#" class="btn__change">Изменить состав</a>
@@ -212,7 +187,7 @@ function getMatchById($matchId) {
                                             <?php if (!$nextGameID){ ?>
                                                     <div><a href="/tournament-page/join-game/?mid=random&tournament=<?php echo $tournamentId ?>" class="btn">Подать заявку</a></div>
                                                 <?php } else { ?>
-                                                    <div><a href="#" class="btn-change-big">Отменить участие</a></div>
+                                                    <div><a href="/tournament-page/join-game/?mid=random&tournament=<?php echo $tournamentId ?>" class="btn-change-big">Отменить участие</a></div>
                                                 <?php }
                                              } ?>
                                             <div><a href="#" class="btn-italic-dotted" data-toggle="modal" data-target="#regulation">Регламент/Правила участия</a></div>
@@ -274,7 +249,7 @@ function getMatchById($matchId) {
                                     "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
                                     "INCLUDE_SUBSECTIONS" => "Y",
                                     "MESSAGE_404" => "",
-                                    "NEWS_COUNT" => "100",
+                                    "NEWS_COUNT" => "1000",
                                     "PAGER_BASE_LINK_ENABLE" => "N",
                                     "PAGER_DESC_NUMBERING" => "N",
                                     "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",

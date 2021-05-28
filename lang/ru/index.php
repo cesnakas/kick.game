@@ -1,33 +1,24 @@
-<?
-$MESS['CONTENT_ADV_TEXT_H3'] = 'Турнир по PUBG Mobile на 3000€ для команд — Регистрация закрывается 20 мая';
-$MESS['CONTENT_ADV_TEXT_P'] = 'Количество мест ограничено. Зарегистрируйся на платформе KICKGAME, чтобы подать заявку на участие одним из первых :3';
-$MESS['CONTENT_ADV_TEXT_PS'] = 'Для участия в турнире требуется оплаченная подписка на 7 дней с момента начала турнирных игр.';
-
-$MESS['CONTENT_ADV_ACTION_BUTTON'] = 'подать заявку';
-$MESS['CONTENT_ADV_ACTION_P'] = 'Условия проведения турнира<br/>и требования к участникам';
-
+<?php
 $MESS['CONTENT_MAIN_TITLE'] = 'Играя с нами, ты сможешь';
-
 $MESS['CONTENT_MAIN_PUMP_UP'] = 'Прокачаться';
 $MESS['CONTENT_MAIN_PUMP_UP_TEXT'] = 'тренироваться с tier 1 - tier 3 командами, анализировать свои результаты по готовым записям игр и совершенствовать навыки';
 
+$MESS['CONTENT_ADV_TEXT_H3'] = 'Турнир по PUBG Mobile на 3000€ для команд — Регистрация закрывается 20 мая';
+$MESS['CONTENT_ADV_TEXT_P'] = 'Количество мест ограничено. Зарегистрируйся на платформе KICKGAME, чтобы подать заявку на участие одним из первых :3';
+$MESS['CONTENT_ADV_TEXT_PS'] = 'Для участия в турнире требуется оплаченная подписка на 7 дней с момента начала турнирных игр.';
+$MESS['CONTENT_ADV_ACTION_BUTTON'] = 'подать заявку';
+$MESS['CONTENT_ADV_ACTION_P'] = 'Условия проведения турнира<br/>и требования к участникам';
 $MESS['CONTENT_MAIN_FIRST'] = 'Стать первым';
 $MESS['CONTENT_MAIN_FIRST_TEXT'] = 'в рейтингах игроков и команд, ежедневно соревнуясь с разными соперниками в практических играх';
-
 $MESS['CONTENT_MAIN_WIN'] = 'Победить в турнире';
 $MESS['CONTENT_MAIN_WIN_TEXT'] = 'или нескольких, и забрать часть призового фонда размером в 1000€ или 10000€';
-
 $MESS['CONTENT_MAIN_REGISTER'] = 'Регистрация';
 $MESS['CONTENT_MAIN_LOGIN_TAKE_PART'] = 'Принять участие';
 $MESS['CONTENT_MAIN_LOGIN'] = 'Войти';
 $MESS['CONTENT_MAIN_14DAYS'] = '14 дней бесплатный пробный период';
-
 $MESS['MAIN_GAMES'] = 'Игры';
-
 $MESS['MAIN_GAME_SEARCH'] = 'Поиск игры';
-
 $MESS['MAIN_TITLE_ABOUT'] = 'О платформе';
-
 $MESS['MAIN_TITLE_FUNCTIONS'] = 'Функции';
 $MESS['MAIN_FUNCTIONS_SEARCHING_TITLE'] = 'Поиск игроков и команд';
 $MESS['MAIN_FUNCTIONS_SEARCHING_TEXT'] = 'Возможность найти свою идеальную команду, напарника для дуо или бойца в сквад';

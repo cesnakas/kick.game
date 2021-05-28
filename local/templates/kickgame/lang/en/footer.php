@@ -1,14 +1,15 @@
 <?
-$MESS['FOOTER_CONTENT_P_1'] = 'All content, game names, trade names and/or commercial appearance, trademarks, works of art, and related images are trademarks and/or copyrighted materials of the respective copyright holders.';
+$MESS['FOOTER_CONTENT_P_1'] = 'KICKGAME platform is not endorsed, affiliated, supported or sponsored by PUBG CORPORATION or other game owners. All content, game names, trade names and / or commercial appearances, trademarks, artworks and related images are trademarks and / or copyrighted materials of their respective owners';
 $MESS['FOOTER_CONTENT_P_2_1'] = 'KICKGAME ESPORTS LIMITED (company registration number HE 416108)';
 $MESS['FOOTER_CONTENT_P_2_2'] = 'Address: Vasili Mihailidi, 21, Limassol 3026, Cyprus';
 $MESS['FOOTER_CONTENT_P_2_3'] = 'All rights reserved';
+$MESS['FOOTER_CONTENT_P_2_4'] = 'ST Leonov Bogdan Aleksandrovitch, ITN 772741127087';
 
-$MESS['FOOTER_NAV_GAME_SCHEDULE'] = 'Schedule';
+$MESS['FOOTER_NAV_GAME_SCHEDULE'] = 'Games';
 $MESS['FOOTER_NAV_PERSONAL'] = 'Profile';
 $MESS['FOOTER_NAV_PLAYERS'] = 'Players';
-$MESS['FOOTER_NAV_TEAMS'] = 'Team';
-$MESS['FOOTER_NAV_SUBSCRIPTION_PLANS'] = 'Subscribe';
+$MESS['FOOTER_NAV_TEAMS'] = 'Ratings';
+$MESS['FOOTER_NAV_SUBSCRIPTION_PLANS'] = 'Subscription';
 
 $MESS['FOOTER_NAV_SUBSCRIPTION_RULES'] = 'Subscription rules';
 $MESS['FOOTER_NAV_TOURNAMENT_REGULATIONS'] = 'Tournament regulations'; // Регламент проведения турниров
@@ -35,8 +36,8 @@ $MESS['MODAL_BUTTON'] = 'Buy a subscription';
 $MESS['MODAL_COOKIE_BTN_DISABLE'] = 'Disable all';
 $MESS['MODAL_COOKIE_BTN_ACCEPT'] = 'Accept';
 
-$MESS['MODAL_VERIFIED_TITLE'] = 'Checking pubg id and nickname';
-$MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Please pass the pubg id and nickname check to start playing on the platform. This is the only way we can understand that it was you who entered the lobby of the game and guarantee you a game with opponents equal in level.';
+$MESS['MODAL_VERIFIED_TITLE'] = 'Checking PUBG ID and nickname';
+$MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Please pass the PUBG ID and nickname check to start playing on the platform. This is the only way we can understand that it was you who entered the lobby of the game and guarantee you a game with opponents equal in level.';
 $MESS['MODAL_VERIFIED_SUBTITLE_P2'] = 'How to pass verification:';
 $MESS['MODAL_VERIFIED_LIST_ITEM-1'] = 'Log in to your pubg mobile player profile';
 $MESS['MODAL_VERIFIED_LIST_ITEM-2'] = 'Take a screenshot of the screen';
@@ -47,11 +48,11 @@ $MESS['MODAL_VERIFIED_INPUT_FILE-2'] = ' file(s)';
 $MESS['MODAL_VERIFIED_UPLOAD_FILE'] = 'Attach a screenshot';
 $MESS['MODAL_VERIFIED_BUTTON_SUBMIT'] = 'Send a screenshot';
 $MESS['MODAL_VERIFIED_BUTTON_CANCEL'] = 'Cancel';
-$MESS['MODAL_VERIFIED_FOOTER_CONTENT-1'] = 'What should I do if I have already specified a nickname or pubg id in my profile that is different from the ones I use in pubg mobile?';
-$MESS['MODAL_VERIFIED_FOOTER_CONTENT-2'] = 'Before you submit the data for verification, you can change your pubg id and nickname in the <a href="'.SITE_DIR.'personal/edit/" target="_blank">profile settings</a> to match what you have in the game. Then, go back to this window and send the screenshot for verification.';
+$MESS['MODAL_VERIFIED_FOOTER_CONTENT-1'] = 'What should I do if I have already specified a nickname or PUBG ID in my profile that is different from the ones I use in pubg mobile?';
+$MESS['MODAL_VERIFIED_FOOTER_CONTENT-2'] = 'Before you submit the data for verification, you can change your PUBG ID and nickname in the <a href="'.SITE_DIR.'personal/edit/" target="_blank">profile settings</a> to match what you have in the game. Then, go back to this window and send the screenshot for verification.';
 
 $MESS['MODAL_REJECTED_TITLE'] = 'Account rejected';
-$MESS['MODAL_REJECTED_CONTENT-1'] = 'Unfortunately, your account didn\'t pass pubg id and/or nickname verification.';
+$MESS['MODAL_REJECTED_CONTENT-1'] = 'Unfortunately, your account didn\'t pass PUBG ID and/or nickname verification.';
 $MESS['MODAL_REJECTED_CONTENT-2'] = 'Reason for rejection:';
 $MESS['MODAL_REJECTED_COMMENT_LABEL'] = 'Comment';
 $MESS['MODAL_REJECTED_COMMENT_PLACEHOLDER'] = 'Enter a comment';

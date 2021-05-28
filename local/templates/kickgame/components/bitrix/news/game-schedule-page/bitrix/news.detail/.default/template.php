@@ -591,9 +591,9 @@ if (!empty($teamIds)) {
             <?php } ?>
             <span><?=GetMessage('GSP_TEAM')?></span>
             <span>WWCD</span>
-            <span>KILL PTS</span>
-              <span>PLACE PTS</span>
-            <span>TOTAL PTS</span>
+            <span>Kill pts</span>
+              <span>Place pts</span>
+            <span>Total pts</span>
           </div>
         </div>
         <div class="flex-table--body">

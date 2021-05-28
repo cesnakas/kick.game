@@ -5,7 +5,7 @@ if(!empty($_POST["UF_PUBG_ID"])) {
     $pubgId = trim(strip_tags($_POST["UF_PUBG_ID"]));
     $existsPubgid = existsPubgId($userID, $pubgId);
     if(!empty($existsPubgid)) {
-        $alertPubgIdError = 'Такой pubg id существует, попробуй еще';
+        $alertPubgIdError = 'Такой PUBG ID существует, попробуй еще';
         createSession('exists_pubgId_error', $alertPubgIdError);
         LocalRedirect('');
     }
@@ -22,6 +22,7 @@ if(isset($_SESSION['exists_pubgId_error'])){ ?>
 <?php }
 unset($_SESSION['exists_pubgId_error']);
 ?>
+
 <?$APPLICATION->IncludeComponent(
     "bitrix:main.profile",
     "edit",
@@ -34,4 +35,7 @@ unset($_SESSION['exists_pubgId_error']);
         "USER_PROPERTY_NAME" => ""
     )
 );?>
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+
+<?
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
+?>

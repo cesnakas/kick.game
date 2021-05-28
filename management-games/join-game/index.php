@@ -182,72 +182,6 @@ function getMatchByParentId($parentId) {
     return null;
 }
 
-// созданеие записи с участниками
-function createSquad($props = [], $code)
-{
-    $el = new CIBlockElement;
-    $iblock_id = 6;
-    $params = Array(
-        "max_len" => "100", // обрезает символьный код до 100 символов
-        "change_case" => "L", // буквы преобразуются к нижнему регистру
-        "replace_space" => "-", // меняем пробелы на нижнее подчеркивание
-        "replace_other" => "-", // меняем левые символы на нижнее подчеркивание
-        "delete_repeat_replace" => "true", // удаляем повторяющиеся нижние подчеркивания
-        "use_google" => "false", // отключаем использование google
-    );
-    $fields = array(
-        "DATE_CREATE" => date("d.m.Y H:i:s"), //Передаем дата создания
-        "CREATED_BY" => $GLOBALS['USER']->GetID(),    //Передаем ID пользователя кто добавляет
-        "IBLOCK_SECTION_ID" => false,
-        "CODE" => CUtil::translit($code, "ru" , $params),
-        "IBLOCK_ID" => $iblock_id, //ID информационного блока он 24-ый
-        "PROPERTY_VALUES" => $props, // Передаем массив значении для свойств
-        "NAME" => $code,
-        "ACTIVE" => "Y", //поумолчанию делаем активным или ставим N для отключении поумолчанию
-    );
-    //Результат в конце отработки
-    if ($ID = $el->Add($fields)) {
-        return $ID;
-    } else {
-        return "Error: ".$el->LAST_ERROR;
-    }
-}
-
-function updateSquad($props = [], $idMatch)
-{
-    $squadRes = getSquadByIdMatch($idMatch,$props['TEAM_ID']);
-
-    $squadId = $squadRes['ID']+0;
-    //dump($squadId);
-    //dump($props);
-    CIBlockElement::SetPropertyValues($squadId, 6, $props, false);
-    //header('Location: /management-games/join-game/?mid='.$idMatch);
-}
-
-// получаем участников матчей по полю which_match передавая id
-function getMembersByMatchId($matchId) {
-    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-    $arFilter = Array(
-        "IBLOCK_ID" => 4,
-        "PROPERTY_WHICH_MATCH" => $matchId,
-        "ACTIVE_DATE" => "Y",
-        "ACTIVE" => "Y"
-    );
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-    $output = [];
-
-    while ($ob = $res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        //dump($arProps);
-        foreach ($arProps as $k=>$v) {
-            $arFields[$k] = $v['VALUE'];
-        }
-        $output[] = $arFields;
-    }
-    return $output;
-}
-
 
 //Проверяем учавствует ли комманда в другом матче в это же время
 function isSameTime($teamID, $gameTime, $matchID){
@@ -283,29 +217,7 @@ function isSameTime($teamID, $gameTime, $matchID){
     return count($matches);
 }
 
-function getPlacesKeys()
-{
-    return [
-        3 => "TEAM_PLACE_03",
-        4 =>"TEAM_PLACE_04",
-        5 =>"TEAM_PLACE_05",
-        6 =>"TEAM_PLACE_06",
-        7 =>"TEAM_PLACE_07",
-        8 =>"TEAM_PLACE_08",
-        9 =>"TEAM_PLACE_09",
-        10 =>"TEAM_PLACE_10",
-        11 =>"TEAM_PLACE_11",
-        12 =>"TEAM_PLACE_12",
-        13 =>"TEAM_PLACE_13",
-        14 =>"TEAM_PLACE_14",
-        15 =>"TEAM_PLACE_15",
-        16 =>"TEAM_PLACE_16",
-        17 =>"TEAM_PLACE_17",
-        18 =>"TEAM_PLACE_18",
-        19 =>"TEAM_PLACE_19",
-        20 =>"TEAM_PLACE_20",
-    ];
-}
+
 
 // проверка команды на участие
 function getParticipationByMatchId($idMatch)

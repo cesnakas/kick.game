@@ -64,11 +64,14 @@ while($ob_price = $res_price->GetNextElement())
                                 <div class="subscription-plans-item__heading">
                                     <? echo $arItem['PROPERTIES']['INFO']['~VALUE'];?>
                                 </div>
-                                <?
-                                if(!empty($arItem['PROPERTIES']['SIGN']['~VALUE'])){?>
-                                    <div class="subscription-plans-item__sub-heading">
-                                        <? echo $arItem['PROPERTIES']['SIGN']['~VALUE'];?>
-                                    </div>
+                                <? if (LANGUAGE_ID == 'ru' && !empty($arItem['PROPERTIES']['SIGN']['~VALUE'])) { ?>
+                                <div class="subscription-plans-item__sub-heading">
+                                    <?= $arItem['PROPERTIES']['SIGN']['~VALUE'];?>
+                                </div>
+                                <? } elseif (LANGUAGE_ID == 'en' && !empty($arItem['PROPERTIES']['SIGN_ENG']['~VALUE'])) { ?>
+                                <div class="subscription-plans-item__sub-heading">
+                                    <?= $arItem['PROPERTIES']['SIGN_ENG']['~VALUE'];?>
+                                </div>
                                 <? } ?>
                             </div>
                         </a>

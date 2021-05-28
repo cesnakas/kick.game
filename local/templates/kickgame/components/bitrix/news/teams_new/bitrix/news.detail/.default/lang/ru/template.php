@@ -24,3 +24,5 @@ $MESS['TMS_TABLE_MODE'] = 'Режим';
 $MESS['TMS_TABLE_COMMENTATOR'] = 'Комментатор';
 
 $MESS['TMS_NOT_STATISTICS'] = 'Команда еще не имеет статистики по играм';
+$MESS["TEAM_NOT_SUBSCRIBED"] = "У вас нет активных подписок";
+$MESS["TEAM_BUTTON_EXTEND"] = "Продлить";

@@ -3,6 +3,7 @@ $MESS['FOOTER_CONTENT_P_1'] = 'Весь контент, названия игр,
 $MESS['FOOTER_CONTENT_P_2_1'] = 'KICKGAME ESPORTS LIMITED (рег.номер компании HE 416108)';
 $MESS['FOOTER_CONTENT_P_2_2'] = 'Адрес: Василий Михайлиди, 21, Лимассол 3026, Кипр';
 $MESS['FOOTER_CONTENT_P_2_3'] = 'Все права защищены';
+$MESS['FOOTER_CONTENT_P_2_4'] = 'ИП Леонов Богдан Александрович ИНН 772741127087';
 
 $MESS['FOOTER_NAV_GAME_SCHEDULE'] = 'Расписание';
 $MESS['FOOTER_NAV_PERSONAL'] = 'Профиль';

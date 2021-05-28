@@ -23,9 +23,6 @@ $teamID = $arUser['UF_ID_TEAM'];
 
 // id матча который пришел
 $mId = $_GET['mid']+0;
-if($mId == 0){
-    $mId = findFreeGame($_GET['tournament'], 7);
-}
 
 // собираем все ошибки
 $errors = [];
@@ -185,50 +182,9 @@ function getMatchByParentId($parentId) {
     return null;
 }
 
-// созданеие записи с участниками
-function createSquad($props = [], $code)
-{
-    $el = new CIBlockElement;
-    $iblock_id = 6;
-    $params = Array(
-        "max_len" => "100", // обрезает символьный код до 100 символов
-        "change_case" => "L", // буквы преобразуются к нижнему регистру
-        "replace_space" => "-", // меняем пробелы на нижнее подчеркивание
-        "replace_other" => "-", // меняем левые символы на нижнее подчеркивание
-        "delete_repeat_replace" => "true", // удаляем повторяющиеся нижние подчеркивания
-        "use_google" => "false", // отключаем использование google
-    );
-    $fields = array(
-        "DATE_CREATE" => date("d.m.Y H:i:s"), //Передаем дата создания
-        "CREATED_BY" => $GLOBALS['USER']->GetID(),    //Передаем ID пользователя кто добавляет
-        "IBLOCK_SECTION_ID" => false,
-        "CODE" => CUtil::translit($code, "ru" , $params),
-        "IBLOCK_ID" => $iblock_id, //ID информационного блока он 24-ый
-        "PROPERTY_VALUES" => $props, // Передаем массив значении для свойств
-        "NAME" => $code,
-        "ACTIVE" => "Y", //поумолчанию делаем активным или ставим N для отключении поумолчанию
-    );
-    //Результат в конце отработки
-    if ($ID = $el->Add($fields)) {
-        return $ID;
-    } else {
-        return "Error: ".$el->LAST_ERROR;
-    }
-}
-
-function updateSquad($props = [], $idMatch)
-{
-    $squadRes = getSquadByIdMatch($idMatch,$props['TEAM_ID']);
-
-    $squadId = $squadRes['ID']+0;
-    //dump($squadId);
-    //dump($props);
-    CIBlockElement::SetPropertyValues($squadId, 6, $props, false);
-    //header('Location: /management-games/join-game/?mid='.$idMatch);
-}
 
 // получаем участников матчей по полю which_match передавая id
-function getMembersByMatchId($matchId) {
+/*function getMembersByMatchId($matchId) {
     $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
     $arFilter = Array(
         "IBLOCK_ID" => 4,
@@ -250,7 +206,7 @@ function getMembersByMatchId($matchId) {
     }
     return $output;
 }
-
+*/
 
 //Проверяем учавствует ли комманда в другом матче в это же время
 function isSameTime($teamID, $gameTime){
@@ -266,30 +222,6 @@ function isSameTime($teamID, $gameTime){
             $matches[$res['matchid']] = $res;
         }
     return count($matches);
-}
-
-function getPlacesKeys()
-{
-    return [
-        3 => "TEAM_PLACE_03",
-        4 =>"TEAM_PLACE_04",
-        5 =>"TEAM_PLACE_05",
-        6 =>"TEAM_PLACE_06",
-        7 =>"TEAM_PLACE_07",
-        8 =>"TEAM_PLACE_08",
-        9 =>"TEAM_PLACE_09",
-        10 =>"TEAM_PLACE_10",
-        11 =>"TEAM_PLACE_11",
-        12 =>"TEAM_PLACE_12",
-        13 =>"TEAM_PLACE_13",
-        14 =>"TEAM_PLACE_14",
-        15 =>"TEAM_PLACE_15",
-        16 =>"TEAM_PLACE_16",
-        17 =>"TEAM_PLACE_17",
-        18 =>"TEAM_PLACE_18",
-        19 =>"TEAM_PLACE_19",
-        20 =>"TEAM_PLACE_20",
-    ];
 }
 
 // проверка команды на участие
@@ -592,6 +524,13 @@ $maxLimPlayers = 6;
 $alertManagementSquad = '';
 $objDateTime = new DateTime($curMatch['DATE_START']['VALUE']);
 if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
+
+    if($mId == 0){
+        $mId = findFreeGame($_GET['tournament'], 7  );
+        $curMatch = getMatchById($mId);
+        $isPlace = isPlace($curMatch["ID"]);
+    }
+
     if (!empty($_POST['squad'])) {
             $squad = $_POST['squad'];
             $props = [];
@@ -614,13 +553,12 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
                     createSession('management-games_success', $messages[$lang]['UPDATE_SQUAD_SUCCESS']);
                     $redirectUrlAction = "/tournament-page/join-game/?mid=".$mId;
                 } else {
-
-
-
                     $time = $curMatch['DATE_START']['VALUE'];
                     if($curMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 5){
                         $tournamentId = $curMatch["PROPERTY_3"];
+
                         $time = getLastTournamentGameTime($tournamentId);
+
                     }
 
                    // if(willTeamPrem($teamID, $time) || $curMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 6){
@@ -960,7 +898,7 @@ unset($_SESSION['management-games_error']);
     <section class="pb-8">
     <div class="container">
       <h2 class="core-team__heading">Основной Состав</h2>
-      <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
+      <form action="<?= POST_FORM_ACTION_URI?>" method="post">
           <?=bitrix_sessid_post()?>
         <div class="core-team">
           <div class="flex-table">
@@ -1006,6 +944,7 @@ unset($_SESSION['management-games_error']);
                          <?php if (!empty($player["PERSONAL_PHOTO"])) { ?>
                            style="background-image: url(<?php echo CFile::GetPath($player["PERSONAL_PHOTO"]); ?>)"
                          <?php } else { ?>
+
                            style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
                          <?php } ?>>
                       <?php if ($resTeam['AUTHOR']["VALUE"] == $player['ID']) { ?>

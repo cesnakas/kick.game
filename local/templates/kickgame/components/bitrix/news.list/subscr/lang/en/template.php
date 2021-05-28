@@ -1,2 +1,2 @@
 <?php
-$MESS['SUBSCRIPTION_BTN_ORDER'] = 'Buy a subscription';
+$MESS["SUBSCRIPTION_BTN_ORDER"] = "Subscribe";

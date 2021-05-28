@@ -332,85 +332,153 @@ foreach($arResult["ITEMS"] as $arItem) {
                 foreach ($matchesArray as $k => $stage){
                     ?>
                     <div role="tabpanel" class="tab-pane fade <?php echo $countStages == 1 ? "show active" : "" ?>" id="tab_results_<?php echo $countStages ?>">
+                        <?php if ($k != 1){ ?>
 
-                        <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
-                            <?php echo $dates[$countStages]["games"]*18 . " команд, " . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], "игра, игры, игр", false); ?> </div>
-                        <div class="accordion accordion-game" id="gameResultsStage_<?php echo $countStages ?>">
-                            <?php $countDate = 1;
-                            foreach ($stage as $l => $date){?>
-                                <div class="card card-game">
-                                    <div class="card-header" id="headingResultsGame_<?php echo $countDate ?>_stage_<?php echo $countStages ?>">
-                                        <h2 class="mb-0">
-                                            <button class="accordion-game__heading <?php echo $countDate == 1 ? "": "collapsed";?>" type="button" data-toggle="collapse" data-target="#collapseResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>">
-                                                <?php
-                                                $scheduleDay = formDate($l, 'd MMMM, E');
-                                                echo $scheduleDay ?> <span class="tournament-schedule-results__participants"><i></i> <span class="tournament-schedule-results__participants-cur-count"><?php echo  $totalOccupied[$l]?></span> / <?php echo $counter[$l]*18 ?></span>
-                                            </button>
-                                        </h2>
-                                    </div>
-                                    <div id="collapseResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>" class="collapse collapse-game <?php echo $countDate == 1 ? "show": "";?>" aria-labelledby="headingResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>" data-parent="#gameResultsStage_<?php echo $countStages ?>">
-                                        <div class="card-body card-body__game">
-                                            <!--start group -->
-                                            <?php $countTime = 1;
-                                            foreach ($date as $m => $time){ ?>
-                                                <div class="tournament-schedule-results__time">
-                                                    <?php
-                                                    $scheduleTime = formDate($m, "HH:mm");
-                                                    echo $scheduleTime ?></div>
-                                                <div class="accordion accordion-group" id="results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
-                                                    <?php $countGroup = 1;
-                                                    foreach ($time as $n => $group){ ?>
-                                                        <div class="card">
-                                                            <div class="card-header" id="headingResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
-                                                                <h2 class="mb-0">
-                                                                    <button class="accordion-group__heading" value="<?php echo $group["ID"]?>" onclick="getResults(this.value)" type="button" data-toggle="collapse" data-target="#collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
-                                                                        Группа №<?php echo $countGroup ?>
-                                                                        <span class="tournament-schedule-results__participants-group"><i></i> <span class="tournament-schedule-results__participants-group-cur-count"><?php echo $matchOccupied[$group["ID"]] ?></span> / 18</span>
-                                                                        <span class="accordion-group__progress" style="width: <?php echo $matchOccupied[$group["ID"]] * 5.555 ?>%;"></span>
-                                                                    </button>
-                                                                </h2>
-                                                            </div>
+                            <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
+                        <?php echo $dates[$countStages]["games"]*18 . " команд, " . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], "игра, игры, игр", false); ?> </div>
+                            <div class="accordion accordion-game" id="gameResultsStage_<?php echo $countStages ?>">
+                    <?php $countDate = 1;
+                    foreach ($stage as $l => $date){?>
+                        <div class="card card-game">
+                            <div class="card-header" id="headingResultsGame_<?php echo $countDate ?>_stage_<?php echo $countStages ?>">
+                                <h2 class="mb-0">
+                                    <button class="accordion-game__heading <?php echo $countDate == 1 ? "": "collapsed";?>" type="button" data-toggle="collapse" data-target="#collapseResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>">
+                                        <?php
+                                        $scheduleDay = formDate($l, 'd MMMM, E');
+                                        echo $scheduleDay ?> <span class="tournament-schedule-results__participants"><i></i> <span class="tournament-schedule-results__participants-cur-count"><?php echo  $totalOccupied[$l]?></span> / <?php echo $counter[$l]*18 ?></span>
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>" class="collapse collapse-game <?php echo $countDate == 1 ? "show": "";?>" aria-labelledby="headingResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>" data-parent="#gameResultsStage_<?php echo $countStages ?>">
+                                <div class="card-body card-body__game">
+                                    <!--start group -->
+                                    <?php $countTime = 1;
+                                    foreach ($date as $m => $time){ ?>
+                                        <div class="tournament-schedule-results__time">
+                                            <?php
+                                            $scheduleTime = formDate($m, "HH:mm");
+                                            echo $scheduleTime ?></div>
+                                        <div class="accordion accordion-group" id="results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                            <?php $countGroup = 1;
+                                            foreach ($time as $n => $group){ ?>
+                                                <div class="card">
+                                                    <div class="card-header" id="headingResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                                        <h2 class="mb-0">
+                                                            <button class="accordion-group__heading" value="<?php echo $group["ID"]?>" onclick="getResults(this.value)" type="button" data-toggle="collapse" data-target="#collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                                                Группа №<?php echo $countGroup ?>
+                                                                <span class="tournament-schedule-results__participants-group"><i></i> <span class="tournament-schedule-results__participants-group-cur-count"><?php echo $matchOccupied[$group["ID"]] ?></span> / 18</span>
+                                                                <span class="accordion-group__progress" style="width: <?php echo $matchOccupied[$group["ID"]] * 5.555 ?>%;"></span>
+                                                            </button>
+                                                        </h2>
+                                                    </div>
 
-                                                            <div id="collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" class="collapse" aria-labelledby="headingResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" data-parent="#results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
-                                                                <div class="card-body card-body__group">
-                                                                    <div class="flex-table-tournament">
-                                                                        <div class="flex-table-tournament--header">
-                                                                            <div class="flex-table-tournament--categories">
-                                                                                <span>Команда</span>
-                                                                                <span>Очки</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="flex-table-tournament--body" id="results<?php echo $group["ID"]; ?>">
-                                                                            <?php if (strtotime($group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) > time()){ ?>
-                                                                                Результаты по этой игре еще не сформированы
-                                                                            <?php } ?>
-                                                                        </div>
+                                                    <div id="collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" class="collapse" aria-labelledby="headingResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" data-parent="#results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                                        <div class="card-body card-body__group">
+                                                            <div class="flex-table-tournament">
+                                                                <div class="flex-table-tournament--header">
+                                                                    <div class="flex-table-tournament--categories">
+                                                                        <span>Команда</span>
+                                                                        <span>Очки</span>
                                                                     </div>
-                                                                    <?php if (strtotime( $group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) < time()){ ?>
-                                                                    <div class="tournament-schedule-results__btn-change-group">
-                                                                         <div><a href="#" class="btn-change-big">Подробные Результаты</a></div>
-                                                                    </div>
+                                                                </div>
+                                                                <div class="flex-table-tournament--body" id="results<?php echo $group["ID"]; ?>">
+                                                                    <?php if (strtotime($group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) > time()){ ?>
+                                                                        Результаты по этой игре еще не сформированы
                                                                     <?php } ?>
                                                                 </div>
                                                             </div>
+                                                            <?php if (strtotime( $group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) < time()){ ?>
+                                                                <div class="tournament-schedule-results__btn-change-group">
+                                                                    <div><a href="#" class="btn-change-big">Подробные Результаты</a></div>
+                                                                </div>
+                                                            <?php } ?>
                                                         </div>
-                                                        <?php
-                                                        $countGroup = $countGroup + 1;
-                                                    } ?>
+                                                    </div>
                                                 </div>
-                                                <!--end group -->
                                                 <?php
-                                                $countTime = $countTime + 1;
+                                                $countGroup = $countGroup + 1;
                                             } ?>
                                         </div>
-                                    </div>
-
+                                        <!--end group -->
+                                        <?php
+                                        $countTime = $countTime + 1;
+                                    } ?>
                                 </div>
-                                <?php
-                                $countDate = $countDate + 1;
-                            } ?>
+                            </div>
 
                         </div>
+                        <?php
+                        $countDate = $countDate + 1;
+                    } ?>
+
+                </div>
+
+                        <?php } else { ?>
+                            <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
+                                <?php echo "18 команд, " . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], "игра, игры, игр", false); ?> </div>
+                            <div class="accordion accordion-game" id="gameResultsStage_<?php echo $countStages ?>">
+                                <?php $countDate = 1;
+                                foreach ($stage as $l => $date){?>
+
+                                                <?php $countTime = 1;
+                                                foreach ($date as $m => $time){ ?>
+                                                    <div class="tournament-schedule-results__time">
+                                                        <?php
+                                                        $scheduleTime = formDate($l.$m, "d MMMM yyyy, HH:mm");
+                                                        echo $scheduleTime ?></div>
+                                                    <div class="accordion accordion-group" id="results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                                        <?php $countGroup = 1;
+                                                        foreach ($time as $n => $group){ ?>
+                                                            <div class="card">
+                                                                <div class="card-header" id="headingResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="accordion-group__heading" value="<?php echo $group["ID"]?>" onclick="getResults(this.value)" type="button" data-toggle="collapse" data-target="#collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                                                            День №<?php echo $countDate ?>
+                                                                            <span class="tournament-schedule-results__participants-group"><i></i> <span class="tournament-schedule-results__participants-group-cur-count"><?php echo $matchOccupied[$group["ID"]] ?></span> / 18</span>
+                                                                            <span class="accordion-group__progress" style="width: <?php echo $matchOccupied[$group["ID"]] * 5.555 ?>%;"></span>
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+
+                                                                <div id="collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" class="collapse" aria-labelledby="headingResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" data-parent="#results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                                                    <div class="card-body card-body__group">
+                                                                        <div class="flex-table-tournament">
+                                                                            <div class="flex-table-tournament--header">
+                                                                                <div class="flex-table-tournament--categories">
+                                                                                    <span>Команда</span>
+                                                                                    <span>Очки</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="flex-table-tournament--body" id="results<?php echo $group["ID"]; ?>">
+                                                                                <?php if (strtotime($group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) > time()){ ?>
+                                                                                    Результаты по этой игре еще не сформированы
+                                                                                <?php } ?>
+                                                                            </div>
+                                                                        </div>
+                                                                        <?php if(strtotime( $group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) < time()){ ?>
+                                                                            <div class="tournament-schedule-results__btn-change-group">
+
+                                                                                <div><a href="/game-schedule/<?php echo $group["CODE"] ?>/" class="btn-change-big">Подробные Результаты</a></div>
+                                                                            </div>
+                                                                        <?php } ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <?php
+                                                            $countGroup = $countGroup + 1;
+                                                        } ?>
+                                                    </div>
+                                                    <!--end group -->
+                                                    <?php
+                                                    $countTime = $countTime + 1;
+                                                } ?>
+
+                                    <?php
+                                    $countDate = $countDate + 1;
+                                } ?>
+
+                            </div>
+                        <?php } ?>
                     </div>
                     <?php
                     $countStages = $countStages + 1;

@@ -1,6 +1,5 @@
 <?
-if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
-	die();
+if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 //dump(CUser::IsAuthorized());
 //if(!CUser::IsAuthorized()) {
     //LocalRedirect("/");
@@ -26,6 +25,7 @@ $teamID = $arUser['UF_ID_TEAM'];
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="facebook-domain-verification" content="y03q78g42fjekeh46ywam7t16oi08r" />
 		<?$APPLICATION->ShowHead();?>
 		<title><?$APPLICATION->ShowTitle();?></title>
     <link rel="apple-touch-icon" href="<?php echo SITE_TEMPLATE_PATH;?>/images/apple-touch-icon.png" sizes="180x180">
@@ -74,35 +74,31 @@ $teamID = $arUser['UF_ID_TEAM'];
                     </svg>
 
                     <? if (LANGUAGE_ID == 'ru'): ?>
-                        <span class="lang-selector__label js-lang-label">РУС</span>
+                        <span class="lang-selector__label js-lang-label">RU</span>
                         <svg width="13" height="13" fill="currentColor">
                             <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#flag-rus"/>
                         </svg>
-                    <? else: ?>
-                        <span class="lang-selector__label js-lang-label">ENG</span>
+                    <? elseif (LANGUAGE_ID == 'en'): ?>
+                        <span class="lang-selector__label js-lang-label">EN</span>
                         <svg width="13" height="13" fill="currentColor">
                             <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#flag-eng"/>
                         </svg>
                     <? endif; ?>
-                    <!--<span class="lang-selector__label js-lang-label">ENG</span>
-                    <svg width="13" height="13" fill="currentColor">
-                        <use xlink:href="<?/*=SITE_TEMPLATE_PATH;*/?>/img/icons.svg#flag-eng"/>
-                    </svg>-->
 
-            <div class="lang-selector__menu">
-            <a class="lang-selector__menu-item <?=(LANGUAGE_ID == 'ru') ? 'lang-selector__menu-item--active' : '';?>" href="/">
-                РУС
-                <!--<svg width="13" height="13">
-                    <use xlink:href="<?/*=SITE_TEMPLATE_PATH;*/?>/img/icons.svg#flag-rus"/>
-                </svg>-->
-            </a>
-            <a class="lang-selector__menu-item <?=(LANGUAGE_ID == 'en') ? 'lang-selector__menu-item--active' : '';?>" href="/en/">
-                ENG
-                <!--<svg width="13" height="13">
-                    <use xlink:href="<?/*=SITE_TEMPLATE_PATH;*/?>/img/icons.svg#flag-eng"/>
-                </svg>-->
-            </a>
-              </div>
+                <div class="lang-selector__menu">
+                    <a class="lang-selector__menu-item <?=(LANGUAGE_ID == 'ru') ? 'lang-selector__menu-item--active' : '';?>" href="/">
+                        <?=GetMessage('NAV_LANG_RU')?>
+                        <svg width="13" height="13">
+                            <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#flag-rus"/>
+                        </svg>
+                    </a>
+                    <a class="lang-selector__menu-item <?=(LANGUAGE_ID == 'en') ? 'lang-selector__menu-item--active' : '';?>" href="/en/">
+                        <?=GetMessage('NAV_LANG_EN')?>
+                        <svg width="13" height="13">
+                            <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#flag-eng"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
 
                 <? if (!$USER->IsAuthorized()): ?>
@@ -170,7 +166,7 @@ $teamID = $arUser['UF_ID_TEAM'];
             <?php if (!$USER->IsAuthorized()) { ?>
                     <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button button"><?=GetMessage('MAIN_BTN_ACTION')?></a>
             <?php } else { ?>
-                    <a href="<?=SITE_DIR?>personal/" class="button button"><?=GetMessage('NAV_LOGIN')?></a>
+                    <a href="<?=SITE_DIR?>personal/" class="button button"><?=GetMessage('MAIN_BTN_ACTION_LOGIN')?></a>
             <?php } ?>
                 <?=GetMessage('MAIN_WAY')?>
         </div>

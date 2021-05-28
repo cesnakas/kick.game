@@ -3,6 +3,7 @@ $MESS['FOOTER_CONTENT_P_1'] = 'Весь контент, названия игр,
 $MESS['FOOTER_CONTENT_P_2_1'] = 'KICKGAME ESPORTS LIMITED (рег.номер компании HE 416108)';
 $MESS['FOOTER_CONTENT_P_2_2'] = 'Адрес: Василий Михайлиди, 21, Лимассол 3026, Кипр';
 $MESS['FOOTER_CONTENT_P_2_3'] = 'Все права защищены';
+$MESS['FOOTER_CONTENT_P_2_4'] = 'ИП Леонов Богдан Александрович ИНН 772741127087';
 
 $MESS['FOOTER_NAV_GAME_SCHEDULE'] = 'Расписание';
 $MESS['FOOTER_NAV_PERSONAL'] = 'Профиль';
@@ -35,8 +36,8 @@ $MESS['MODAL_BUTTON'] = 'Купить подписку';
 $MESS['MODAL_COOKIE_BTN_DISABLE'] = 'Отключить все';
 $MESS['MODAL_COOKIE_BTN_ACCEPT'] = 'Принять';
 
-$MESS['MODAL_VERIFIED_TITLE'] = 'Проверка pubg id и nickname';
-$MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Пожалуйста, пройди проверку pubg id и nickname для того чтобы начать играть на платформе. Только так мы сможем понять, что это именно ты зашел в лобби игры и гарантировать тебе игру с соперниками, равными по уровню.';
+$MESS['MODAL_VERIFIED_TITLE'] = 'Проверка PUBG ID и nickname';
+$MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Пожалуйста, пройди проверку PUBG ID и nickname для того чтобы начать играть на платформе. Только так мы сможем понять, что это именно ты зашел в лобби игры и гарантировать тебе игру с соперниками, равными по уровню.';
 $MESS['MODAL_VERIFIED_SUBTITLE_P2'] = 'Как пройти проверку:';
 $MESS['MODAL_VERIFIED_LIST_ITEM-1'] = 'Зайди в свой профиль игрока в pubg mobile';
 $MESS['MODAL_VERIFIED_LIST_ITEM-2'] = 'Сделай скриншот экрана';
@@ -47,11 +48,11 @@ $MESS['MODAL_VERIFIED_INPUT_FILE-2'] = ' файл(ов)';
 $MESS['MODAL_VERIFIED_UPLOAD_FILE'] = 'Прикрепить скриншот';
 $MESS['MODAL_VERIFIED_BUTTON_SUBMIT'] = 'Отправить скриншот';
 $MESS['MODAL_VERIFIED_BUTTON_CANCEL'] = 'Отмена';
-$MESS['MODAL_VERIFIED_FOOTER_CONTENT-1'] = 'Что делать, если я уже указал в своём профиле nickname или pubg id, которые отличаются от тех, что я использую в pubg mobile?';
-$MESS['MODAL_VERIFIED_FOOTER_CONTENT-2'] = 'Пока ты не отправил данные на проверку, ты можешь поменять свои pubg id и nickname в <a href="'.SITE_DIR.'personal/edit/" target="_blank">настройках профиля</a>, чтобы они соответствовали тем, что у тебя в игре. Затем, вернись в это окно и отправь скриншот на проверку.';
+$MESS['MODAL_VERIFIED_FOOTER_CONTENT-1'] = 'Что делать, если я уже указал в своём профиле nickname или PUBG ID, которые отличаются от тех, что я использую в pubg mobile?';
+$MESS['MODAL_VERIFIED_FOOTER_CONTENT-2'] = 'Пока ты не отправил данные на проверку, ты можешь поменять свои PUBG ID и nickname в <a href="'.SITE_DIR.'personal/edit/" target="_blank">настройках профиля</a>, чтобы они соответствовали тем, что у тебя в игре. Затем, вернись в это окно и отправь скриншот на проверку.';
 
 $MESS['MODAL_REJECTED_TITLE'] = 'Аккаунт отклонен';
-$MESS['MODAL_REJECTED_CONTENT-1'] = 'К сожалению, твой аккаунт не прошёл проверку pubg id и/или nickname.';
+$MESS['MODAL_REJECTED_CONTENT-1'] = 'К сожалению, твой аккаунт не прошёл проверку PUBG ID и/или nickname.';
 $MESS['MODAL_REJECTED_CONTENT-2'] = 'Причина отклонения аккаунта:';
 $MESS['MODAL_REJECTED_COMMENT_LABEL'] = 'Комментарий';
 $MESS['MODAL_REJECTED_COMMENT_PLACEHOLDER'] = 'Введите комментарий';

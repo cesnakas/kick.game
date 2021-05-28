@@ -286,6 +286,10 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
     // add winner next stage
 
     $chainMatrix = [
+        8 => [
+            'count' => count($_POST['dateTime'][8]), // колличество дат заполненных
+            'chain' => $_POST['chain8'] // $_POST['chain4']
+        ],
         7 => [
             'count' => count($_POST['dateTime'][7]), // колличество дат заполненных
             'chain' => $_POST['chain7'] // $_POST['chain4']
@@ -325,6 +329,10 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
         $propsMatch['TYPE_MATCH'] = 5; // id свойства
         //dump($chainMatrix);
         // блок проверки
+        if(isset($_POST['chain8']) && $_POST['chain8']+0) {
+            $chainMatrix[8]['chain'] = intval(abs($_POST['chain8']+0));
+
+        }
         if(isset($_POST['chain7']) && $_POST['chain7']+0) {
             $chainMatrix[7]['chain'] = intval(abs($_POST['chain7']+0));
 
@@ -483,6 +491,29 @@ $tournaments = getTournaments();
     <div class="form-group">
       <label for="descrTournament">Описание турнира</label>
       <textarea name="descriptionTournament" class="form-control" id="descrTournament" rows="7"></textarea>
+    </div>
+    <div class="p-3 mb-2 bg-warning text-white">
+      <h2 class="text-center">1/32 </h2>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label>Укажите количество матчей в игровой сессии</label>
+            <input type="text" name="chain8" class="form-control"  value="3">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="wrap-input">
+              <?php
+              $oneThirtySecond = 216;
+              for($i = 1; $i <= $oneThirtySecond; $i++) { ?>
+                <div class="form-group" style="position: relative;">
+                  <label><?=$i;?> игра укажите дату</label>
+                  <input type="text" name="dateTime[8][<?=$i;?>]" class="form-control dashboard-time" value="">
+                </div>
+              <?php } ?>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="p-3 mb-2 bg-secondary text-white">
       <h2 class="text-center">1/16 </h2>

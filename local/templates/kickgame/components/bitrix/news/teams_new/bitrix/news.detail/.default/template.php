@@ -229,13 +229,21 @@ if(isset($_SESSION['team_success'])) { ?>
           <?if($isMyCommand):?>
               <?$userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userId);?>
                 <?if(empty($userProductGroups)):?>
-                  <div class="date-finish">У вас нет активных подписок</div>
+                  <div class="date-finish">
+                      <?=GetMessage('TEAM_NOT_SUBSCRIBED')?>
+                  </div>
                 <?else:?>
-                  <div class="date-finish">Дата окончания подписки команды: <?= $dateFinish;?></div>
+                  <div class="date-finish">
+                      Дата окончания подписки команды: <?= $dateFinish;?>
+                  </div>
                 <?endif;?>
               <div class="buttons">
-                  <a class="btn btn_border extend" href="/subscription-plans/">Продлить</a>
-                  <a class="conditions" href="#">Условия использования подписки</a>
+                  <a class="btn btn_border extend" href="<?=SITE_DIR?>subscription-plans/">
+                      <?=GetMessage('TEAM_BUTTON_EXTEND')?>
+                  </a>
+                  <a class="conditions" href="#">
+                      Условия использования подписки
+                  </a>
               </div>
           <?endif;?>
           <div class="team-info__description">

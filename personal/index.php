@@ -1024,7 +1024,14 @@ unset($_SESSION['alert_error']);
               </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
-                  <div><?if(!empty($arUser["UF_ID_TEAM"])):?><?=GetMessage('PERSONAL_AWARD')?><?else:?><?= GetMessage('PERSONAL_DIVISION') ?><?endif;?></div>
+                  <div>
+                      <? if(!empty($arUser["UF_ID_TEAM"])): ?>
+                          <?=GetMessage('PERSONAL_AWARD')?>
+                      <? else: ?>
+                          <?=GetMessage('PERSONAL_AWARD')?>
+                          <?/*=GetMessage('PERSONAL_DIVISION')*/?>
+                      <? endif; ?>
+                  </div>
                   <div>
                       <?
                       $teamId = intval($arUser["UF_ID_TEAM"]);
@@ -1065,12 +1072,25 @@ unset($_SESSION['alert_error']);
                     <div><?=GetMessage('PERSONAL_LANG_SELECTED')?></div>
                 </div>
               </div>
-              <div class="col-6 col-md-3">
-                <div class="profile-info__next-item">
-                    <div><?= GetMessage('PERSONAL_ACTIVITY') ?></div>
-                  <div><?=GetMessage('PERSONAL_ACTIVITY_FROM')?>02:00<?=GetMessage('PERSONAL_ACTIVITY_TO')?>15:00</div>
+                <div class="col-6 col-md-3">
+                    <div class="profile-info__next-item">
+                        <div><?= GetMessage('PERSONAL_ACTIVITY') ?></div>
+                        <div>
+                            <?/*
+                            <?= GetMessage('PERSONAL_ACTIVITY_FROM') ?>
+                            02:00
+                            <?= GetMessage('PERSONAL_ACTIVITY_TO') ?>
+                            15:00
+                            */?>
+                            <? $rsUser = CUser::GetList($by, $order, array(
+                                "ID_EQUAL_EXACT" => $USER->GetID()
+                            ));
+                            if($arUser = $rsUser->Fetch()) {
+                                echo FormatDate("x", MakeTimeStamp($arUser["TIMESTAMP_X"]));
+                            } ?>
+                        </div>
+                    </div>
                 </div>
-              </div>
               <div class="col-6 col-md-3">
                 <div class="profile-info__next-item">
                     <div><?= GetMessage('PERSONAL_DEVICE') ?></div>

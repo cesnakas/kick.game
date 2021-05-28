@@ -1,6 +1,5 @@
 <?
-if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
-	die();
+if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 //dump(CUser::IsAuthorized());
 //if(!CUser::IsAuthorized()) {
     //LocalRedirect("/");
@@ -11,8 +10,8 @@ $rsUser = CUser::GetByID($userID);
 $arUser = $rsUser->Fetch();
 $teamID = $arUser['UF_ID_TEAM'];
 $datePremExp = $arUser['UF_DATE_PREM_EXP'];
-// Global $intlFormatter;
-// $intlFormatter = new IntlDateFormatter('ru_RU', IntlDateFormatter::SHORT, IntlDateFormatter::SHORT);
+Global $intlFormatter;
+$intlFormatter = new IntlDateFormatter('ru_RU', IntlDateFormatter::SHORT, IntlDateFormatter::SHORT);
 $isCaptainHeader = isCaptainHeader($userID, $teamID);
 if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
     updateStatusChekingPubgId($userID, 21);
@@ -132,18 +131,14 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
                   <ul class="navbar-dropdown__menu navbar-dropdown__menu_lang">
                   <? $le = substr($_SERVER['REQUEST_URI'], 3); ?>
                     <li class="navbar-dropdown__item">
-                        <? if (LANGUAGE_ID == 'ru') {
-                            echo '<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].'">РУС</a>';
-                        } else {
-                            echo '<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$le.'">РУС</a>';
-                        } ?>
+                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$le.'">РУС</a>';?>
                     </li>
                     <li class="navbar-dropdown__item">
-                        <? if (LANGUAGE_ID == 'en') {
-                            echo '<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].'">ENG</a>';
-                        } else {
-                            echo '<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].'/en'.$_SERVER['REQUEST_URI'].'">ENG</a>';
-                        } ?>
+                        <? if (SITE_DIR == '/en/'): ?>
+                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].'">ENG</a>';?>
+                        <? else: ?>
+                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].'/en'.$_SERVER['REQUEST_URI'].'">ENG</a>';?>
+                        <? endif; ?>
                     </li>
                   </ul>
                 </li>

@@ -10,6 +10,9 @@
 }
 
 @media (max-width:768px) {
+    .desktop-only {
+        display: none
+    }
     .flex-table-new__param {
         display: block
     }
@@ -168,6 +171,7 @@
 }
 
 @media (min-width:768px) {
+
     .new-mobile-item {
         display: none !important;
     }

@@ -1,7 +1,7 @@
 <?
 $MESS['ALERTS_SEARCH_NOT_FOUND'] = 'По вашему запросу ничего не найдено';
 
-$MESS['PLAYERS_RANK'] = 'Ранг';
+$MESS['PLAYERS_RANK'] = 'Ранк';
 $MESS['PLAYERS_RATING'] = 'Рейтинг';
 $MESS['PLAYERS_KILLS'] = 'Киллы';
 $MESS['PLAYERS_MATCHES'] = 'Количество игр';

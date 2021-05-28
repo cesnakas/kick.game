@@ -25,9 +25,9 @@ while($el = $rsData->fetch()) {
 <div class='flex-table-tournament--row' >
 <span>
     <div class='match-participants__team'>
-    <div class='match-participants__team-logo' style='background-image: url(".SITE_TEMPLATE_PATH."/dist/images/{$el["avatar"]}.jpg)'>
+    <div class='match-participants__team-logo' style='background-image: url(".CFile::GetPath($el["avatar"]).")'>
     </div>
-    <a href='#{$el["id_team"]}' class='match-participants__team-link'>{$el["name"]} [{$el["tag"]}] </a>
+    <a href='/teams/{$el["id_team"]}/' class='match-participants__team-link'>{$el["name"]} [{$el["tag"]}] </a>
     </div>
     </span>
     <span>

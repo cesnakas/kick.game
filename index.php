@@ -499,44 +499,44 @@ if ($result->isSuccess())
     </div>
   </section><?php */ ?>
     <main class="main">
-        <div class="adv">
-            <div class="adv__text">
-                <h3><?=GetMessage('CONTENT_ADV_TEXT_H3')?></h3>
-                <p><?=GetMessage('CONTENT_ADV_TEXT_P')?></p>
-                <p>* <?=GetMessage('CONTENT_ADV_TEXT_PS')?></p>
-            </div>
-            <div class="adv__action">
-              <!-- <a href="<?/*=SITE_DIR*/?>/game-schedule/?arrFilterDateTime_pf%5BTYPE_MATCH%5D=5&set_filter=Y&set_filter=" class="button"><?/*=GetMessage('CONTENT_ADV_ACTION_BUTTON')*/?></a>-->
-                <a href="<?=SITE_DIR?>regulations/" class="link link--text"><?=GetMessage('CONTENT_ADV_ACTION_P')?></a>
-            </div>
-        </div>
+<!--        <div class="adv">-->
+<!--            <div class="adv__text">-->
+<!--                <h3>--><?//=GetMessage('CONTENT_ADV_TEXT_H3')?><!--</h3>-->
+<!--                <p>--><?//=GetMessage('CONTENT_ADV_TEXT_P')?><!--</p>-->
+<!--                <p>* --><?//=GetMessage('CONTENT_ADV_TEXT_PS')?><!--</p>-->
+<!--            </div>-->
+<!--            <div class="adv__action">-->
+<!--              <a href="--><?///*=SITE_DIR*/?><!--/game-schedule/?arrFilterDateTime_pf%5BTYPE_MATCH%5D=5&set_filter=Y&set_filter=" class="button">--><?///*=GetMessage('CONTENT_ADV_ACTION_BUTTON')*/?><!--</a>-->
+<!--                <a href="--><?//=SITE_DIR?><!--regulations/" class="link link--text">--><?//=GetMessage('CONTENT_ADV_ACTION_P')?><!--</a>-->
+<!--            </div>-->
+<!--        </div>-->
         <section class="section">
             <h2 class="main-title"><?=GetMessage('CONTENT_MAIN_TITLE')?></h2>
             <div class="features">
                 <ul class="features__list">
                     <li class="features__item">
                         <img
-                                width="80"
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/flash.png" alt="flash"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/flash.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/flash@2x.png 2x"
-                        >
+                            width="80"
+                            src="<?=SITE_TEMPLATE_PATH;?>/images/flash.png" alt="flash"
+                            srcset="<?=SITE_TEMPLATE_PATH;?>/images/flash.png 1x, <?=SITE_TEMPLATE_PATH;?>/images/flash@2x.png 2x"
+                        />
                         <h3><?=GetMessage('CONTENT_MAIN_PUMP_UP')?></h3>
                         <p><?=GetMessage('CONTENT_MAIN_PUMP_UP_TEXT')?></p>
                     </li>
                     <li class="features__item">
                         <img
-                                width="80"
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/first.png" alt="first"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/first.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/first@2x.png 2x"
-                        >
+                            width="80"
+                            src="<?=SITE_TEMPLATE_PATH;?>/images/first.png" alt="first"
+                            srcset="<?=SITE_TEMPLATE_PATH;?>/images/first.png 1x, <?=SITE_TEMPLATE_PATH;?>/images/first@2x.png 2x"
+                        />
                         <h3><?=GetMessage('CONTENT_MAIN_FIRST')?></h3>
                         <p><?=GetMessage('CONTENT_MAIN_FIRST_TEXT')?></p>
                     </li>
                     <li class="features__item">
                         <img
-                                width="80"
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/tournament.png" alt="tournament"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/tournament.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/tournament@2x.png 2x"
+                            width="80"
+                            src="<?=SITE_TEMPLATE_PATH;?>/images/tournament.png" alt="tournament"
+                            srcset="<?=SITE_TEMPLATE_PATH;?>/images/tournament.png 1x, <?=SITE_TEMPLATE_PATH;?>/images/tournament@2x.png 2x"
                         >
                         <h3><?=GetMessage('CONTENT_MAIN_WIN')?></h3>
                         <p><?=GetMessage('CONTENT_MAIN_WIN_TEXT')?></p>
@@ -544,11 +544,11 @@ if ($result->isSuccess())
                 </ul>
             </div>
             <div class="section__action">
-                <?php if (!$USER->IsAuthorized()) { ?>
-                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN_TAKE_PART')?></a>
-                <?php } else { ?>
-                  <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
-                <?php } ?>
+                <? if ($USER->IsAuthorized()): ?>
+                <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
+                <? else: ?>
+                <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
+                <? endif; ?>
 
             </div>
             <div class="features-bg"></div>
@@ -701,15 +701,15 @@ if ($result->isSuccess())
                             <p><?=GetMessage('MAIN_FUNCTIONS_SEARCHING_TEXT')?></p>
                         </div>
                         <img
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/search.png" alt="search"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/search.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/search@2x.png 2x"
-                        >
+                            src="<?=SITE_TEMPLATE_PATH;?>/images/search.png" alt="search"
+                            srcset="<?=SITE_TEMPLATE_PATH;?>/images/search.png 1x, <?=SITE_TEMPLATE_PATH;?>/images/search@2x.png 2x"
+                        />
                     </div>
                     <div class="functions__item">
                         <img
-                                src="<?php echo SITE_TEMPLATE_PATH;?>/images/checked.png" alt="registration"
-                                srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/checked.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/checked@2x.png 2x"
-                        >
+                            src="<?=SITE_TEMPLATE_PATH;?>/images/checked.png" alt="registration"
+                            srcset="<?=SITE_TEMPLATE_PATH;?>/images/checked.png 1x, <?=SITE_TEMPLATE_PATH;?>/images/checked@2x.png 2x"
+                        />
                         <div class="functions__item-text">
                             <h4><?=GetMessage('MAIN_FUNCTIONS_REGISTER_TITLE')?></h4>
                             <p><?=GetMessage('MAIN_FUNCTIONS_REGISTER_TEXT')?></p>
@@ -762,11 +762,11 @@ if ($result->isSuccess())
                 </div>
             </div>
             <div class="section__action">
-                <?php if (!$USER->IsAuthorized()) { ?>
-                  <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN_TAKE_PART')?></a>
-                <?php } else { ?>
-                  <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN')?></a>
-                <?php } ?>
+                <? if ($USER->IsAuthorized()): ?>
+                    <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN_TAKE_PART')?></a>
+                <? else: ?>
+                    <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
+                <? endif; ?>
             </div>
         </section>
     </main>

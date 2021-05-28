@@ -43,6 +43,42 @@ function addMatchMembersResult($idMatch)
     }
 }
 
+function getWinners ($firstMatchID){
+    GLOBAL $DB;
+
+    $select = "";
+    $join = "";
+    $order = "";
+
+    $chainMatches = getChainMatches($firstMatchID);
+
+    foreach ($chainMatches["chain"] as $k => $match ){
+        $select = $select.", m{$k}.PROPERTY_17, m{$k}.PROPERTY_18";
+        $join = $join." LEFT JOIN b_iblock_element_prop_s5 as m{$k} ON m{$k}.PROPERTY_15 = t.IBLOCK_ELEMENT_ID AND m{$k}.PROPERTY_14 = {$match} ";
+        $order =  $order.", m{$k}.PROPERTY_17 DESC";
+    }
+
+    $sql = " SELECT t.PROPERTY_21 as name, t.PROPERTY_19 as avatar, t.PROPERTY_1 as tag, (total - kills) as placement, kills, total, r1.teamID as id_team" . $select . " FROM (SELECT t.PROPERTY_28 as teamID FROM b_iblock_element_prop_s6 as t
+INNER JOIN b_iblock_element_prop_s1 as n ON t.PROPERTY_28 = n.IBLOCK_ELEMENT_ID
+AND t.PROPERTY_27 = ".$firstMatchID.") as r1
+INNER JOIN (SELECT t.PROPERTY_15 AS teamID
+                    , sum(t.PROPERTY_18) AS total
+                    , sum(t.PROPERTY_17) AS kills
+              FROM b_iblock_element_prop_s5 AS t 
+              WHERE t.PROPERTY_14 IN (" . implode(',',$chainMatches["chain"]) . ")
+              GROUP BY t.PROPERTY_15) as r2 ON r2.teamID = r1.teamID
+INNER JOIN b_iblock_element_prop_s1 as t ON r1.teamID = t.IBLOCK_ELEMENT_ID
+" . $join . "
+ORDER BY total DESC, kills DESC". $order ." LIMIT 6";
+    $rsData = $DB->Query($sql);
+    $winners = [];
+    while($el = $rsData->fetch()) {
+        $winners[] = $el["id_team"];
+    }
+    return $winners;
+}
+
+
 function getChainMatches( $firstMatchID ){
     GLOBAL $DB;
     $firstMatchID += 0;
@@ -268,78 +304,6 @@ function setStagePass($firstMatchID, $stageKeyPass){
 }
 
 
-function moveWinners($match, $teamIds){
-
-    $playerKeys = [
-        'PLAYER_1',
-        'PLAYER_2',
-        'PLAYER_3',
-        'PLAYER_4',
-        'PLAYER_5',
-        'PLAYER_6',
-    ];
-
-    $squad = $_POST['squad'];
-    $props = [];
-    $tmp = [];
-    foreach ($playerKeys as $key => $name) {
-        $props[$name] = $squad[$key]+0;
-        if ($props[$name] > 0) {
-            $tmp[] = $key;
-        }
-    }
-    $props['MATCH_STAGE_ONE'] = $mId;
-    $props['TEAM_ID'] = $teamID;
-    $code = 'SQUAD_' . $match['NAME'];
-
-    $squadId = createSquad($props, $code);
-
-    if ($squadId) {
-//dump($squadId);
-// получаем участников матчей
-        $resMembersMatches = getMembersByMatchId($chainMatches);
-        $membersMatches = [];
-
-        if ($resMembersMatches) {
-            foreach ($resMembersMatches as $membersMatch) {
-                $membersMatches[] = $membersMatch['ID'];
-            }
-        }
-
-//dump($membersMatches);
-        $match = getMembersByMatchId($match["ID"]);
-        $match = $match[0];
-//dump($match);
-
-        $propertiesCases = getPlacesKeys();
-
-        $emptyPlace = false;
-        foreach ($propertiesCases as $case) {
-            if ($match[$case]+0 == 0) {
-                $emptyPlace = $case;
-                break;
-            }
-        }
-
-
-//dump($emptyPlace);
-// сделать проверку, что моей команды еще нет в участниках матча, если моя команду существует в этом матче, то $emptyplace = falce
-
-        if ($emptyPlace != false) {
-            foreach ($membersMatches as $membersMatchId) {
-                CIBlockElement::SetPropertyValues($membersMatchId, 4, $teamID, $emptyPlace);
-            }
-        } else {
-            CIBlockElement::Delete($squadId);
-            $alertManagementSquad = 'Разместить команду не удалось';
-            createSession('management-games_success', $alertManagementSquad);
-        }
-
-    }
-
-
-}
-
 function isMatchRes($matchID){
     GLOBAL $DB;
     $sql = 'SELECT * FROM b_iblock_element_prop_s5 as t WHERE t.PROPERTY_14 = '.$matchID;
@@ -465,7 +429,7 @@ function getMatchByParentId($parentId) {
     return null;
 }
 
-function getMembersByMatchId($matchId) {
+function getMembersListByMatchId($matchId) {
     $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
     $arFilter = Array("IBLOCK_ID" => 4, "PROPERTY_WHICH_MATCH" => $matchId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
     $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
@@ -691,7 +655,7 @@ function showMatchInfo($match = null)
 {
 
     $firstMatchId = $_GET['id']+0;
-    $members = getMembersByMatchId($match['ID']);
+    $members = getMembersListByMatchId($match['ID']);
     $streamers = getStreamers();
     $mods = getUsersByGroup(8);
 
@@ -699,7 +663,6 @@ function showMatchInfo($match = null)
         addMatchMembersResult($match['ID']);
         echo '<form id="deleteForm" action="'.POST_FORM_ACTION_URI.'" method="post">'. bitrix_sessid_post() .'</form>
 <form  action="#" method="post">';
-        echo '<h2 class="mb-3">#' . $match['ID'] . ' ' . $match['NAME'] . '</h2>';
         echo '<div class="row">
           <div class="col-md-4">
           <div class="form-group">
@@ -767,7 +730,7 @@ function showMatchResults($match = null, $next)
 {
 
     $firstMatchId = $_GET['id']+0;
-    $members = getMembersByMatchId($match['ID']);
+    $members = getMembersListByMatchId($match['ID']);
     $streamers = getStreamers();
     $mods = getUsersByGroup(8);
 
@@ -1333,8 +1296,29 @@ if (!empty($_POST["sendResults"])) {
                     $res = saveMembersResult($teamId, $matchId, $countResult, $_POST["place"][$teamId], $resMatch["PROPERTY_23"]);
 
                 }
-                if(isset($_POST["last"]) && isMatchRes($matchId) && ($firstMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 5)){
-                   setStagePass($firstMatchId, $stageKeyPass);
+                if(isset($_POST["last"]) && isMatchRes($matchId) && ($firstMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 5 && $firstMatch["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"] != 1)){
+
+                    $nextStageId = getNextStage($firstMatch["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"]);
+                    $winnersIds = getWinners($firstMatchId);
+                    foreach ($winnersIds as $winner){
+
+                    $idNextMatch = findFreeGame($firstMatch["TOURNAMENT"]["VALUE"],  $nextStageId);
+                    if($idNextMatch){
+                    $chainMatches[] = $idNextMatch;
+                    do {
+                        $match = getMatchByParentId($idNextMatch);
+                        if ($match != null) {
+                            $nextMatch = true;
+                            $chainMatches[] = $match['ID'];
+                            $idNextMatch = $match['ID'];
+                        } else {
+                            $nextMatch = false;
+                        }
+                    } while($nextMatch == true);
+                    moveWinners($firstMatch, $chainMatches, $winner);
+                    setStagePass($firstMatchId, $stageKeyPass);
+                    }
+                }
                 }
                 LocalRedirect('/dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
 
@@ -1413,7 +1397,7 @@ if (!empty($_POST["sendInfo"])) {
                 <?php $parentId = $firstMatch['ID'];
 
 
-                $num = 1;
+                $num = 2;
                 do {
                     $match = getMatchByParentId($parentId);
                     $next = (getMatchByParentId($parentId+2) == null);
@@ -1430,32 +1414,34 @@ if (!empty($_POST["sendInfo"])) {
                         $nextMatch = false;
                     }
 
-                $num=+1;
+                $num+=1;
                 } while($nextMatch == true);
 
                 ?>
             </div>
             <div class="tab-pane fade <?php echo $activeInfo ; ?>" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
+                <h2 class="mb-3">Матч 1</h2>
                 <?php
                 showMatchInfo($firstMatch); ?>
 
                 <?php $parentId = $firstMatch['ID'];
-
+                $num = 2;
                 do {
                     $match = getMatchByParentId($parentId);
                     if ($match != null) {
 
                         ?>
-                        <div class="container">
+
+                            <h2 class="mb-3">Матч <?php echo $num; ?></h2>
                             <?php showMatchInfo($match); ?>
-                        </div>
+
                         <?php $nextMatch = true;
                         $parentId = $match['ID'];
                     } else {
                         $nextMatch = false;
                     }
 
-
+                    $num+=1;
                 } while($nextMatch == true);
 
                 ?>

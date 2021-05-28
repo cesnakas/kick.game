@@ -129,7 +129,7 @@ if (isset($_POST['create_match'])) {
     $PROP['STAGE_TOURNAMENT'] = 4; // id свойства
     $PROP['TYPE_MATCH'] = 6; // id свойства
 
-  $countChainMatches = 3;
+  $countChainMatches = !empty($_POST['qtyMatches']) ? $_POST['qtyMatches'] : 3;
   $matchDuration = 40; // 30 min
     $resIds = [];
     if($_POST['minRating'] <= $_POST['maxRating']) {
@@ -178,44 +178,56 @@ if (isset($_POST['create_match'])) {
       <? }
   $mods = getUsersByGroup(8);
   ?>
-    <h2>Создать цепочку матчей</h2>
-    <div class="container">
+
+
+      <h2>Создать цепочку матчей</h2>
+      <form action="#" method="post" enctype="multipart/form-data">
         <div class="row">
-          <div class="col-6">
-            <form action="#" method="post" enctype="multipart/form-data">
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Выберите рефери</label>
-                        <select class="form-control" id="exampleFormControlSelect1" name="idMod">
-                            <option>Укажите из списка</option>
-                            <?php foreach($mods as $mod){ ?>
-
-                                <option value="<?php echo $mod["ID"]; ?>"><?php echo $mod["LOGIN"]; ?></option>
-
-                            <?php } ?>
-
-                        </select>
-                    </div>
-                </div>
-
-              <div class="form-group">
-                <label for="datetimepicker2" class="form-label">Введите дату и время матча</label>
-                <input type='text' class="form-control" name="date_time_match" value="" id="datetimepicker2" />
-              </div>
-                <div class="form-group">
-                    <label for="minRating" class="form-label">Введите минимальный рейтинг</label>
-                    <input type='text' class="form-control" name="minRating" value="" id="minRating" />
-                </div>
-                <div class="form-group">
-                    <label for="maxRating" class="form-label">Введите максимальный рейтинг</label>
-                    <input type='text' class="form-control" name="maxRating" value="" id="maxRating" />
-                </div>
-              <button type="submit" name="create_match" class="btn btn-primary">Отправить</button>
-            </form>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="datetimepicker2" class="form-label">Введите дату и время матча</label>
+              <input type='text' class="form-control" name="date_time_match" value="" id="datetimepicker2" />
+            </div>
           </div>
+          <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Выберите рефери</label>
+                <select class="form-control" id="exampleFormControlSelect1" name="idMod">
+                  <option>Укажите из списка</option>
+                    <?php foreach($mods as $mod){ ?>
+
+                      <option value="<?php echo $mod["ID"]; ?>"><?php echo $mod["LOGIN"]; ?></option>
+
+                    <?php } ?>
+
+                </select>
+              </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="minRating" class="form-label">Введите минимальный рейтинг</label>
+              <input type='text' class="form-control" name="minRating" value="" id="minRating" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="maxRating" class="form-label">Введите максимальный рейтинг</label>
+              <input type='text' class="form-control" name="maxRating" value="" id="maxRating" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="qtyMatches" class="form-label">Укажите кол-во матчей в серии, по умолчанию 3</label>
+              <input type='text' class="form-control" name="qtyMatches" value="3" id="qtyMatches" />
+            </div>
+          </div>
+
+              <div class="col-md-12">
+                <button type="submit" name="create_match" class="btn btn-success">Создать</button>
+              </div>
         </div>
-    </div>
+      </form>
 </div>
 
 

@@ -19,14 +19,14 @@ $MESS['TYPE_ACCOUNT_CHANGE'] = 'Change';
 $MESS['PERSONAL_EDIT'] = 'Edit';
 $MESS['PERSONAL_CONNECT_TELEGRAM'] = 'Connect Telegram';
 $MESS['PERSONAL_ENTER_ID'] = 'Enter';
-$MESS['PERSONAL_MY_MOOD'] = 'My mood';
-$MESS['PERSONAL_REGION'] = 'Region, city';
+$MESS['PERSONAL_MY_MOOD'] = 'Mood';
+$MESS['PERSONAL_REGION'] = 'Region';
 $MESS['PERSONAL_REGION_PLACEHOLDER'] = 'Enter the region, city';
-$MESS['PERSONAL_AWARD'] = 'Award';
+$MESS['PERSONAL_AWARD'] = 'Awards';
 $MESS['PERSONAL_DIVISION'] = 'Division';
-$MESS['PERSONAL_LANG'] = 'Communication language';
+$MESS['PERSONAL_LANG'] = 'Language';
 $MESS['PERSONAL_LANG_SELECTED'] = 'Russian';
-$MESS['PERSONAL_ACTIVITY'] = 'Activity in the game';
+$MESS['PERSONAL_ACTIVITY'] = 'Active';
 $MESS['PERSONAL_ACTIVITY_FROM'] = 'from ';
 $MESS['PERSONAL_ACTIVITY_TO'] = ' to ';
 $MESS['PERSONAL_DEVICE'] = 'Device';
@@ -46,12 +46,12 @@ $MESS['MY_GAMES_COMMENTATOR'] = 'Commentator';
 
 $MESS['MY_GAMES_SUPPORT'] = 'Support';
 
-$MESS['MY_GAMES_PROMO_CODE'] = 'I have a promo code';
+$MESS['MY_GAMES_PROMO_CODE'] = 'PROMO CODE';
 $MESS['MY_GAMES_PROMO_CODE_PLACEHOLDER'] = 'Enter your promo code';
 $MESS['MY_GAMES_PROMO_CODE_BTN'] = 'Apply';
 
-$MESS['BANNER_TITLE'] = 'Become a pro, buy <br> a subscription';
-$MESS['BANNER_BUTTON'] = 'Buy a subscription';
+$MESS['BANNER_TITLE'] = 'Early sign up for scrims';
+$MESS['BANNER_BUTTON'] = 'UNLOCK';
 
 $MESS['GS_HEADER'] = 'Game Schedule';
 $MESS['GS_BTN'] = 'Game Search';

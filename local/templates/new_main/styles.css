@@ -448,7 +448,8 @@ button {
   padding: 28px 34px;
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
+  user-select: none;
 }
 
 .menu-button {
@@ -501,12 +502,13 @@ button {
 .lang-selector__menu {
   display: none;
   position: absolute;
-  top: 100%;
+  top: calc(100% + .5rem);
   left: 0;
   width: 100%;
-  padding: 11px 20px;
-  font-size: 14px;
+  padding: .75rem .5rem;
   border-radius: 12px;
+  font-size: 14px;
+  text-align: center;
   background-color: #000000;
 }
 
@@ -522,7 +524,7 @@ button {
 }
 
 .lang-selector__menu-item:first-child {
-  margin-bottom: 10px;
+  margin-bottom: .5rem;
 }
 
 .lang-selector__menu-item:hover,
@@ -1411,7 +1413,9 @@ button {
   .header {
     background-size: contain;
   }
-
+  .desktop-only {
+    display: none
+  }
   .player__controls {
     padding: 0 20px;
   }

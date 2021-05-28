@@ -10,6 +10,8 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
 
             <p><?=GetMessage('FOOTER_CONTENT_P_1')?></p>
             <p>
+      <p class ="desktop-only"><?=GetMessage('FOOTER_CONTENT_P_2_4')?> </p>
+      <br>
                 <?=GetMessage('FOOTER_CONTENT_P_2_1')?>
                 <br>
                 <?=GetMessage('FOOTER_CONTENT_P_2_2')?>

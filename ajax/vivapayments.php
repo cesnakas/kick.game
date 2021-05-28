@@ -1,6 +1,5 @@
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");?>
-<?
-
+<?php
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 $action = $_POST["action"];
 unset($_POST["action"]);
 if($action == "getOrderCode")
@@ -29,5 +28,5 @@ if($action == "getOrderCode")
     curl_close($curl);
     echo $response;
 }
-?>
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");?>
+
+

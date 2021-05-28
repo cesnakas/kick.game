@@ -8,9 +8,9 @@ $MESS['TMS_TEAM_QUIT'] = 'Quit the team';
 $MESS['TMS_TEAM_CAPITAN'] = 'You are the captain of this team';
 $MESS['TMS_TEAM_SENT_REQUEST'] = 'Send a request';
 
-$MESS['TMS_HEADING'] = 'Core team';
+$MESS['TMS_HEADING'] = 'Main squad';
 $MESS['TMS_PLAYER'] = 'Player';
-$MESS['TMS_GAMES'] = 'Number of games';
+$MESS['TMS_GAMES'] = 'Games played';
 $MESS['TMS_KILLS'] = 'Kills';
 $MESS['TMS_TOTAL'] = 'Total';
 $MESS['TMS_RATING'] = 'Rating';
@@ -23,4 +23,6 @@ $MESS['TMS_TABLE_RATING'] = 'Rating';
 $MESS['TMS_TABLE_MODE'] = 'Mode';
 $MESS['TMS_TABLE_COMMENTATOR'] = 'Commentator';
 
-$MESS['TMS_NOT_STATISTICS'] = 'The team does not have statistics on games yet';
+$MESS['TMS_NOT_STATISTICS'] = 'Team doesn\'t have statistics yet';
+$MESS["TEAM_NOT_SUBSCRIBED"] = "You don't have any active subscriptions";
+$MESS["TEAM_BUTTON_EXTEND"] = "Extend";
