@@ -148,7 +148,9 @@ $teamID = $arUser['UF_ID_TEAM'];
           <div class="game-schedule__param">Дата проведения</div>
           <?php
           $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-          echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
+          // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
+          echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+          ?>
         </span>
     <span class="game-schedule__param-wrap">
           <div class="game-schedule__param">Рейтинг</div>

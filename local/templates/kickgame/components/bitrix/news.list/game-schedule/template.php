@@ -194,7 +194,9 @@ function isPlace($idMatch): bool
                         <span><?=GetMessage('SCHEDULE_DATE')?>: </span>
                         <?php
                         $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-                        echo $dateTime[0] . GetMessage('SCHEDULE_DATE_AT') . substr($dateTime[1], 0, 5); ?>
+                        // echo $dateTime[0] . GetMessage('SCHEDULE_DATE_AT') . substr($dateTime[1], 0, 5);
+                        echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+                        ?>
                     </div>
                 </div>
                 <div class="game-info__item-row">
@@ -297,7 +299,9 @@ function isPlace($idMatch): bool
           <div class="new-game-schedule__param"><?=GetMessage('SCHEDULE_DATE')?></div>
           <?php
           $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-          echo $dateTime[0] . GetMessage('SCHEDULE_DATE_AT') . substr($dateTime[1], 0, 5); ?>
+          // echo $dateTime[0] . GetMessage('SCHEDULE_DATE_AT') . substr($dateTime[1], 0, 5);
+          echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+          ?>
         </span>
         <span class="new-game-schedule__param-wrap">
           <div class="new-game-schedule__param"><?=GetMessage('SCHEDULE_RATING')?></div>

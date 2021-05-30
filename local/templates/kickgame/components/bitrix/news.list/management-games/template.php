@@ -357,7 +357,9 @@ function getAvailableGroup($arItem) {
                         <span>Дата проведения: </span>
                         <?php
                         $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-                        echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
+                        // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
+                        echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+                        ?>
                     </div>
                 </div>
                 <div class="game-info__item-row">
@@ -468,7 +470,9 @@ function getAvailableGroup($arItem) {
           <div class="new-game-schedule__param">Дата проведения</div>
           <?php
           $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-          echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
+          // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
+          echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+          ?>
         </span>
         <span class="new-game-schedule__param-wrap">
           <div class="new-game-schedule__param">Рейтинг</div>

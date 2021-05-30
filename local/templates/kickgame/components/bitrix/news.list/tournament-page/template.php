@@ -24,8 +24,6 @@ $teamID = $arUser['UF_ID_TEAM'];
 $nextGameID = getNextGame($teamID, $_GET["tournamentID"]);
 $nextGame = getMatchById($nextGameID);
 
-
-
 // проверка команды на участие
 function getParticipationByMatchId($idMatch)
 {
@@ -275,13 +273,14 @@ foreach($arResult["ITEMS"] as $arItem) {
 
                                                         </div>
                                                     </div>
-                                                <?php if (isCaptain($userID, $teamID) && $matchOccupied[$group["ID"]] < 18 ){ ?>
+                                                <?php
+                                                if (isCaptain($userID, $teamID) && $matchOccupied[$group["ID"]] < 18 && strtotime($group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) > time()) { ?>
                                                     <div class="tournament-schedule-results__btn-change-group">
                                                         <?php if (!$nextGameID && $countStages == 1){ ?>
 
                                                             <a href="/tournament-page/join-game/?mid=<?php echo $group["ID"]?>" class="btn">Подать заявку</a>
 
-                                                        <?php } else if ($nextGame["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"] == $k) { ?>
+                                                        <?php } else if ($nextGame["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"] == $k && $nextGame["ID"] != $group["ID"]) { ?>
 
                                                             <a href="#<?php echo $group["ID"]?>" class="btn">Сменить группу</a>
 

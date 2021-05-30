@@ -23,7 +23,7 @@ $teamID = $arUser['UF_ID_TEAM'];
 
 // id матча который пришел
 $mId = $_GET['mid']+0;
-
+if ($mId == 0) LocalRedirect(SITE_DIR."game-schedule/");
 // собираем все ошибки
 $errors = [];
 

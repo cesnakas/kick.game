@@ -277,7 +277,9 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arIt
                       <span><?=GetMessage('DATE_EVENT_COLON')?></span>
                       <?php
                       $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-                      echo $dateTime[0] . GetMessage('DATE_EVENT_COLON_AT') . substr($dateTime[1], 0, 5); ?>
+                      // echo $dateTime[0] . GetMessage('DATE_EVENT_COLON_AT') . substr($dateTime[1], 0, 5);
+                      echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+                      ?>
                   </div>
               </div>
               <div class="game-info__item-row">
@@ -390,7 +392,9 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arIt
           <div class="new-game-schedule__param"><?=GetMessage('DATE_EVENT')?></div>
           <?php
           $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-          echo $dateTime[0] . GetMessage('DATE_EVENT_COLON_AT') . substr($dateTime[1], 0, 5); ?>
+          // echo $dateTime[0] . GetMessage('DATE_EVENT_COLON_AT') . substr($dateTime[1], 0, 5);
+          echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+          ?>
         </span>
           <span class="new-game-schedule__param-wrap">
           <div class="new-game-schedule__param"><?=GetMessage('RATING')?></div>

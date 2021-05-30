@@ -222,12 +222,19 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
           </div>
 
           <div class="modal-body__btn">
-            <button type="submit" name="scrinPubgFirst" class="btn mr-3">Отправить скриншот</button>
-            <button type="button" class="btn btn_border" data-dismiss="modal">Отмена</button>
+            <button type="submit" name="scrinPubgFirst" class="btn mr-3">
+                <?=GetMessage('MODAL_VERIFIED_BUTTON_SUBMIT')?>
+            </button>
+            <button type="button" class="btn btn_border" data-dismiss="modal">
+                <?=GetMessage('MODAL_VERIFIED_BUTTON_CANCEL')?>
+            </button>
           </div>
         <div class="modal-body__content modal-body__content_sub">
-            <p>Что делать, если я уже указал в своём профиле nickname или pubg id, которые отличаются от тех, что я использую в pubg mobile?<br>
-            Пока ты не отправил данные на проверку, ты можешь поменять свои pubg id и nickname в <a href="/personal/edit/" target="_blank">настройках профиля</a>, чтобы они соответствовали тем, что у тебя в игре. Затем, вернись в это окно и отправь скриншот на проверку.</p>
+            <p>
+                <?=GetMessage('MODAL_VERIFIED_FOOTER_CONTENT-1')?>
+                <br>
+                <?=GetMessage('MODAL_VERIFIED_FOOTER_CONTENT-2')?>
+            </p>
         </div>
         </form>
       </div>

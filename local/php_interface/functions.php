@@ -61,7 +61,7 @@ function getTournamentById($tournamentId) {
 function getMatchesByTournamentID($tournamentID, $stageID){
     GLOBAL $DB;
 
-    $sql = "SELECT m.IBLOCK_ELEMENT_ID as IDs FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ". $tournamentID." AND m.PROPERTY_8 is NULL AND m.PROPERTY_22 =". $stageID;
+    $sql = "SELECT m.IBLOCK_ELEMENT_ID as IDs FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ". $tournamentID." AND m.PROPERTY_8 is NULL AND UNIX_TIMESTAMP(m.PROPERTY_4) > UNIX_TIMESTAMP() AND m.PROPERTY_22 =". $stageID;
 
     $res = $DB->Query($sql);
     $matches = [];
@@ -257,19 +257,19 @@ function  getNextStage($stage){
 function findFreeGame($tournamentID, $stageID){
 
 
-$IDs = getMatchesByTournamentID($tournamentID, $stageID);
-foreach($IDs as $gameID){
-    $match = getMembersByMatchId($gameID);
-    $match = $match[0];
-//dump($match);
+        $IDs = getMatchesByTournamentID($tournamentID, $stageID);
+        foreach($IDs as $gameID){
+            $match = getMembersByMatchId($gameID);
+            $match = $match[0];
+        //dump($match);
 
-    $propertiesCases = getPlacesKeys();
-    foreach ($propertiesCases as $case) {
-        if ($match[$case]+0 == 0) {
-            return $gameID;
+            $propertiesCases = getPlacesKeys();
+            foreach ($propertiesCases as $case) {
+                if ($match[$case]+0 == 0) {
+                    return $gameID;
+                }
+            }
         }
-    }
-}
     return false;
 
 }

@@ -22,8 +22,9 @@ $arUser = $rsUser->Fetch();
 $teamID = $arUser['UF_ID_TEAM'];
 
 // id матча который пришел
+//$mId = $_GET['tournament']+0;
 $mId = $_GET['mid']+0;
-
+if ($mId == 0) LocalRedirect(SITE_DIR."game-schedule/");
 // собираем все ошибки
 $errors = [];
 
@@ -183,46 +184,43 @@ function getMatchByParentId($parentId) {
 }
 
 
-// получаем участников матчей по полю which_match передавая id
-/*function getMembersByMatchId($matchId) {
-    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-    $arFilter = Array(
-        "IBLOCK_ID" => 4,
-        "PROPERTY_WHICH_MATCH" => $matchId,
-        "ACTIVE_DATE" => "Y",
-        "ACTIVE" => "Y"
-    );
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-    $output = [];
-
-    while ($ob = $res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        //dump($arProps);
-        foreach ($arProps as $k=>$v) {
-            $arFields[$k] = $v['VALUE'];
-        }
-        $output[] = $arFields;
-    }
-    return $output;
-}
-*/
-
 //Проверяем учавствует ли комманда в другом матче в это же время
-function isSameTime($teamID, $gameTime){
+function isSameTime($teamID, $gameTime, $matchID){
     global $DB;
-    $sql = " SELECT t.PROPERTY_27 as matchid, t.PROPERTY_28 as teamid, m.PROPERTY_4
-    FROM b_iblock_element_prop_s6 as t, b_iblock_element_prop_s3 as m
-    WHERE m.IBLOCK_ELEMENT_ID = t.PROPERTY_27
-    AND t.PROPERTY_28 = " . $teamID . "
-    AND UNIX_TIMESTAMP(m.PROPERTY_4) BETWEEN (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') - 6600) AND (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') + 6600)";
+
+    $matches = getChainMatches( $matchID );
+
+    $gamesCount = count($matches["chain"]);
+    $noRegTime = $gamesCount * 2100;
+
+    $sql = "SELECT m.IBLOCK_ELEMENT_ID as matchID, m.PROPERTY_4  FROM b_iblock_element_prop_s4 as t
+    INNER JOIN b_iblock_element_prop_s3 as m ON m.IBLOCK_ELEMENT_ID = t.PROPERTY_13
+    WHERE UNIX_TIMESTAMP(m.PROPERTY_4) BETWEEN (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') - 2100) AND (UNIX_TIMESTAMP('". $gameTime->format('Y-m-d H:i:s') ."') + ". $noRegTime. ")
+    AND (t.PROPERTY_36 = " . $teamID . "
+    OR t.PROPERTY_35 = " . $teamID . "
+    OR t.PROPERTY_33 = " . $teamID . "
+    OR t.PROPERTY_34 = " . $teamID . "
+    OR t.PROPERTY_9 = " . $teamID . "
+    OR t.PROPERTY_10 = " . $teamID . "
+    OR t.PROPERTY_11 = " . $teamID . "
+    OR t.PROPERTY_12 = " . $teamID . "
+    OR t.PROPERTY_39 = " . $teamID . "
+    OR t.PROPERTY_40 = " . $teamID . "
+    OR t.PROPERTY_41 = " . $teamID . "
+    OR t.PROPERTY_42 = " . $teamID . "
+    OR t.PROPERTY_43 = " . $teamID . "
+    OR t.PROPERTY_51 = " . $teamID . "
+    OR t.PROPERTY_52 = " . $teamID . ")";
     $rsData = $DB->Query($sql);
+
     $matches = [];
         while($res = $rsData->fetch()){
             $matches[$res['matchid']] = $res;
         }
     return count($matches);
 }
+
+
 
 // проверка команды на участие
 function getParticipationByMatchId($idMatch)
@@ -241,6 +239,7 @@ function getParticipationByMatchId($idMatch)
     $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
     $arrTeams = [];
     $key = getPlacesKeys();
+
     if ($ob = $res->GetNextElement()) {
         $arFields = $ob->GetFields();
         $arProps = $ob->GetProperties();
@@ -448,8 +447,11 @@ function updateMembers($props = [], $id)
 $redirectUrlAction = false;
 $actionErrorText = false;
 $actionSuccessText = false;
+
+
 // текущий матч
 $curMatch = getMatchById($mId);
+
 
 switch($curMatch["COUTN_TEAMS"]["VALUE"]) {
     case 4:
@@ -492,12 +494,13 @@ $squadMembers = [];
 
 if ($tmp = getParticipationByMatchId($mId)) {
     $tmp = array_flip($tmp);
+
     if (isset($tmp[$teamID])) {
 
         $star = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="orangered" class="bi bi-star-fill" viewBox="0 0 16 16">
                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
               </svg>';
-        $placeName = '<span class="badge badge-danger">Ваше место в матче № ' . $tmp[$teamID] . '</span>';
+        $placeName = '<span class="badge badge-danger">' . GetMessage('JG_BADGE') . $tmp[$teamID] . '</span>';
 
         if ($squadMembers = getPlayersSquadByIdMatch($mId, $teamID)) {
             $squadMembers = array_flip($squadMembers);
@@ -505,8 +508,6 @@ if ($tmp = getParticipationByMatchId($mId)) {
     }
 
 }
-
-
 
 // формирование команды
 $squad = [];
@@ -523,13 +524,8 @@ $minLimPlayers = 4;
 $maxLimPlayers = 6;
 $alertManagementSquad = '';
 $objDateTime = new DateTime($curMatch['DATE_START']['VALUE']);
+$userProductGroups = CustomSubscribes::getActualUserSubscribeGroup($userID);
 if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
-
-    if($mId == 0){
-        $mId = findFreeGame($_GET['tournament'], 7  );
-        $curMatch = getMatchById($mId);
-        $isPlace = isPlace($curMatch["ID"]);
-    }
 
     if (!empty($_POST['squad'])) {
             $squad = $_POST['squad'];
@@ -551,14 +547,15 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
                 if (isset($_POST['update_squad']) || $placeName != '') {
                     updateSquad($props, $mId);
                     createSession('management-games_success', $messages[$lang]['UPDATE_SQUAD_SUCCESS']);
-                    $redirectUrlAction = "/tournament-page/join-game/?mid=".$mId;
+                    $redirectUrlAction = SITE_DIR."tournament-page/join-game/?mid=".$mId;
                 } else {
+
+
+
                     $time = $curMatch['DATE_START']['VALUE'];
                     if($curMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 5){
                         $tournamentId = $curMatch["PROPERTY_3"];
-
                         $time = getLastTournamentGameTime($tournamentId);
-
                     }
 
                    // if(willTeamPrem($teamID, $time) || $curMatch["TYPE_MATCH"]["VALUE_ENUM_ID"] == 6){
@@ -568,30 +565,44 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
 
                     if (($teamRating['rating']>= $curMatch['MIN_RATING']['VALUE'] && $teamRating['rating'] <= $curMatch['MAX_RATING']['VALUE']) || $curMatch['TYPE_MATCH']["VALUE_ENUM_ID"] != 6) {
 
-                        if (isSameTime($teamID, $objDateTime) == 0) {
+                        if (isSameTime($teamID, $objDateTime, $curMatch["ID"]) == 0) {
                             if ($idTournament = isTournament($mId)) {
 
                                 $registeredMatchId = checkRegistrationTeamOnTournament($teamID, $idTournament, $curMatch["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"]);
-                                //dump($registeredMatchId, 1);
-                                if ($registeredMatchId > 0) {
 
-                                    $alertManagementSquad = $messages[$lang]['YOU_ALREADY_ADDED_ON_TOURNAMENT'] . '<br>
-                                <a href="/management-games/join-game/?mid=' . $registeredMatchId . '">' . $messages[$lang]['GO_TO_MATCH'] . '</a>';
+                                if(!empty($userProductGroups) && count($userProductGroups)) {
+
+                                    $now = date('d.m.Y H:i:s');
+                                    $convertDateSubscribeTo = ConvertDateTime($userProductGroups[0]["DATE_ACTIVE_TO"], "DD.MM.YYYY HH:MI:SS");
+                                    $convertDateToday = ConvertDateTime($now, "DD.MM.YYYY HH:MI:SS");
+                                    $dateToday = DateTime::createFromFormat('d.m.Y H:i:s', $convertDateToday);
+                                    $datePremTo = new DateTime($convertDateSubscribeTo);
+                                    $dayDiffToStartTournament = $dateToday->diff($datePremTo)->format('%R%a') + 0;
+
+                                }
+
+                                if ($dayDiffToStartTournament < 3) {
+                                    $alertManagementSquad = GetMessage('JG_BEFORE_TOURNAMENT_REGISTER');
                                     createSession('management-games_error', $alertManagementSquad);
-                                    //LocalRedirect("/management-games/join-game/?mid=".$mId);
+                                    //dump($dayDiffToStartTournament, 1);
+                                } else if ($registeredMatchId > 0) {
+                                    $alertManagementSquad = $messages[$lang]['YOU_ALREADY_ADDED_ON_TOURNAMENT'] . '<br>
+                                <a href="'.SITE_DIR.'tournament-page/join-game/?mid=' . $registeredMatchId . '">' . $messages[$lang]['GO_TO_MATCH'] . '</a>';
+                                    createSession('management-games_error', $alertManagementSquad);
+                                    //LocalRedirect(SITE_DIR."management-games/join-game/?mid=".$mId);
                                 } else if (!checkTournamentStagePass($teamID,$mId)){
-                                    $alertManagementSquad = "У вас еще нет доступа к этому этапу";
+                                    $alertManagementSquad = GetMessage('ALERTS_NOT_ACCESS_STAGE');
                                     createSession('management-games_error', $alertManagementSquad);
                                 } else {
                                     if ($isPlace) {
                                         $squadId = createSquad($props, $code);
-                                        $alertManagementSquad = 'Ты успешно сформировал команду на игру';
+                                        $alertManagementSquad = GetMessage('ALERTS_SUCCESS_FORMED_TEAM_FROM_GAME');
                                         createSession('management-games_success', $alertManagementSquad);
-                                        //LocalRedirect("/management-games/join-game/?mid=".$mId);
+                                        //LocalRedirect(SITE_DIR."management-games/join-game/?mid=".$mId);
                                     } else {
-                                        $alertManagementSquad = 'Ты не успел, мест нет';
+                                        $alertManagementSquad = GetMessage('ALERTS_LATE_NO_SEATS');
                                         createSession('management-games_error', $alertManagementSquad);
-                                        //LocalRedirect("/management-games/join-game/?mid=".$mId);
+                                        //LocalRedirect(SITE_DIR."management-games/join-game/?mid=".$mId);
                                     }
                                 }
                             } else {
@@ -599,46 +610,44 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
                                     $squadId = createSquad($props, $code);
                                     //dump($squadId);
 
-                                    $alertManagementSquad = 'Ты успешно сформировал команду';
+                                    $alertManagementSquad = GetMessage('ALERTS_SUCCESS_FORMED_TEAM');
                                     //dump($alertManagementSquad);
                                     createSession('management-games_success', $alertManagementSquad);
                                     // not working
                                     // header('Location: /management-games/join-game/?mid='.$mId);
                                     //LocalRedirect("/management-games/join-game/?mid=".$mId);
                                 } else {
-                                    $alertManagementSquad = 'Ты не успел, мест нет';
+                                    $alertManagementSquad = GetMessage('ALERTS_LATE_NO_SEATS');
                                     createSession('management-games_error', $alertManagementSquad);
                                     //LocalRedirect("/management-games/join-game/?mid=".$mId);
                                 }
                             }
                         } else {
-                            $alertManagementSquad = 'Ты уже зарегистрирован на другую игру в это время';
+                            $alertManagementSquad = GetMessage('ALERTS_ERROR_REGISTERED_FOR_ANOTHER_GAME');
                             createSession('management-games_error', $alertManagementSquad);
                         }
 
                     } else if($teamRating['rating'] <= $curMatch['MIN_RATING']['VALUE']){
-                        $alertManagementSquad = 'Рейтинг твоей команды ниже минимального рейтинга для этой игры';
+                        $alertManagementSquad = GetMessage('ALERTS_ERROR_TEAM_MIN_RATING');
                         createSession('management-games_error', $alertManagementSquad);
 
                     } else if($teamRating['rating'] >= $curMatch['MAX_RATING']['VALUE']){
-                        $alertManagementSquad = 'Рейтинг твоей команды выше максимального рейтинга для этой игры';
+                        $alertManagementSquad = GetMessage('ALERTS_ERROR_TEAM_MAX_RATING');
                         createSession('management-games_error',  $alertManagementSquad );
                     }
-                    $redirectUrlAction = "/tournament-page/join-game/?mid=".$mId;
+                    $redirectUrlAction = SITE_DIR."tournament-page/join-game/?mid=".$mId;
                     //LocalRedirect("/management-games/join-game/?mid=".$mId);
 //                    } else {
 //
-//                        $alertManagementSquad = 'К сожалению, мы не можем принять твою заявку на игру. <br>
-//                        У тебя или у кого-то из участников твоей команды срок подписки закончится раньше, чем эта игра или турнир.
-//                        <br><a href="/subscription-plans/" target="_blank" class="btn-italic mt-1">Купить подписку </a>';
+//                        $alertManagementSquad = GetMessage('ALERTS_ERROR_SUBSCRIPTION_EXPIRES').'<br><a href="'.SITE_DIR.'subscription-plans/" target="_blank" class="btn-italic mt-1">'.GetMessage('ALERTS_LINK_BUY_SUBSCRIPTION').'</a>';
 //                        createSession('management-games_error', $alertManagementSquad);
 //                    }
                     }
             } else {
-              $alertManagementSquad = 'Состав команды выбран не полностью, должно быть от '.$minLimPlayers.' до '. $maxLimPlayers .' участников';
+              $alertManagementSquad = GetMessage('ALERTS_NOT_FULLY_FROM') . $minLimPlayers . GetMessage('ALERTS_NOT_FULLY_TO') . $maxLimPlayers . GetMessage('ALERTS_NOT_FULLY_PARTICIPANTS');
               createSession('management-games_error', $alertManagementSquad);
               //LocalRedirect("/management-games/join-game/?mid=".$mId);
-                $redirectUrlAction = "/tournament-page/join-game/?mid=".$mId;
+                $redirectUrlAction = SITE_DIR."tournament-page/join-game/?mid=".$mId;
             }
 
     }
@@ -656,13 +665,13 @@ if (check_bitrix_sessid() && !empty($_REQUEST['removeTeam'])) {
     $dateB = DateTime::createFromFormat('d.m.Y H:i:s', $dateStartMatch);
 
     if ($results) {
-        $alertManagementSquad = 'По матчу уже сформированы результаты';
+        $alertManagementSquad = GetMessage('ALERTS_RESULTS_ALREADY');
         createSession('management-games_error', $alertManagementSquad);
-        $redirectUrlAction = '/tournament-page/join-game/?mid='.$mId;
+        $redirectUrlAction = SITE_DIR."tournament-page/join-game/?mid=".$mId;
     } else if($dateA > $dateB) {
-        $alertManagementSquad = 'Матч уже прошел';
+        $alertManagementSquad = GetMessage('ALERTS_MATCH_ALREADY_PASSED');
         createSession('management-games_error', $alertManagementSquad);
-        $redirectUrlAction = '/tournament-page/join-game/?mid='.$mId;
+        $redirectUrlAction = SITE_DIR."tournament-page/join-game/?mid=".$mId;
     } else {
         // получаем squad
         $curSquadId = getSquadByIdMatch($mId, $teamID);
@@ -692,9 +701,9 @@ if (check_bitrix_sessid() && !empty($_REQUEST['removeTeam'])) {
                 // удаляем squd
                 if (!empty($curSquadId)) {
                     CIBlockElement::Delete($curSquadId['ID']);
-                    $alertManagementSquad = 'Ты успешно снял команду с игры';
+                    $alertManagementSquad = GetMessage('ALERTS_REMOVED_TEAM_FROM_GAME');
                     createSession('management-games_success', $alertManagementSquad);
-                    $redirectUrlAction = '/tournament-page/join-game/?mid='.$mId;
+                    $redirectUrlAction = SITE_DIR."tournament-page/join-game/?mid=".$mId;
                 }
             }
 
@@ -706,6 +715,7 @@ if (check_bitrix_sessid() && !empty($_REQUEST['removeTeam'])) {
 }
 
 // todo not working
+
 if ($squadId) {
 //dump($squadId);
 // получаем участников матчей
@@ -741,9 +751,9 @@ if ($emptyPlace != false) {
     }
 } else {
     CIBlockElement::Delete($squadId);
-    $alertManagementSquad = 'Разместить команду не удалось';
+    $alertManagementSquad = GetMessage('ALERTS_TEAM_NOT_PLACED');
     createSession('management-games_success', $alertManagementSquad);
-    $redirectUrlAction = '/tournament-page/join-game/?mid='.$mId;
+    $redirectUrlAction = SITE_DIR."tournament-page/join-game/?mid=".$mId;
 }
 
 }
@@ -752,17 +762,11 @@ if ($emptyPlace != false) {
 // капитан или нет
 $isCaptain = isCaptain($userID, $teamID);
 if(!$isCaptain) {
-    LocalRedirect("/personal/");
+    LocalRedirect(SITE_DIR."personal/");
 }
 $resTeam = getTeamById($teamID);
 // получаем список команды
-
-
-$coreTeam = getSquad($mId, $teamID);
-if(!$coreTeam){
-    $coreTeam = getCoreTeam($teamID);
-}
-
+$coreTeam = getCoreTeam($teamID);
 // ставим капитана на первое место
 foreach ($coreTeam as $k => $player) {
     if ($resTeam['AUTHOR']["VALUE"] == $player['ID']) {
@@ -770,9 +774,7 @@ foreach ($coreTeam as $k => $player) {
         break;
     }
 }
-
 ?>
-
 <?php /*
     <div class="container my-5">
         <?php if (!empty($errors)) { ?>
@@ -892,13 +894,20 @@ if(isset($_SESSION['management-games_success'])) { ?>
 unset($_SESSION['management-games_error']);
 ?>
   <div class="container">
+    <a href="javascript:history.back()" class="btn-italic-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
+        <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z" transform="translate(-949.26 -534.62)"/>
+      </svg> <?=GetMessage('JG_BACK')?>
+    </a>
+
+  </div>
   <?php if (!empty($coreTeam)) {
     $points = countPointsAllUsers();
     ?>
     <section class="pb-8">
     <div class="container">
-      <h2 class="core-team__heading">Основной Состав</h2>
-      <form action="<?= POST_FORM_ACTION_URI?>" method="post">
+        <h2 class="core-team__heading"><?=GetMessage('JG_CORE_TEAM')?></h2>
+      <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
           <?=bitrix_sessid_post()?>
         <div class="core-team">
           <div class="flex-table">
@@ -910,15 +919,15 @@ unset($_SESSION['management-games_error']);
                       <input type="checkbox" id="c-all">
                       <div class="label-checkbox__checkmark"></div>
                     </label>
-                      <div>Игрок</div>
+                      <div><?=GetMessage('JG_TABLE_PLAYER')?></div>
                   </div>
 
                   </span>
-                <span>Количество игр</span>
-                <span>Киллы</span>
-                <span>Total</span>
-                <span>Рейтинг</span>
-                <span>Подписка</span>
+                <span><?=GetMessage('JG_TABLE_NUMBER_GAME')?></span>
+                <span><?=GetMessage('JG_TABLE_KILLS')?></span>
+                <span><?=GetMessage('JG_TABLE_TOTAL')?></span>
+                <span><?=GetMessage('JG_TABLE_RATING')?></span>
+                <span><?=GetMessage('JG_TABLE_SUBSCRIPTION')?></span>
               </div>
             </div>
             <div class="flex-table--body">
@@ -944,7 +953,6 @@ unset($_SESSION['management-games_error']);
                          <?php if (!empty($player["PERSONAL_PHOTO"])) { ?>
                            style="background-image: url(<?php echo CFile::GetPath($player["PERSONAL_PHOTO"]); ?>)"
                          <?php } else { ?>
-
                            style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
                          <?php } ?>>
                       <?php if ($resTeam['AUTHOR']["VALUE"] == $player['ID']) { ?>
@@ -956,23 +964,23 @@ unset($_SESSION['management-games_error']);
                             </div>
                       <?php } ?>
                     </div>
-                    <a href="/players/<?php echo $player['ID'].'_'.$player['LOGIN'].'/';?>" class="core-team__user-link"><?php echo $player['LOGIN']?></a>
+                    <a href="<?=SITE_DIR?>players/<?php echo $player['ID'].'_'.$player['LOGIN'].'/';?>" class="core-team__user-link"><?php echo $player['LOGIN']?></a>
                   </div>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Количество игр</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_NUMBER_GAME')?></div>
                   <?php echo $cntMatches;?>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Киллы</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_KILLS')?></div>
                   <?php echo $kills;?>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Total</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_TOTAL')?></div>
                   <?php echo $total;?>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Рейтинг</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_RATING')?></div>
                   <?php if(!$player['UF_RATING']) { ?>
                     300
                   <?php } else { ?>
@@ -980,13 +988,13 @@ unset($_SESSION['management-games_error']);
                   <?php } ?>
                 </span>
                 <span class="core-team__param-wrap">
-                  <div class="core-team__param">Подписка</div>
+                  <div class="core-team__param"><?=GetMessage('JG_TABLE_SUBSCRIPTION')?></div>
                     <?php $resultPrem = isPrem($player['UF_DATE_PREM_EXP']); ?>
                   <?php if ($resultPrem <= 0) { ?>
-                  нет подписки
+                      <?=GetMessage('JG_TABLE_NO_SUBSCRIPTION')?>
                 <?php  } else { ?>
 
-                    <?php echo num_decline( $resultPrem, 'Остался, Осталось, Осталось', false );?> <?php echo num_decline( $resultPrem, 'день, дня, дней' );?>
+                    <?php echo num_decline( $resultPrem, GetMessage('JG_TABLE_SUBSCRIPTION_REMAINED'), false );?> <?php echo num_decline( $resultPrem, GetMessage('JG_TABLE_SUBSCRIPTION_DAYS') );?>
 
                 <?php  } ?>
                 </span>
@@ -997,13 +1005,13 @@ unset($_SESSION['management-games_error']);
         </div>
         <div class="core-team__btn-flex">
             <?php if (!empty($squadMembers)) { ?>
-              <button type="submit" name="removeTeam" value="1" class="btn-icon btn-icon_red btn-icon_close-red mr-1"><i></i> Снять команду с матча</button>
+              <button type="submit" name="removeTeam" value="1" class="btn-icon btn-icon_red btn-icon_close-red mr-1"><i></i> <?=GetMessage('JG_BTN_REMOVE')?></button>
             <?php } ?>
 
             <?php
-            $btnTitle = 'Сформировать команду';
+                $btnTitle = GetMessage('JG_BTN_CREATE');
             if (count($squadMembers) > 0) {
-                $btnTitle = 'Обновить команду';
+                $btnTitle = GetMessage('JG_BTN_UPDATE');
                 echo '<input type="hidden" name="update_squad" value="1">';
             }
             ?>

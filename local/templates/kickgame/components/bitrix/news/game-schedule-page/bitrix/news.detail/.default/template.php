@@ -400,7 +400,9 @@ unset($_SESSION['game-schedule-detail_error']);
               <div>
                   <?php
                   $dateTime = explode(' ', $arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-                  echo $dateTime[0] . GetMessage('GSP_AT') . substr($dateTime[1], 0, 5); ?>
+                  // echo $dateTime[0] . GetMessage('GSP_AT') . substr($dateTime[1], 0, 5);
+                  echo FormatDate("x", MakeTimeStamp($arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+                  ?>
               </div>
             </div>
           </div>

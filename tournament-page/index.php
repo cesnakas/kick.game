@@ -51,8 +51,10 @@ function getMatchById($matchId) {
     }
     return null;
 }
+$mId = findFreeGame($tournamentId, 7  );
+
     ?>
-        <div class="layout__content">
+
             <section class="tournament">
                 <div class="container">
 
@@ -119,7 +121,7 @@ function getMatchById($matchId) {
 
                                                  }?>
                                                 <div class="tournament-info__list-description">
-                                                    Идёт регистрация до 23 апреля 2021, 15:00
+                                                    Идёт регистрация
                                                 </div>
                                             </li>
                                             <li>
@@ -127,7 +129,7 @@ function getMatchById($matchId) {
                                                     Призовой фонд:
                                                 </div>
                                                 <div class="tournament-info__list-description">
-                                                    € 1080
+                                                    € 3000
                                                 </div>
                                             </li>
                                             <?php
@@ -153,7 +155,7 @@ function getMatchById($matchId) {
                                                                     <a href="/teams/<?php echo $teamID ?>/" class="match-participants__team-link"><?php echo $team["NAME_TEAM"]["VALUE"]. " [".$team["TAG_TEAM"]["VALUE"]; ?>]</a>
                                                                 </div>
                                                             </div>
-                                                            <a href="#" class="btn__change">Изменить состав</a>
+                                                            <a href="/tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn__change">Изменить состав</a>
                                                         </div>
 
 
@@ -177,7 +179,7 @@ function getMatchById($matchId) {
                                                         <?php } ?>
 
                                                     <div class="tournament-info__list-description">
-                                                        <a href="#" class="tournament-info__link"><?php echo $nextGame["STAGE_TOURNAMENT"]["VALUE"] ?>, Группа №65,</a> <?php echo $nextTime ?>
+                                                        <a href="#" class="tournament-info__link"><?php echo $nextGame["STAGE_TOURNAMENT"]["VALUE"] ?>, Группа №<?php echo $nextGame["GROUP"]["VALUE"] ?>,</a> <?php echo $nextTime ?>
                                                     </div>
                                                 </li>
                                             <?php } ?>
@@ -185,9 +187,9 @@ function getMatchById($matchId) {
                                         <div class="tournament-info__action">
                                             <?php if (isCaptain($userID, $teamID)){ ?>
                                             <?php if (!$nextGameID){ ?>
-                                                    <div><a href="/tournament-page/join-game/?mid=random&tournament=<?php echo $tournamentId ?>" class="btn">Подать заявку</a></div>
+                                                    <div><a href="/tournament-page/join-game/?mid=<?php echo $mId;?>" class="btn">Подать заявку</a></div>
                                                 <?php } else { ?>
-                                                    <div><a href="/tournament-page/join-game/?mid=random&tournament=<?php echo $tournamentId ?>" class="btn-change-big">Отменить участие</a></div>
+                                                    <div><a href="/tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn-change-big">Отменить участие</a></div>
                                                 <?php }
                                              } ?>
                                             <div><a href="#" class="btn-italic-dotted" data-toggle="modal" data-target="#regulation">Регламент/Правила участия</a></div>
@@ -295,29 +297,29 @@ function getMatchById($matchId) {
                     <div class="top-places-wrap">
                         <div class="top-places__item">
                             <div>1 место</div>
-                            <div>€ 340</div>
+                            <div>€ 960</div>
                         </div>
                         <div class="top-places__item">
                             <div>2 место</div>
-                            <div>€ 280</div>
+                            <div>€ 600</div>
                         </div>
                         <div class="top-places__item">
                             <div>3 место</div>
-                            <div>€ 220</div>
+                            <div>€ 360</div>
                         </div>
                         <div class="top-places__item">
                             <div>4 место</div>
-                            <div>€ 160</div>
+                            <div>€ 300</div>
                         </div>
                         <div class="top-places__item">
                             <div>5 место</div>
-                            <div>€ 80</div>
+                            <div>€ 180</div>
                         </div>
 
                     </div>
                 </div>
             </section>
-        </div>
+
     <div class="modal fade " id="regulation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">

@@ -46,7 +46,7 @@ $MESS['MODAL_VERIFIED_LIST_ITEM-4'] = 'Click "Send"';
 $MESS['MODAL_VERIFIED_INPUT_FILE-1'] = 'selected ';
 $MESS['MODAL_VERIFIED_INPUT_FILE-2'] = ' file(s)';
 $MESS['MODAL_VERIFIED_UPLOAD_FILE'] = 'Attach a screenshot';
-$MESS['MODAL_VERIFIED_BUTTON_SUBMIT'] = 'Send a screenshot';
+$MESS['MODAL_VERIFIED_BUTTON_SUBMIT'] = 'Send screenshot';
 $MESS['MODAL_VERIFIED_BUTTON_CANCEL'] = 'Cancel';
 $MESS['MODAL_VERIFIED_FOOTER_CONTENT-1'] = 'What should I do if I have already specified a nickname or PUBG ID in my profile that is different from the ones I use in pubg mobile?';
 $MESS['MODAL_VERIFIED_FOOTER_CONTENT-2'] = 'Before you submit the data for verification, you can change your PUBG ID and nickname in the <a href="'.SITE_DIR.'personal/edit/" target="_blank">profile settings</a> to match what you have in the game. Then, go back to this window and send the screenshot for verification.';

@@ -291,9 +291,13 @@ function getAvailableGroup($arItem) {
               ?>
           </a>
         </td>
-        <td><?php
+        <td>
+            <?php
             $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-            echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?></td>
+            // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
+            echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+            ?>
+        </td>
         <td><?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"] ?></td>
         <td>
           <div class="games-type">
@@ -337,9 +341,13 @@ function getAvailableGroup($arItem) {
 
                   ?>
             </a></td>
-          <td><?php
+          <td>
+              <?php
               $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-              echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?></td>
+              // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
+              echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+              ?>
+          </td>
           <td><?php echo $arItem["PROPERTIES"]['MIN_RATING']["VALUE"]. " - " . $arItem["PROPERTIES"]['MAX_RATING']["VALUE"] ?></td>
           <td>
             <div class="games-type">
@@ -433,7 +441,9 @@ function getAvailableGroup($arItem) {
                 <span>Дата проведения: </span>
                 <?php
                 $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
-                echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5); ?>
+                // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
+                echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+                ?>
             </div>
             </div>
             <div class="game-info__item-row">

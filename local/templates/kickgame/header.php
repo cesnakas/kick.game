@@ -1,5 +1,6 @@
 <?
-if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
+if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
+	die();
 //dump(CUser::IsAuthorized());
 //if(!CUser::IsAuthorized()) {
     //LocalRedirect("/");
@@ -131,14 +132,18 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
                   <ul class="navbar-dropdown__menu navbar-dropdown__menu_lang">
                   <? $le = substr($_SERVER['REQUEST_URI'], 3); ?>
                     <li class="navbar-dropdown__item">
-                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$le.'">РУС</a>';?>
+                        <? if (LANGUAGE_ID == 'ru') {
+                            echo '<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].'">RU</a>';
+                        } else {
+                            echo '<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$le.'">RU</a>';
+                        } ?>
                     </li>
                     <li class="navbar-dropdown__item">
-                        <? if (SITE_DIR == '/en/'): ?>
-                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].'">ENG</a>';?>
-                        <? else: ?>
-                        <?='<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].'/en'.$_SERVER['REQUEST_URI'].'">ENG</a>';?>
-                        <? endif; ?>
+                        <? if (LANGUAGE_ID == 'en') {
+                            echo '<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].'">EN</a>';
+                        } else {
+                            echo '<a class="nav__link" href="//'.$_SERVER['SERVER_NAME'].'/en'.$_SERVER['REQUEST_URI'].'">EN</a>';
+                        } ?>
                     </li>
                   </ul>
                 </li>
