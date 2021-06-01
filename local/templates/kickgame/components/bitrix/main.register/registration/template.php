@@ -111,7 +111,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
                   </div>
                 <?endif;?>
               <div class="form-field d-flex justify-content-center">
-                <button class="btn" type="submit" name="register_submit_button" value="<?= GetMessage("AUTH_REGISTER") ?>"><?= GetMessage("AUTH_REGISTER") ?></button>
+                <button class="btn" id=reg-btn type="submit" name="register_submit_button" value="<?= GetMessage("AUTH_REGISTER") ?>"><?= GetMessage("AUTH_REGISTER") ?></button>
               </div>
               <div class="form-authentication__rules text-center"><?= GetMessage('MAIN_REGISTER_ACCEPT') ?> <a href="<?=SITE_DIR?>terms-conditions/" target="_blank"><?= GetMessage('MAIN_REGISTER_ACCEPT_SERVICE') ?></a> и
                 <a href="<?=SITE_DIR?>privacy-policy/" target="_blank"><?= GetMessage('MAIN_REGISTER_ACCEPT_PRIVACY') ?></a>.</div>

@@ -291,8 +291,7 @@ function getAvailableGroup($arItem) {
               ?>
           </a>
         </td>
-        <td>
-            <?php
+        <td><?php
             $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
             // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
             echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
@@ -341,8 +340,7 @@ function getAvailableGroup($arItem) {
 
                   ?>
             </a></td>
-          <td>
-              <?php
+          <td><?php
               $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
               // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
               echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());

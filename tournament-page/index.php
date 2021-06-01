@@ -51,7 +51,7 @@ function getMatchById($matchId) {
     }
     return null;
 }
-$mId = findFreeGame($tournamentId, 7  );
+$mId = findFreeGame($tournamentId);
 
     ?>
 

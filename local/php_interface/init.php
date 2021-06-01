@@ -104,6 +104,8 @@ function debugLogout() {
     }
 }
 
+use Bitrix\Highloadblock;
+CModule::IncludeModule("highloadblock");
 CModule::IncludeModule("iblock");
 CModule::IncludeModule("main");
 
@@ -375,6 +377,313 @@ class CustomSubscribes
             }
         }
         return $result;
+    }
+}
+
+class CustomTelegram
+{
+    const MATCHES_IBLOCK_CODE = "matches";
+    const MATCHESQUAD_IBLOCK_CODE = "matchsquad";
+    const MATCHES_COMMAND_IBLOCK_CODE = "matchparticipants";
+    const NOTIFY_HL_ID = 3;
+    const CHAT_HL_ID = 2;
+    const NOTIFICATION_URL = 'http://178.20.45.4:7070/api/messages';
+
+    //получить ближайший матч
+    public function getNearestMatchUsers($startHour, $finishHour)
+    {
+        $result = array();
+        $res = CIBlockElement::GetList(
+            array(),
+            array(
+                "IBLOCK_CODE" => self::MATCHES_IBLOCK_CODE,
+                array(
+                    "LOGIC" => "AND",
+                    array(
+                        ">=PROPERTY_DATE_START" => date("Y-m-d H:i:s", strtotime("+" . $startHour . " hour"))
+                    ),
+                    array(
+                        "<=PROPERTY_DATE_START" => date("Y-m-d H:i:s", strtotime("+" . $finishHour . " hour"))
+                    ),
+                )
+
+            ),
+            false,
+            false,
+            array(
+                "ID",
+                "IBLOCK_ID",
+                "NAME",
+                "PROPERTY_URL_STREAM",
+                "PROPERTY_PUBG_LOBBY_ID",
+                "PROPERTY_COUTN_TEAMS",
+            )
+        );
+        while($element = $res->Fetch())
+        {
+            $result[] = $element;
+        }
+        return $result;
+    }
+    //список команд на матч
+    public function getMatchTeams($matchId)
+    {
+        $result = array();
+        if(intval($matchId))
+        {
+            $select = array(
+                "ID",
+                "IBLOCK_ID",
+                "NAME"
+            );
+            for($i = 3; $i<= 20; $i++)
+            {
+                $select[] = "PROPERTY_TEAM_PLACE_" . (($i < 10) ? "0" : "") . $i;
+            }
+            $res = CIBlockElement::GetList(
+                array(),
+                array(
+                    "IBLOCK_CODE" => self::MATCHES_COMMAND_IBLOCK_CODE,
+                    "PROPERTY_WHICH_MATCH" => $matchId
+                ),
+                false,
+                false,
+                $select
+            );
+            while($element = $res->Fetch())
+            {
+                for($i = 3; $i<= 20; $i++)
+                {
+                    $teamId = $element["PROPERTY_TEAM_PLACE_" . (($i < 10) ? "0" : "") . $i . "_VALUE"];
+                    if($teamId)
+                    {
+                        $result[] = $teamId;
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+    //получить игроков в команде
+    public function getCoreTeam($teamId)
+    {
+        $result = array();
+        if(intval($teamId))
+        {
+            $res = CUser::GetList(
+                ($by = "NAME"),
+                ($order = "desc"),
+                array(
+                    "GROUPS_ID" => array(7),
+                    "UF_ID_TEAM" => $teamId
+                ),
+                array(
+                    "SELECT" => array("UF_*")
+                )
+            );
+            while ($user = $res->Fetch())
+            {
+                $result[] = $user["ID"];
+            }
+        }
+        return $result;
+    }
+    //добавить отчет
+    function addReport($fields)
+    {
+        $result = 0;
+        if(!empty($fields))
+        {
+            $hlBlock = \Bitrix\Highloadblock\HighloadBlockTable::getById(self::NOTIFY_HL_ID)->fetch();
+            $entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlBlock);
+            $entityClass = $entity->getDataClass();
+            $res = $entityClass::add($fields);
+            if($res->isSuccess())
+            {
+                $result = $res->getId();
+            }
+        }
+        return $result;
+    }
+    //обновить отчет
+    function updateReport($id, $fields)
+    {
+        $result = false;
+        if(intval($id) && !empty($fields))
+        {
+            $hlBlock = \Bitrix\Highloadblock\HighloadBlockTable::getById(self::NOTIFY_HL_ID)->fetch();
+            $entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlBlock);
+            $entityClass = $entity->getDataClass();
+            $res = $entityClass::update($id, $fields);
+            if($res->isSuccess())
+            {
+                $result = $res->getId();
+            }
+        }
+        return $result;
+    }
+    //получить отчет
+    function getReport($filter, $select = array("*"))
+    {
+        $result = array();
+        if($filter)
+        {
+            $hlBlock = \Bitrix\Highloadblock\HighloadBlockTable::getById(self::NOTIFY_HL_ID)->fetch();
+            $entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlBlock);
+            $entityClass = $entity->getDataClass();
+            $res = $entityClass::getList(
+                array(
+                    "filter" => $filter,
+                    "select" => $select
+                )
+            );
+            while($el = $res->Fetch())
+            {
+                $result[] = $el;
+            }
+        }
+        return $result;
+    }
+    //получить chatId
+    public function getChatId($userId)
+    {
+        $result = array();
+        if(intval($userId))
+        {
+            $hlBlock = \Bitrix\Highloadblock\HighloadBlockTable::getById(self::CHAT_HL_ID)->fetch();
+            $entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlBlock);
+            $entityClass = $entity->getDataClass();
+            $res = $entityClass::getList(
+                array(
+                    "filter" => array(
+                        "UF_ID_USER" => $userId
+                    ),
+                    "select" => array(
+                        "UF_ID_CHAT"
+                    )
+                )
+            );
+            while($chat = $res->fetch())
+            {
+                $result[] = intval($chat["UF_ID_CHAT"]);
+            }
+        }
+        return $result;
+    }
+    //отправить уведомления пользователям
+    public function sendNotifications($type = "", $chats = [], $sender = "", $text = "")
+    {
+        $chats = json_encode($chats);
+        /*echo("<pre>");var_dump('{
+                "type": ' . $type . ',
+                "chats": ' . $chats . ',
+                "sender": "' . $sender . '",
+                "text": "' . $text . '"
+            }');echo("</pre>");*/
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => self::NOTIFICATION_URL,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
+                "type": ' . $type . ',
+                "chats": ' . $chats . ',
+                "sender": "' . $sender . '",
+                "text": "' . $text . '"
+            }',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        //echo("<pre>");var_dump($httpCode);echo("</pre>");
+        curl_close($curl);
+        return $response;
+    }
+    //
+    public function scan($hour = array(), $type = 0, $sender = "", $text = "")
+    {
+        if($hour)
+        {
+            //получаем матчи
+            $matches = self::getNearestMatchUsers($hour[0], $hour[1]);
+            foreach ($matches as $match)
+            {
+                $chats = array();
+                $reports = array();
+                //получаем комманды
+                $commands = self::getMatchTeams($match["ID"]);
+                foreach ($commands as $command)
+                {
+                    //получаем игроков
+                    $players = self::getCoreTeam($command);
+                    //для каждого игорка
+                    foreach ($players as $player)
+                    {
+                        $filter = array(
+                            "UF_MATCH_ID" => $match["ID"],
+                            "UF_USER_ID" => $player,
+                            "UF_TYPE" => $type,
+                            "UF_NOTIFY_NUM" => $hour[1]
+                        );
+                        $select = array("ID");
+                        //проеверям для игрока была ли уже отправка по текущему матчу и текущему временному интервалу
+                        $sending = CustomTelegram::getReport($filter, $select);
+                        if(!$sending)
+                        {
+                            //проверяем если ли у игрока chatId
+                            $playerChat = self::getChatId($player);
+                            if($playerChat)
+                            {
+                                $chats = array_merge($chats, $playerChat);
+                                $reports[] = array(
+                                    "UF_MATCH_ID" => $match["ID"],
+                                    "UF_USER_ID" => $player,
+                                    "UF_TYPE" => $type,
+                                    "UF_NOTIFY_NUM" => $hour[1],
+                                    "UF_DATE" => date("d.m.Y H:i:s"),
+                                );
+                            }
+                            /*$chatId = self::getChatId($player);
+                            if($chatId)
+                            {
+                                //отправляем уведомление в telegram
+                                //self::sendNotifications();
+                                $fields = array(
+                                    "UF_MATCH_ID" => $match,
+                                    "UF_USER_ID" => $player,
+                                    "UF_TYPE" => $type,
+                                    "UF_NOTIFY_NUM" => $hour[1],
+                                    "UF_DATE" => date("d.m.Y H:i:s"),
+                                );
+                                //добавим инфу об отправке уведомления
+                                self::addReport($fields);
+                            }*/
+                        }
+                    }
+                }
+                if($chats)
+                {
+                    $chats =  array_unique($chats);
+                    //echo("<pre>");var_dump($chats);echo("</pre>");
+                    //отправляем уведомление в telegram
+                    $text = str_replace(array("#NUM#", "#HOUR#", "#HOUR_WORD#", "#URL#", "#LOBBY#", "#TEAM#"), array($match["ID"], $hour[1], ($hour[1] == 1 ? "час" : ($hour[1] > 4 ? "часов" :"часа")), $match["PROPERTY_URL_STREAM_VALUE"], (trim($match["PROPERTY_PUBG_LOBBY_ID_VALUE"]) ? $match["PROPERTY_PUBG_LOBBY_ID_VALUE"] : "-"), $match["PROPERTY_COUTN_TEAMS_VALUE"]), $text);
+                    $rt = self::sendNotifications($type, $chats, $sender, $text);
+                    //echo("<pre>");var_dump($rt);echo("</pre>");
+                    //добавим инфу об отправке уведомления
+                    foreach ($reports as $k => $v)
+                    {
+                        self::addReport($v);
+                    }
+                }
+            }
+        }
     }
 }
 

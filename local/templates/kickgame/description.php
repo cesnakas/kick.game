@@ -1,9 +1,8 @@
 <?
-if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
-	die();
-
-$arTemplate = Array(
-	'NAME' => 'kickgame',
-	'DESCRIPTION' => 'kickgame'
+$arTemplate = array (
+  'NAME' => 'kickgame',
+  'DESCRIPTION' => 'kickgame',
+  'SORT' => '',
+  'TYPE' => '',
 );
 ?>

@@ -150,7 +150,7 @@ function isCaptain($idUser, $idTeam)
 }
 $isCaptain = isCaptain($userID, $arResult['ID']);
 
-if (isset($_POST['join_submit']) && check_bitrix_sessid()) {
+if ($_POST["activate"] == "y" && check_bitrix_sessid()) {
 
     $user = new CUser;
     $fields = array(
@@ -158,10 +158,26 @@ if (isset($_POST['join_submit']) && check_bitrix_sessid()) {
         "UF_REQUEST_ID_TEAM" => trim(strip_tags($_POST['team_id']+0)),
     );
     if ($user->Update($userID, $fields)) {
-        createSession('team_success', GetMessge('TMS_TEAM_SUCCESS'));
+        createSession('team_success', GetMessage('TMS_TEAM_SUCCESS'));
         LocalRedirect(SITE_DIR . "teams/" . $arResult['ID'] . '/');
     } else {
         echo 'Error: ' . $user->LAST_ERROR;
+    }
+}
+if($_POST["deactivate"] == "y" && intval($_POST["teamId"]) && check_bitrix_sessid())
+{
+    $user = new CUser;
+    $fields = array(
+        "UF_REQUEST_ID_TEAM" => "",
+    );
+    if ($user->Update($userID, $fields))
+    {
+        createSession('team_success', "Запрос отменен.");
+        LocalRedirect(SITE_DIR . "teams/" . $arResult['ID'] . '/');
+    }
+    else
+    {
+        echo "Error: " . $user->LAST_ERROR;
     }
 }
 $requestTeamID = $arUser['UF_REQUEST_ID_TEAM'];
@@ -257,6 +273,13 @@ if(isset($_SESSION['team_success'])) { ?>
                   <br>
                   <p><?=GetMessage('TMS_SEND_REQUEST_TEAM')?></p>
                   <p><?php echo '<a href="'.SITE_DIR.'teams/'.$requestTeamID.'/">'.$sendRequestTeam['NAME'].'</a>'; ?></p>
+                  <br/>
+                  <form action="<?= POST_FORM_ACTION_URI;?>" method="post">
+                    <?=bitrix_sessid_post()?>
+                    <input type="hidden" name="teamId" value="<?= $arResult["ID"];?>">
+                    <input type="hidden" name="deactivate" value="y">
+                    <button class="btn" type="submit" name="join_submit">Отменить заявку</button>
+                  </form>
                 </div>
                 <?php  } else if (!empty($teamID)) {
               $team = getTeamById($teamID);
@@ -280,9 +303,10 @@ if(isset($_SESSION['team_success'])) { ?>
           <?php } else { ?>
                 <div class="team-info__btn-edit">
                   <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
-                      <?=bitrix_sessid_post()?>
+                    <?=bitrix_sessid_post()?>
                     <input type="hidden" name="team_id" value="<?php echo $arResult['ID']?>">
-                                        <button class="btn" type="submit" name="join_submit"><?=GetMessage('TMS_TEAM_SENT_REQUEST')?></button>
+                      <input type="hidden" name="activate" value="y">
+                    <button class="btn" type="submit" name="join_submit"><?=GetMessage('TMS_TEAM_SENT_REQUEST')?></button>
                   </form>
                 </div>
                 <?php } ?>
