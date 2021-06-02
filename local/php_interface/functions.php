@@ -88,6 +88,18 @@ function updateSquad($props = [], $idMatch)
     //header('Location: /management-games/join-game/?mid='.$idMatch);
 }
 
+function moveSquad($props = [], $idMatch)
+{
+    $squadRes = getSquadByIdMatch($idMatch, $props['TEAM_ID']);
+    $squadId = $squadRes['ID']+0;
+
+    if(countTeams($props["MATCH_STAGE_ONE"]) >= 18){
+        return false;
+    }
+    CIBlockElement::SetPropertyValues($squadId, 6, $props["MATCH_STAGE_ONE"], "MATCH_STAGE_ONE");
+    return true;
+}
+
 function updateSquadMatchID($props = [], $idMatch)
 {
     $squadRes = getSquadByIdMatch($idMatch, $props['TEAM_ID']);
@@ -295,7 +307,7 @@ function getNextGame($teamID, $tournamentID){
             INNER JOIN b_iblock_element_prop_s3 as m ON t.PROPERTY_27 = m.IBLOCK_ELEMENT_ID
             WHERE t.PROPERTY_28 =" .$teamID. "
             AND m.PROPERTY_3 =" .$tournamentID. "
-            ORDER BY 1 DESC LIMIT 1";
+            ORDER BY m.PROPERTY_4 DESC LIMIT 1";
 
     $res = $DB->Query($sql);
     if( $row = $res->Fetch() ) {

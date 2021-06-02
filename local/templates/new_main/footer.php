@@ -27,6 +27,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
       </div>
 
     </div>
+
     <div class="footer__socials">
         <a href="https://vm.tiktok.com/ZSEfnbCf/" target="_blank" class="footer__icons">
       <img
@@ -58,13 +59,20 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
         srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/discord.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/discord@2x.png 2x"
       >
         </a>
-        <a href="https://vk.com/kick.game" target="_blank" class="footer__icons"">
+        <a href="https://vk.com/kick.game" target="_blank" class="footer__icons">
             <img
                 src="<?php echo SITE_TEMPLATE_PATH;?>/images/vk.png" alt="youtube"
                 srcset="<?php echo SITE_TEMPLATE_PATH;?>/images/vk.png 1x, <?php echo SITE_TEMPLATE_PATH;?>/images/vk@2x.png 2x"
             >
         </a>
+        <img
+                style="width:45px;
+                justify-self: end;
+                margin-left:auto"
+                src="<?php echo SITE_TEMPLATE_PATH;?>/images/12plus.svg"
+        >
     </div>
+
   </div>
   <div class="footer__nav">
     <nav class="footer__nav-item">

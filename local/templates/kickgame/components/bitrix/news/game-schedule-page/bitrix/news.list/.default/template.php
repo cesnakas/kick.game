@@ -262,7 +262,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arIt
                 <path d="M678.77,393.6h7.68" transform="translate(-671.27 -373.4)"/>
               </svg>
             </div>
-                <a href="/tournament-page/?tournamentID=<?php echo $arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"] ?> " class="new-game-schedule__link"><?php echo $arItem["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')'; ?></a>
+                <a href="<?=SITE_DIR?>tournament-page/?tournamentID=<?php echo $arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"] ?> " class="new-game-schedule__link"><?php echo $arItem["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')'; ?></a>
             <?php } ?>
               <div class="game-qty">
                   <?php echo $type; ?>
@@ -376,7 +376,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arIt
           </div>
         </span>
           <span>
-          <a href="<?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5 ? "/tournament-page/?tournamentID=" . $arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"] : $arItem["DETAIL_PAGE_URL"];?>" class="new-game-schedule__link">
+          <a href="<?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5 ? SITE_DIR."tournament-page/?tournamentID=" . $arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"] : $arItem["DETAIL_PAGE_URL"];?>" class="new-game-schedule__link">
             <?php
             $name = 'KICKGAME Scrims GROUP '.$arItem["PROPERTIES"]["GROUP"]["VALUE"];//'У меня нет названия';
 

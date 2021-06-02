@@ -280,10 +280,11 @@ foreach($arResult["ITEMS"] as $arItem) {
 
                                                             <a href="/tournament-page/join-game/?mid=<?php echo $group["ID"]?>" class="btn">Подать заявку</a>
 
-                                                        <?php } else if ($nextGame["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"] == $k && $nextGame["ID"] != $group["ID"]) { ?>
-
-                                                            <a href="#<?php echo $group["ID"]?>" class="btn">Сменить группу</a>
-
+                                                        <?php } else if ($nextGame["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"] == $k && $nextGame["ID"] != $group["ID"]  && strtotime($nextGame["DATE_START"]["VALUE"]) > time()) { ?>
+                                                                <form action="#" method="post">
+                                                            <input value="<?php echo $group["ID"]?>" type="hidden" name="idMatch">
+                                                            <input value="Сменить группу" type="submit" name="changeGame" class="btn">
+                                                                </form>
                                                         <?php } ?>
                                                     </div>
                                                 <?php } ?>

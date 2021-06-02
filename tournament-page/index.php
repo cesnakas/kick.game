@@ -36,6 +36,169 @@ function isCaptain($idUser, $idTeam)
     return  false;
 }
 
+function getPropertyPlace($idMatch)
+{
+    $arSelect = Array(
+        "ID",
+        "NAME",
+        "DATE_ACTIVE_FROM",
+        "PROPERTY_*",
+    );
+    $arFilter = Array(
+        "IBLOCK_ID" =>4,
+        "PROPERTY_WHICH_MATCH" => $idMatch,
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $arrTeams = [];
+    $key = getPlacesKeys();
+    if ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        foreach ($key as $place=>$name) {
+            if ($arProps[$name]['VALUE']+0 > 0) {
+                $arrTeams[$name] = $arProps[$name]['VALUE'];
+            }
+        }
+        return $arrTeams;
+    }
+    return  false;
+}
+
+// получаем цепочку матчей по id родителя
+function getMatchByParentId($parentId) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" => 3, "PROPERTY_PREV_MATCH" => $parentId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        return array_merge($arFields, $arProps);
+    }
+    return null;
+}
+
+function updateMembers($props = [], $id)
+{
+    CIBlockElement::SetPropertyValuesEx($id, 4, $props);
+}
+
+function removeMatchMember($matchID, $teamID){
+
+    $idNextMatch = $matchID;
+    $chainMatches[] = $matchID;
+
+    do {
+        $match = getMatchByParentId( $idNextMatch);
+        if ($match != null) {
+            $nextMatch = true;
+            $chainMatches[] = $match['ID'];
+            $idNextMatch = $match['ID'];
+        } else {
+            $nextMatch = false;
+        }
+    } while($nextMatch == true);
+
+
+    if ($propertyPlace = getPropertyPlace($chainMatches)) {
+        $propertyPlace = array_flip($propertyPlace);
+        $propertyPlace = $propertyPlace[$teamID];
+        // есть цепочка матчей тут $chainMatches
+        // получаем участников матчей
+        $resMembersMatches = getMembersByMatchId($chainMatches);
+        // создаем массив id записей участников
+        $membersMatches = [];
+        // если пришел список участников
+        if ($resMembersMatches) {
+            foreach ($resMembersMatches as $membersMatch) {
+                // наполняем $membersMatches
+                $membersMatches[] = $membersMatch['ID'];
+            }
+
+            foreach ($membersMatches as $id) {
+                $props = [];
+                $props[$propertyPlace] = null;
+                // бежим по записям и удаляем нашу команду с места
+                updateMembers($props, $id);
+            }
+        }
+
+
+    }
+}
+
+function getSquadByIdMatch($idMatch, $idTeam)
+{
+    $arSelect = Array(
+        "ID",
+        "NAME",
+        "DATE_ACTIVE_FROM",
+        "PROPERTY_*",
+    );
+    $arFilter = Array(
+        "IBLOCK_ID" =>6,
+        "PROPERTY_MATCH_STAGE_ONE" => $idMatch,
+        "PROPERTY_TEAM_ID" => $idTeam,
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $squad = [];
+    if($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        $squad = array_merge($arFields, $arProps);
+        return $squad;
+    }
+    return false;
+}
+
+function addMatchMember ($matchID, $teamID){
+
+    $idNextMatch = $matchID;
+    $chainMatches[] = $matchID;
+
+    do {
+        $match = getMatchByParentId( $idNextMatch);
+        if ($match != null) {
+            $nextMatch = true;
+            $chainMatches[] = $match['ID'];
+            $idNextMatch = $match['ID'];
+        } else {
+            $nextMatch = false;
+        }
+    } while($nextMatch == true);
+
+    // получаем участников матчей
+    $resMembersMatches = getMembersByMatchId($chainMatches);
+    $membersMatches = [];
+
+    if ($resMembersMatches) {
+        foreach ($resMembersMatches as $membersMatch) {
+            $membersMatches[] = $membersMatch['ID'];
+        }
+    }
+
+    $match = getMembersByMatchId($chainMatches[0]);
+    $match = $match[0];
+
+    $propertiesCases = getPlacesKeys();
+
+    $emptyPlace = false;
+    foreach ($propertiesCases as $case) {
+        if ($match[$case]+0 == 0) {
+            $emptyPlace = $case;
+            break;
+        }
+    }
+
+    // сделать проверку, что моей команды еще нет в участниках матча, если моя команду существует в этом матче, то $emptyplace = falce
+    if ($emptyPlace != false) {
+        foreach ($membersMatches as $membersMatchId) {
+            CIBlockElement::SetPropertyValues($membersMatchId, 4, $teamID, $emptyPlace);
+        }
+    }
+}
+
 function getMatchById($matchId) {
     $arSelect = Array("ID",
         "NAME",
@@ -53,18 +216,57 @@ function getMatchById($matchId) {
 }
 $mId = findFreeGame($tournamentId);
 
-    ?>
+$props["TEAM_ID"] = $teamID;
+$props["MATCH_STAGE_ONE"] = $_POST["idMatch"];
 
+if (isset($_POST["changeGame"])){
+
+    if($_POST["idMatch"]){
+        $prevGame = getNextGame($teamID, $tournamentId);
+        $isMoved = moveSquad($props, $prevGame);
+        if($isMoved){
+        addMatchMember($_POST["idMatch"], $teamID);
+        removeMatchMember($prevGame, $teamID);
+            $alertTournamentPage = "Ты успешно сменил группу";
+            createSession('tournament-page_success', $alertTournamentPage);
+        } else {
+            $alertTournamentPage = "Ты опоздал, в этой группе не осталось мест";
+            createSession('tournament-page_error', $alertTournamentPage);
+        }
+        LocalRedirect(SITE_DIR."tournament-page/?tournamentID=".$tournamentId);
+    }
+}
+    ?>
+<?php
+if(isset($_SESSION['tournament-page_success'])) { ?>
+    <div class="alert-container">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['tournament-page_success'];?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <?php
+    unset($_SESSION['tournament-page_success']);
+} else if(isset($_SESSION['tournament-page_error'])){ ?>
+    <div class="alert-container">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['tournament-page_error'];?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+<?php }
+unset($_SESSION['tournament-page_error']);
+?>
             <section class="tournament">
                 <div class="container">
 
                     <div class="row justify-content-center">
                         <div class="col-lg-11 col-md-12">
                             <div class="layout__content-heading-with-btn-back">
-                                <a href="/game-schedule/" class="btn-italic-icon">
+                                <a href="<?=SITE_DIR?>game-schedule/" class="btn-italic-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
                                         <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z" transform="translate(-949.26 -534.62)"/>
-                                    </svg> Назад в расписание
+                                    </svg><?=GetMessage('TP_BACK')?>
                                 </a>
                                 <h1 class="text-center tournament__heading"><?php echo $tournament['NAME'] ?></h1>
                             </div>
@@ -84,7 +286,7 @@ $mId = findFreeGame($tournamentId);
                                                     <i></i>
                                                 </div>
                                                 <div class="tournament-info__mode">
-                                                    <div>Режим</div>
+                                                    <div><?=GetMessage('TP_MODE')?></div>
                                                     <div>Squad</div>
                                                 </div>
                                             </div>
@@ -93,8 +295,8 @@ $mId = findFreeGame($tournamentId);
                                                     <i></i>
                                                 </div>
                                                 <div class="tournament-info__mode">
-                                                    <div>Тип</div>
-                                                    <div>League</div>
+                                                    <div><?=GetMessage('TP_TYPE')?></div>
+                                                    <div><?=GetMessage('TP_LEAGUE')?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,17 +305,17 @@ $mId = findFreeGame($tournamentId);
                                         <ul class="tournament-info__list">
                                             <li>
                                                 <div class="tournament-info__list-type">
-                                                    Тип:
+                                                    <?=GetMessage('TP_MODE')?>:
                                                 </div>
                                                 <div class="tournament-info__list-description">
                                                     <div class="tournament-info__list-description-league">
-                                                        <span>League</span><i></i>
+                                                        <span><?=GetMessage('TP_LEAGUE')?></span><i></i>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="tournament-info__list-type">
-                                                    Статус:
+                                                    <?=GetMessage('TP_STATUS')?>:
                                                 </div>
                                                 <?php
                                                  $tournamentDates = getTournamentPeriod($tournamentId);
@@ -121,12 +323,12 @@ $mId = findFreeGame($tournamentId);
 
                                                  }?>
                                                 <div class="tournament-info__list-description">
-                                                    Идёт регистрация
+                                                    <?=GetMessage('TP_REGISTRATION')?>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="tournament-info__list-type">
-                                                    Призовой фонд:
+                                                    <?=GetMessage('TP_FUND')?>:
                                                 </div>
                                                 <div class="tournament-info__list-description">
                                                     € 3000
@@ -152,10 +354,13 @@ $mId = findFreeGame($tournamentId);
                                                                 <div class="match-participants__team-logo" style="background-image: url(<?php echo CFile::GetPath($team["LOGO_TEAM"]["VALUE"]); ?>)">
                                                                 </div>
                                                                 <div>
-                                                                    <a href="/teams/<?php echo $teamID ?>/" class="match-participants__team-link"><?php echo $team["NAME_TEAM"]["VALUE"]. " [".$team["TAG_TEAM"]["VALUE"]; ?>]</a>
+                                                                    <a href="<?=SITE_DIR?>teams/<?php echo $teamID ?>/" class="match-participants__team-link"><?php echo $team["NAME_TEAM"]["VALUE"]. " [".$team["TAG_TEAM"]["VALUE"]; ?>]</a>
                                                                 </div>
                                                             </div>
-                                                            <a href="/tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn__change">Изменить состав</a>
+                                                            <?php if (strtotime($nextGame["DATE_START"]["VALUE"]) > time()){ ?>
+                                                                <a href="<?=SITE_DIR?>tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn__change">Изменить состав</a>
+                                                          <?php  } ?>
+
                                                         </div>
 
 
@@ -188,9 +393,12 @@ $mId = findFreeGame($tournamentId);
                                             <?php if (isCaptain($userID, $teamID)){ ?>
                                             <?php if (!$nextGameID){ ?>
                                                     <div><a href="/tournament-page/join-game/?mid=<?php echo $mId;?>" class="btn">Подать заявку</a></div>
-                                                <?php } else { ?>
+                                                <?php } else {
+                                                    if (strtotime($nextGame["DATE_START"]["VALUE"]) > time()) {
+                                                        ?>
                                                     <div><a href="/tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn-change-big">Отменить участие</a></div>
                                                 <?php }
+                                                }
                                              } ?>
                                             <div><a href="#" class="btn-italic-dotted" data-toggle="modal" data-target="#regulation">Регламент/Правила участия</a></div>
                                         </div>
@@ -277,7 +485,7 @@ $mId = findFreeGame($tournamentId);
                                     "SET_TITLE" => "N",
                                     "SHOW_404" => "Y",
                                     "SORT_BY1" => "PROPERTY_DATE_START",
-                                    "SORT_BY2" => "SORT",
+                                    "SORT_BY2" => "GROUP",
                                     "SORT_ORDER1" => "ASC",
                                     "SORT_ORDER2" => "ASC",
                                     "STRICT_SECTION_CHECK" => "N",
@@ -346,5 +554,8 @@ $mId = findFreeGame($tournamentId);
             </div>
         </div>
     </div>
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+
+<?
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
+?>
 
