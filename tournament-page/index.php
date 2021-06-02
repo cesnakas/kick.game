@@ -331,7 +331,7 @@ unset($_SESSION['tournament-page_error']);
                                                     <?=GetMessage('TP_FUND')?>:
                                                 </div>
                                                 <div class="tournament-info__list-description">
-                                                    € 3000
+                                                    3000 €
                                                 </div>
                                             </li>
                                             <?php
@@ -339,13 +339,14 @@ unset($_SESSION['tournament-page_error']);
                                             if($nextGameID = getNextGame($teamID, $tournamentId)){
                                                 $nextGame = getMatchById($nextGameID);
                                                 //dump($nextGame["DATE_START"]["VALUE"]);
-                                                $nextTime = formDate($nextGame["DATE_START"]["VALUE"], "d MMMM yyyy, HH:mm");
+                                                // $nextTime = formDate($nextGame["DATE_START"]["VALUE"], "d MMMM yyyy, HH:mm");
+                                                $nextTime = FormatDate("x", MakeTimeStamp($nextGame["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
                                                 $team = getTeamById($teamID);
 
                                                 ?>
                                                 <li>
                                                     <div class="tournament-info__list-type">
-                                                        Моя команда:
+                                                        <?=GetMessage('TP_MY_TEAM')?>:
                                                     </div>
                                                     <div class="tournament-info__list-description">
                                                         <div class="tournament-info__team">
@@ -372,13 +373,13 @@ unset($_SESSION['tournament-page_error']);
                                                     <?php if (strtotime($nextGame["DATE_START"]["VALUE"]) > time()){ ?>
 
                                                     <div class="tournament-info__list-type">
-                                                        Моя следующая игра:
+                                                        <?=GetMessage('TP_MY_NEXT_GAME')?>:
                                                     </div>
 
                                                     <?php } else { ?>
 
                                                         <div class="tournament-info__list-type">
-                                                            Моя предыдущая игра:
+                                                            <?=GetMessage('TP_MY_PREV_GAME')?>:
                                                         </div>
 
                                                         <?php } ?>
@@ -392,15 +393,15 @@ unset($_SESSION['tournament-page_error']);
                                         <div class="tournament-info__action">
                                             <?php if (isCaptain($userID, $teamID)){ ?>
                                             <?php if (!$nextGameID){ ?>
-                                                    <div><a href="/tournament-page/join-game/?mid=<?php echo $mId;?>" class="btn">Подать заявку</a></div>
+                                                    <div><a href="<?=SITE_DIR?>tournament-page/join-game/?mid=<?php echo $mId;?>" class="btn"><?=GetMessage('TP_APPLY')?></a></div>
                                                 <?php } else {
                                                     if (strtotime($nextGame["DATE_START"]["VALUE"]) > time()) {
                                                         ?>
-                                                    <div><a href="/tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn-change-big">Отменить участие</a></div>
+                                                    <div><a href="<?=SITE_DIR?>tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn-change-big"><?=GetMessage('TP_CANCEL')?></a></div>
                                                 <?php }
                                                 }
                                              } ?>
-                                            <div><a href="#" class="btn-italic-dotted" data-toggle="modal" data-target="#regulation">Регламент/Правила участия</a></div>
+                                            <div><a href="#" class="btn-italic-dotted" data-toggle="modal" data-target="#regulation"><?=GetMessage('TP_RULES')?></a></div>
                                         </div>
                                     </div>
                                 </div>

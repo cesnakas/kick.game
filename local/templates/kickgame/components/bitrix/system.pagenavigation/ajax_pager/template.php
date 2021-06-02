@@ -27,12 +27,12 @@ $strNavQueryString = ($arResult["NavQueryString"] != "" ? $arResult["NavQueryStr
 
 <?php
 $rNum = 3;
-if(($arResult["sUrlPath"] == "/game-schedule/") || ($arResult["sUrlPath"] == "/management-games/")){
+if(($arResult["sUrlPath"] == SITE_DIR."game-schedule/") || ($arResult["sUrlPath"] == SITE_DIR."management-games/")){
     $rNum = 5;
 }
 ?>
 <?php
-if(isPrem($arUser["UF_DATE_PREM_EXP"]) > 0 || $arResult["sUrlPath"] == "/game-schedule/"){
+if(isPrem($arUser["UF_DATE_PREM_EXP"]) > 0 || $arResult["sUrlPath"] == SITE_DIR."game-schedule/"){
 ?>
 
 <?if($arResult["bDescPageNumbering"] === true):?>
@@ -46,10 +46,4 @@ if(isPrem($arUser["UF_DATE_PREM_EXP"]) > 0 || $arResult["sUrlPath"] == "/game-sc
 <?endif?>
 
 <?php } else { ?>
-    <div class="row" style="justify-content: space-around">
-    <a href="<?=SITE_DIR?>subscription-plans/" class="btn mt-3"><?=GetMessage('BUTTON_SUBSCRIPTION_PLANS')?></a>
-    </div>
-    <div class="row" style="justify-content: space-around;">
-        <h4 class="premium-message"><?=GetMessage('HEADER_MESSAGE')?></h4>
-    </div>
     <?php } ?>

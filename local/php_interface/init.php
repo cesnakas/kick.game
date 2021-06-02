@@ -414,9 +414,11 @@ class CustomTelegram
                 "ID",
                 "IBLOCK_ID",
                 "NAME",
-                "PROPERTY_URL_STREAM",
-                "PROPERTY_PUBG_LOBBY_ID",
-                "PROPERTY_COUTN_TEAMS",
+                //"PROPERTY_URL_STREAM",
+                //"PROPERTY_PUBG_LOBBY_ID",
+                //"PROPERTY_COUTN_TEAMS",
+                "PROPERTY_DATE_START",
+                "PROPERTY_GROUP"
             )
         );
         while($element = $res->Fetch())
@@ -457,7 +459,7 @@ class CustomTelegram
                     $teamId = $element["PROPERTY_TEAM_PLACE_" . (($i < 10) ? "0" : "") . $i . "_VALUE"];
                     if($teamId)
                     {
-                        $result[] = $teamId;
+                        $result[$i] = $teamId;
                     }
                 }
             }
@@ -579,7 +581,8 @@ class CustomTelegram
                 "chats": ' . $chats . ',
                 "sender": "' . $sender . '",
                 "text": "' . $text . '"
-            }');echo("</pre>");*/
+            }');echo("</pre>");
+            return;*/
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => self::NOTIFICATION_URL,
@@ -615,12 +618,11 @@ class CustomTelegram
             $matches = self::getNearestMatchUsers($hour[0], $hour[1]);
             foreach ($matches as $match)
             {
-                $chats = array();
-                $reports = array();
                 //получаем комманды
                 $commands = self::getMatchTeams($match["ID"]);
-                foreach ($commands as $command)
+                foreach ($commands as $k => $command)
                 {
+                    $chats = array();
                     //получаем игроков
                     $players = self::getCoreTeam($command);
                     //для каждого игорка
@@ -634,7 +636,7 @@ class CustomTelegram
                         );
                         $select = array("ID");
                         //проеверям для игрока была ли уже отправка по текущему матчу и текущему временному интервалу
-                        $sending = CustomTelegram::getReport($filter, $select);
+                        $sending = self::getReport($filter, $select);
                         if(!$sending)
                         {
                             //проверяем если ли у игрока chatId
@@ -642,13 +644,15 @@ class CustomTelegram
                             if($playerChat)
                             {
                                 $chats = array_merge($chats, $playerChat);
-                                $reports[] = array(
+                                $fields = array(
                                     "UF_MATCH_ID" => $match["ID"],
                                     "UF_USER_ID" => $player,
+                                    "UF_TEAM_ID" => $command,
                                     "UF_TYPE" => $type,
                                     "UF_NOTIFY_NUM" => $hour[1],
                                     "UF_DATE" => date("d.m.Y H:i:s"),
                                 );
+                                self::addReport($fields);
                             }
                             /*$chatId = self::getChatId($player);
                             if($chatId)
@@ -667,19 +671,18 @@ class CustomTelegram
                             }*/
                         }
                     }
-                }
-                if($chats)
-                {
-                    $chats =  array_unique($chats);
-                    //echo("<pre>");var_dump($chats);echo("</pre>");
-                    //отправляем уведомление в telegram
-                    $text = str_replace(array("#NUM#", "#HOUR#", "#HOUR_WORD#", "#URL#", "#LOBBY#", "#TEAM#"), array($match["ID"], $hour[1], ($hour[1] == 1 ? "час" : ($hour[1] > 4 ? "часов" :"часа")), $match["PROPERTY_URL_STREAM_VALUE"], (trim($match["PROPERTY_PUBG_LOBBY_ID_VALUE"]) ? $match["PROPERTY_PUBG_LOBBY_ID_VALUE"] : "-"), $match["PROPERTY_COUTN_TEAMS_VALUE"]), $text);
-                    $rt = self::sendNotifications($type, $chats, $sender, $text);
-                    //echo("<pre>");var_dump($rt);echo("</pre>");
-                    //добавим инфу об отправке уведомления
-                    foreach ($reports as $k => $v)
+                    if($chats)
                     {
-                        self::addReport($v);
+                        $chats =  array_unique($chats);
+                        //отправляем уведомление в telegram
+                        //$text = str_replace(array("#NUM#", "#HOUR#", "#HOUR_WORD#", "#URL#", "#LOBBY#", "#TEAM#"), array($match["ID"], $hour[1], ($hour[1] == 1 ? "час" : ($hour[1] > 4 ? "часов" :"часа")), $match["PROPERTY_URL_STREAM_VALUE"], (trim($match["PROPERTY_PUBG_LOBBY_ID_VALUE"]) ? $match["PROPERTY_PUBG_LOBBY_ID_VALUE"] : "-"), $match["PROPERTY_COUTN_TEAMS_VALUE"]), $text);
+                        $text = str_replace(array("#NAME#", "#TIME#", "#SLOT#"), array(($match["PROPERTY_GROUP_VALUE"] ? "KICKGAME Scrims Group " . $match["PROPERTY_GROUP_VALUE"] : "-"), ($match["PROPERTY_DATE_START_VALUE"]) ? substr($match["PROPERTY_DATE_START_VALUE"], 11, 5) : "-", ($k ? $k : "-")), $text);
+                        self::sendNotifications($type, $chats, $sender, $text);
+                        //добавим инфу об отправке уведомления
+                        /*foreach ($reports as $k => $v)
+                        {
+                            self::addReport($v);
+                        }*/
                     }
                 }
             }

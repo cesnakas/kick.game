@@ -180,10 +180,10 @@ foreach($arResult["ITEMS"] as $arItem) {
 <div class="tournament-schedule-results">
     <ul class="nav nav-pills tournament-schedule-results__big-nav" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" href="#tab1" role="tab" data-toggle="tab">Расписание</a>
+            <a class="nav-link active" href="#tab1" role="tab" data-toggle="tab"><?=GetMessage('TOUR_SCHEDULE')?></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#tab2" role="tab" data-toggle="tab">Результаты</a>
+            <a class="nav-link" href="#tab2" role="tab" data-toggle="tab"><?=GetMessage('TOUR_RESULTS')?></a>
         </li>
     </ul>
 
@@ -196,7 +196,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                 <?php $countStages = 1;
                 foreach ($matchesArray as $k => $stage){ ?>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo $countStages == 1 ? "active" : "" ?>" href="#tab_schedule_<?php echo $countStages ?> " role="tab" data-toggle="tab"><?php echo $k > 2 ? $stages[$k] . " финала" : $stages[$k] ?></a>
+                    <a class="nav-link <?= $countStages == 1 ? "active" : "" ?>" href="#tab_schedule_<?= $countStages ?> " role="tab" data-toggle="tab"><?= $k > 2 ? $stages[$k] . " финала" : $stages[$k] ?></a>
                 </li>
                 <?php
                     $countStages = $countStages + 1;
