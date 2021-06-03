@@ -214,7 +214,20 @@ function getMatchById($matchId) {
     }
     return null;
 }
+// проверяем, есть ли результаты
+function getResultByMatchTeam($matchId, $teamId) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" => 5, "PROPERTY_WHICH_MATCH" => $matchId, "PROPERTY_WHICH_TEAM" => $teamId, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        return array_merge($arFields, $arProps);
+    }
+    return null;
+}
 $mId = findFreeGame($tournamentId);
+//dump($mId);
 
 $props["TEAM_ID"] = $teamID;
 $props["MATCH_STAGE_ONE"] = $_POST["idMatch"];
@@ -235,6 +248,87 @@ if (isset($_POST["changeGame"])){
         }
         LocalRedirect(SITE_DIR."tournament-page/?tournamentID=".$tournamentId);
     }
+}
+
+// собираем цепочку матчей
+$chainMatches = [];
+$chainMatches[] = $mId;
+$idCurMatch = $mId;
+$redirectUrlAction = false;
+do {
+    $match = getMatchByParentId($idCurMatch);
+    if ($match != null) {
+        $nextMatch = true;
+        $chainMatches[] = $match['ID'];
+        $idCurMatch = $match['ID'];
+    } else {
+        $nextMatch = false;
+    }
+} while($nextMatch == true);
+
+if (check_bitrix_sessid() && !empty($_REQUEST['removeTeam'])) {
+
+    $results = getResultByMatchTeam($mId, $teamID);
+
+    $now = date('d.m.Y H:i:s');
+    $curMatch = getMatchById($mId);
+    $dateStartMatch = $curMatch["DATE_START"]['VALUE'];
+
+    $dateA = DateTime::createFromFormat('d.m.Y H:i:s', $now);
+    $dateB = DateTime::createFromFormat('d.m.Y H:i:s', $dateStartMatch);
+
+    if ($results) {
+        $alertManagementSquad = GetMessage('ALERTS_RESULTS_ALREADY');
+        createSession('tournament-page_error', $alertManagementSquad);
+        $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
+    } else if($dateA > $dateB) {
+        $alertManagementSquad = GetMessage('ALERTS_MATCH_ALREADY_PASSED');
+        createSession('tournament-page_error', $alertManagementSquad);
+        $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
+    } else {
+        // получаем squad
+        $curSquadId = getSquadByIdMatch($mId, $teamID);
+        // получили место
+        if ($propertyPlace = getPropertyPlace($chainMatches)) {
+
+            $propertyPlace = array_flip($propertyPlace);
+            $propertyPlace = $propertyPlace[$teamID];
+
+            // есть цепочка матчей тут $chainMatches
+            // получаем участников матчей
+            $resMembersMatches = getMembersByMatchId($chainMatches);
+            // создаем массив id записей участников
+            $membersMatches = [];
+            // если пришел список участников
+            if ($resMembersMatches) {
+                foreach ($resMembersMatches as $membersMatch) {
+                    // наполняем $membersMatches
+                    $membersMatches[] = $membersMatch['ID'];
+                }
+                foreach ($membersMatches as $id) {
+                    $props = [];
+                    $props[$propertyPlace] = null;
+                    // бежим по записям и удаляем нашу команду с места
+                    updateMembers($props, $id);
+
+                }
+                // удаляем squd
+                if (!empty($curSquadId)) {
+                    CIBlockElement::Delete($curSquadId['ID']);
+                    $alertManagementSquad = GetMessage('ALERTS_REMOVED_TEAM_FROM_GAME');
+                    createSession('tournament-page_success', $alertManagementSquad);
+                    $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
+                }
+            }
+
+
+        }
+    }
+
+
+}
+if ($redirectUrlAction != false) {
+    LocalRedirect($redirectUrlAction);
 }
     ?>
 <?php
@@ -393,11 +487,18 @@ unset($_SESSION['tournament-page_error']);
                                         <div class="tournament-info__action">
                                             <?php if (isCaptain($userID, $teamID)){ ?>
                                             <?php if (!$nextGameID){ ?>
-                                                    <div><a href="<?=SITE_DIR?>tournament-page/join-game/?mid=<?php echo $mId;?>" class="btn"><?=GetMessage('TP_APPLY')?></a></div>
+                                                    <!--<div><a href="/tournament-page/join-game/?mid=<?php echo $mId;?>" class="btn">Подать заявку</a></div>-->
                                                 <?php } else {
                                                     if (strtotime($nextGame["DATE_START"]["VALUE"]) > time()) {
                                                         ?>
-                                                    <div><a href="<?=SITE_DIR?>tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn-change-big"><?=GetMessage('TP_CANCEL')?></a></div>
+                                                    <div>
+                                                      <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
+                                                          <?=bitrix_sessid_post()?>
+                                                        <button type="submit" class="btn-change-big" value="1" name="removeTeam">Отменить участие</button>
+                                                      </form>
+                                                      <!--<a href="/tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn-change-big">Отменить участие</a>-->
+                                                    </div>
+
                                                 <?php }
                                                 }
                                              } ?>
@@ -502,27 +603,27 @@ unset($_SESSION['tournament-page_error']);
             </section>
             <section class="top-places bg-blue-lighter">
                 <div class="container">
-                    <h2 class="top-places__heading text-center">Призовые места</h2>
+                    <h2 class="top-places__heading text-center"><?=GetMessage('TP_PRIZE_PLACES')?></h2>
                     <div class="top-places-wrap">
                         <div class="top-places__item">
-                            <div>1 место</div>
-                            <div>€ 960</div>
+                            <div><?=GetMessage("TP_1ST_PLACE")?></div>
+                            <div>960 €</div>
                         </div>
                         <div class="top-places__item">
-                            <div>2 место</div>
-                            <div>€ 600</div>
+                            <div><?=GetMessage("TP_2ND_PLACE")?></div>
+                            <div>600 €</div>
                         </div>
                         <div class="top-places__item">
-                            <div>3 место</div>
-                            <div>€ 360</div>
+                            <div><?=GetMessage("TP_3RD_PLACE")?></div>
+                            <div>360 €</div>
                         </div>
                         <div class="top-places__item">
-                            <div>4 место</div>
-                            <div>€ 300</div>
+                            <div><?=GetMessage("TP_4TH_PLACE")?></div>
+                            <div>300 €</div>
                         </div>
                         <div class="top-places__item">
-                            <div>5 место</div>
-                            <div>€ 180</div>
+                            <div><?=GetMessage("TP_5TH_PLACE")?></div>
+                            <div>180 €</div>
                         </div>
 
                     </div>

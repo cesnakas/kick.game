@@ -196,7 +196,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                 <?php $countStages = 1;
                 foreach ($matchesArray as $k => $stage){ ?>
                 <li class="nav-item">
-                    <a class="nav-link <?= $countStages == 1 ? "active" : "" ?>" href="#tab_schedule_<?= $countStages ?> " role="tab" data-toggle="tab"><?= $k > 2 ? $stages[$k] . " финала" : $stages[$k] ?></a>
+                    <a class="nav-link <?= $countStages == 1 ? "active" : "" ?>" href="#tab_schedule_<?= $countStages ?> " role="tab" data-toggle="tab"><?= $k > 2 ? $stages[$k] . GetMessage('TOUR_FINALE') : $stages[$k] ?></a>
                 </li>
                 <?php
                     $countStages = $countStages + 1;
@@ -210,8 +210,11 @@ foreach($arResult["ITEMS"] as $arItem) {
                     <?php
                     $dates[$countStages] = getStagePeriod($k, $_GET["tournamentID"]);
                     ?>
-                    <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
-                        <?php echo $dates[$countStages]["games"]*18 . " команд, " . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], "игра, игры, игр", false); ?> </div>
+                    <div class="tournament-schedule-results__overlay">
+                        <?= $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?>
+                        <br>
+                        <?= $dates[$countStages]["games"]*18 . GetMessage('TOUR_SQUADS') . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_GAMES'), false); ?>
+                    </div>
                     <div class="accordion accordion-game" id="gameStage_<?php echo $countStages ?>">
                         <?php $countDate = 1;
                         foreach ($stage as $l => $date){
@@ -230,7 +233,8 @@ foreach($arResult["ITEMS"] as $arItem) {
                                 <h2 class="mb-0">
                                     <button class="accordion-game__heading <?php echo $countDate == 1 ? "": "collapsed";?>" type="button" data-toggle="collapse" data-target="#collapseGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>">
                                         <?php
-                                        $scheduleDay = formDate($l, 'd MMMM, E');
+                                        // $scheduleDay = formDate($l, 'd MMMM, E');
+                                        $scheduleDay = FormatDate('d F, D', MakeTimeStamp($l), time() + CTimeZone::GetOffset() );
                                         echo $scheduleDay ?> <span class="tournament-schedule-results__participants"><i></i> <span class="tournament-schedule-results__participants-cur-count"><?php echo  $totalOccupied[$l] ?></span> / <?php echo  $counter[$l]*18?></span>
                                     </button>
                                 </h2>
@@ -253,7 +257,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                                             <div class="card-header" id="headingGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                                 <h2 class="mb-0">
                                                     <button class="accordion-group__heading collapsed" value="<?php echo $group["ID"]?>" onclick="getPlayers(this.value)" type="button" data-toggle="collapse" data-target="#collapseGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
-                                                        Группа №<?php echo $countGroup ?>
+                                                        <?=GetMessage('TOUR_GROUP_NO')?><?php echo $countGroup ?>
                                                         <span class="tournament-schedule-results__participants-group"><i></i> <span class="tournament-schedule-results__participants-group-cur-count"><?php echo $matchOccupied[$group["ID"]] ?></span> / 18</span>
                                                         <span class="accordion-group__progress" style="width:  <?php echo $matchOccupied[$group["ID"]] * 5.555 ?>%;"></span>
                                                     </button>
@@ -265,8 +269,8 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                     <div class="flex-table-tournament">
                                                         <div class="flex-table-tournament--header">
                                                             <div class="flex-table-tournament--categories">
-                                                                <span>Команда</span>
-                                                                <span>Рейтинг</span>
+                                                                <span><?=GetMessage('TOUR_TEAM')?></span>
+                                                                <span><?=GetMessage('TOUR_RATINGS')?></span>
                                                             </div>
                                                         </div>
                                                         <div class="flex-table-tournament--body" id="participants<?php echo $group["ID"]?>">
@@ -278,12 +282,12 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                     <div class="tournament-schedule-results__btn-change-group">
                                                         <?php if (!$nextGameID && $countStages == 1){ ?>
 
-                                                            <a href="/tournament-page/join-game/?mid=<?php echo $group["ID"]?>" class="btn">Подать заявку</a>
+                                                            <a href="<?=SITE_DIR?>tournament-page/join-game/?mid=<?php echo $group["ID"]?>" class="btn"><?=GetMessage('TOUR_APPLY')?></a>
 
                                                         <?php } else if ($nextGame["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"] == $k && $nextGame["ID"] != $group["ID"]  && strtotime($nextGame["DATE_START"]["VALUE"]) > time()) { ?>
                                                                 <form action="#" method="post">
                                                             <input value="<?php echo $group["ID"]?>" type="hidden" name="idMatch">
-                                                            <input value="Сменить группу" type="submit" name="changeGame" class="btn">
+                                                            <input value="<?=GetMessage('TOUR_CHANGE_GROUP')?>" type="submit" name="changeGame" class="btn">
                                                                 </form>
                                                         <?php } ?>
                                                     </div>
@@ -320,7 +324,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                 <?php $countStages = 1;
                 foreach ($matchesArray as $k => $stage){ ?>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $countStages == 1 ? "active" : "" ?>" href="#tab_results_<?php echo $countStages ?> " role="tab" data-toggle="tab"><?php echo $k > 2 ? $stages[$k] . " финала" : $stages[$k] ?></a>
+                        <a class="nav-link <?php echo $countStages == 1 ? "active" : "" ?>" href="#tab_results_<?php echo $countStages ?> " role="tab" data-toggle="tab"><?php echo $k > 2 ? $stages[$k] . GetMessage('TOUR_FINALE') : $stages[$k] ?></a>
                     </li>
                     <?php
                     $countStages = $countStages + 1;
@@ -335,7 +339,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                         <?php if ($k != 1){ ?>
 
                             <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
-                        <?php echo $dates[$countStages]["games"]*18 . " команд, " . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], "игра, игры, игр", false); ?> </div>
+                        <?php echo $dates[$countStages]["games"]*18 . GetMessage('TOUR_SQUADS') . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_GAMES'), false); ?> </div>
                             <div class="accordion accordion-game" id="gameResultsStage_<?php echo $countStages ?>">
                     <?php $countDate = 1;
                     foreach ($stage as $l => $date){?>
@@ -344,7 +348,8 @@ foreach($arResult["ITEMS"] as $arItem) {
                                 <h2 class="mb-0">
                                     <button class="accordion-game__heading <?php echo $countDate == 1 ? "": "collapsed";?>" type="button" data-toggle="collapse" data-target="#collapseResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseResultsGame_<?php echo $countDate?>_stage_<?php echo $countStages ?>">
                                         <?php
-                                        $scheduleDay = formDate($l, 'd MMMM, E');
+                                        // $scheduleDay = formDate($l, 'd MMMM, E');
+                                        $scheduleDay = FormatDate('d F, D', MakeTimeStamp($l));
                                         echo $scheduleDay ?> <span class="tournament-schedule-results__participants"><i></i> <span class="tournament-schedule-results__participants-cur-count"><?php echo  $totalOccupied[$l]?></span> / <?php echo $counter[$l]*18 ?></span>
                                     </button>
                                 </h2>
@@ -365,7 +370,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                     <div class="card-header" id="headingResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                                         <h2 class="mb-0">
                                                             <button class="accordion-group__heading" value="<?php echo $group["ID"]?>" onclick="getResults(this.value)" type="button" data-toggle="collapse" data-target="#collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
-                                                                Группа №<?php echo $countGroup ?>
+                                                                <?=GetMessage('TOUR_GROUP_NO')?><?php echo $countGroup ?>
                                                                 <span class="tournament-schedule-results__participants-group"><i></i> <span class="tournament-schedule-results__participants-group-cur-count"><?php echo $matchOccupied[$group["ID"]] ?></span> / 18</span>
                                                                 <span class="accordion-group__progress" style="width: <?php echo $matchOccupied[$group["ID"]] * 5.555 ?>%;"></span>
                                                             </button>
@@ -377,19 +382,19 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                             <div class="flex-table-tournament">
                                                                 <div class="flex-table-tournament--header">
                                                                     <div class="flex-table-tournament--categories">
-                                                                        <span>Команда</span>
-                                                                        <span>Очки</span>
+                                                                        <span><?=GetMessage('TOUR_TEAM')?></span>
+                                                                        <span><?=GetMessage('TOUR_POINTS')?></span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-table-tournament--body" id="results<?php echo $group["ID"]; ?>">
                                                                     <?php if (strtotime($group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) > time()){ ?>
-                                                                        Результаты по этой игре еще не сформированы
+                                                                        <?=GetMessage('TOUR_NOT_RESULTS')?>
                                                                     <?php } ?>
                                                                 </div>
                                                             </div>
                                                             <?php if (strtotime( $group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) < time()){ ?>
                                                                 <div class="tournament-schedule-results__btn-change-group">
-                                                                    <div><a href="#" class="btn-change-big">Подробные Результаты</a></div>
+                                                                    <div><a href="#" class="btn-change-big"><?=GetMessage('TOUR_DETAILED_RESULTS')?></a></div>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
@@ -458,7 +463,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                                         <?php if(strtotime( $group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) < time()){ ?>
                                                                             <div class="tournament-schedule-results__btn-change-group">
 
-                                                                                <div><a href="/game-schedule/<?php echo $group["CODE"] ?>/" class="btn-change-big">Подробные Результаты</a></div>
+                                                                                <div><a href="<?=SITE_DIR?>game-schedule/<?php echo $group["CODE"] ?>/" class="btn-change-big">Подробные Результаты</a></div>
                                                                             </div>
                                                                         <?php } ?>
                                                                     </div>

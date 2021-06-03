@@ -331,7 +331,6 @@ unset($_SESSION['game-schedule-detail_error']);
             <!--если юзер в группе ироков-->
             <?if ($arUser["UF_ID_TEAM"] && $isCaptain):?>
                 <?if($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5):?>
-
                     <?php if(!empty($userProductGroups) && count($userProductGroups)) { ?>
                   <?php
                         $convertDateSubscribeTo = ConvertDateTime($userProductGroups[0]["DATE_ACTIVE_TO"], "DD.MM.YYYY HH:MI:SS");
@@ -355,7 +354,6 @@ unset($_SESSION['game-schedule-detail_error']);
                         </div>
                     <?/*endif;*/?>
                 <?elseif($arResult["DISPLAY_PROPERTIES"]["TYPE_MATCH"]["VALUE_ENUM_ID"] == 6):?>
-
                     <?if(!empty($userProductGroups) && count($userProductGroups)):?>
                         <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?php echo $arResult["ID"]; ?>" class="btn"><?php echo $btnValue; ?></a>
                     <?else:?>
@@ -364,7 +362,8 @@ unset($_SESSION['game-schedule-detail_error']);
 
                         $convertDate = ConvertDateTime($arResult["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], "DD.MM.YYYY HH:MI:SS");
                         $dateTo = MakeTimeStamp($convertDate, "DD.MM.YYYY HH:MI:SS");
-                        $dateFrom = AddToTimeStamp(array("HH" => -1), $dateTo);
+                        //$dateFrom = AddToTimeStamp(array("HH" => -1), $dateTo);
+                        $dateFrom = AddToTimeStamp(array("HH" => +12), MakeTimeStamp($convertDate, "DD.MM.YYYY"));
                         //echo $convertDate.'<br>';
                         //echo $dateFrom.'<br>';
                         //echo $dateTo;

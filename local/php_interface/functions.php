@@ -607,4 +607,37 @@ function existsPubgId($userId, $pubgId)
   return $users;
 }
 
+function getListUsersManage($ids = []){
+    global $DB;
+    $ids = implode(',', $ids);
+    $strSql = 'SELECT @rank:=0';
+    $rsData = $DB->Query($strSql);
+    $strSql = 'SELECT rank, r3.GROUP_ID, r3.LOGIN, r3.PERSONAL_PHOTO, r3.ID, count_matches, total, kills 
+FROM (SELECT @rank:=@rank+1 as rank, r2.GROUP_ID, r2.LOGIN, r2.PERSONAL_PHOTO, r2.ID, count_matches, total, kills 
+FROM (SELECT g.GROUP_ID, u.LOGIN, u.PERSONAL_PHOTO, u.ID, count_matches, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total, kills 
+                      FROM  b_user as u 
+                            LEFT JOIN (SELECT t.USER_ID, count(t.USER_ID) as count_matches, sum(t.TOTAL) AS total, sum(t.KILLS) AS kills FROM b_squad_member_result AS t WHERE t.TYPE_MATCH = 6 GROUP BY t.USER_ID) AS r1 ON r1.USER_ID = u.ID 
+                            LEFT JOIN b_uts_user AS r ON r.VALUE_ID = u.ID 
+                            INNER JOIN b_user_group AS g ON g.USER_ID = u.ID 
+                            AND g.GROUP_ID = 7 
+                            ORDER BY total DESC, kills DESC, u.ID ASC) as r2) as r3 
+                            WHERE r3.ID IN('.$ids.')';
+    $rsData = $DB->Query($strSql);
+    $players = [];
+    while($row = $rsData->fetch()){
+        $players[ $row['ID'] ] = [
+            'kills' => $row['kills'],
+            'login' => $row['LOGIN'],
+            'rank' => $row['rank'],
+            'total' => $row['total'],
+            'photo' => $row['PERSONAL_PHOTO'],
+            'count_matches' => $row["count_matches"],
+        ];
+
+        //$players[] = $el;
+    }
+
+    return $players;
+}
+
 
