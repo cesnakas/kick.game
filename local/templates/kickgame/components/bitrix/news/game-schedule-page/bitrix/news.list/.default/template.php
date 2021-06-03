@@ -350,7 +350,15 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arIt
                 <div class="new-game-schedule__icon-type-game new-game-schedule__icon-type-game_prac">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.6 22.8"><path d="M963.34,529.28h-7.7l-4.4,12.48h6.6v8.32l11-13.52h-7.7Z" transform="translate(-950.24 -528.28)"/></svg>
               </div>
-                <div class="color-practical"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
+                <div class="color-practical">
+                    <?php
+                    if (LANGUAGE_ID == 'ru') {
+                        echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"];
+                    } elseif (LANGUAGE_ID == 'en') {
+                        echo 'Scrims';
+                    }
+                    ?>
+                </div>
             <?php } elseif($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
                 <div class="new-game-schedule__icon-type-game new-game-schedule__icon-type-game_tournament">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.67 21.2">
@@ -361,7 +369,15 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arIt
                 <path d="M678.77,393.6h7.68" transform="translate(-671.27 -373.4)"/>
               </svg>
             </div>
-                <div class="color-tournament"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
+                <div class="color-tournament">
+                    <?php
+                    if (LANGUAGE_ID == 'ru') {
+                        echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"];
+                    } elseif (LANGUAGE_ID == 'en') {
+                        echo 'Tournament';
+                    }
+                    ?>
+                </div>
             <?php } ?>
               <?php
              // dump($arItem);

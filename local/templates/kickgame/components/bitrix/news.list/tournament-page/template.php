@@ -247,9 +247,17 @@ foreach($arResult["ITEMS"] as $arItem) {
 
 
                                         ?>
-                                    <div class="tournament-schedule-results__time"><?php
-                                        $scheduleTime = formDate($m, "HH:mm");
-                                        echo $scheduleTime ?></div>
+                                    <div class="tournament-schedule-results__time">
+                                        <?php
+                                        // $scheduleTime = formDate($m, "HH:mm");
+                                        if (LANGUAGE_ID == 'ru') {
+                                            $scheduleTime = FormatDate('H:m', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
+                                        } else {
+                                            $scheduleTime = FormatDate('h:m a', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
+                                        }
+                                        echo $scheduleTime
+                                        ?>
+                                    </div>
                                     <div class="accordion accordion-group" id="game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                         <?php $countGroup = 1;
                                         foreach ($time as $n => $group){ ?>
@@ -361,8 +369,15 @@ foreach($arResult["ITEMS"] as $arItem) {
                                     foreach ($date as $m => $time){ ?>
                                         <div class="tournament-schedule-results__time">
                                             <?php
-                                            $scheduleTime = formDate($m, "HH:mm");
-                                            echo $scheduleTime ?></div>
+                                            // $scheduleTime = formDate($m, "HH:mm");
+                                            if (LANGUAGE_ID == 'ru') {
+                                                $scheduleTime = FormatDate('H:m', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
+                                            } else {
+                                                $scheduleTime = FormatDate('h:m a', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
+                                            }
+                                            echo $scheduleTime
+                                            ?>
+                                        </div>
                                         <div class="accordion accordion-group" id="results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                             <?php $countGroup = 1;
                                             foreach ($time as $n => $group){ ?>
@@ -420,7 +435,7 @@ foreach($arResult["ITEMS"] as $arItem) {
 
                         <?php } else { ?>
                             <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
-                                <?php echo "18 команд, " . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], "игра, игры, игр", false); ?> </div>
+                                <?php echo GetMessage('TOUR_18_SQUADS') . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_GAMES'), false); ?> </div>
                             <div class="accordion accordion-game" id="gameResultsStage_<?php echo $countStages ?>">
                                 <?php $countDate = 1;
                                 foreach ($stage as $l => $date){?>
@@ -430,7 +445,16 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                     <div class="tournament-schedule-results__time">
                                                         <?php
                                                         $scheduleTime = formDate($l.$m, "d MMMM yyyy, HH:mm");
-                                                        echo $scheduleTime ?></div>
+                                                        /*
+                                                        if (LANGUAGE_ID == 'ru') {
+                                                            $scheduleTime = FormatDate('j M Y, H:m', MakeTimeStamp($l.$m), time() + CTimeZone::GetOffset());
+                                                        } else {
+                                                            $scheduleTime = FormatDate('M j Y, h:m a', MakeTimeStamp($l.$m), time() + CTimeZone::GetOffset());
+                                                        }
+                                                        */
+                                                        echo $scheduleTime
+                                                        ?>
+                                                    </div>
                                                     <div class="accordion accordion-group" id="results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                                         <?php $countGroup = 1;
                                                         foreach ($time as $n => $group){ ?>
@@ -438,7 +462,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                                 <div class="card-header" id="headingResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                                                     <h2 class="mb-0">
                                                                         <button class="accordion-group__heading" value="<?php echo $group["ID"]?>" onclick="getResults(this.value)" type="button" data-toggle="collapse" data-target="#collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseResultsGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
-                                                                            День №<?php echo $countDate ?>
+                                                                            <?=GetMessage('TOUR_DAY_NO')?><?php echo $countDate ?>
                                                                             <span class="tournament-schedule-results__participants-group"><i></i> <span class="tournament-schedule-results__participants-group-cur-count"><?php echo $matchOccupied[$group["ID"]] ?></span> / 18</span>
                                                                             <span class="accordion-group__progress" style="width: <?php echo $matchOccupied[$group["ID"]] * 5.555 ?>%;"></span>
                                                                         </button>
@@ -450,20 +474,20 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                                         <div class="flex-table-tournament">
                                                                             <div class="flex-table-tournament--header">
                                                                                 <div class="flex-table-tournament--categories">
-                                                                                    <span>Команда</span>
-                                                                                    <span>Очки</span>
+                                                                                    <span><?=GetMessage('TOUR_TEAM')?></span>
+                                                                                    <span><?=GetMessage('TOUR_POINTS')?></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="flex-table-tournament--body" id="results<?php echo $group["ID"]; ?>">
                                                                                 <?php if (strtotime($group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) > time()){ ?>
-                                                                                    Результаты по этой игре еще не сформированы
+                                                                                    <?=GetMessage('TOUR_NOT_RESULTS')?>
                                                                                 <?php } ?>
                                                                             </div>
                                                                         </div>
                                                                         <?php if(strtotime( $group["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) < time()){ ?>
                                                                             <div class="tournament-schedule-results__btn-change-group">
 
-                                                                                <div><a href="<?=SITE_DIR?>game-schedule/<?php echo $group["CODE"] ?>/" class="btn-change-big">Подробные Результаты</a></div>
+                                                                                <div><a href="<?=SITE_DIR?>game-schedule/<?php echo $group["CODE"] ?>/" class="btn-change-big"><?=GetMessage('TOUR_NOT_RESULTS')?></a></div>
                                                                             </div>
                                                                         <?php } ?>
                                                                     </div>
