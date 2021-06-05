@@ -9,5 +9,5 @@ $MESS['TEAMS_FORM_BUTTON'] = 'Find a team';
 $MESS['TEAMS_BTN_TEAMS_LIST'] = 'Team list';
 $MESS['TEAMS_BTN_PLAYERS_LIST'] = 'Player list';
 
-$MESS['TEAMS_BANNER_TITLE'] = '15 scrims per day <br> Tournaments for €100 and €1000';
-$MESS['TEAMS_BANNER_BUTTON'] = 'Buy a subscription';
+$MESS['TEAMS_BANNER_TITLE'] = 'Early sign up for scrims'; // '15 scrims per day <br> Tournaments for €100 and €1000';
+$MESS['TEAMS_BANNER_BUTTON'] = 'UNLOCK'; // 'Buy a subscription';

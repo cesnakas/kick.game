@@ -142,7 +142,8 @@ if (isset($arUser) && $resultPrem <= 0) { ?>
                     </div>
                 </div>
                 <div class="banner__img">
-                    <img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/banner-img-2.png" alt="banner">
+                    <?/*<img src="<?php echo SITE_TEMPLATE_PATH;?>/dist/images/banner-img-2.png" alt="banner">*/?>
+                    <img src="<?=SITE_TEMPLATE_PATH?>/img/banner.png" alt="banner">
                 </div>
             </div>
         </div>

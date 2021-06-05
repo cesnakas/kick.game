@@ -27,7 +27,7 @@ while($el = $rsData->fetch()) {
     <div class='match-participants__team'>
     <div class='match-participants__team-logo' style='background-image: url(".CFile::GetPath($el["avatar"]).")'>
     </div>
-    <a href='/teams/{$el["id_team"]}/' class='match-participants__team-link'>{$el["name"]} [{$el["tag"]}] </a>
+    <a href='".SITE_DIR."teams/{$el["id_team"]}/' class='match-participants__team-link'>{$el["name"]} [{$el["tag"]}] </a>
     </div>
     </span>
     <span>

@@ -247,17 +247,14 @@ foreach($arResult["ITEMS"] as $arItem) {
 
 
                                         ?>
-                                    <div class="tournament-schedule-results__time">
-                                        <?php
+                                    <div class="tournament-schedule-results__time"><?php
                                         // $scheduleTime = formDate($m, "HH:mm");
                                         if (LANGUAGE_ID == 'ru') {
                                             $scheduleTime = FormatDate('H:m', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
                                         } else {
                                             $scheduleTime = FormatDate('h:m a', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
                                         }
-                                        echo $scheduleTime
-                                        ?>
-                                    </div>
+                                        echo $scheduleTime ?></div>
                                     <div class="accordion accordion-group" id="game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                         <?php $countGroup = 1;
                                         foreach ($time as $n => $group){ ?>
@@ -375,9 +372,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                                             } else {
                                                 $scheduleTime = FormatDate('h:m a', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
                                             }
-                                            echo $scheduleTime
-                                            ?>
-                                        </div>
+                                            echo $scheduleTime ?></div>
                                         <div class="accordion accordion-group" id="results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                             <?php $countGroup = 1;
                                             foreach ($time as $n => $group){ ?>
@@ -452,9 +447,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                                                             $scheduleTime = FormatDate('M j Y, h:m a', MakeTimeStamp($l.$m), time() + CTimeZone::GetOffset());
                                                         }
                                                         */
-                                                        echo $scheduleTime
-                                                        ?>
-                                                    </div>
+                                                        echo $scheduleTime ?></div>
                                                     <div class="accordion accordion-group" id="results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                                         <?php $countGroup = 1;
                                                         foreach ($time as $n => $group){ ?>

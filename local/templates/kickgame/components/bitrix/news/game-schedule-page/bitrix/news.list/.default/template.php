@@ -400,6 +400,7 @@ if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arIt
                 $name = $arItem["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')';
             }
             echo $name;
+
             ?>
           </a>
         </span>

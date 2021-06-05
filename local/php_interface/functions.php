@@ -267,7 +267,7 @@ function  getNextStage($stage){
         return $stage;
     }
 
-    $stage += 1;
+    $stage = $stage - 1;
     return $stage;
 }
 

@@ -250,83 +250,90 @@ if (isset($_POST["changeGame"])){
     }
 }
 
-// собираем цепочку матчей
-$chainMatches = [];
-$chainMatches[] = $mId;
-$idCurMatch = $mId;
 $redirectUrlAction = false;
-do {
-    $match = getMatchByParentId($idCurMatch);
-    if ($match != null) {
-        $nextMatch = true;
-        $chainMatches[] = $match['ID'];
-        $idCurMatch = $match['ID'];
-    } else {
-        $nextMatch = false;
-    }
-} while($nextMatch == true);
-
-if (check_bitrix_sessid() && !empty($_REQUEST['removeTeam'])) {
-
-    $results = getResultByMatchTeam($mId, $teamID);
-
-    $now = date('d.m.Y H:i:s');
-    $curMatch = getMatchById($mId);
-    $dateStartMatch = $curMatch["DATE_START"]['VALUE'];
-
-    $dateA = DateTime::createFromFormat('d.m.Y H:i:s', $now);
-    $dateB = DateTime::createFromFormat('d.m.Y H:i:s', $dateStartMatch);
-
-    if ($results) {
-        $alertManagementSquad = GetMessage('ALERTS_RESULTS_ALREADY');
-        createSession('tournament-page_error', $alertManagementSquad);
-        $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
-    } else if($dateA > $dateB) {
-        $alertManagementSquad = GetMessage('ALERTS_MATCH_ALREADY_PASSED');
-        createSession('tournament-page_error', $alertManagementSquad);
-        $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
-    } else {
-        // получаем squad
-        $curSquadId = getSquadByIdMatch($mId, $teamID);
-        // получили место
-        if ($propertyPlace = getPropertyPlace($chainMatches)) {
-
-            $propertyPlace = array_flip($propertyPlace);
-            $propertyPlace = $propertyPlace[$teamID];
-
-            // есть цепочка матчей тут $chainMatches
-            // получаем участников матчей
-            $resMembersMatches = getMembersByMatchId($chainMatches);
-            // создаем массив id записей участников
-            $membersMatches = [];
-            // если пришел список участников
-            if ($resMembersMatches) {
-                foreach ($resMembersMatches as $membersMatch) {
-                    // наполняем $membersMatches
-                    $membersMatches[] = $membersMatch['ID'];
-                }
-                foreach ($membersMatches as $id) {
-                    $props = [];
-                    $props[$propertyPlace] = null;
-                    // бежим по записям и удаляем нашу команду с места
-                    updateMembers($props, $id);
-
-                }
-                // удаляем squd
-                if (!empty($curSquadId)) {
-                    CIBlockElement::Delete($curSquadId['ID']);
-                    $alertManagementSquad = GetMessage('ALERTS_REMOVED_TEAM_FROM_GAME');
-                    createSession('tournament-page_success', $alertManagementSquad);
-                    $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
-                }
-            }
-
-
+if($nextGameID = getNextGame($teamID, $tournamentId)){
+    $nextGame = getMatchById($nextGameID);
+    // собираем цепочку матчей
+    $chainMatches = [];
+    $chainMatches[] = $nextGame['ID'];
+    $idCurMatch = $nextGame['ID'];
+    do {
+        $match = getMatchByParentId($idCurMatch);
+        if ($match != null) {
+            $nextMatch = true;
+            $chainMatches[] = $match['ID'];
+            $idCurMatch = $match['ID'];
+        } else {
+            $nextMatch = false;
         }
+    } while($nextMatch == true);
+
+    if (check_bitrix_sessid() && !empty($_REQUEST['removeTeam'])) {
+
+        $results = getResultByMatchTeam($nextGame['ID'], $teamID);
+
+        $now = date('d.m.Y H:i:s');
+        $curMatch = getMatchById($nextGame['ID']);
+        $dateStartMatch = $curMatch["DATE_START"]['VALUE'];
+
+        $dateA = DateTime::createFromFormat('d.m.Y H:i:s', $now);
+        $dateB = DateTime::createFromFormat('d.m.Y H:i:s', $dateStartMatch);
+
+        if ($results) {
+            $alertManagementSquad = GetMessage('ALERTS_RESULTS_ALREADY');
+            createSession('tournament-page_error', $alertManagementSquad);
+            $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
+        } else if($dateA > $dateB) {
+            $alertManagementSquad = GetMessage('ALERTS_MATCH_ALREADY_PASSED');
+            createSession('tournament-page_error', $alertManagementSquad);
+            $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
+        } else {
+            // получаем squad
+            $curSquadId = getSquadByIdMatch($nextGame['ID'], $teamID);
+            // получили место
+            if ($propertyPlace = getPropertyPlace($chainMatches)) {
+
+                $propertyPlace = array_flip($propertyPlace);
+                $propertyPlace = $propertyPlace[$teamID];
+
+                // есть цепочка матчей тут $chainMatches
+                // получаем участников матчей
+                $resMembersMatches = getMembersByMatchId($chainMatches);
+                // создаем массив id записей участников
+                $membersMatches = [];
+                // если пришел список участников
+                if ($resMembersMatches) {
+                    foreach ($resMembersMatches as $membersMatch) {
+                        // наполняем $membersMatches
+                        $membersMatches[] = $membersMatch['ID'];
+                    }
+                    foreach ($membersMatches as $id) {
+                        $props = [];
+                        $props[$propertyPlace] = null;
+                        // бежим по записям и удаляем нашу команду с места
+                        updateMembers($props, $id);
+
+                    }
+                    // удаляем squd
+                    if (!empty($curSquadId)) {
+                        CIBlockElement::Delete($curSquadId['ID']);
+                        $alertManagementSquad = GetMessage('ALERTS_REMOVED_TEAM_FROM_GAME');
+                        createSession('tournament-page_success', $alertManagementSquad);
+                        $redirectUrlAction = SITE_DIR."tournament-page/?tournamentID=".$tournamentId;
+                    }
+                }
+
+
+            }
+        }
+
+
     }
-
-
 }
+
+
+
+
 if ($redirectUrlAction != false) {
     LocalRedirect($redirectUrlAction);
 }
@@ -656,8 +663,5 @@ unset($_SESSION['tournament-page_error']);
             </div>
         </div>
     </div>
-
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
-?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
 
