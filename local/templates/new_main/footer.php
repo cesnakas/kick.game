@@ -69,7 +69,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                 style="width:45px;
                 justify-self: end;
                 margin-left:auto"
-                src="<?php echo SITE_TEMPLATE_PATH;?>/images/12plus.svg"
+                src="<?php echo SITE_TEMPLATE_PATH;?>/images/18plus.png"
         >
     </div>
 

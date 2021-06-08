@@ -605,7 +605,7 @@ class CustomTelegram
         ));
         $response = curl_exec($curl);
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        //echo("<pre>");var_dump($httpCode);echo("</pre>");
+        echo("<pre>");var_dump($httpCode);echo("</pre>");
         curl_close($curl);
         return $response;
     }
@@ -676,7 +676,7 @@ class CustomTelegram
                         $chats =  array_unique($chats);
                         //отправляем уведомление в telegram
                         //$text = str_replace(array("#NUM#", "#HOUR#", "#HOUR_WORD#", "#URL#", "#LOBBY#", "#TEAM#"), array($match["ID"], $hour[1], ($hour[1] == 1 ? "час" : ($hour[1] > 4 ? "часов" :"часа")), $match["PROPERTY_URL_STREAM_VALUE"], (trim($match["PROPERTY_PUBG_LOBBY_ID_VALUE"]) ? $match["PROPERTY_PUBG_LOBBY_ID_VALUE"] : "-"), $match["PROPERTY_COUTN_TEAMS_VALUE"]), $text);
-                        $text = str_replace(array("#NAME#", "#TIME#", "#SLOT#"), array(($match["PROPERTY_GROUP_VALUE"] ? "KICKGAME Scrims Group " . $match["PROPERTY_GROUP_VALUE"] : "-"), ($match["PROPERTY_DATE_START_VALUE"]) ? substr($match["PROPERTY_DATE_START_VALUE"], 11, 5) : "-", ($k ? $k : "-")), $text);
+                        $text = str_replace(array("#NAME#", "#TIME#", "#SLOT#"), array(($match["PROPERTY_GROUP_VALUE"] ? "KICKGAME Scrims Group " . $match["PROPERTY_GROUP_VALUE"] : "-"), ($match["PROPERTY_DATE_START_VALUE"]) ? substr($match["PROPERTY_DATE_START_VALUE"], 11, 5) : "-", ($k ? "TEAM-PLACE-" . str_pad($k, 2, 0, STR_PAD_LEFT) : "-")), $text);
                         self::sendNotifications($type, $chats, $sender, $text);
                         //добавим инфу об отправке уведомления
                         /*foreach ($reports as $k => $v)
