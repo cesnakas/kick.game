@@ -31,6 +31,12 @@ $(function () {
             location.href = "/dashboard/tournament-results?date=" + fd; // /news?date=2014-02-22
         }
     });
+    $('#calendarDashboardInvites').datepicker({
+
+        onSelect: function(fd, d, picker) {
+            location.href = "/dashboard/invites?date=" + fd; // /news?date=2014-02-22
+        }
+    });
     /*
     function createNext(index) {
         
@@ -56,4 +62,27 @@ $(function () {
     
     createNext(2);
     */
+
+    var max_fields = 50;
+    var wrapper = $(".prizePlaces");
+    var add_button = $(".add_form_field");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div class="col-md-2">\n' +
+              '        <div class="form-group">\n' +
+              '          <label>'+x+ 'место</label><input type="text" class="form-control" name="prize[]"/></div><a href="#" class="delete">Delete</a></div>'); //add input box
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
 });

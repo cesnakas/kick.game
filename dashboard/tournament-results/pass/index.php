@@ -291,7 +291,7 @@ if(isset($_POST["btn_give_pass"])){
         }
         updateTeam($props, $teamId+0);
     }
-    LocalRedirect("/dashboard/tournament-results/pass/?id=".$mId);
+    LocalRedirect("/dashboard/tournament-results/invite-game/?id=".$mId);
 }
 
 if (!empty($teamIds)) {

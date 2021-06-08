@@ -1,5 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+$APPLICATION->SetPageProperty("TITLE", "Tournament Page");
 $APPLICATION->SetTitle("Tournament Page");
 /** @var array $arParams */
 /** @var array $arResult */
@@ -22,7 +23,7 @@ $tournamentId = $_GET["tournamentID"];
 <?php if ($tournamentId) {
     $tournament = getTournamentById($tournamentId);
 }
-
+//dump($tournament);
 function isCaptain($idUser, $idTeam)
 {
     if ($idTeam) {
@@ -364,10 +365,10 @@ unset($_SESSION['tournament-page_error']);
                     <div class="row justify-content-center">
                         <div class="col-lg-11 col-md-12">
                             <div class="layout__content-heading-with-btn-back">
-                                <a href="<?=SITE_DIR?>game-schedule/" class="btn-italic-icon">
+                                <a href="/game-schedule/" class="btn-italic-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 11.62">
                                         <path d="M955.22,534.89a1,1,0,0,1,0,1.33l-3,3.27h18.2a.94.94,0,0,1,0,1.88h-18.2l3,3.27a1,1,0,0,1,0,1.32.81.81,0,0,1-1.21,0l-4.49-4.88h0a1,1,0,0,1,0-1.33h0l4.49-4.87A.81.81,0,0,1,955.22,534.89Z" transform="translate(-949.26 -534.62)"/>
-                                    </svg><?=GetMessage('TP_BACK')?>
+                                    </svg> Назад в расписание
                                 </a>
                                 <h1 class="text-center tournament__heading"><?php echo $tournament['NAME'] ?></h1>
                             </div>
@@ -387,7 +388,7 @@ unset($_SESSION['tournament-page_error']);
                                                     <i></i>
                                                 </div>
                                                 <div class="tournament-info__mode">
-                                                    <div><?=GetMessage('TP_MODE')?></div>
+                                                    <div>Режим</div>
                                                     <div>Squad</div>
                                                 </div>
                                             </div>
@@ -396,8 +397,8 @@ unset($_SESSION['tournament-page_error']);
                                                     <i></i>
                                                 </div>
                                                 <div class="tournament-info__mode">
-                                                    <div><?=GetMessage('TP_TYPE')?></div>
-                                                    <div><?=GetMessage('TP_LEAGUE')?></div>
+                                                    <div>Тип</div>
+                                                    <div>League</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -406,17 +407,17 @@ unset($_SESSION['tournament-page_error']);
                                         <ul class="tournament-info__list">
                                             <li>
                                                 <div class="tournament-info__list-type">
-                                                    <?=GetMessage('TP_MODE')?>:
+                                                    Тип:
                                                 </div>
                                                 <div class="tournament-info__list-description">
                                                     <div class="tournament-info__list-description-league">
-                                                        <span><?=GetMessage('TP_LEAGUE')?></span><i></i>
+                                                        <span>League</span><i></i>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="tournament-info__list-type">
-                                                    <?=GetMessage('TP_STATUS')?>:
+                                                    Статус:
                                                 </div>
                                                 <?php
                                                  $tournamentDates = getTournamentPeriod($tournamentId);
@@ -424,15 +425,17 @@ unset($_SESSION['tournament-page_error']);
 
                                                  }?>
                                                 <div class="tournament-info__list-description">
-                                                    <?=GetMessage('TP_REGISTRATION')?>
+                                                    Идёт регистрация
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="tournament-info__list-type">
-                                                    <?=GetMessage('TP_FUND')?>:
+                                                    Призовой фонд:
                                                 </div>
                                                 <div class="tournament-info__list-description">
-                                                    3000 €
+                                                    € <?php if(!empty($tournament['PRIZE_FUND']['VALUE'])) {
+                                                    echo $tournament['PRIZE_FUND']['VALUE'];
+                                                  } ?>
                                                 </div>
                                             </li>
                                             <?php
@@ -440,14 +443,13 @@ unset($_SESSION['tournament-page_error']);
                                             if($nextGameID = getNextGame($teamID, $tournamentId)){
                                                 $nextGame = getMatchById($nextGameID);
                                                 //dump($nextGame["DATE_START"]["VALUE"]);
-                                                // $nextTime = formDate($nextGame["DATE_START"]["VALUE"], "d MMMM yyyy, HH:mm");
-                                                $nextTime = FormatDate("x", MakeTimeStamp($nextGame["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+                                                $nextTime = formDate($nextGame["DATE_START"]["VALUE"], "d MMMM yyyy, HH:mm");
                                                 $team = getTeamById($teamID);
 
                                                 ?>
                                                 <li>
                                                     <div class="tournament-info__list-type">
-                                                        <?=GetMessage('TP_MY_TEAM')?>:
+                                                        Моя команда:
                                                     </div>
                                                     <div class="tournament-info__list-description">
                                                         <div class="tournament-info__team">
@@ -456,11 +458,11 @@ unset($_SESSION['tournament-page_error']);
                                                                 <div class="match-participants__team-logo" style="background-image: url(<?php echo CFile::GetPath($team["LOGO_TEAM"]["VALUE"]); ?>)">
                                                                 </div>
                                                                 <div>
-                                                                    <a href="<?=SITE_DIR?>teams/<?php echo $teamID ?>/" class="match-participants__team-link"><?php echo $team["NAME_TEAM"]["VALUE"]. " [".$team["TAG_TEAM"]["VALUE"]; ?>]</a>
+                                                                    <a href="/teams/<?php echo $teamID ?>/" class="match-participants__team-link"><?php echo $team["NAME_TEAM"]["VALUE"]. " [".$team["TAG_TEAM"]["VALUE"]; ?>]</a>
                                                                 </div>
                                                             </div>
                                                             <?php if (strtotime($nextGame["DATE_START"]["VALUE"]) > time()){ ?>
-                                                                <a href="<?=SITE_DIR?>tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn__change">Изменить состав</a>
+                                                                <a href="/tournament-page/join-game/?mid=<?php echo $nextGameID;?>" class="btn__change">Изменить состав</a>
                                                           <?php  } ?>
 
                                                         </div>
@@ -474,13 +476,13 @@ unset($_SESSION['tournament-page_error']);
                                                     <?php if (strtotime($nextGame["DATE_START"]["VALUE"]) > time()){ ?>
 
                                                     <div class="tournament-info__list-type">
-                                                        <?=GetMessage('TP_MY_NEXT_GAME')?>:
+                                                        Моя следующая игра:
                                                     </div>
 
                                                     <?php } else { ?>
 
                                                         <div class="tournament-info__list-type">
-                                                            <?=GetMessage('TP_MY_PREV_GAME')?>:
+                                                            Моя предыдущая игра:
                                                         </div>
 
                                                         <?php } ?>
@@ -509,7 +511,7 @@ unset($_SESSION['tournament-page_error']);
                                                 <?php }
                                                 }
                                              } ?>
-                                            <div><a href="#" class="btn-italic-dotted" data-toggle="modal" data-target="#regulation"><?=GetMessage('TP_RULES')?></a></div>
+                                            <div><a href="#" class="btn-italic-dotted" data-toggle="modal" data-target="#regulation">Регламент/Правила участия</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -610,30 +612,21 @@ unset($_SESSION['tournament-page_error']);
             </section>
             <section class="top-places bg-blue-lighter">
                 <div class="container">
-                    <h2 class="top-places__heading text-center"><?=GetMessage('TP_PRIZE_PLACES')?></h2>
+                    <h2 class="top-places__heading text-center">Призовые места</h2>
                     <div class="top-places-wrap">
+                      <?php
+                      //dump($tournament['PRIZE']['DESCRIPTION']);
+                      foreach ($tournament['PRIZE']['DESCRIPTION'] as $k=>$prize) {
+                        ?>
                         <div class="top-places__item">
-                            <div><?=GetMessage("TP_1ST_PLACE")?></div>
-                            <div>960 €</div>
+                            <div><?php echo $k+1; ?> место</div>
+                            <div>€ <?php echo $prize;?></div>
                         </div>
-                        <div class="top-places__item">
-                            <div><?=GetMessage("TP_2ND_PLACE")?></div>
-                            <div>600 €</div>
-                        </div>
-                        <div class="top-places__item">
-                            <div><?=GetMessage("TP_3RD_PLACE")?></div>
-                            <div>360 €</div>
-                        </div>
-                        <div class="top-places__item">
-                            <div><?=GetMessage("TP_4TH_PLACE")?></div>
-                            <div>300 €</div>
-                        </div>
-                        <div class="top-places__item">
-                            <div><?=GetMessage("TP_5TH_PLACE")?></div>
-                            <div>180 €</div>
-                        </div>
-
+                      <?php } ?>
                     </div>
+                  <?php if(!empty($tournament["TEXT_PRIZE"]["~VALUE"]['TEXT'])) { ?>
+                    <p class="text-center mt-3"><?php echo $tournament["TEXT_PRIZE"]["~VALUE"]['TEXT']; ?></p>
+                  <?php } ?>
                 </div>
             </section>
 
@@ -648,20 +641,14 @@ unset($_SESSION['tournament-page_error']);
                 <div class="modal-body">
                     <h3 class="modal-body__title">Регламент/Правила участия в турнире</h3>
                     <div class="modal-body__content mb-3">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi architecto aut, dignissimos distinctio, dolore eum expedita facere facilis fugiat hic nisi non obcaecati, pariatur quae similique vitae! Accusamus, inventore?</p>
-                        <ul>
-                            <li>Lorem ipsum dolor sit amet.</li>
-                            <li>Lorem ipsum dolor sit amet.</li>
-                            <li>Lorem ipsum dolor sit amet.</li>
-                            <li>Lorem ipsum dolor sit amet.</li>
-                        </ul>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad, adipisci aspernatur assumenda corporis ipsum laboriosam magni maiores, minima possimus quasi quos ut, voluptas? Id placeat quisquam quos! Architecto atque, deserunt ducimus est incidunt laboriosam possimus quo ratione vitae. Blanditiis commodi cumque dignissimos, dolore ducimus eligendi eos explicabo fugiat hic illo impedit in ipsam iste magni molestias mollitia possimus praesentium quod recusandae reiciendis saepe similique sunt vero, voluptatem voluptates? Ad adipisci architecto aut debitis, dolorem dolores dolorum enim error et excepturi itaque iure iusto magnam minima molestiae nobis odit porro quisquam quod, similique soluta sunt suscipit ut veniam voluptatem. Minus.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad, adipisci aspernatur assumenda corporis ipsum laboriosam magni maiores, minima possimus quasi quos ut, voluptas? Id placeat quisquam quos! Architecto atque, deserunt ducimus est incidunt laboriosam possimus quo ratione vitae. Blanditiis commodi cumque dignissimos, dolore ducimus eligendi eos explicabo fugiat hic illo impedit in ipsam iste magni molestias mollitia possimus praesentium quod recusandae reiciendis saepe similique sunt vero, voluptatem voluptates? Ad adipisci architecto aut debitis, dolorem dolores dolorum enim error et excepturi itaque iure iusto magnam minima molestiae nobis odit porro quisquam quod, similique soluta sunt suscipit ut veniam voluptatem. Minus.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad, adipisci aspernatur assumenda corporis ipsum laboriosam magni maiores, minima possimus quasi quos ut, voluptas? Id placeat quisquam quos! Architecto atque, deserunt ducimus est incidunt laboriosam possimus quo ratione vitae. Blanditiis commodi cumque dignissimos, dolore ducimus eligendi eos explicabo fugiat hic illo impedit in ipsam iste magni molestias mollitia possimus praesentium quod recusandae reiciendis saepe similique sunt vero, voluptatem voluptates? Ad adipisci architecto aut debitis, dolorem dolores dolorum enim error et excepturi itaque iure iusto magnam minima molestiae nobis odit porro quisquam quod, similique soluta sunt suscipit ut veniam voluptatem. Minus.</p>
+                      <?php if(!empty($tournament['REGULATION']["~VALUE"]['TEXT'])) {
+                        echo $tournament['REGULATION']["~VALUE"]['TEXT'];
+                      } ?>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
 

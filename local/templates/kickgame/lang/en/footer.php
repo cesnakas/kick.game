@@ -37,8 +37,8 @@ $MESS['MODAL_COOKIE_BTN_DISABLE'] = 'Disable all';
 $MESS['MODAL_COOKIE_BTN_ACCEPT'] = 'Accept';
 
 $MESS['MODAL_VERIFIED_TITLE'] = 'Checking PUBG ID and nickname';
-$MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Please pass the PUBG ID and nickname check to start playing on the platform. This is the only way we can understand that it was you who entered the lobby of the game and guarantee you a game with opponents equal in level.';
-$MESS['MODAL_VERIFIED_SUBTITLE_P2'] = 'How to pass verification:';
+$MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Please invite-game the PUBG ID and nickname check to start playing on the platform. This is the only way we can understand that it was you who entered the lobby of the game and guarantee you a game with opponents equal in level.';
+$MESS['MODAL_VERIFIED_SUBTITLE_P2'] = 'How to invite-game verification:';
 $MESS['MODAL_VERIFIED_LIST_ITEM-1'] = 'Log in to your pubg mobile player profile';
 $MESS['MODAL_VERIFIED_LIST_ITEM-2'] = 'Take a screenshot of the screen';
 $MESS['MODAL_VERIFIED_LIST_ITEM-3'] = 'Upload here';
@@ -52,7 +52,7 @@ $MESS['MODAL_VERIFIED_FOOTER_CONTENT-1'] = 'What should I do if I have already s
 $MESS['MODAL_VERIFIED_FOOTER_CONTENT-2'] = 'Before you submit the data for verification, you can change your PUBG ID and nickname in the <a href="'.SITE_DIR.'personal/edit/" target="_blank">profile settings</a> to match what you have in the game. Then, go back to this window and send the screenshot for verification.';
 
 $MESS['MODAL_REJECTED_TITLE'] = 'Account rejected';
-$MESS['MODAL_REJECTED_CONTENT-1'] = 'Unfortunately, your account didn\'t pass PUBG ID and/or nickname verification.';
+$MESS['MODAL_REJECTED_CONTENT-1'] = 'Unfortunately, your account didn\'t invite-game PUBG ID and/or nickname verification.';
 $MESS['MODAL_REJECTED_CONTENT-2'] = 'Reason for rejection:';
 $MESS['MODAL_REJECTED_COMMENT_LABEL'] = 'Comment';
 $MESS['MODAL_REJECTED_COMMENT_PLACEHOLDER'] = 'Enter a comment';

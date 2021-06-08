@@ -97,7 +97,7 @@ function createTournament($PROP = [], $img)
         "IBLOCK_SECTION_ID" => false,
         "CODE" => CUtil::translit($PROP['NAME'], "ru" , $params),
         "IBLOCK_ID" => $iblock_id, //ID информационного блока он 24-ый
-        //"PROPERTY_VALUES" => $PROP, // Передаем массив значении для свойств
+        "PROPERTY_VALUES" => $PROP, // Передаем массив значении для свойств
         "NAME" => $PROP['NAME'],
         "ACTIVE" => "Y", //поумолчанию делаем активным или ставим N для отключении поумолчанию
         "PREVIEW_TEXT" => $PROP['ANONS'], //Анонс
@@ -270,11 +270,26 @@ $modesMatch = getModesMatch();
 
 if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
     $img = $_FILES['image'];
-
+    $prizePlaces = $_POST['prize'];
+    //dump($prizePlaces);
     $props = [];
     $props['NAME'] = strip_tags(trim($_POST['name']));
     $props['ANONS'] = strip_tags($_POST['anonsTournament']);
     $props['DESCRIPTION'] = strip_tags($_POST['descriptionTournament']);
+    $props['PRIZE_FUND'] = strip_tags($_POST['prize_fund']);
+    $prizePlacesInsert = [];
+    foreach ($prizePlaces as $n => $value) {
+      if(!empty($value)) {
+        $prizePlacesInsert['n'.$n] = [
+          "VALUE" => ($n+1). " место ",
+          "DESCRIPTION" => $value
+        ];
+      }
+    }
+    //dump($prizePlacesInsert,1);
+    $props['PRIZE'] = $prizePlacesInsert;
+    $props['TEXT_PRIZE'] = $_POST['text_prize'];
+    $props['REGULATION'] = $_POST['regulation'];
 
     if($_POST["idTournament"] != "Укажите из списка"){
         $tournamentId = $_POST["idTournament"] + 0;
@@ -381,7 +396,7 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
         $startDateTime = $_POST['date_time_match'];
         foreach ($chainMatrix as $stage => $params) {
             $propsMatch['STAGE_TOURNAMENT'] = $stage;
-            $propsMatch['KEY_STAGE_PASS'] = $stage == 7 ? "" : $tournamentId . "." . $stages[array_search($stage, $stages)+1];
+            $propsMatch['KEY_STAGE_PASS'] = $stage == 8 ? "" : $tournamentId . "." . $stages[array_search($stage, $stages)+1];
             $countChainMatches = $params['chain'];
             for($i = 0; $i < $params['count']; $i++) {
 
@@ -492,6 +507,32 @@ $tournaments = getTournaments();
       <label for="descrTournament">Описание турнира</label>
       <textarea name="descriptionTournament" class="form-control" id="descrTournament" rows="7"></textarea>
     </div>
+    <div class="form-group">
+      <label>Призовой фонд, укажите только число</label>
+        <input type="text" name="prize_fund" class="form-control" maxlength="255" placeholder="3000">
+    </div>
+    <h2>Призовые места, укажите только число</h2>
+    <button class="btn btn-success add_form_field">Добавить призовое место &nbsp;
+      <span style="font-size:16px; font-weight:bold;">+ </span>
+    </button>
+    <div class="row mb-5 prizePlaces">
+      <div class="col-md-2">
+        <div class="form-group">
+          <label>1 место</label>
+          <input type="text" name="prize[]" class="form-control" placeholder="500">
+        </div>
+      </div>
+
+    </div>
+    <div class="form-group">
+      <label for="text_prize">Текст под призами</label>
+      <textarea name="text_prize" class="form-control" id="text_prize" rows="3" placeholder="Победители каждого игрового дня финала получают приз 200 евро."></textarea>
+    </div>
+    <div class="form-group">
+      <label for="regulationTournament">Регламент для турнира</label>
+      <textarea name="regulation" class="form-control" id="regulationTournament" rows="7" placeholder="Текст регламента необходимо вставить в формате html"></textarea>
+    </div>
+
     <div class="p-3 mb-2 bg-warning text-white">
       <h2 class="text-center">1/32 </h2>
       <div class="row">

@@ -12,6 +12,18 @@ function getTeamById($teamID) {
     return null;
 }
 
+function getAllTeams(){
+    GLOBAL $DB;
+    $sql = "SELECT t.IBLOCK_ELEMENT_ID as teamID, t.PROPERTY_21 as name FROM b_iblock_element_prop_s1 as t";
+
+    $res = $DB->Query($sql);
+    $teams = [];
+    while( $row = $res->Fetch() ) {
+        $teams[] = $row;
+    }
+    return $teams;
+}
+
 function getUsrById($id)
 {
     $filter = Array("GROUPS_ID" => Array(7), 'ID' => $id);

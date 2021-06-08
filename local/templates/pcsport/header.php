@@ -83,6 +83,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                 <a class="dropdown-item" href="<?=SITE_DIR?>dashboard/">Dashboard</a>
                   <?php if ( CSite::InGroup( array(1) ) ) { ?>
                       <a class="dropdown-item" href="<?=SITE_DIR?>referee/">Referee</a>
+                      <a class="dropdown-item" href="<?=SITE_DIR?>dashboard/invites/">Invites</a>
                       <a class="dropdown-item" href="<?=SITE_DIR?>dashboard/tournament-results/">Tournament results</a>
                       <a class="dropdown-item" href="<?=SITE_DIR?>dashboard/pubg-id-verified/">Pubg Id verified</a>
               <?php } ?>

@@ -11,7 +11,7 @@ use \Bitrix\Main\Application;
 class MainForgotPasswdComponent extends MainAuthFormComponent
 {
 	/**
-	 * Processing request new pass.
+	 * Processing request new invite-game.
 	 * @return void
 	 */
 	protected function actionRequest()
