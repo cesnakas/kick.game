@@ -517,8 +517,9 @@ unset($_SESSION['tournament-page_error']);
                                 </div>
                             </div>
 
-                            <?$curDate = date('Y-m-d H:i:s', time());
-                            $finalsDate = date('Y-m-d H:i:s', time()-(3600*24*3));
+                            <?
+                            //$curDate = date('Y-m-d H:i:s', time());
+                            //$finalsDate = date('Y-m-d H:i:s', time()-(3600*24*3));
                             GLOBAL $arrFilterDateTime;
                             $arrFilterDateTime=Array(
                                 "ACTIVE" => "Y",

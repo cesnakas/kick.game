@@ -213,7 +213,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                     <div class="tournament-schedule-results__overlay">
                         <?= $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?>
                         <br>
-                        <?= $dates[$countStages]["games"]*18 . GetMessage('TOUR_SQUADS') . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_GAMES'), false); ?>
+                        <?= $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_GAMES'), false); ?>
                     </div>
                     <div class="accordion accordion-game" id="gameStage_<?php echo $countStages ?>">
                         <?php $countDate = 1;
@@ -244,17 +244,17 @@ foreach($arResult["ITEMS"] as $arItem) {
                                     <!--start group -->
                                     <?php $countTime = 1;
                                     foreach ($date as $m => $time){
-
-
                                         ?>
                                     <div class="tournament-schedule-results__time"><?php
                                         // $scheduleTime = formDate($m, "HH:mm");
                                         if (LANGUAGE_ID == 'ru') {
-                                            $scheduleTime = FormatDate('H:m', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
+                                            //$scheduleTime = FormatDate('H:m', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
+                                          $scheduleTime = formDate($m, "HH:mm");
                                         } else {
                                             $scheduleTime = FormatDate('h:m a', MakeTimeStamp($m), time() + CTimeZone::GetOffset());
                                         }
-                                        echo $scheduleTime ?></div>
+                                        echo $scheduleTime;
+                                      ?></div>
                                     <div class="accordion accordion-group" id="game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
                                         <?php $countGroup = 1;
                                         foreach ($time as $n => $group){ ?>
@@ -344,7 +344,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                         <?php if ($k != 1){ ?>
 
                             <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
-                        <?php echo $dates[$countStages]["games"]*18 . GetMessage('TOUR_SQUADS') . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_GAMES'), false); ?> </div>
+                        <?php echo $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_GAMES'), false); ?> </div>
                             <div class="accordion accordion-game" id="gameResultsStage_<?php echo $countStages ?>">
                     <?php $countDate = 1;
                     foreach ($stage as $l => $date){?>

@@ -265,16 +265,12 @@ function getAvailableGroup($arItem) {
     //Через функцию getMatchesByDate возвращаем массив и разбиваем его в foreach
     // $k это позиция на которой мы сейчас находимся
     $k = 0;
-    // $n это позиция последней полной группы
-    $n = -1;
-    foreach($matches as $match){
 
-//Ставим группу в переменную возврата, в случае того если не будет брейка, возвращается именно эта группа
-        $freeGroup  = $matches[$n];
+    foreach($matches as $match){
         $tmp = getParticipationByMatchId($match["ID"]);
         $tmp = array_flip($tmp);
         $fill = 18 - count($tmp);
-        if(count($tmp) == 18) $n = $n + 1;
+        if(count($tmp) == 18) $freeGroup  = $match;
 // Случай если осталось меньше часа, отображаем новые группы только если в них до этого регались
         if($fill <= 17 && $diff < 3600 && count($tmp) != 18){
             $freeGroup  = $matches[$k];
@@ -301,7 +297,7 @@ function getAvailableGroup($arItem) {
         //Если группа возвращаемая нам функцией равна группе в arItems то мы выводим элемент в расписании
         $freeGroup = getAvailableGroup($arItem);
         //заменяем данные выводимой строки на данные матча со свободными местами
-        if($freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) {
+        if(isset($freeGroup) && $freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROUP"]["VALUE"] && $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) {
             //URL
             $arItem["DETAIL_PAGE_URL"] = "/game-schedule/".$freeGroup["CODE"]."/";
             //ID
@@ -331,7 +327,7 @@ function getAvailableGroup($arItem) {
                 <div class="new-game-schedule__icon-type-game new-game-schedule__icon-type-game_prac">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.6 22.8"><path d="M963.34,529.28h-7.7l-4.4,12.48h6.6v8.32l11-13.52h-7.7Z" transform="translate(-950.24 -528.28)"/></svg>
               </div>
-                <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?echo $arItem["ID"]?>" class="new-game-schedule__link">KICKGAME Scrims Group <?php echo $arItem["PROPERTIES"]["GROUP"]["VALUE"];?></a>
+                <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?echo $arItem["ID"]?>" class="new-game-schedule__link"><?php echo $arItem["PROPERTIES"]["SCRIMS_NAME"]["VALUE"] ?> Group <?php echo $arItem["PROPERTIES"]["GROUP"]["VALUE"];?></a>
             <?php } elseif($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) { ?>
                 <div class="new-game-schedule__icon-type-game new-game-schedule__icon-type-game_tournament">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.67 21.2">
@@ -456,7 +452,7 @@ function getAvailableGroup($arItem) {
         <span>
             <a href="<?=SITE_DIR?>management-games/join-game/?mid=<?echo $arItem["ID"]?>" class="new-game-schedule__link">
             <?php
-            $name = 'KICKGAME Scrims GROUP '.$arItem["PROPERTIES"]["GROUP"]["VALUE"];//'У меня нет названия';
+            $name = $arItem["PROPERTIES"]["SCRIMS_NAME"]["VALUE"] . ' GROUP '.$arItem["PROPERTIES"]["GROUP"]["VALUE"];//'У меня нет названия';
 
             if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5) {
                 $name = $arItem["PROPERTY_TOURNAMENT_NAME"] . ' (' .$arItem["PROPERTIES"]["STAGE_TOURNAMENT"]['VALUE'] . ')';

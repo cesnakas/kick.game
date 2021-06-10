@@ -1,7 +1,7 @@
 <?
 $MESS['AUTH_FORM_TITLE'] = 'Login';
-$MESS['AUTH_FORM_NICKNAME_LABEL'] = 'NickName';
-$MESS['AUTH_FORM_NICKNAME_PLACEHOLDER'] = 'Enter your NickName';
+$MESS['AUTH_FORM_NICKNAME_LABEL'] = 'Email';
+$MESS['AUTH_FORM_NICKNAME_PLACEHOLDER'] = 'Enter your email';
 $MESS['AUTH_FORM_PASSWORD_LABEL'] = 'Password';
 $MESS["MAIN_AUTH_FORM_SECURE_NOTE"] = "The password will be encrypted before it is sent. This will prevent the password from appearing in open form over data transmission channels.";
 $MESS['AUTH_FORM_PASSWORD_PLACEHOLDER'] = 'Enter your password';

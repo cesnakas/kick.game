@@ -15,6 +15,8 @@ $MESS['NAV_REGISTER'] = 'Регистрация';
 
 $MESS['HEADER_ALERT_VERIFIED'] = 'Пройди проверку pubg id и nickname для того чтобы начать играть на платформе.';
 $MESS['HEADER_ALERT_VERIFIED_BUTTON'] = 'Смотреть';
+$MESS['HEADER_ALERT_PUBG_ID'] = 'The specified PUBG ID is already being used on the platform';
+$MESS['HEADER_ALERT_NICKNAME'] = 'The specified nickname is already being used on the platform';
 
 $MESS['HEADER_ALERT_VERIFIED_ERROR'] = 'К сожалению, твой аккаунт не прошёл проверку pubg id и nickname.';
 $MESS['HEADER_ALERT_VERIFIED_SUCCESS'] = 'Твой аккаунт успешно прошёл проверку pubg id и nickname.';

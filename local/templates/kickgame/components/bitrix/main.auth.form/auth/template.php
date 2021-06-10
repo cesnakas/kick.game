@@ -38,7 +38,7 @@ if ($arResult['AUTHORIZED'])
             <form name="<?= $arResult['FORM_ID'];?>" method="post" action="<?= POST_FORM_ACTION_URI;?>">
               <div class="form-field">
                 <label for="auth-login" class="form-field__label"><?=GetMessage('AUTH_FORM_NICKNAME_LABEL')?></label>
-                <input type="text" class="form-field__input" name="<?= $arResult['FIELDS']['login'];?>" maxlength="255" value="<?= \htmlspecialcharsbx($arResult['LAST_LOGIN']);?>" autocomplete="off" id="auth-login" placeholder="<?=GetMessage('AUTH_FORM_NICKNAME_PLACEHOLDER')?>">
+                <input type="email" class="form-field__input" name="<?= $arResult['FIELDS']['login'];?>" maxlength="255" value="<?= \htmlspecialcharsbx($arResult['LAST_LOGIN']);?>" autocomplete="off" id="auth-login" placeholder="<?=GetMessage('AUTH_FORM_NICKNAME_PLACEHOLDER')?>">
               </div>
               <div class="form-field">
                 <label for="auth-pass" class="form-field__label"><?=GetMessage('AUTH_FORM_PASSWORD_LABEL')?></label>

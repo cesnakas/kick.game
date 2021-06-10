@@ -119,6 +119,7 @@ if (isset($_POST['create_match'])) {
 
     $PROP["GROUP"] = chr(65 + count(getMatchesByDate($_POST['date_time_match'], $_POST['minRating'],$_POST['maxRating'])));
     $PROP['TOURNAMENT'] = false;
+    $PROP['SCRIMS_NAME'] = $_POST['scrimsName'];
     $PROP['DATE_START'] = $_POST['date_time_match'];
     $PROP['MIN_RATING'] = $_POST['minRating'];
     $PROP['MAX_RATING'] = $_POST['maxRating'];
@@ -222,7 +223,12 @@ if (isset($_POST['create_match'])) {
               <input type='text' class="form-control" name="qtyMatches" value="3" id="qtyMatches" />
             </div>
           </div>
-
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="scrimsName" class="form-label">Укажите название игры, по умолчанию Kickgame Scrims</label>
+                    <input type='text' class="form-control" name="scrimsName" value="Kickgame Scrims" id="scrimsName" />
+                </div>
+            </div>
               <div class="col-md-12">
                 <button type="submit" name="create_match" class="btn btn-success">Создать</button>
               </div>

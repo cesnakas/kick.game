@@ -619,6 +619,35 @@ function existsPubgId($userId, $pubgId)
   return $users;
 }
 
+function updateUser($userId, $fields= [])
+{
+    $user = new CUser;
+    if ($user->Update($userId, $fields)) {
+        return true;
+    } else {
+        return 'Error: ' . $user->LAST_ERROR;
+    }
+}
+
+function existsNickname($userId, $nickname)
+{
+    $filter = array(
+        '!ID'=>$userId,
+        'LOGIN' => $nickname,
+        "ACTIVE" => 'Y',
+    );
+    $arParams["SELECT"] = array("UF_*");
+    $elementsResult = CUser::GetList(($by="ID"), ($order="DESC"), $filter, $arParams);
+    $users = [];
+    while ($rsUser = $elementsResult->Fetch())
+    {
+        $users[] = $rsUser;
+        //updateUserPrem($rsUser["ID"], 10);
+        //echo $rsUser["ID"] . $rsUser["LOGIN"] . " - " . $rsUser["UF_DATE_PREM_EXP"] . "<br>";
+    }
+    return $users;
+}
+
 function getListUsersManage($ids = []){
     global $DB;
     $ids = implode(',', $ids);

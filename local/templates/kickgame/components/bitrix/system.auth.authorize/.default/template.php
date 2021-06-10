@@ -28,7 +28,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
                 <?endforeach?>
               <div class="form-field">
                 <label for="auth-login" class="form-field__label"><?=GetMessage('AUTH_FORM_NICKNAME_LABEL')?></label>
-                <input type="text" class="form-field__input" name="USER_LOGIN" maxlength="255" value="<?=$arResult["LAST_LOGIN"]?>" autocomplete="off" id="auth-login" placeholder="<?=GetMessage('AUTH_FORM_NICKNAME_PLACEHOLDER')?>">
+                <input type="email" class="form-field__input" name="USER_LOGIN" maxlength="255" value="<?=$arResult["LAST_LOGIN"]?>" autocomplete="off" id="auth-login" placeholder="<?=GetMessage('AUTH_FORM_NICKNAME_PLACEHOLDER')?>">
               </div>
               <div class="form-field">
                 <label for="auth-pass" class="form-field__label"><?=GetMessage('AUTH_FORM_PASSWORD_LABEL')?></label>

@@ -15,6 +15,22 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/functions.php'
     require_once $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/functions.php';
 
 require_once( $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/autoload.php');
+
+/*login by email*/
+if(SITE_ID == 's1' || SITE_ID == 's2') {
+    AddEventHandler("main", "OnBeforeUserLogin", "OnBeforeUserLoginHandler");
+}
+function OnBeforeUserLoginHandler(&$arFields) {
+    if (isset($_POST['USER_LOGIN'])) {
+        $e = htmlspecialchars($_POST['USER_LOGIN'], ENT_QUOTES);
+        $filter = Array("EMAIL" => $_POST['USER_LOGIN']);
+        $rsUsers = CUser::GetList(($by="id"), ($order="desc"), $filter);
+        $res = $rsUsers->Fetch();
+        $arFields["LOGIN"] = $res['LOGIN'];
+    }
+}
+/*end login by email*/
+
 AddEventHandler("main", "OnAfterUserAdd", "OnAfterUserAddHandler");
 function OnAfterUserAddHandler(&$arFields)
 {

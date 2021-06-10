@@ -18,7 +18,21 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
     updateStatusChekingPubgId($userID, 21);
     LocalRedirect('');
 } else if (isset($_REQUEST['scrinPubgFirst']) && check_bitrix_sessid()) {
+
+  if(existsPubgId($userID, $_REQUEST['modalID']))  {
+      $alertSendScreen = 'Данный PUBG ID уже есть на платформе';
+      createSession('send-screen_error', $alertSendScreen);
+      LocalRedirect('');
+  }
+
+    if(existsNickname($userID, $_REQUEST['modalNickname']))  {
+        $alertSendScreen = 'Данный Nickname уже есть на платформе';
+        createSession('send-screen_error', $alertSendScreen);
+        LocalRedirect('');
+    }
+
   if(addScreenshot($_FILES, $userID, 20)) {
+      updateUser($userID+0, $fields = array("LOGIN" => $_REQUEST['modalNickname'], "UF_PUBG_ID" => $_REQUEST['modalID']));
     $alertSendScreen = 'Ты успешно отправил скриншот, твой аккаунт на проверке';
     createSession('send-screen_success', $alertSendScreen);
     LocalRedirect('');
@@ -29,7 +43,22 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
   }
 
 } else if(isset($_REQUEST['scrinPubgYet']) && check_bitrix_sessid()) {
+
+    if(existsPubgId($userID, $_REQUEST['modalID']))  {
+        $alertSendScreen = 'Такой PUBG ID уже существует';
+        createSession('send-screen_error', $alertSendScreen);
+        LocalRedirect('');
+    }
+
+    if(existsNickname($userID, $_REQUEST['modalNickname']))  {
+        $alertSendScreen = 'Такой никнейм уже существует';
+        createSession('send-screen_error', $alertSendScreen);
+        LocalRedirect('');
+    }
+
   if(addScreenshot($_FILES, $userID, 22)) {
+
+      updateUser($userID+0, $fields = array("LOGIN" => $_REQUEST['modalNickname'], "UF_PUBG_ID" => $_REQUEST['modalID']));
     $comments = strip_tags(trim($_POST['comments']));
     addCommentRejected($userID, $comments);
     $alertSendScreen = 'Ты успешно отправил скриншот, твой аккаунт на проверке';

@@ -37,6 +37,10 @@ $MESS['MODAL_COOKIE_BTN_DISABLE'] = 'Disable all';
 $MESS['MODAL_COOKIE_BTN_ACCEPT'] = 'Accept';
 
 $MESS['MODAL_VERIFIED_TITLE'] = 'Checking PUBG ID and nickname';
+$MESS['MODAL_VERIFIED_PUBG_ID_LABEL'] = 'PUBG ID';
+$MESS['MODAL_VERIFIED_PUBG_ID'] = 'Your PUBG ID';
+$MESS['MODAL_VERIFIED_NICKNAME_LABEL'] = 'Nickname';
+$MESS['MODAL_VERIFIED_NICKNAME'] = 'Your Nickname';
 $MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Please invite-game the PUBG ID and nickname check to start playing on the platform. This is the only way we can understand that it was you who entered the lobby of the game and guarantee you a game with opponents equal in level.';
 $MESS['MODAL_VERIFIED_SUBTITLE_P2'] = 'How to invite-game verification:';
 $MESS['MODAL_VERIFIED_LIST_ITEM-1'] = 'Log in to your pubg mobile player profile';

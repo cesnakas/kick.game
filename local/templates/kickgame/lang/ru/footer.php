@@ -37,6 +37,10 @@ $MESS['MODAL_COOKIE_BTN_DISABLE'] = 'Отключить все';
 $MESS['MODAL_COOKIE_BTN_ACCEPT'] = 'Принять';
 
 $MESS['MODAL_VERIFIED_TITLE'] = 'Проверка PUBG ID и nickname';
+$MESS['MODAL_VERIFIED_PUBG_ID'] = 'Твой PUBG ID';
+$MESS['MODAL_VERIFIED_PUBG_ID_LABEL'] = 'PUBG ID';
+$MESS['MODAL_VERIFIED_NICKNAME'] = 'Твой Nickname';
+$MESS['MODAL_VERIFIED_NICKNAME_LABEL'] = 'Nickname';
 $MESS['MODAL_VERIFIED_SUBTITLE_P1'] = 'Пожалуйста, пройди проверку PUBG ID и nickname для того чтобы начать играть на платформе. Только так мы сможем понять, что это именно ты зашел в лобби игры и гарантировать тебе игру с соперниками, равными по уровню.';
 $MESS['MODAL_VERIFIED_SUBTITLE_P2'] = 'Как пройти проверку:';
 $MESS['MODAL_VERIFIED_LIST_ITEM-1'] = 'Зайди в свой профиль игрока в pubg mobile';

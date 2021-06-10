@@ -125,6 +125,24 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
     </div>
   </div>
 </div>
+<div class="modal fade " id="popup-login-by-email" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
+          <i></i>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <h3 class="modal-body__title">Вход на сайт возможен только по email</h3>
+        <div class="modal-body__content">
+          <p>Теперь вход на сайт возможен только по email. Проверь, правильно ли указана твоя почта в настройках профиля.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade " id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
@@ -173,6 +191,14 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
                         <textarea name="comments" id="comments" class="form-field__textarea" cols="30" rows="3" placeholder="<?=GetMessage('MODAL_REJECTED_COMMENT_PLACEHOLDER')?>"></textarea>
                     </div>
                     <div class="form-field">
+                        <label for="modalID" class="form-field__label"><?= GetMessage('MODAL_VERIFIED_PUBG_ID_LABEL') ?></label>
+                        <input type="text" id="modalID" class="form-field__input" placeholder="<?=GetMessage('MODAL_VERIFIED_PUBG_ID')?>" name="modalID" value="<?=$arUser["UF_PUBG_ID"]?>">
+                    </div>
+                    <div class="form-field">
+                        <label for="modalNickname" class="form-field__label"><?= GetMessage('MODAL_VERIFIED_NICKNAME_LABEL') ?></label>
+                        <input type="text" id="modalNickname" class="form-field__input" placeholder="<?=GetMessage('MODAL_VERIFIED_NICKNAME')?>" name="modalNickname" value="<?=$arUser["LOGIN"]?>">
+                    </div>
+                    <div class="form-field">
                         <input type="file" class="form-field__input-file inputFileScrinPubgNext inputFile" data-multiple-caption="<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-1')?>{count}<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-2')?>" name="scrinPubg" id="scrinPubgIdNext">
                         <label for="scrinPubgIdNext" class="form-field__upload-file">
                             <i></i><span><?=GetMessage('MODAL_VERIFIED_UPLOAD_FILE')?></span> <div class="fileUploadedImg fileUploadedScrinPubgNext"></div>
@@ -214,11 +240,20 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
         <form action="<?= POST_FORM_ACTION_URI; ?>111" method="post" class="form-scrin-pubgid" enctype="multipart/form-data" novalidate="novalidate">
           <?=bitrix_sessid_post()?>
-          <div class="form-field">
-            <input type="file" class="form-field__input-file inputFileScrinPubg inputFile" data-multiple-caption="<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-1')?>{count}<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-2')?>"  name="scrinPubg" id="scrinPubgId">
-            <label for="scrinPubgId" class="form-field__upload-file">
-              <i></i><span><?=GetMessage('MODAL_VERIFIED_UPLOAD_FILE')?></span> <div class="fileUploadedImg fileUploadedScrinPubg"></div>
-            </label>
+
+              <div class="form-field">
+                  <label for="modalID" class="form-field__label"><?= GetMessage('MODAL_VERIFIED_PUBG_ID_LABEL') ?></label>
+                  <input type="text" id="modalID" class="form-field__input" placeholder="<?=GetMessage('MODAL_VERIFIED_PUBG_ID')?>" name="modalID" value="<?=$arUser["UF_PUBG_ID"]?>">
+              </div>
+              <div class="form-field">
+                  <label for="modalNickname" class="form-field__label"><?= GetMessage('MODAL_VERIFIED_NICKNAME_LABEL') ?></label>
+                  <input type="text" id="modalNickname" class="form-field__input" placeholder="<?=GetMessage('MODAL_VERIFIED_NICKNAME')?>" name="modalNickname" value="<?=$arUser["LOGIN"]?>">
+              </div>
+            <div class="form-field">
+              <input type="file" class="form-field__input-file inputFileScrinPubg inputFile" data-multiple-caption="<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-1')?>{count}<?=GetMessage('MODAL_VERIFIED_INPUT_FILE-2')?>"  name="scrinPubg" id="scrinPubgId">
+              <label for="scrinPubgId" class="form-field__upload-file">
+                  <i></i><span><?=GetMessage('MODAL_VERIFIED_UPLOAD_FILE')?></span> <div class="fileUploadedImg fileUploadedScrinPubg"></div>
+              </label>
           </div>
 
           <div class="modal-body__btn">
@@ -257,6 +292,18 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 </script>
       <?php } ?>
 <?php } */?>
+<?php if ($USER->IsAuthorized()) { ?>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!sessionStorage.getItem('shown-modal')){
+      setTimeout(function () {
+        $('#popup-login-by-email').modal('show');
+      }, 3000);
+      sessionStorage.setItem('shown-modal', 'true');
+    }
+  });
+</script>
+<?php } ?>
 <!-- Facebook Pixel Code -->
 <script>
     !function(f,b,e,v,n,t,s)

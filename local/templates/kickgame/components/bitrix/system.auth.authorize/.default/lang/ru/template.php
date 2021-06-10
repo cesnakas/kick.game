@@ -1,7 +1,7 @@
 <?
 $MESS['AUTH_FORM_TITLE'] = 'Вход';
-$MESS['AUTH_FORM_NICKNAME_LABEL'] = 'NickName';
-$MESS['AUTH_FORM_NICKNAME_PLACEHOLDER'] = 'Введите свой NickName';
+$MESS['AUTH_FORM_NICKNAME_LABEL'] = 'Email';
+$MESS['AUTH_FORM_NICKNAME_PLACEHOLDER'] = 'Введите свой email';
 $MESS['AUTH_FORM_PASSWORD_LABEL'] = 'Пароль';
 $MESS['MAIN_AUTH_FORM_SECURE_NOTE'] = 'Перед отправкой формы авторизации пароль будет зашифрован в браузере. Это позволит избежать передачи пароля в открытом виде.';
 $MESS['AUTH_FORM_PASSWORD_PLACEHOLDER'] = 'Введите свой пароль';
