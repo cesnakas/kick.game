@@ -354,7 +354,11 @@ function getAvailableGroup($arItem) {
                         <?php
                         $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
                         // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
-                        echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+                        if (IsAmPmMode()) { // Определяем используется ли 12-и часовой формат времени. Если true, то = 12-часовой формат
+                            echo FormatDateFromDB($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], 'MM/DD/YYYY \a\t H:MI T');
+                        } else {
+                            echo FormatDateFromDB($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], 'DD.MM.YYYY \в HH:MI');
+                        }
                         ?>
                     </div>
                 </div>
@@ -467,7 +471,11 @@ function getAvailableGroup($arItem) {
           <?php
           $dateTime = explode(' ', $arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]);
           // echo $dateTime[0] . ' в ' . substr($dateTime[1], 0, 5);
-          echo FormatDate("x", MakeTimeStamp($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) + CTimeZone::GetOffset());
+          if (IsAmPmMode()) { // Определяем используется ли 12-и часовой формат времени. Если true, то = 12-часовой формат
+              echo FormatDateFromDB($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], 'MM/DD/YYYY \a\t H:MI T');
+          } else {
+              echo FormatDateFromDB($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], 'DD.MM.YYYY \в HH:MI');
+          }
           ?>
         </span>
         <span class="new-game-schedule__param-wrap">
