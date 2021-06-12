@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="kickgame.onebx.ru" createEmptyFolders="true" traceLevel="ERRORS">
+  <component name="PublishConfigData" autoUpload="Always" serverName="kickgame.1bx.su" createEmptyFolders="true" traceLevel="ERRORS">
     <serverData>
-      <paths name="kickgame.onebx.ru">
+      <paths name="kickgame.1bx.su">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />

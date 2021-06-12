@@ -2,10 +2,10 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="0ad884a0-9b48-4078-9ff8-5d1d0a8760b0" name="kickgame.onebx.ru" url="http://kickgame.onebx.ru">
-        <fileTransfer host="kickgame.onebx.ru" port="21">
+      <webServer id="91211a2e-633a-402b-81ce-fb6bc404986a" name="kickgame.1bx.su" url="http://kickgame.1bx.su">
+        <fileTransfer rootFolder="/www/kickgame.1bx.su/" host="kickgame.1bx.su" port="21">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" showHiddenFiles="true" />
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>
