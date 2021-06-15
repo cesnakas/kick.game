@@ -1161,13 +1161,15 @@ function getChainMatchesByParentId($parentId)
     return $chainMatches;
 }
 $myMatchIds = getSquadsWhereIm($userID);
-
 $newMatchIds = [];
-foreach ($myMatchIds as $id) {
-    $newMatchIds[] = getChainMatchesByParentId($id);
+foreach ($myMatchIds as $n => $id) {
+    if($id){
+       $newMatchIds[$n]["chain"] = getChainMatchesByParentId($id);
+       $newMatchIds[$n]["DATE_START"] = getMatchStartDate($id);
+    }
 }
 
-
+array_multisort(array_column( $newMatchIds, "DATE_START"), SORT_ASC,  $newMatchIds );
 function getParticipationByMatchIdMyMatches($idMatch)
 {
     $arSelect = Array(
@@ -1239,7 +1241,7 @@ if (!empty($newMatchIds)) {
             //dump($myMatchIds);
             global $arrFilterIdsMatches;
             $curDate = date('Y-m-d H:i:s', time() - 7200);
-            $arrFilterIdsMatches = array("ID" => $ids, ">=PROPERTY_DATE_START" => $curDate);
+            $arrFilterIdsMatches = array("ID" => $ids["chain"], ">=PROPERTY_DATE_START" => $curDate);
 
             $APPLICATION->IncludeComponent(
 	"bitrix:news.list",

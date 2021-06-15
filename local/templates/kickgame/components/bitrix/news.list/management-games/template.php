@@ -288,10 +288,164 @@ function getAvailableGroup($arItem) {
 }
 ?>
 
+<?php
+$bigTournaments = getBigTournaments();
+//dump($bigTournaments, 1);
+
+if(!$_GET["PAGEN_1"]){
+foreach ($bigTournaments as $bigTournament)
+{
+    $tournamentDates = getTournamentPeriod($bigTournament['ID']);
+    if(strtotime($tournamentDates["max"]) < time()) continue;
+    switch($tournamentDates["mode"]) {
+        case 4:
+            $type = "SQUAD";
+            break;
+        case 2:
+            $type = "DUO";
+            break;
+        case 1:
+            $type = "SOLO";
+            break;
+    }
+    $gamesTotal = getStagePeriod($tournamentDates["firstStage"], $bigTournament['ID']);
+    $countTotal = $gamesTotal["games"] * 18;
+    $countReal = countTournamentTeams($tournamentDates["firstStage"], $bigTournament['ID']);
+    $countFree = $countTotal - $countReal;
+?>
+
+    <div class="flex-table-new--row new-mobile-item" id="<?=$this->GetEditAreaId($bigTournament['ID']);?>">
+        <span>
+
+          <div class="new-game-schedule__type-game">
+
+                <div class="new-game-schedule__icon-type-game new-game-schedule__icon-type-game_tournament">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.67 21.2">
+                <path d="M676.21,374.4H689v7.68a6.41,6.41,0,0,1-6.4,6.4h0a6.4,6.4,0,0,1-6.4-6.4Z" transform="translate(-671.27 -373.4)"/>
+                <path d="M689,377h1.3a2.42,2.42,0,0,1,2.57,2.83c-.42,1.8-1.43,3.86-3.87,4.21" transform="translate(-671.27 -373.4)"/>
+                <path d="M676.21,377H674.9a2.42,2.42,0,0,0-2.57,2.83c.42,1.8,1.44,3.86,3.88,4.21" transform="translate(-671.27 -373.4)"/>
+                <path d="M682.61,388.48v5.12" transform="translate(-671.27 -373.4)"/>
+                <path d="M678.77,393.6h7.68" transform="translate(-671.27 -373.4)"/>
+              </svg>
+            </div>
+                <a href="<?=SITE_DIR?>tournament-page/?tournamentID=<?php echo $bigTournament['ID'] ?> " class="new-game-schedule__link"><?php echo $bigTournament['NAME']; ?></a>
+
+              <div class="game-qty">
+                  <?php echo $type; ?>
+              </div>
+          </div>
+
+        </span>
+        <div class="game-info">
+            <div class="game-info__row">
+                <div class="game-info__item-row">
+                    <div class="game-info__item">
+                        <span><?=GetMessage('DATE_EVENT_COLON')?></span>
+                        <?php
+                        if (IsAmPmMode()) {
+                            echo strtotime($tournamentDates["min"]) != strtotime($tournamentDates["max"]) ? FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'MM/DD/YYYY \a\t H:MI T') .' - '. FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["max"])), 'MM/DD/YYYY \a\t H:MI T') : FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'MM/DD/YYYY \a\t H:MI T');
+                        } else {
+                            echo strtotime($tournamentDates["min"]) != strtotime($tournamentDates["max"]) ? FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'DD.MM.YYYY \в HH:MI') .' - '. FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["max"])), 'DD.MM.YYYY \в HH:MI') : FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'DD.MM.YYYY \в HH:MI');
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="game-info__item-row">
+                        <div class="game-info__item">
+                            <span><?=GetMessage('PRIZE')?></span>
+                            <?php
+                            $name = $bigTournament["PRIZE_FUND"]["VALUE"] . "€";
+                            echo $name;
+                            ?>
+                        </div>
+                    <div class="game-info__item game-info__item_right">
+
+                        <?php
+                        //if display
+                            ?>
+                                <span class="place-span"> <?php echo $countReal ."/".$countTotal;?> <?=GetMessage('RATING_SEATS_OCCUPIED')?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-table--row new-desktop-item" id="<?=$this->GetEditAreaId($bigTournament['ID']);?>">
+        <span>
+          <div class="new-game-schedule__type-game">
+
+                <div class="new-game-schedule__icon-type-game new-game-schedule__icon-type-game_tournament">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.67 21.2">
+                <path d="M676.21,374.4H689v7.68a6.41,6.41,0,0,1-6.4,6.4h0a6.4,6.4,0,0,1-6.4-6.4Z" transform="translate(-671.27 -373.4)"/>
+                <path d="M689,377h1.3a2.42,2.42,0,0,1,2.57,2.83c-.42,1.8-1.43,3.86-3.87,4.21" transform="translate(-671.27 -373.4)"/>
+                <path d="M676.21,377H674.9a2.42,2.42,0,0,0-2.57,2.83c.42,1.8,1.44,3.86,3.88,4.21" transform="translate(-671.27 -373.4)"/>
+                <path d="M682.61,388.48v5.12" transform="translate(-671.27 -373.4)"/>
+                <path d="M678.77,393.6h7.68" transform="translate(-671.27 -373.4)"/>
+              </svg>
+            </div>
+                <div class="color-tournament">
+                    <?php
+                    if (LANGUAGE_ID == 'ru') {
+                        echo 'Турнир';
+                    } elseif (LANGUAGE_ID == 'en') {
+                        echo 'Tournament';
+                    }
+                    ?>
+                </div>
+          </div>
+        </span>
+        <span>
+          <a href="<?php echo SITE_DIR."tournament-page/?tournamentID=" . $bigTournament["ID"];?>" class="new-game-schedule__link">
+            <?php
+            $name = $bigTournament["NAME"] . " (". $bigTournament["PRIZE_FUND"]["VALUE"]. "€" . ")"; ;
+            echo $name;
+            ?>
+          </a>
+        </span>
+        <span class="new-game-schedule__param-wrap">
+          <div class="new-game-schedule__param"><?=GetMessage('DATE_EVENT')?></div>
+          <?php
+          if (IsAmPmMode()) {
+              echo strtotime($tournamentDates["min"]) != strtotime($tournamentDates["max"]) ? FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'MM/DD/YYYY \a\t H:MI T') .'<br>'. FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["max"])), 'MM/DD/YYYY \a\t H:MI T') : FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'MM/DD/YYYY \a\t H:MI T');
+          } else {
+              echo strtotime($tournamentDates["min"]) != strtotime($tournamentDates["max"]) ? FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'DD.MM.YYYY \в HH:MI') .'<br>'. FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["max"])), 'DD.MM.YYYY \в HH:MI') : FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'DD.MM.YYYY \в HH:MI');
+          }
+          ?>
+        </span>
+        <span class="new-game-schedule__param-wrap">
+          <div class="new-game-schedule__param"><?=GetMessage('RATING')?></div>
+         -
+        </span>
+        <span class="new-game-schedule__param-wrap">
+            <div class="new-game-schedule__param"><?=GetMessage('MODE')?></div>
+            <div class="new-game-schedule__mode">
+              <div><?php echo $type; ?></div>
+            </div>
+        </span>
+        <span class="new-game-schedule__param-wrap">
+          <div class="new-game-schedule__param"><?=GetMessage('COMMENTATOR')?></div>
+              -
+        </span>
+        <span class="new-game-schedule__param-wrap">
+        <?php echo $countFree; ?>
+    </div>
+
+<?php }
+} ?>
+
+
+
 <?foreach($arResult["ITEMS"] as $arItem) {
     $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
     $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
 
+
+    if($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5){
+        $tournamentDates = getTournamentPeriod($arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"]);
+        $gamesTotal = getStagePeriod($tournamentDates["firstStage"], $arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"]);
+        $countTotal = $gamesTotal["games"] * 18;
+        $countReal = countTournamentTeams($tournamentDates["firstStage"], $arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"]);
+        $countFree = $countTotal - $countReal;
+    }
 
     $diff =  strtotime($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) - time();
         //Если группа возвращаемая нам функцией равна группе в arItems то мы выводим элемент в расписании
@@ -381,22 +535,26 @@ function getAvailableGroup($arItem) {
 
                         <?php
 
-                        $tmp = getParticipationByMatchId($arItem["ID"]);
-                        $tmp = array_flip($tmp);
+                        if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) {
+                            $tmp = getParticipationByMatchId($arItem["ID"]);
+                            $tmp = array_flip($tmp);
 
-                        if (isset($tmp[$teamID])) {
-                            ?>
-                            <span class="slot-span">Слот № <?php echo $tmp[$teamID];?></span>
-                        <?php } else {
-                            $freeSlots = 18 - count($tmp);
-                            if($freeSlots > 0){
+                            if (isset($tmp[$teamID])) {
                                 ?>
-                                <span class="place-span"> <?php echo count($tmp);?>/18 Занято</span><?php
-                            } else {
-                                ?>
-                                <span class="no-slots-span">Мест нет</span><?php
+                                <span class="slot-span"><?=GetMessage('SLOT_NO')?><?php echo $tmp[$teamID];?></span>
+                            <?php } else {
+                                $freeSlots = 18 - count($tmp);
+                                if($freeSlots > 0){
+                                    ?>
+                                    <span class="place-span"> <?php echo count($tmp);?>/18 <?=GetMessage('RATING_SEATS_OCCUPIED')?></span><?php
+                                } else {
+                                    ?>
+                                    <span class="no-slots-span"><?=GetMessage('NO_SEATS')?></span><?php
+                                }
                             }
-                        }
+                        } else { ?>
+                            <span class="place-span"> <?php echo $countReal ."/".$countTotal;?> <?=GetMessage('RATING_SEATS_OCCUPIED')?></span>
+                        <?php  } ?>
                         ?>
 
                     </div>
@@ -497,7 +655,13 @@ function getAvailableGroup($arItem) {
           <?php } ?>
         </span>
         <span class="new-game-schedule__param-wrap">
-        <?php echo 18 - count($tmp); ?>
+        <?php
+        if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) {
+            echo 18 - count($tmp);
+        } else {
+            echo $countFree;
+        }
+        ?>
     </div>
 <?php } ?>
 <?=$arResult["NAV_STRING"]?>

@@ -607,6 +607,7 @@ if (check_bitrix_sessid() && isset($_REQUEST['btn_create_squad'])) {
 
             if (count($tmp) >= $minLimPlayers && count($tmp) <= $maxLimPlayers) {
                 if (isset($_POST['update_squad']) || $placeName != '') {
+                  //dump($_POST, 1);
                     $props['UPDATE_SQUAD'] = 9;
                     updateSquad($props, $mId);
                     createSession('management-games_success', $messages[$lang]['UPDATE_SQUAD_SUCCESS']);
@@ -938,6 +939,7 @@ unset($_SESSION['management-games_error']);
                     $total = ceil($coreTeamList[$player['ID']]['total']);
                 }
                 ?>
+              <?php if(count($squadMembers) == 0) { ?>
               <div class="card">
                 <div class="card-header" id="headingUser_<?php echo $player['ID'];?>">
                   <h2 class="mb-0">
@@ -958,7 +960,7 @@ unset($_SESSION['management-games_error']);
                             </svg>
                           </div>
                           <?php } ?>
-                          <input class="core-team__user-avatar-delete-user" type="submit" name="user_id_del" value="<?php echo $player['ID']?>">
+                          <div class="core-team__user-avatar-delete-user"></div>
                         </div>
                         <div>
                           <a href="<?=SITE_DIR?>players/<?php echo $player['ID'].'_'.$player['LOGIN'].'/';?>" class="core-team__user-link"><?php echo $player['LOGIN']?></a>
@@ -968,7 +970,6 @@ unset($_SESSION['management-games_error']);
                     </button>
                   </h2>
                 </div>
-
                 <div id="collapseUser_<?php echo $player['ID'];?>" class="collapse <?php echo ($n == 0) ? ' show' : ''; ?>" aria-labelledby="headingUser_<?php echo $player['ID'];?>" data-parent="#core-list">
                   <div class="card-body">
                     <div class="core-team">
@@ -977,7 +978,7 @@ unset($_SESSION['management-games_error']);
                           <div class="flex-table--row">
                           <span>
                             <div class="core-team__user">
-                              <label class="label-checkbox">
+                              <label class="label-checkbox" style="display: none;">
                                 <input type="checkbox" name="squad[]" value="<?php echo $player['ID']?>"
                                 <?php if(isset($squadMembers[$player['ID']])) echo 'checked';?> <?php if(count($squadMembers) == 0) echo 'checked';?>>
                                 <div class="label-checkbox__checkmark"></div>
@@ -1029,8 +1030,106 @@ unset($_SESSION['management-games_error']);
                   </div>
                 </div>
               </div>
+                <?php } ?>
+              <?php if(isset($squadMembers[$player['ID']])) { ?>
+                <div class="card">
+                  <div class="card-header" id="headingUser_<?php echo $player['ID'];?>">
+                    <h2 class="mb-0">
+                      <button class="core-list__btn-collapse <?php echo ($n==0) ? '' : ' collapsed'; ?>" type="button" data-toggle="collapse" data-target="#collapseUser_<?php echo $player['ID'];?>" aria-expanded="true" aria-controls="collapseUser_<?php echo $player['ID'];?>">
+                        <div class="core-team__user">
+                          <i class="core-list__icon-drag-and-drop"></i>
+                          <div class="core-team__user-avatar"
+                            <?php if (!empty($player["PERSONAL_PHOTO"])) { ?>
+                              style="background-image: url(<?php echo CFile::GetPath($player["PERSONAL_PHOTO"]); ?>)"
+                            <?php } else { ?>
+                              style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
+                            <?php } ?>>
+                            <?php if ($resTeam['AUTHOR']["VALUE"] == $player['ID']) { ?>
+                              <div class="core-team__user-avatar-icon_captain">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                                  <circle  cx="11" cy="11" r="10"/>
+                                  <path d="M682.39,379.09a.65.65,0,0,1,1.22,0l.82,2.5a.65.65,0,0,0,.61.43h2.66a.62.62,0,0,1,.38,1.13l-2.16,1.54a.63.63,0,0,0-.23.71l.82,2.49a.63.63,0,0,1-1,.7l-2.16-1.54a.63.63,0,0,0-.74,0l-2.16,1.54a.63.63,0,0,1-1-.7l.82-2.49a.63.63,0,0,0-.23-.71l-2.16-1.54a.62.62,0,0,1,.38-1.13H681a.65.65,0,0,0,.61-.43Z" transform="translate(-672 -373)"/>
+                                </svg>
+                              </div>
+                            <?php } ?>
+                            <div class="core-team__user-avatar-delete-user"></div>
+                          </div>
+                          <div>
+                            <a href="<?=SITE_DIR?>players/<?php echo $player['ID'].'_'.$player['LOGIN'].'/';?>" class="core-team__user-link"><?php echo $player['LOGIN']?></a>
+                          </div>
+
+                        </div>
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseUser_<?php echo $player['ID'];?>" class="collapse <?php echo ($n == 0) ? ' show' : ''; ?>" aria-labelledby="headingUser_<?php echo $player['ID'];?>" data-parent="#core-list">
+                    <div class="card-body">
+                      <div class="core-team">
+                        <div class="flex-table">
+                          <div class="flex-table--body">
+                            <div class="flex-table--row">
+                          <span>
+                            <div class="core-team__user">
+                              <label class="label-checkbox" style="display: none;">
+                                <input type="checkbox" name="squad[]" value="<?php echo $player['ID']?>"
+                                <?php if(isset($squadMembers[$player['ID']])) echo 'checked';?> <?php if(count($squadMembers) == 0) echo 'checked';?>>
+                                <div class="label-checkbox__checkmark"></div>
+                              </label>
+                              <i class="core-list__icon-drag-and-drop"></i>
+                              <div class="core-team__user-avatar"
+                                  <?php if (!empty($player["PERSONAL_PHOTO"])) { ?>
+                                    style="background-image: url(<?php echo CFile::GetPath($player["PERSONAL_PHOTO"]); ?>)"
+                                  <?php } else { ?>
+                                    style="background-image: url(<?php echo SITE_TEMPLATE_PATH;?>/dist/images/default-avatar.svg)"
+                                  <?php } ?>>
+                              <?php if ($resTeam['AUTHOR']["VALUE"] == $player['ID']) { ?>
+                                <div class="core-team__user-avatar-icon_captain">
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                                    <circle  cx="11" cy="11" r="10"/>
+                                    <path d="M682.39,379.09a.65.65,0,0,1,1.22,0l.82,2.5a.65.65,0,0,0,.61.43h2.66a.62.62,0,0,1,.38,1.13l-2.16,1.54a.63.63,0,0,0-.23.71l.82,2.49a.63.63,0,0,1-1,.7l-2.16-1.54a.63.63,0,0,0-.74,0l-2.16,1.54a.63.63,0,0,1-1-.7l.82-2.49a.63.63,0,0,0-.23-.71l-2.16-1.54a.62.62,0,0,1,.38-1.13H681a.65.65,0,0,0,.61-.43Z" transform="translate(-672 -373)"/>
+                                  </svg>
+                                </div>
+                              <?php } ?>
+                              </div>
+                              <div>
+                                <a href="<?=SITE_DIR?>players/<?php echo $player['ID'].'_'.$player['LOGIN'].'/';?>" class="core-team__user-link"><?php echo $player['LOGIN']?></a>
+                              </div>
+                            </div>
+                          </span>
+                              <span class="core-list__param-wrap">
+                              <div class="core-team__param">Место в рейтинге</div>
+                              <div>
+                                <?php echo $rank;?>
+                              </div>
+                            </span>
+                              <span class="core-list__param-wrap">
+                              <div class="core-team__param">Рейтинг</div>
+                              <?php echo $total;?>
+                            </span>
+                              <span class="core-list__param-wrap">
+                              <div class="core-team__param">Киллы</div>
+                              <?php echo $kills;?>
+                            </span>
+                              <span class="core-list__param-wrap">
+                              <div class="core-team__param">Кол-во игр</div>
+                                <?php echo $cntMatches;?>
+                            </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="core-list__delete-user" type="submit" name="user_id_del" value="<?php echo $player['ID']?>"></button>
+                    </div>
+                  </div>
+                </div>
+                <?php } ?>
             <?php } ?>
             </div>
+            <?php if (count($squadMembers) > 0 && count($squadMembers) < 6 && !$curSquad['UPDATE_SQUAD']["VALUE"]) { ?>
+              <a href="#" class="core-list__add-user" data-toggle="modal" data-target="#core-list-add-user">
+                <i></i><span>Добавить нового игрока</span>
+              </a>
+            <?php } ?>
               <?php
               $btnTitle = 'Зарегистрировать команду';
 
@@ -1044,12 +1143,47 @@ unset($_SESSION['management-games_error']);
               <button type="submit" class="btn" name="btn_create_squad"><?php echo $btnTitle;?></button>
             </div>
            <?php } ?>
+            <div class="modal fade" id="core-list-add-user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
+                      <i></i>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h3 class="modal-body__title">Добавление нового игрока в основной состав</h3>
+                    <div class="modal-body__content mb-3">
+
+                        <div class="form-field">
+                          <label for="newUser" class="form-field__label">Новый игрок</label>
+                          <select id="newUser" name="squad[]"  data-dropdown>
+                            <option value="">Выбрать</option>
+                            <?php foreach ($coreTeam as $n => $player)  {
+                              if(!isset($squadMembers[$player['ID']])) { ?>
+                                <option value="<?php echo $player['ID']?>"><?php echo $player['LOGIN'];?></option>
+                              <?php } ?>
+                            <?php } ?>
+                          </select>
+                        </div>
+                        <div class="text-center">
+                          <button type="submit" name="btn_create_squad" class="btn mt-25">Добавить</button>
+                        </div>
+
+                    </div>
+                  </div>
+                  <div class="modal-footer__new">
+                    <i></i>Добавить игрока можно только один раз
+                  </div>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>
-
     </div>
   </section>
+
   <?php/* if (!empty($coreTeam)) {
     $points = countPointsAllUsers();
     ?>

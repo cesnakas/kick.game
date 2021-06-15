@@ -2,7 +2,7 @@
 if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 ?>
 
-<?php if(!CSite::InDir('/personal/auth/')) { ?>
+<?php if(!CSite::InDir(SITE_DIR.'personal/auth/')) { ?>
   </div><!-- end layout__content -->
   <footer class="footer">
     <div class="container">

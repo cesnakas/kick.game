@@ -9,6 +9,9 @@ $userID = CUser::GetID();
 $rsUser = CUser::GetByID($userID);
 $arUser = $rsUser->Fetch();
 $teamID = $arUser['UF_ID_TEAM'];
+
+Global $intlFormatter;
+$intlFormatter = new IntlDateFormatter('ru_RU', IntlDateFormatter::SHORT, IntlDateFormatter::SHORT);
 ?>
 <!doctype html>
 <html lang="<?=LANGUAGE_ID;?>">

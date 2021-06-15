@@ -563,25 +563,28 @@ if ($result->isSuccess())
             $curDate = date('Y-m-d H:i:s', time());
             $finalsDate = date('Y-m-d H:i:s', time()-(3600*24*3));
             GLOBAL $arrFilterDateTime;
+            $ids = getOneIdPerTourney();
+
             $arrFilterDateTime=Array(
+
                 "ACTIVE" => "Y",
                 array(
                     "LOGIC" => "OR",
                     array(
                         "LOGIC" => "AND",
                         array("PROPERTY_GROUP" => "A"),
-                        ">=PROPERTY_DATE_START" => $curDate,),
+                        array(">=PROPERTY_DATE_START" => $curDate)),
 
+                    /*array(
+                        "LOGIC" => "AND",
+                        array("PROPERTY_STAGE_TOURNAMENT" => 1),
+                        array("PROPERTY_GROUP" => 1),
+                        array(">=PROPERTY_DATE_START" => $finalsDate))
+                    */
                     array(
                         "LOGIC" => "AND",
                         array("PROPERTY_TYPE_MATCH" => 5),
-                        ">=PROPERTY_DATE_START" => $curDate,),
-
-                    array(
-                        "LOGIC" => "AND",
-                        array("PROPERTY_STAGE_TOURNAMENT" => 1),
-                        array(">=PROPERTY_DATE_START" => $finalsDate),
-                    )
+                        array("ID" => $ids != 0 ? $ids : "NULL"))
                 ),
 
                 "PROPERTY_PREV_MATCH" => false,

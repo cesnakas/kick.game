@@ -113,10 +113,12 @@ $this->setFrameMode(true);
     <div class="flex-table-new--body">
 <?php
 $curDate = date('Y-m-d H:i:s', time());
-//$finalsDate = date('Y-m-d H:i:s', time()-(3600*24*3));
-$finalsDate = date('Y-m-d H:i:s', time()-(3600*24));
+
 GLOBAL $arrFilterDateTime;
+$ids = getOneIdPerTourney();
+
 $arrFilterDateTime=Array(
+
     "ACTIVE" => "Y",
     array(
       "LOGIC" => "OR",
@@ -125,18 +127,10 @@ $arrFilterDateTime=Array(
       array("PROPERTY_GROUP" => "A"),
       array(">=PROPERTY_DATE_START" => $curDate)),
 
-        /*array(
-            "LOGIC" => "AND",
-            array("PROPERTY_STAGE_TOURNAMENT" => 1),
-            array("PROPERTY_GROUP" => 1),
-            array(">=PROPERTY_DATE_START" => $finalsDate))
-        */
         array(
             "LOGIC" => "AND",
             array("PROPERTY_TYPE_MATCH" => 5),
-            //array("PROPERTY_TOURNAMENT" => dump(qq)),
-            array("PROPERTY_GROUP" => 1),
-            array(">=PROPERTY_DATE_START" => $finalsDate))
+            array("ID" => $ids != 0 ? $ids : "NULL"))
     ),
 
     "PROPERTY_PREV_MATCH" => false,

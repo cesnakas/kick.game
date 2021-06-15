@@ -265,6 +265,20 @@ function getModesMatch()
   ];
 }
 
+function getStageTournament()
+{
+  return [
+    '8' => '1/32',
+    '7' => '1/16',
+    '4' => '1/8',
+    '3' => '1/4',
+    '2' => 'Полуфинал',
+    '1' => 'Финал',
+  ];
+}
+
+$stageTournament = getStageTournament();
+
 $modesMatch = getModesMatch();
 
 
@@ -277,6 +291,7 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
     $props['ANONS'] = strip_tags($_POST['anonsTournament']);
     $props['DESCRIPTION'] = strip_tags($_POST['descriptionTournament']);
     $props['PRIZE_FUND'] = strip_tags($_POST['prize_fund']);
+    $props['QUALIFYING_STAGE'] = strip_tags($_POST['stageTournament']);
     $prizePlacesInsert = [];
     foreach ($prizePlaces as $n => $value) {
       if(!empty($value)) {
@@ -396,7 +411,7 @@ if (check_bitrix_sessid() && (!empty($_REQUEST["submit"]))){
         $startDateTime = $_POST['date_time_match'];
         foreach ($chainMatrix as $stage => $params) {
             $propsMatch['STAGE_TOURNAMENT'] = $stage;
-            $propsMatch['KEY_STAGE_PASS'] = $stage == 8 ? "" : $tournamentId . "." . $stages[array_search($stage, $stages)+1];
+            $propsMatch['KEY_STAGE_PASS'] = $stage == strip_tags($_POST['stageTournament']) ? "" : $tournamentId . "." . $stages[array_search($stage, $stages)+1];
             $countChainMatches = $params['chain'];
             for($i = 0; $i < $params['count']; $i++) {
 
@@ -498,7 +513,61 @@ $tournaments = getTournaments();
     </div>
   </div>
 </div>
+    <script>
+      document.getElementById('stageTournamentQ').addEventListener('change', function () {
+        /*'8' => '1/32',
+          '7' => '1/16',
+          '4' => '1/8',
+          '3' => '1/4',
+          '2' => 'Полуфинал',
+          '1' => 'Финал',*/
+        console.log(this.value)
+        if(this.value == 7) {
+          document.querySelector('.block-one-32').style.display = 'none';
+          document.querySelector('.block-one-16').style.display = 'block';
+          document.querySelector('.block-one-8').style.display = 'block';
+          document.querySelector('.block-one-4').style.display = 'block';
+          document.querySelector('.block-one-2').style.display = 'block';
+        } else if(this.value == 8) {
+          document.querySelector('.block-one-32').style.display = 'block';
+          document.querySelector('.block-one-16').style.display = 'block';
+          document.querySelector('.block-one-8').style.display = 'block';
+          document.querySelector('.block-one-4').style.display = 'block';
+          document.querySelector('.block-one-2').style.display = 'block';
+          document.querySelector('.block-final').style.display = 'block';
+        } else if(this.value == 4) {
+          document.querySelector('.block-one-32').style.display = 'none';
+          document.querySelector('.block-one-16').style.display = 'none';
+          document.querySelector('.block-one-8').style.display = 'block';
+          document.querySelector('.block-one-4').style.display = 'block';
+          document.querySelector('.block-one-2').style.display = 'block';
+        } else if(this.value == 3) {
+          document.querySelector('.block-one-32').style.display = 'none';
+          document.querySelector('.block-one-16').style.display = 'none';
+          document.querySelector('.block-one-8').style.display = 'none';
+          document.querySelector('.block-one-4').style.display = 'block';
+          document.querySelector('.block-one-2').style.display = 'block';
+        } else if(this.value == 2) {
+          document.querySelector('.block-one-32').style.display = 'none';
+          document.querySelector('.block-one-16').style.display = 'none';
+          document.querySelector('.block-one-8').style.display = 'none';
+          document.querySelector('.block-one-4').style.display = 'none';
+        }
 
+        //
+      });
+    </script>
+    <div class="form-group">
+      <label for="stageTournamentQ">Выберите отборочный этап</label>
+      <select class="form-control" id="stageTournamentQ" name="stageTournament">
+        <?php foreach($stageTournament as $stage => $value){ ?>
+
+          <option value="<?php echo $stage; ?>"><?php echo $value; ?></option>
+
+        <?php } ?>
+
+      </select>
+    </div>
     <div class="form-group">
       <label for="anonsTournament">Анонс турнира</label>
       <textarea name="anonsTournament" class="form-control" id="anonsTournament" rows="3"></textarea>
@@ -530,10 +599,11 @@ $tournaments = getTournaments();
     </div>
     <div class="form-group">
       <label for="regulationTournament">Регламент для турнира</label>
-      <textarea name="regulation" class="form-control" id="regulationTournament" rows="7" placeholder="Текст регламента необходимо вставить в формате html"></textarea>
+      <textarea name="regulation" class="form-control" id="regulationTournament" rows="7" placeholder="Текст регламента необходимо вставить в формате html, можно заполнить из админки"></textarea>
     </div>
 
-    <div class="p-3 mb-2 bg-warning text-white">
+
+    <div class="p-3 mb-2 bg-warning text-white block-one-32">
       <h2 class="text-center">1/32 </h2>
       <div class="row">
         <div class="col-6">
@@ -556,7 +626,7 @@ $tournaments = getTournaments();
         </div>
       </div>
     </div>
-    <div class="p-3 mb-2 bg-secondary text-white">
+    <div class="p-3 mb-2 bg-secondary text-white block-one-16">
       <h2 class="text-center">1/16 </h2>
       <div class="row align-items-center">
         <div class="col-6">
@@ -579,7 +649,7 @@ $tournaments = getTournaments();
         </div>
       </div>
     </div>
-    <div class="p-3 mb-2 bg-dark text-white">
+    <div class="p-3 mb-2 bg-dark text-white block-one-8">
       <h2 class="text-center">1/8 </h2>
       <div class="row align-items-center">
         <div class="col-6">
@@ -603,7 +673,7 @@ $tournaments = getTournaments();
       </div>
     </div>
 
-    <div class="p-3 mb-2 bg-secondary text-white">
+    <div class="p-3 mb-2 bg-secondary text-white block-one-4">
       <h2 class="text-center">1/4 </h2>
       <div class="row align-items-center">
         <div class="col-6">
@@ -627,7 +697,7 @@ $tournaments = getTournaments();
       </div>
     </div>
 
-    <div class="p-3 mb-2 bg-info text-white">
+    <div class="p-3 mb-2 bg-info text-white block-one-2">
       <h2 class="text-center">1/2 </h2>
       <div class="row align-items-center">
         <div class="col-6">
@@ -651,7 +721,7 @@ $tournaments = getTournaments();
       </div>
     </div>
 
-    <div class="p-3 mb-2 bg-success text-white">
+    <div class="p-3 mb-2 bg-success text-white block-final">
       <h2 class="text-center">Финал</h2>
       <div class="row align-items-center">
         <div class="col-6">

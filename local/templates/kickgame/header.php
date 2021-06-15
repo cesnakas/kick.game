@@ -127,7 +127,7 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
     <body class="preload">
     <?$APPLICATION->ShowPanel();?>
     <div class="layout <?php if($userID == 1) echo ' pt-5'?>">
-      <?php if(!CSite::InDir('/personal/auth/')) { ?>
+      <?php if(!CSite::InDir(SITE_DIR.'personal/auth/')) { ?>
       <header class="header">
         <div class="container">
           <nav class="navbar">

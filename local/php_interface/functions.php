@@ -51,6 +51,26 @@ function getSquad($idMatch, $idTeam)
 }
 
 // получаем турнир по id
+function getBigTournaments() {
+    $arSelect = Array("ID",
+        "NAME",
+        "DATE_ACTIVE_FROM",
+        "PREVIEW_TEXT",
+        "PREVIEW_PICTURE",
+        "DETAIL_TEXT",
+        "PROPERTY_*"
+    );//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array("IBLOCK_ID" => 7, ">PROPERTY_PRIZE_FUND" => 100, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array("PROPERTY_PRIZE_FUND" => "DESC"), $arFilter, false, false, $arSelect);
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        $arRes[] = array_merge($arFields, $arProps);
+    }
+    return $arRes;
+}
+
+// получаем турнир по id
 function getTournamentById($tournamentId) {
     $arSelect = Array("ID",
         "NAME",
@@ -425,12 +445,48 @@ function willTeamPrem($teamID, $matchTime){
     return true;
 }
 
+function countTournamentTeams($stage, $tournament){
+    GLOBAL $DB;
+    $sql = "SELECT count(*) as teamsCount FROM b_iblock_element_prop_s6 as t 
+INNER JOIN b_iblock_element_prop_s3 as m ON  t.PROPERTY_27 = m.IBLOCK_ELEMENT_ID
+WHERE m.PROPERTY_3 = ". $tournament ." AND m.PROPERTY_22 = ". $stage;
+
+    $res = $DB->Query($sql);
+
+    if($row = $res->Fetch()){
+        $count = $row["teamsCount"];
+        return $count;
+    }
+
+    return false;
+
+}
+
+function getTournamentPeriod($tournament){
+    GLOBAL $DB;
+    $sql = "SELECT count(*) as gamesCount, min(m.PROPERTY_4) as min, max(m.PROPERTY_4) as max, m.PROPERTY_22 as firstStage, m.PROPERTY_7 as mode FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ".$tournament." AND m.PROPERTY_8 is NULL ";
+    $res = $DB->Query($sql);
+
+
+    if($row = $res->Fetch()){
+        $dates["min"] = $row["min"];
+        $dates["max"] = $row["max"];
+        $dates["games"] = $row["gamesCount"];
+        $dates["mode"] = $row["mode"];
+        $dates["firstStage"] = $row["firstStage"];
+        return $dates;
+    }
+
+    return false;
+}
+
 function getStagePeriod($stage, $tournament){
     GLOBAL $DB;
     $sql = "SELECT count(*) as gamesCount, min(m.PROPERTY_4) as min, max(m.PROPERTY_4) as max FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ".$tournament." AND m.PROPERTY_8 is NULL AND m.PROPERTY_22 = ".$stage;
     $res = $DB->Query($sql);
 
     if($row = $res->Fetch()){
+
         $dates["min"] = formDate($row["min"], 'd MMMM');
         $dates["max"] = formDate($row["max"], 'd MMMM yyyy');
         $dates["games"] = $row["gamesCount"];
@@ -439,17 +495,18 @@ function getStagePeriod($stage, $tournament){
     return false;
 }
 
-function getTournamentPeriod($tournament){
-    GLOBAL $DB;
-    $sql = "SELECT min(m.PROPERTY_4) as min, max(m.PROPERTY_4) as max FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ".$tournament;
-    $res = $DB->Query($sql);
 
-    if($row = $res->Fetch()){
-        $dates["min"] = formDate($row["min"], 'd MMMM');
-        $dates["max"] = formDate($row["max"], 'd MMMM yyyy');
-        return $dates;
+function getMatchStartDate($matchID){
+    GLOBAL $DB;
+
+    $sql = "SELECT m.PROPERTY_4 as date FROM b_iblock_element_prop_s3 as m WHERE m.IBLOCK_ELEMENT_ID = ". $matchID;
+
+    $res = $DB->Query($sql);
+    $date = null;
+    while($row = $res->Fetch() ) {
+        $date = $row["date"];
     }
-    return false;
+    return $date;
 }
 
 function getUsersByGroup($groupID){
@@ -598,6 +655,22 @@ function addCommentRejected($userId, $comment)
   );
   $user = new CUser;
   $res = $user->Update($userId, $fields);
+}
+
+function getOneIdPerTourney(){
+    GLOBAL $DB;
+
+    $sql="SELECT m.PROPERTY_3, m.IBLOCK_ELEMENT_ID as ID, m.PROPERTY_4 FROM b_iblock_element_prop_s3 as m 
+INNER JOIN b_iblock_element_prop_s7 as t ON t.IBLOCK_ELEMENT_ID = m.PROPERTY_3 AND t.PROPERTY_69 <= 100
+WHERE UNIX_TIMESTAMP(m.PROPERTY_4) > UNIX_TIMESTAMP() AND m.PROPERTY_3 IS NOT NULL GROUP BY m.PROPERTY_3
+";
+    $rsData = $DB->Query($sql);
+
+    while ($row = $rsData->fetch()){
+        $ids[] = $row["ID"];
+    }
+
+    return $ids;
 }
 
 function existsPubgId($userId, $pubgId)

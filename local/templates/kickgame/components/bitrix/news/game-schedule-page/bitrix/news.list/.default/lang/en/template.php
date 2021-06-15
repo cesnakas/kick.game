@@ -4,6 +4,7 @@ $MESS["CT_BNL_ELEMENT_DELETE_CONFIRM"] = "All the information linked to this rec
 $MESS['DATE_EVENT_COLON'] = 'Date of the event: ';
 $MESS['RATING_COLON'] = 'Rating: ';
 $MESS['STAGE_COLON'] = 'Stage: ';
+$MESS['PRIZE'] = 'Prize: ';
 $MESS['SLOT_NO'] = 'Slot No. ';
 $MESS['NO_SEATS'] = 'No seats available';
 

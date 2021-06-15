@@ -4,6 +4,7 @@ $MESS["CT_BNL_ELEMENT_DELETE_CONFIRM"] = "Будет удалена вся ин�
 $MESS['DATE_EVENT_COLON'] = 'Дата проведения: ';
 $MESS['RATING_COLON'] = 'Рейтинг: ';
 $MESS['STAGE_COLON'] = 'Этап: ';
+$MESS['PRIZE'] = 'Приз: ';
 $MESS['SLOT_NO'] = 'Слот № ';
 $MESS['NO_SEATS'] = 'Мест нет';
 
