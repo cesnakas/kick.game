@@ -5,7 +5,8 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
     <footer class="footer">
         <div class="footer__info">
 
-            <svg width="154" height="17" fill="currentColor" class="footer__logo">
+            <svg width="154" height="17" fill="currentColor" class="footer__logo" role="img" aria-label="KICKGAME">
+                <title>KICKGAME</title>
                 <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/logo.svg#logo-footer"/>
             </svg>
 
@@ -31,66 +32,38 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
             <div class="footer__socials">
                 <a href="https://vm.tiktok.com/ZSEfnbCf/" target="_blank" class="footer__icons">
-                    <svg width="24" height="24" fill="currentColor">
+                    <svg width="24" height="24" fill="currentColor" role="img" aria-label="TikTok">
                         <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#tiktok"/>
                     </svg>
-                    <!--<img
-                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/tiktok.png" alt="tiktok"
-                        srcset="<?/*=SITE_TEMPLATE_PATH;*/?>/images/tiktok.png 1x,<?/*=SITE_TEMPLATE_PATH;*/?>/images/tiktok@2x.png 2x"
-                    />-->
                 </a>
                 <a href="https://t.me/joinchat/VdYRn7YOnT-ll6ms" target="_blank" class="footer__icons">
-                    <svg width="24" height="24" fill="currentColor">
+                    <svg width="24" height="24" fill="currentColor" role="img" aria-label="Telegram">
                         <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#telegram"/>
                     </svg>
-                    <!--<img
-                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/telegram.png" alt="instagram"
-                        srcset="<?/*=SITE_TEMPLATE_PATH;*/?>/images/telegram.png 1x, <?/*=SITE_TEMPLATE_PATH;*/?>/images/telegram@2x.png 2x"
-                    />-->
                 </a>
                 <a href="https://www.instagram.com/kickgameleague/" target="_blank" class="footer__icons">
-                    <svg width="24" height="24" fill="currentColor">
+                    <svg width="24" height="24" fill="currentColor" role="img" aria-label="Instagram">
                         <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#instagram"/>
                     </svg>
-                    <!--<img
-                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/instagram.png" alt="instagram"
-                        srcset="<?/*=SITE_TEMPLATE_PATH;*/?>/images/instagram.png 1x, <?/*=SITE_TEMPLATE_PATH;*/?>/images/instagram@2x.png 2x"
-                    />-->
                 </a>
                 <a href="https://youtube.com/c/KICKGAMEeSports" target="_blank" class="footer__icons">
-                    <svg width="24" height="24" fill="currentColor">
+                    <svg width="24" height="24" fill="currentColor" role="img" aria-label="YouTube">
                         <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#youtube"/>
                     </svg>
-                    <!--<img
-                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/youtube.png" alt="youtube"
-                        srcset="<?/*=SITE_TEMPLATE_PATH;*/?>/images/youtube.png 1x, <?/*=SITE_TEMPLATE_PATH;*/?>/images/youtube@2x.png 2x"
-                    />-->
                 </a>
                 <a href="https://discord.gg/wEVwzumwSQ" target="_blank" class="footer__icons">
-                    <svg width="24" height="24" fill="currentColor">
+                    <svg width="24" height="24" fill="currentColor" role="img" aria-label="Discord">
                         <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#discord"/>
                     </svg>
-                    <!--<img
-                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/discord.png" alt="discord"
-                        srcset="<?/*=SITE_TEMPLATE_PATH;*/?>/images/discord.png 1x, <?/*=SITE_TEMPLATE_PATH;*/?>/images/discord@2x.png 2x"
-                    />-->
                 </a>
                 <a href="https://vk.com/kick.game" target="_blank" class="footer__icons">
-                    <svg width="24" height="24" fill="currentColor">
+                    <svg width="24" height="24" fill="currentColor" role="img" aria-label="VKontakte">
                         <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#vkontakte"/>
                     </svg>
-                    <!--<img
-                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/vk.png" alt="youtube"
-                        srcset="<?/*=SITE_TEMPLATE_PATH;*/?>/images/vk.png 1x, <?/*=SITE_TEMPLATE_PATH;*/?>/images/vk@2x.png 2x"
-                    />-->
                 </a>
-                <svg width="48" height="48" fill="currentColor" style="width:48px;margin-left:auto;">
+                <svg width="48" height="48" fill="currentColor" style="width:48px;margin-left:auto;" role="img" aria-label="18+">
                     <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#18plus"/>
                 </svg>
-                    <!--<img
-                        style="width: 45px; justify-self: end; margin-left: auto;"
-                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/18plus.png"
-                    />-->
             </div>
         </div>
         <div class="footer__nav">

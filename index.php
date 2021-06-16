@@ -563,7 +563,7 @@ if ($result->isSuccess())
             $curDate = date('Y-m-d H:i:s', time());
             $finalsDate = date('Y-m-d H:i:s', time()-(3600*24*3));
             GLOBAL $arrFilterDateTime;
-            $ids = getOneIdPerTourney();
+            // $ids = getOneIdPerTourney(); // TODO: !!!
 
             $arrFilterDateTime=Array(
 
@@ -766,9 +766,9 @@ if ($result->isSuccess())
             </div>
             <div class="section__action">
                 <? if ($USER->IsAuthorized()): ?>
-                    <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN_TAKE_PART')?></a>
+                    <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_LOGIN_TAKE_PART')?></a>
                 <? else: ?>
-                    <a href="<?=SITE_DIR?>personal/" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
+                    <a href="<?=SITE_DIR?>personal/auth/reg.php" class="button"><?=GetMessage('CONTENT_MAIN_REGISTER')?></a>
                 <? endif; ?>
             </div>
         </section>
