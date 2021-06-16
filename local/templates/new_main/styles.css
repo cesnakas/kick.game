@@ -1109,9 +1109,14 @@ button {
 }
 
 .footer__icons {
+  display: flex;
   border:0;
   text-decoration:none;
   outline:none
+}
+
+.footer__icons + .footer__icons {
+  margin-left: 1rem;
 }
 
 .tooltip {
