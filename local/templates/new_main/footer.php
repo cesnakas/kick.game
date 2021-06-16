@@ -84,10 +84,13 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
                         srcset="<?/*=SITE_TEMPLATE_PATH;*/?>/images/vk.png 1x, <?/*=SITE_TEMPLATE_PATH;*/?>/images/vk@2x.png 2x"
                     />-->
                 </a>
-                    <img
+                <svg width="48" height="48" fill="currentColor" style="width:48px;margin-left:auto;">
+                    <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#18plus"/>
+                </svg>
+                    <!--<img
                         style="width: 45px; justify-self: end; margin-left: auto;"
-                        src="<?=SITE_TEMPLATE_PATH;?>/images/18plus.png"
-                    />
+                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/18plus.png"
+                    />-->
             </div>
         </div>
         <div class="footer__nav">
