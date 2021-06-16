@@ -40,10 +40,13 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
                     />-->
                 </a>
                 <a href="https://t.me/joinchat/VdYRn7YOnT-ll6ms" target="_blank" class="footer__icons">
-                    <img
-                        src="<?=SITE_TEMPLATE_PATH;?>/images/telegram.png" alt="instagram"
-                        srcset="<?=SITE_TEMPLATE_PATH;?>/images/telegram.png 1x, <?=SITE_TEMPLATE_PATH;?>/images/telegram@2x.png 2x"
-                    />
+                    <svg width="24" height="24" fill="currentColor">
+                        <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/img/icons.svg#telegram"/>
+                    </svg>
+                    <!--<img
+                        src="<?/*=SITE_TEMPLATE_PATH;*/?>/images/telegram.png" alt="instagram"
+                        srcset="<?/*=SITE_TEMPLATE_PATH;*/?>/images/telegram.png 1x, <?/*=SITE_TEMPLATE_PATH;*/?>/images/telegram@2x.png 2x"
+                    />-->
                 </a>
                 <a href="https://www.instagram.com/kickgameleague/" target="_blank" class="footer__icons">
                     <svg width="24" height="24" fill="currentColor">
