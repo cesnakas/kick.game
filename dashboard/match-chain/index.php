@@ -1304,8 +1304,10 @@ if (!empty($_POST["sendResults"])) {
 
                     $idNextMatch = findFreeGame($firstMatch["TOURNAMENT"]["VALUE"],  $nextStageId);
                     if($idNextMatch){
-                    $chainMatches[] = $idNextMatch;
-                    do {
+                        $chainMatches = null;
+                        $chainMatches[] = $idNextMatch;
+
+                        do {
                         $match = getMatchByParentId($idNextMatch);
                         if ($match != null) {
                             $nextMatch = true;

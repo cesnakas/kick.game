@@ -258,11 +258,11 @@ foreach ($bigTournaments as $bigTournament)
                         <span><?=GetMessage('DATE_EVENT_COLON')?></span>
                         <?php
                         if (IsAmPmMode()) {
-                            echo strtotime($tournamentDates["min"]) != strtotime($tournamentDates["max"]) ? FormatDateFromDB(strtotime($tournamentDates["min"]), 'MM/DD/YYYY \a\t H:MI T') . ' - ' . FormatDateFromDB(strtotime($tournamentDates["max"]), 'MM/DD/YYYY \a\t H:MI T') : FormatDateFromDB(strtotime($tournamentDates["min"]), 'MM/DD/YYYY \a\t H:MI T');
+                            echo strtotime($tournamentDates["min"]) != strtotime($tournamentDates["max"]) ? FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'MM/DD/YYYY \a\t H:MI T') .' - '. FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["max"])), 'MM/DD/YYYY \a\t H:MI T') : FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'MM/DD/YYYY \a\t H:MI T');
                         } else {
-                            echo strtotime($tournamentDates["min"]) != strtotime($tournamentDates["max"]) ? FormatDateFromDB(strtotime($tournamentDates["min"]), 'DD.MM.YYYY \в HH:MI') . ' - ' . FormatDateFromDB(strtotime($tournamentDates["max"]), 'DD.MM.YYYY \в HH:MI') : FormatDateFromDB(strtotime($tournamentDates["min"]), 'DD.MM.YYYY \в HH:MI');
+                            echo strtotime($tournamentDates["min"]) != strtotime($tournamentDates["max"]) ? FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'DD.MM.YYYY \в HH:MI') .' - '. FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["max"])), 'DD.MM.YYYY \в HH:MI') : FormatDateFromDB(date("d.m.Y H:i:s", strtotime($tournamentDates["min"])), 'DD.MM.YYYY \в HH:MI');
                         }
-                    ?>
+                        ?>
                     </div>
                 </div>
                 <div class="game-info__item-row">

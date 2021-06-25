@@ -83,6 +83,7 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
           ttq.page();
       }(window, document, 'ttq');
   </script>
+  <script data-skip-moving='true' src="https://www.googleoptimize.com/optimize.js?id=OPT-55HHHZR"></script>
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -127,7 +128,7 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
     <body class="preload">
     <?$APPLICATION->ShowPanel();?>
     <div class="layout <?php if($userID == 1) echo ' pt-5'?>">
-      <?php if(!CSite::InDir(SITE_DIR.'personal/auth/')) { ?>
+      <?php if(!CSite::InDir('/personal/auth/')) { ?>
       <header class="header">
         <div class="container">
           <nav class="navbar">
