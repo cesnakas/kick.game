@@ -1,3 +1,48 @@
+<style>
+    footer {
+        height: 0 !important;
+    }
+    /* tabs */
+    .nav-tabs {
+        border-bottom-color: transparent;
+    }
+    .nav-tabs .nav-link {
+        border: 1px solid transparent;
+        color: var(--dark);
+    }
+    .nav-tabs .nav-link:focus,
+    .nav-tabs .nav-link:hover {
+        border-color: transparent;
+    }
+    .nav-tabs .nav-link.active {
+        border-color: transparent;
+        color: var(--white);
+        background-color: var(--dark);
+    }
+    /* table head */
+    .table thead th {
+        vertical-align: middle;
+        text-align: center;
+    }
+    /* table */
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    $(function() {
+        $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+            localStorage.setItem('lastTab', $(this).attr('href'));
+        });
+        var lastTab = localStorage.getItem('lastTab');
+        if (lastTab) {
+            $('[href="' + lastTab + '"]').tab('show');
+        }
+    });
+</script>
 <?
 require($_SERVER["DOCUMENT_ROOT"].'/bitrix/header.php');
 
@@ -53,56 +98,6 @@ $rsUsersYet->InitFromArray($usersYet);
 $rsUsersYet->NavStart(5);
 ?>
 
-<style>
-    body {
-        background-color: #100b2e;
-    }
-    footer {
-        height: 0 !important;
-    }
-    /* tabs */
-    .nav-tabs {
-        border-bottom-color: transparent;
-    }
-    .nav-tabs .nav-link {
-        border: 1px solid transparent;
-        color: var(--light);
-    }
-    .nav-tabs .nav-link:focus,
-    .nav-tabs .nav-link:hover {
-        border-color: transparent;
-    }
-    .nav-tabs .nav-link.active {
-        border-color: transparent;
-        color: var(--white);
-        background-color: var(--dark);
-    }
-    /* table head */
-    .table thead th {
-        vertical-align: middle;
-        text-align: center;
-    }
-    /* table */
-    .table td, .table th {
-        vertical-align: middle;
-    }
-</style>
-
-<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
-    $(function() {
-        $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
-            localStorage.setItem('lastTab', $(this).attr('href'));
-        });
-        var lastTab = localStorage.getItem('lastTab');
-        if (lastTab) {
-            $('[href="' + lastTab + '"]').tab('show');
-        }
-    });
-</script>
-
     <div class="container py-5">
         <?php
         if(isset($_SESSION['pubgid_success'])) { ?>
@@ -120,7 +115,7 @@ $rsUsersYet->NavStart(5);
 
     <div class="container-fluid">
 
-        <h1 class="mb-5 text-center text-white">Pubg Id Verified</h1>
+        <h1 class="mb-5 text-center">Pubg Id Verified</h1>
 
         <ul class="nav nav-tabs nav-justified" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
