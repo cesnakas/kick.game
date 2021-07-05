@@ -1,0 +1,57 @@
+// font-family: 'Oswald', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+@import "fonts";
+
+// bootstrap 5.0.2
+// @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
+
+// Configuration
+@import "bootstrap/functions";
+@import "custom/variables"; // custom variables
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "bootstrap/utilities";
+// Layout & components
+@import "bootstrap/root";
+@import "bootstrap/reboot";
+@import "custom/reboot"; // custom reboot
+@import "bootstrap/type";
+@import "bootstrap/images";
+@import "bootstrap/containers";
+@import "bootstrap/grid";
+@import "bootstrap/tables";
+@import "bootstrap/forms";
+@import "bootstrap/buttons";
+@import "custom/buttons"; // custom buttons
+@import "bootstrap/transitions";
+@import "bootstrap/dropdown";
+@import "bootstrap/button-group";
+@import "bootstrap/nav";
+@import "custom/nav"; // custom nav
+@import "bootstrap/navbar";
+@import "custom/navbar"; // custom navbar
+@import "bootstrap/card";
+@import "bootstrap/accordion";
+@import "bootstrap/breadcrumb";
+@import "bootstrap/pagination";
+@import "bootstrap/badge";
+@import "bootstrap/alert";
+@import "bootstrap/progress";
+@import "bootstrap/list-group";
+@import "bootstrap/close";
+@import "bootstrap/toasts";
+@import "bootstrap/modal";
+@import "bootstrap/tooltip";
+@import "bootstrap/popover";
+@import "bootstrap/carousel";
+@import "bootstrap/spinners";
+@import "bootstrap/offcanvas";
+// Helpers
+@import "bootstrap/helpers";
+// Utilities
+@import "bootstrap/utilities/api";
+
+// main
+@import "dropdown";
+@import "nav";
+@import "footer";

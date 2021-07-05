@@ -24,6 +24,58 @@ $teamID = $arUser['UF_ID_TEAM'];
 $nextGameID = getNextGame($teamID, $_GET["tournamentID"]);
 $nextGame = getMatchById($nextGameID);
 
+
+function getSquadsForFinals($matchID){
+GLOBAL $DB;
+$sql="SELECT u.PROPERTY_1 as tag, u.PROPERTY_19 as avatar, u.PROPERTY_21 AS name, u.IBLOCK_ELEMENT_ID as id_team
+                                FROM b_iblock_element_prop_s1 as u 
+                                INNER JOIN b_iblock_element_prop_s6 as n ON n.PROPERTY_28 = u.IBLOCK_ELEMENT_ID
+                                AND n.PROPERTY_27 = " . $matchID;
+
+$rsData = $DB->Query($sql);
+
+$arTeams = [];
+while($row = $rsData->fetch()) {
+    $arTeams[] = $row;
+}
+return $arTeams;
+
+}
+
+function getFinalsMatches($tournamentID, $stage) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array(
+        "IBLOCK_ID" =>3,
+        "PROPERTY_PREV_MATCH" => false,
+        "PROPERTY_TYPE_MATCH" => 5,
+        "PROPERTY_TOURNAMENT" => $tournamentID,
+        "PROPERTY_STAGE_TOURNAMENT" => 1,
+        //  "<=PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD")." 23:59:59",
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $output = [];
+
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        //$arProps = $ob->GetProperties();
+        $output[] = $arFields;
+    }
+    return $output;
+}
+
+function getFinalsGame($tournamentID){
+    GLOBAL $DB;
+    $sql = "SELECT m.IBLOCK_ELEMENT_ID as gameID FROM b_iblock_element_prop_s3 as m WHERE m.PROPERTY_3 = ". $tournamentID ." AND m.PROPERTY_22 = 1";
+    $rsData = $DB->Query($sql);
+
+
+    while($el = $rsData->fetch()) {
+        $game[] = $el["gameID"];
+    }
+    return $game;
+}
+
 // проверка команды на участие
 function getParticipationByMatchId($idMatch)
 {
@@ -210,6 +262,8 @@ foreach($arResult["ITEMS"] as $arItem) {
                     <?php
                     $dates[$countStages] = getStagePeriod($k, $_GET["tournamentID"]);
                     ?>
+                    <?php if ($k != 1){ ?>
+
                     <div class="tournament-schedule-results__overlay">
                         <?= $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?>
                         <br>
@@ -317,6 +371,78 @@ foreach($arResult["ITEMS"] as $arItem) {
                         } ?>
 
                     </div>
+            <?php } else {
+
+            foreach ($stage as $l => $date){
+
+                foreach ($date as $m => $time) {
+
+                    foreach ($time as $n => $group) {
+
+                        $matchOccupied[$group["ID"]] = countTeams($group["ID"]);
+                        $totalOccupied[$l] += $matchOccupied[$group["ID"]];
+                        $counter[$l] += 1;
+                    }
+                }
+            } ?>
+
+                <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
+                    <?php echo $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_FINAL'), false); ?> </div>
+                <div class="accordion accordion-game" id="gameStage_<?php echo $countStages ?>">
+                    <?php $countDate = 1;
+                    foreach ($stage as $l => $date){ ?>
+
+                        <?php $countTime = 1;
+                        foreach ($date as $m => $time){ ?>
+                            <div class="tournament-schedule-results__time">
+                                <?php
+                                $scheduleTime = formDate($l.$m, "d MMMM yyyy, HH:mm");
+                                echo $scheduleTime ?></div>
+                            <div class="accordion accordion-group" id="results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                <?php $countGroup = 1;
+                                foreach ($time as $n => $group){ ?>
+                                    <div class="card">
+                                        <div class="card-header" id="headingGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                            <h2 class="mb-0">
+                                                <button class="accordion-group__heading" value="<?php echo $group["ID"]?>" onclick="getPlayers(this.value)" type="button" data-toggle="collapse" data-target="#collapseGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" aria-expanded="true" aria-controls="collapseGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                                    <?=GetMessage('TOUR_DAY_NO')?><?php echo $countDate ?>
+                                                    <span class="tournament-schedule-results__participants-group"><i></i> <span class="tournament-schedule-results__participants-group-cur-count"><?php echo $matchOccupied[$group["ID"]] ?></span> / 18</span>
+                                                    <span class="accordion-group__progress" style="width: <?php echo $matchOccupied[$group["ID"]] * 5.555 ?>%;"></span>
+                                                </button>
+                                            </h2>
+                                        </div>
+
+                                        <div id="collapseGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" class="collapse" aria-labelledby="headingGroup_<?php echo $countGroup ?>_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>" data-parent="#results_game_<?php echo $countDate?>_time_<?php echo $countTime ?>_<?php echo $countStages ?>">
+                                            <div class="card-body card-body__group">
+                                                <div class="flex-table-tournament">
+                                                    <div class="flex-table-tournament--header">
+                                                        <div class="flex-table-tournament--categories">
+                                                            <span><?=GetMessage('TOUR_TEAM')?></span>
+                                                            <span><?=GetMessage('TOUR_RATINGS')?></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-table-tournament--body" id="participants<?php echo $group["ID"]?>">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    $countGroup = $countGroup + 1;
+                                } ?>
+                            </div>
+                            <!--end group -->
+                            <?php
+                            $countTime = $countTime + 1;
+                        } ?>
+
+                        <?php
+                        $countDate = $countDate + 1;
+                    } ?>
+
+                </div>
+            <?php } ?>
                 </div>
                     <?php
                     $countStages = $countStages + 1;
@@ -428,9 +554,181 @@ foreach($arResult["ITEMS"] as $arItem) {
 
                 </div>
 
-                        <?php } else { ?>
+                        <?php } else {
+                            $finals = array_reverse(getFinalsGame($_GET["tournamentID"]));
+                            ?>
                             <div class="tournament-schedule-results__overlay"><?php echo $dates[$countStages]["min"] . " - " . $dates[$countStages]["max"] ?><br>
-                                <?php echo GetMessage('TOUR_18_SQUADS') . $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_GAMES'), false); ?> </div>
+                                <?php echo $dates[$countStages]["games"] . " " . num_decline($dates[$countStages]["games"], GetMessage('TOUR_GAME_FINAL'), false); ?> </div>
+                            <h1 style="text-align: center;"><?php echo isGameResults($finals[0]) ? "Итоговые" : "Предварительные"?> результаты турнира</h1>
+<!--Construction site             Construction site              Construction site-->
+                            <div class="container" style="margin-bottom: 5%">
+                                <div class="row row-mobile-table">
+                        <div style="display: flex;">
+                            <div class="table-responsive">
+                            <table class="finals-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="mobile-th"><span>Место</span></th>
+                                    <th scope="col"><span>Команда</span></th>
+                                    <th scope="col" class="mobile-th">Общий счет<br><span>Total PTS</span></th>
+                                    <th scope="col" class="mobile-th"><span>Kills PTS</span></th>
+                                    <th class="last-th" scope="col"><span>Place PTS</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $finals = getFinalsGame($_GET["tournamentID"]);
+                                    if(isGameResults($finals[0])){
+                                        $arrTeams = getFinalsFirstTable($finals);
+                                    } else {
+                                        $arrTeams = getSquadsForFinals($finals[0]);
+                                    }
+
+                                    $rank = 0;
+
+                                    foreach ($arrTeams as $team) {
+                                        $rank += 1;
+                                        $totalKills = ceil($team["kills"]);
+                                        $totalPlace = ceil( $team["total"] - $team["kills"]);
+                                        $totalTotal = ceil($team["total"]);
+                                        if(!isset($team["total"])){
+                                            $rank = "#";
+                                            $totalKills = "...";
+                                            $totalPlace = "...";
+                                            $totalTotal = "...";
+                                        }
+                                      ?>
+
+                                        <tr>
+                                            <td class="mobile-th"><?php echo $rank; ?></td>
+                                            <td class="mobile-th">
+                                                <div class="team-wrap">
+                                                <div class='participants-logo' style='background-image: url("<?php echo CFile::GetPath($team["avatar"]) ?>");'>
+                                                </div><a href='<?php echo SITE_DIR; ?>teams/<?php echo $team["id_team"]; ?>/' class='participants-link'><?php echo $team["name"] . "  [" . $team["tag"] . "]"; ?></a>
+                                                </div>
+                                            </td>
+                                            <td class="mobile-th"><?php echo $totalTotal; ?></td>
+                                            <td class="mobile-th"><?php echo $totalKills; ?></td>
+                                            <td class="mobile-th"><?php echo $totalPlace; ?></td>
+                                        </tr>
+
+                                    <?php } ?>
+
+                                </tbody>
+                            </table>
+                            </div>
+                            <div class="scroll dragscroll" >
+                                <div class="box-wrap" style="display: flex">
+                                    <div class="accordion" id="accordionHorizontalExample" style="display: flex"  >
+
+                            <?php
+                            $finalGames = getFinalsMatches($_GET["tournamentID"], 1);
+                            $matchCount = 0;
+
+                            foreach ($finalGames as $finalGame) {
+
+                                if($finalGame["PROPERTY_8"] == NULL && isGameResults($finalGame["ID"])){
+                                $matchCount += 1;
+
+                                $gameResults = getGameResultsTable($finalGame["ID"]);
+
+                                if(!$gameResults["results"]){
+                                    $gameKills = "...";
+                                    $gamePlace = "...";
+                                    $gameTotal = "...";
+                                    $gameResults["results"] = $arrTeams;
+                                }?>
+
+                                    <div class="table-responsive" style="display: flex;  position: relative; max-height: min-content " >
+                                        <table class="finals-table" >
+                                            <thead>
+                                                <tr>
+                                                    <th  scope="col">День <?php echo $matchCount; ?><br><span> Kill PTS</span></th>
+                                                    <th  scope="col"><br><span>Place PTS</span></th>
+                                                    <th class="last-th" scope="col"><br><span>TOTAL PTS</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($gameResults["results"] as $result) {
+                                                    if(isset($result["kills"])){
+                                                        $gameKills = ceil($result["kills"]);
+                                                        $gamePlace = ceil($result["placement"]);
+                                                        $gameTotal = ceil($result["total"]);
+                                                    } ?>
+
+                                                    <tr>
+                                                        <td><?php echo $gameKills; ?></td>
+                                                        <td><?php echo $gamePlace; ?></td>
+                                                        <td><?php echo $gameTotal; ?></td>
+                                                    </tr>
+
+                                                <?php } ?>
+                                            </tbody>
+                                         </table>
+
+                                        <div class="horizontal-card" style="display: flex">
+                                                <div class="horizontal-card-header" data-toggle="collapse" data-target="#collapse<?php echo $matchCount; ?>" style="display: flex">
+
+                                                        <?php if(isset($result["kills"])){ ?>
+                                                            <img class="button-collapse" onclick="rotate(this.id);" id="accordionImg<?php echo $matchCount; ?>" src="<?=SITE_TEMPLATE_PATH;?>/dist/images/accordion.png" alt="logo">
+                                                        <?php } ?>
+
+                                            </div>
+
+
+                    <div id="collapse<?php echo $matchCount; ?>" class="collapse width" data-parent="#accordionHorizontalExample" >
+                        <div class="horizontal-card-body" style="display:flex;">
+                            <?php $m = 0;
+
+                                while(isset($result["total{$m}"])) { ?>
+                                    <div class="table-responsive">
+                                    <table class="finals-table">
+                                        <thead>
+                                            <tr>
+                                                <th  scope="col">Карта <?php echo $m + 1; ?><br><span>Kill PTS</span></th>
+                                                <th  scope="col"><br><span>Place PTS</span></th>
+                                                <th class="last-th" scope="col"><br><span>Total PTS</span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php foreach ($gameResults["results"] as $result) { ?>
+
+                                            <tr>
+                                                <td><?php echo ceil($result["kills{$m}"]); ?></td>
+                                                <td><?php echo ceil($result["total{$m}"]) - $result["kills{$m}"]; ?></td>
+                                                <td><?php echo ceil($result["total{$m}"]); ?></td>
+                                            </tr>
+
+                                        <?php } ?>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+<!--                                </div>-->
+
+                        <?php
+                                    $m++;
+                                } ?>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                              <?php }
+
+                        } ?>
+                                </div>
+                            </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--Construction site             Construction site               Construction site-->
+
                             <div class="accordion accordion-game" id="gameResultsStage_<?php echo $countStages ?>">
                                 <?php $countDate = 1;
                                 foreach ($stage as $l => $date){?>
@@ -507,8 +805,7 @@ foreach($arResult["ITEMS"] as $arItem) {
                 } ?>
             </div>
         </div>
-    </div>
-</div>
+
 
 
 

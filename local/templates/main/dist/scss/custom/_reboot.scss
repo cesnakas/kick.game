@@ -1,0 +1,23 @@
+body {
+    background: url(../img/bg-left.svg) 0 0 no-repeat, url(../img/bg-right.svg) 100% 0 no-repeat, #100B2E;
+
+    &::-webkit-scrollbar {
+        width: .5rem;
+        background: #100b2e;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: linear-gradient(0deg, rgba(30,26,59,.25) 0, #ffe500 50%, rgba(30,26,59,.25) 100%);
+        border-radius: 0;
+    }
+}
+
+main {
+    min-height: 100vh;
+    margin-top: 72px;
+    padding-top: 1rem;
+
+    @media (max-width: 991.98px) {
+        margin-top: 58px;
+        padding-top: .5rem;
+    }
+}

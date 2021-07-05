@@ -223,9 +223,8 @@ function getMembersByMatchId($matchId) {
 
 function moveWinners($prevMatch, $nextMatchIDs, $teamID){
 
-    $firstMatchId = $nextMatchIDs[0];
+    $nextSquad = getSquadByIdMatch($nextMatchIDs[0], $teamID);
 
-    $nextSquad = getSquadByIdMatch($firstMatchId, $teamID);
     if($nextSquad) return;
 
     $playerKeys = [
@@ -249,11 +248,21 @@ function moveWinners($prevMatch, $nextMatchIDs, $teamID){
         }
     }
 
-    $props['MATCH_STAGE_ONE'] = $firstMatchId;
-    $props['TEAM_ID'] = $teamID;
-    $code = 'SQUAD_' . $prevMatch['NAME'];
+    foreach ($nextMatchIDs as $id){
+        $firstMatch = getMatchById($id);
+        if($firstMatch["PROPERTY_8"] == NULL){
+        $firstGames[] = $firstMatch;
+        }
+    }
+    $i = 0;
+    foreach ($firstGames as $firstMatch){
 
-    $squadId = createSquad($props, $code);
+        $props['MATCH_STAGE_ONE'] = $firstMatch["ID"];
+        $props['TEAM_ID'] = $teamID;
+        $code = 'SQUAD_' . $firstMatch['NAME'];
+        $i += 1;
+        $squadId[] = createSquad($props, $code);
+    }
 
     if ($squadId) {
 
@@ -267,7 +276,7 @@ function moveWinners($prevMatch, $nextMatchIDs, $teamID){
             }
         }
 
-        $match = getMembersByMatchId($firstMatchId);
+        $match = getMembersByMatchId($nextMatchIDs[0]);
         $match = $match[0];
 
         $propertiesCases = getPlacesKeys();
@@ -279,7 +288,7 @@ function moveWinners($prevMatch, $nextMatchIDs, $teamID){
                 break;
             }
         }
-// сделать проверку, что моей команды еще нет в участниках матча, если моя команду существует в этом матче, то $emptyplace = falce
+        // сделать проверку, что моей команды еще нет в участниках матча, если моя команду существует в этом матче, то $emptyplace = falce
 
         if ($emptyPlace != false) {
             foreach ($membersMatches as $membersMatchId) {
@@ -290,7 +299,123 @@ function moveWinners($prevMatch, $nextMatchIDs, $teamID){
     }
 }
 
+function getChaineMatches( $firstMatchID ){
+    GLOBAL $DB;
+    $firstMatchID += 0;
+    $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
+                    ,m.PROPERTY_8 AS parentMatchID
+                    ,m.PROPERTY_22 AS stageMatch
+                    ,m.PROPERTY_23 AS typeMatch
+              FROM b_iblock_element_prop_s3 AS m 
+              WHERE m.IBLOCK_ELEMENT_ID = '.$firstMatchID;
+    $res = $DB->Query($sql);
+    if($row = $res->Fetch()) {
+        $chain = $row;
+        $chain[ 'chain' ] = [ $firstMatchID ];
+        $mID = $firstMatchID;
+        do {
+            $sql = 'SELECT  m.IBLOCK_ELEMENT_ID AS matchID 
+                  FROM b_iblock_element_prop_s3 AS m 
+                  WHERE m.PROPERTY_8 = '.$mID;
+            $res = $DB->Query($sql);
+            if($row = $res->Fetch()) {
+                $mID = $row['matchID']+0;
+                $chain[ 'chain' ][] = $mID;
+            } else {
+                $mID = false;
+            }
+        } while( $mID );
+        return $chain;
+    }
+    return false;
+}
 
+function getFinalsFirstTable($matchIDs)
+{
+    GLOBAL $DB;
+    $select = "";
+    $join = "";
+    $order = "";
+
+//    $chainMatches = getChaineMatches($matchID);
+
+    foreach ($matchIDs as $k => $match ){
+        $join = $join." LEFT JOIN b_iblock_element_prop_s5 as m{$k} ON m{$k}.PROPERTY_15 = t.IBLOCK_ELEMENT_ID AND m{$k}.PROPERTY_14 = {$match} ";
+
+    }
+
+    $sql = "SELECT t.PROPERTY_21 as name, t.PROPERTY_19 as avatar, t.PROPERTY_1 as tag, (total - kills) as placement, kills, total, r1.teamID as id_team  FROM (SELECT DISTINCT t.PROPERTY_28 as teamID FROM b_iblock_element_prop_s6 as t
+INNER JOIN b_iblock_element_prop_s1 as n ON t.PROPERTY_28 = n.IBLOCK_ELEMENT_ID
+AND t.PROPERTY_27 IN(" . implode(',',$matchIDs) . ")) as r1
+INNER JOIN (SELECT t.PROPERTY_15 AS teamID
+                    , sum(t.PROPERTY_18) AS total
+                    , sum(t.PROPERTY_17) AS kills
+              FROM b_iblock_element_prop_s5 AS t 
+              WHERE t.PROPERTY_14 IN (" . implode(',',$matchIDs) . ")
+              GROUP BY t.PROPERTY_15) as r2 ON r2.teamID = r1.teamID
+INNER JOIN b_iblock_element_prop_s1 as t ON r1.teamID = t.IBLOCK_ELEMENT_ID
+" . $join . "
+ORDER BY total DESC, kills DESC, m0.PROPERTY_17 DESC, m1.PROPERTY_17 DESC";
+    //dump( $sql);
+    $rsData = $DB->Query($sql);
+
+
+
+    while($row = $rsData->fetch()) {
+        $results[] = $row;
+    }
+    return $results;
+}
+
+function isGameResults($matchID){
+ GLOBAL $DB;
+ $sql = "SELECT * FROM b_iblock_element_prop_s5 as r WHERE r.PROPERTY_14 = ".$matchID;
+ $rsData = $DB->Query($sql);
+
+ if($row = $rsData->fetch()){
+      return true;
+ }
+ return false;
+}
+
+function getGameResultsTable($matchID)
+{
+    GLOBAL $DB;
+    $select = "";
+    $join = "";
+    $order = "";
+
+    $chainMatches = getChaineMatches($matchID);
+
+    foreach ($chainMatches["chain"] as $k => $match ){
+        $select = $select.", m{$k}.PROPERTY_17 as kills{$k}, m{$k}.PROPERTY_18 as total{$k}";
+        $join = $join." LEFT JOIN b_iblock_element_prop_s5 as m{$k} ON m{$k}.PROPERTY_15 = t.IBLOCK_ELEMENT_ID AND m{$k}.PROPERTY_14 = {$match} ";
+        $order =  $order.", m0.PROPERTY_17 DESC";
+    }
+
+    $sql = "SELECT (total - kills) as placement, kills, total, r1.teamID as id_team" . $select . " FROM (SELECT t.PROPERTY_28 as teamID FROM b_iblock_element_prop_s6 as t
+INNER JOIN b_iblock_element_prop_s1 as n ON t.PROPERTY_28 = n.IBLOCK_ELEMENT_ID
+AND t.PROPERTY_27 = ". $matchID .") as r1
+INNER JOIN (SELECT t.PROPERTY_15 AS teamID
+                    , sum(t.PROPERTY_18) AS total
+                    , sum(t.PROPERTY_17) AS kills
+              FROM b_iblock_element_prop_s5 AS t 
+              WHERE t.PROPERTY_14 IN (" . implode(',',$chainMatches["chain"]) . ")
+              GROUP BY t.PROPERTY_15) as r2 ON r2.teamID = r1.teamID
+INNER JOIN b_iblock_element_prop_s1 as t ON r1.teamID = t.IBLOCK_ELEMENT_ID
+" . $join . "
+ORDER BY total DESC, kills DESC, m0.PROPERTY_17 DESC, m1.PROPERTY_17 DESC";
+//dump($sql);
+    $rsData = $DB->Query($sql);
+
+
+
+    while($row = $rsData->fetch()) {
+        $results["results"][] = $row;
+    }
+    $results["count"] = $k + 1;
+    return $results;
+}
 
 function  getNextStage($stage){
     //Я сейчас пишу это в тотальном а*уе, почему нельзя было сделать ID с нормальной последовательностью?
@@ -432,6 +557,49 @@ function isTeamPrem($teamID){
     }
     return true;
 }
+
+function wasTeamPrem($teamID, $matchID){
+
+    $date = strtotime(getMatchStartDate($matchID));
+    $datePremLimit = date("Y-m-d H:i:s", AddToTimeStamp(array("DD" => -28), $date));
+    $coreTeam = getCoreTeam($teamID);
+
+    foreach ($coreTeam as $teamMember){
+
+        $arFilter = Array("USER_ID" => $teamMember["ID"], ">=DATE_INSERT" => $datePremLimit, "<=DATE_INSERT" => date("d.m.Y H:i:s", $date));
+        $orders = CSaleOrder::GetList(array(), $arFilter);
+
+        while($arOrder = $orders->Fetch())
+        {
+            $convertDateSubscribe = ConvertDateTime($arOrder["DATE_INSERT"], "DD.MM.YYYY HH:MI:SS");
+            $convertDateStart = ConvertDateTime(date("d.m.Y H:i:s", $date), "DD.MM.YYYY HH:MI:SS");
+            $datePremTo = DateTime::createFromFormat('d.m.Y H:i:s', $convertDateSubscribe);
+            $dateStart = new DateTime($convertDateStart);
+            $dayDiff = $datePremTo->diff($dateStart)->format('%R%a')+0;
+
+           switch ($arOrder["PRICE"]){
+               case 12.99;
+               if ($dayDiff <= 28){
+                   return true;
+               }
+               case 6.99;
+                   if ($dayDiff <= 14){
+                       return true;
+                   }
+               case 3.99;
+                   if ($dayDiff <= 7){
+                       return true;
+                   }
+               case 0.99;
+                   if ($dayDiff <= 1){
+                       return true;
+                   }
+           }
+        }
+    }
+       return false;
+}
+
 
 function willTeamPrem($teamID, $matchTime){
     $coreTeam = getCoreTeam($teamID);

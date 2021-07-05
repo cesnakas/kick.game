@@ -1,0 +1,22 @@
+.btn {
+
+    &-warning {
+        box-shadow: 0 4px 24px #70621C;
+
+        &:hover {
+            border-color: #FFF7AC;
+            background-color: #FFF7AC;
+            box-shadow: 0 4px 32px #70621C;
+        }
+    }
+    &-outline-warning {
+        text-shadow: 0 4px 12px rgba(#000,.32);
+        background-color: #282129;
+
+        &:hover {
+            color: $yellow;
+            background-color: #403725;
+            box-shadow: 0 4px 32px #70621C;
+        }
+    }
+}

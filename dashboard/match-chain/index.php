@@ -43,6 +43,28 @@ function addMatchMembersResult($idMatch)
     }
 }
 
+function getFinalsMatches($tournamentID, $stage) {
+    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+    $arFilter = Array(
+        "IBLOCK_ID" =>3,
+        "PROPERTY_PREV_MATCH" => false,
+        "PROPERTY_TYPE_MATCH" => 5,
+        "PROPERTY_TOURNAMENT" => $tournamentID,
+        "PROPERTY_STAGE_TOURNAMENT" => 1,
+        //  "<=PROPERTY_DATE_START" => ConvertDateTime($date, "YYYY-MM-DD")." 23:59:59",
+        "ACTIVE_DATE" => "Y",
+        "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+    $output = [];
+
+    while ($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        //$arProps = $ob->GetProperties();
+        $output[] = $arFields;
+    }
+    return $output;
+}
+
 function getWinners ($firstMatchID){
     GLOBAL $DB;
 
@@ -1300,28 +1322,49 @@ if (!empty($_POST["sendResults"])) {
 
                     $nextStageId = getNextStage($firstMatch["STAGE_TOURNAMENT"]["VALUE_ENUM_ID"]);
                     $winnersIds = getWinners($firstMatchId);
-                    foreach ($winnersIds as $winner){
 
-                    $idNextMatch = findFreeGame($firstMatch["TOURNAMENT"]["VALUE"],  $nextStageId);
+                    foreach ($winnersIds as $i => $winner){
+                        $idNextMatch = null;
+                        if ($nextStageId == 1){
+                            $finalGames = getFinalsMatches($firstMatch["TOURNAMENT"]["VALUE"], $nextStageId);
+                            foreach ($finalGames as $game){
+                                $idNextMatch[] = $game["ID"];
+                            }
+                        } else {
+                            $idNextMatch[] = findFreeGame($firstMatch["TOURNAMENT"]["VALUE"],  $nextStageId);
+                        }
+
+
+
                     if($idNextMatch){
-                        $chainMatches = null;
-                        $chainMatches[] = $idNextMatch;
+                    $chainMatches = null;
 
-                        do {
-                        $match = getMatchByParentId($idNextMatch);
+                    foreach ($idNextMatch as $id){
+                    $chainMatches[] = $id;
+
+                    do {
+                        $match = getMatchByParentId($id);
                         if ($match != null) {
                             $nextMatch = true;
                             $chainMatches[] = $match['ID'];
-                            $idNextMatch = $match['ID'];
+                            $id = $match['ID'];
                         } else {
                             $nextMatch = false;
                         }
                     } while($nextMatch == true);
+                    }
+
+//                        if($i == 2){
+//                            dump($chainMatches, 1);
+//                        }
+//                        dump($chainMatches);
+
                     moveWinners($firstMatch, $chainMatches, $winner);
                     setStagePass($firstMatchId, $stageKeyPass);
                     }
                 }
                 }
+
                 LocalRedirect('/dashboard/match-chain/?id='.$firstMatchId . '&success_update='.$matchId);
 
             } else {
@@ -1370,6 +1413,30 @@ if (!empty($_POST["sendInfo"])) {
 
 
 ?>
+
+<script>
+    function getResults(str) {
+        if (str == "") {
+            document.getElementById("statsBody").innerHTML = "";
+            console.log(str)
+            return;
+        } else {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(str)
+                    let response = this.responseText;
+                    document.getElementById("statsBody").innerHTML = response;
+
+                }
+            };
+            console.log(str)
+            xmlhttp.open("GET","getresults.php?q="+str,true);
+            xmlhttp.send();
+        }
+    }
+</script>
+
     <div class="container my-5">
         <?php if (isset($_SESSION["match-chain_error"])) { ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -1390,6 +1457,11 @@ if (!empty($_POST["sendInfo"])) {
         <li class="nav-item" role="presentation">
             <a class="nav-link <?php echo $activeI ; ?>" id="pills-info-tab" data-toggle="pill" href="#pills-info" role="tab" aria-controls="pills-info" aria-selected="false">Данные матча</a>
         </li>
+        <?php if ( CSite::InGroup( array(1) ) ) { ?>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pills-stats-tab" data-toggle="pill" href="#pills-stats" role="tab" aria-controls="pills-stats" aria-selected="false"  onclick="getResults(<?php echo $_GET["id"] ?>)">Статистика</a>
+        </li>
+        <?php }  ?>
     </ul>
       <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade <?php echo $activeRes ; ?>" id="pills-results" role="tabpanel" aria-labelledby="pills-results-tab">
@@ -1447,6 +1519,24 @@ if (!empty($_POST["sendInfo"])) {
                 } while($nextMatch == true);
 
                 ?>
+            </div>
+            <div class="tab-pane fade" id="pills-stats" role="tabpanel" aria-labelledby="pills-stats-tab">
+                <div class= 'container'>
+                    <div class='table-responsive'>
+                        <table class='table table-striped table table-hover'>
+                            <thead class ="table-primary">
+                            <tr>
+                                <th scope='col'>Ранк</th>
+                                <th scope='col'>Комманда</th>
+                                <th scope='col'>TOTAL PTS</th>
+                                <th scope='col'>Рейтинг</th>
+                                <th scope='col'>Подписка</th>
+                                <th scope='col'>Время регистрации</th>
+                            </tr>
+                            </thead>
+                            <tbody id="statsBody">
+                            </tbody>
+                        </table>
             </div>
         </div>
 

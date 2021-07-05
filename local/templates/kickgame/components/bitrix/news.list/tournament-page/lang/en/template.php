@@ -6,6 +6,7 @@ $MESS['TOUR_RATINGS'] = 'Ratings';
 $MESS['TOUR_FINALE'] = ' finale';
 $MESS['TOUR_SQUADS'] = ' squads, ';
 $MESS['TOUR_GAME_GAMES'] = 'game, games, games';
+$MESS['TOUR_GAME_FINAL'] = 'day, days, days';
 $MESS['TOUR_GROUP_NO'] = 'Group No. ';
 $MESS['TOUR_APPLY'] = 'Submit application';
 $MESS['TOUR_CHANGE_GROUP'] = 'Change group';

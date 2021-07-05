@@ -519,7 +519,7 @@ if (!empty($members)) {
 
         </div>
         </tbody>
-    </table>
+    </table
 
     <div class="d-flex">
         <button type="submit" class="btn btn-success d-block ml-auto" name="btn_delete">Удалить команду</button>

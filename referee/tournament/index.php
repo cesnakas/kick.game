@@ -30,6 +30,9 @@ function getMatchesByDate($date, $tournamentID) {
     return $output;
 }
 
+
+
+
 function getFinalsMatches($tournamentID, $stage) {
     $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
     $arFilter = Array(

@@ -1,0 +1,65 @@
+.footer {
+    min-height: 300px;
+    background-color: #000;
+
+    .container {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+
+    .navbar-brand {
+        display: inline-block;
+        margin-bottom: 1.75rem;
+    }
+
+    &__address {
+        font-family: 'Cera Pro', sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 16px;
+        color: #5F5A82;
+
+        p {
+            margin-bottom: .25rem;
+        }
+
+        &-contact {
+            margin-top: 1.25rem;
+
+            a {
+                display: block;
+                width: fit-content;
+                margin-bottom: .25rem;
+                text-decoration: none;
+                color: #5F5A82;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    &__social {
+        margin-top: 2rem;
+    }
+
+    .list-unstyled {
+
+        li {
+
+            a {
+                display: inline-flex;
+                padding: .625rem 0;
+                text-decoration: none;
+                color: #FFF;
+                text-shadow: 0 2px 12px #FFF;
+
+                &:hover {
+                    color: $yellow;
+                    text-shadow: 0 2px 12px $yellow;
+                }
+            }
+        }
+    }
+}
