@@ -83,13 +83,13 @@ function getUserRating($userID) {
                         <button class="btn btn-outline-warning px-3">EN</button>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/~index.php">Главная</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>~index.php">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/game-schedule/~index.php">Расписание</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>game-schedule/~index.php">Расписание</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Рейтинги</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>players/~index.php">Рейтинги</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Игровой магазин</a>
