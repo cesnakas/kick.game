@@ -11,10 +11,25 @@ $custom-colors: (
 );
 */
 
-$font-family-sans-serif: 'Cera Pro', sans-serif;
-
 // reboot
+$body-color: #FFF;
 $body-bg: #100B2E;
+
+// Typography
+$font-family-sans-serif: 'Cera Pro', sans-serif;
+$headings-font-family: 'Oswald', sans-serif;
+// H1
+$h1-font-size: 4rem;
+
+$display-font-sizes: (
+    1: 5rem,
+    2: 4.5rem,
+    3: 4rem,
+    4: 3.5rem,
+    5: 3rem,
+    6: 2.5rem
+);
+$display-font-weight: 500;
 
 // buttons
 $btn-padding-x: 1.75rem;

@@ -14,9 +14,9 @@
 
     &__address {
         font-family: 'Cera Pro', sans-serif;
-        font-size: 12px;
+        font-size: .625rem;
         font-weight: 500;
-        line-height: 16px;
+        line-height: 1rem;
         color: #5F5A82;
 
         p {
@@ -40,8 +40,39 @@
         }
     }
 
-    &__social {
+    &__links {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin-top: 2rem;
+    }
+
+    &__social {
+        display: flex;
+        align-items: center;
+
+        a {
+            display: flex;
+            text-decoration: none;
+            -webkit-filter: drop-shadow(0 2px 6px #9F8E12);
+            filter: drop-shadow(0 2px 6px #9F8E12);
+
+            svg {
+                transition: .15s ease-in-out;
+            }
+
+            &:hover {
+
+                svg {
+                    -webkit-filter: drop-shadow(0 0 8px $yellow);
+                    filter: drop-shadow(0 0 8px $yellow);
+                }
+            }
+
+            + a {
+                margin-left: 1.5rem;
+            }
+        }
     }
 
     .list-unstyled {

@@ -11,13 +11,16 @@ body {
     }
 }
 
+h1, .h1 {
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
 main {
     min-height: 100vh;
-    margin-top: 72px;
-    padding-top: 1rem;
+    // padding-top: 1rem;
 
-    @media (max-width: 991.98px) {
-        margin-top: 58px;
-        padding-top: .5rem;
+    @media (min-width: 992px) {
+        margin-top: 72px;
     }
 }

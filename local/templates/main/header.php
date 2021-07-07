@@ -51,9 +51,9 @@ function getUserRating($userID) {
             <a class="d-lg-none" href="#">
                 <div class="nav__user-userpic">
                 <? if (!empty($arUser['PERSONAL_PHOTO'])): ?>
-                    <?= CFile::ShowImage($arUser['PERSONAL_PHOTO'],40,40,'alt="user"', false); ?>
+                    <?= CFile::ShowImage($arUser['PERSONAL_PHOTO'],40,40,'alt="userpic"', false); ?>
                 <? else: ?>
-                    <svg width="40" height="40">
+                    <svg width="40" height="40" role="img" aria-label="userpic">
                         <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/dist/img/icons.svg#user-sm"/>
                     </svg>
                 <? endif; ?>
@@ -65,18 +65,18 @@ function getUserRating($userID) {
             <? endif; ?>
 
             <a class="navbar-brand" href="<?=SITE_DIR?>~index.php">
-                <svg width="154" height="17" fill="#FFE500">
+                <svg width="154" height="17" fill="#FFE500" role="img" aria-label="KICKGAME">
                     <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/dist/img/logo.svg#logo"/>
                 </svg>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <svg width="40" height="10" class="mb-1">
+                <svg width="40" height="10" class="mb-1" aria-hidden="true">
                     <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#menu"/>
                 </svg>
             </button>
 
-            <nav class="collapse navbar-collapse" id="navbarSupportedContent">
+            <nav class="collapse navbar-collapse" id="navbarSupportedContent" role="navigation">
                 <ul class="navbar-nav align-items-lg-center text-center navbar-nav-scroll">
                     <li class="nav-item d-lg-none">
                         <button class="btn btn-warning px-3">RU</button>
@@ -125,24 +125,34 @@ function getUserRating($userID) {
                     </li>
                     <? endif; ?>
                     <li class="nav-item d-flex d-lg-none justify-content-center my-3">
-                        <a class="d-block mx-2 p-2 text-decoration-none" href="#">
-                            <svg width="28" height="28" fill="currentColor">
-                                <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-vkontakte"/>
+                        <a class="d-inline-block mx-2 p-2 text-decoration-none" href="https://vm.tiktok.com/ZSEfnbCf/" target="_blank">
+                            <svg width="24" height="24" fill="currentColor" role="img" aria-label="TikTok">
+                                <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-tiktok"/>
                             </svg>
                         </a>
                         <a class="d-inline-block mx-2 p-2 text-decoration-none" href="#">
-                            <svg width="28" height="28" fill="currentColor">
+                            <svg width="24" height="24" fill="currentColor" role="img" aria-label="Telegram">
+                                <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-telegram"/>
+                            </svg>
+                        </a>
+                        <a class="d-inline-block mx-2 p-2 text-decoration-none" href="https://www.instagram.com/kickgameleague/" target="_blank">
+                            <svg width="24" height="24" fill="currentColor" role="img" aria-label="Instagram">
                                 <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-instagram"/>
                             </svg>
                         </a>
                         <a class="d-inline-block mx-2 p-2 text-decoration-none" href="#">
-                            <svg width="28" height="28" fill="currentColor">
-                                <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-"/>
+                            <svg width="24" height="24" fill="currentColor" role="img" aria-label="YouTube">
+                                <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-youtube"/>
                             </svg>
                         </a>
                         <a class="d-inline-block mx-2 p-2 text-decoration-none" href="#">
-                            <svg width="28" height="28" fill="currentColor">
-                                <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-"/>
+                            <svg width="24" height="24" fill="currentColor" role="img" aria-label="Discord">
+                                <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-discord"/>
+                            </svg>
+                        </a>
+                        <a class="d-block mx-2 p-2 text-decoration-none" href="https://vk.com/kick.game" target="_blank">
+                            <svg width="24" height="24" fill="currentColor" role="img" aria-label="VKontakte">
+                                <use xlink:href="<?=SITE_TEMPLATE_PATH?>/dist/img/icons.svg#social-vkontakte"/>
                             </svg>
                         </a>
                     </li>
@@ -174,8 +184,8 @@ function getUserRating($userID) {
                         </li>
                         <? else: ?>
                         <li class="nav-item d-none d-lg-flex">
-                            <a class="ms-3 btn btn-warning" href="#" role="button">Регистрация</a>
-                            <a class="ms-3 btn btn-outline-warning" href="#" role="button">Войти</a>
+                            <a class="ms-3 btn btn-outline-warning" href="#" role="button">Регистрация</a>
+                            <a class="ms-3 btn btn-warning" href="#" role="button">Войти</a>
                         </li>
                         <? endif; ?>
                     <? endif; ?>
@@ -210,8 +220,8 @@ function getUserRating($userID) {
                 </div>
                 <? else: ?>
                 <div class="navbar-nav d-none d-lg-flex">
-                    <a class="btn btn-warning" href="#" role="button">Регистрация</a>
-                    <a class="ms-3 btn btn-outline-warning" href="#" role="button">Войти</a>
+                    <a class="btn btn-outline-warning" href="#" role="button">Регистрация</a>
+                    <a class="ms-3 btn btn-warning" href="#" role="button">Войти</a>
                 </div>
                 <? endif; ?>
             <? endif; ?>
