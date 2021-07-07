@@ -31,7 +31,7 @@ function getUserRating($userID) {
     $asset->addString('<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">');
     $asset->addString('<meta http-equiv="X-UA-Compatible" content="ie=edge">');
     // jquery
-    $asset->addJs('https://code.jquery.com/jquery-3.6.0.min.js');
+    $asset->addJs(SITE_TEMPLATE_PATH.'/dist/js/jquery.min.js');
     // custom
     $asset->addCss(SITE_TEMPLATE_PATH.'/dist/css/main.css');
     $asset->addJs(SITE_TEMPLATE_PATH.'/dist/js/main.js');

@@ -15,6 +15,13 @@
         backdrop-filter: blur(24px);
     }
 
+    &-blur {
+        border-bottom: 1px solid transparent;
+        background: transparent;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+
     &-expand,
     &-expand-lg {
 
