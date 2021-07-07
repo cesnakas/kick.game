@@ -15,29 +15,23 @@ $APPLICATION->SetTitle("Главная");
 
                     <div class="row row-cols-xl-2">
                         <figure class="figure">
-                            <img src="/local/templates/new_main/images/duo@2x.png" class="img-fluid" alt="...">
+                            <img src="/local/templates/new_main/images/duo@2x.png" class="img-fluid" alt="Бесплатные праки каждый день">
                             <figcaption class="figure-caption">Бесплатные праки <br class="d-none d-xl-block"> каждый день</figcaption>
                         </figure>
                         <figure class="figure">
-                            <img src="/local/templates/new_main/images/squad@2x.png" class="img-fluid" alt="...">
+                            <img src="/local/templates/new_main/images/squad@2x.png" class="img-fluid" alt="Турниры для сквадов с призовым фондом от 1000 €">
                             <figcaption class="figure-caption">Турниры для сквадов <br> с призовым фондом <br class="d-none d-xl-block"> от 1000 €</figcaption>
                         </figure>
                         <figure class="figure">
-                            <img src="/local/templates/new_main/images/customs@2x.png" class="img-fluid" alt="...">
+                            <img src="/local/templates/new_main/images/customs@2x.png" class="img-fluid" alt="Рейтинговые игры, которые гарантируют игру с равными соперниками">
                             <figcaption class="figure-caption">Рейтинговые игры, <br> которые гарантируют <br> игру с равными соперниками</figcaption>
                         </figure>
                         <figure class="figure">
-                            <img src="/local/templates/new_main/images/free@2x.png" class="img-fluid" alt="...">
+                            <img src="/local/templates/new_main/images/free@2x.png" class="img-fluid" alt="Бесплатная регистрация на праки открывается в 12:00 МСК в день игры">
                             <figcaption class="figure-caption">Бесплатная <br> регистрация на праки <br> открывается в 12:00 МСК в день игры</figcaption>
                         </figure>
                     </div>
 
-                    <!--<ul class="list-unstyled">
-                        <li>Бесплатные праки каждый день</li>
-                        <li>Турниры для сквадов с призовым фондом от 1000 €</li>
-                        <li>Рейтинговые игры, которые гарантируют игру с равными соперниками</li>
-                        <li>Бесплатная регистрация на праки открывается в 12:00 МСК в день игры</li>
-                    </ul>-->
                     <div>
                         <button class="btn btn-warning">ПРОФИЛЬ</button>
                         <span class="ms-lg-3">Начни путь к победе сегодня!</span>
