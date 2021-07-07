@@ -42,7 +42,7 @@ function getUserRating($userID) {
 </head>
 <body>
 
-    <?$APPLICATION->ShowPanel();?>
+    <?php echo'<div id="panel">'; $APPLICATION->ShowPanel(); echo'</div>';?>
 
     <header class="navbar navbar-expand-lg navbar-dark fixed-top" <?=($USER->IsAdmin()) ? 'style="top:auto;"' : '';?>>
         <div class="container">
