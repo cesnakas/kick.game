@@ -5,11 +5,12 @@
         display: flex;
         align-items: center;
         min-height: calc(100vh);
-        background-image: url(../images/header_bg.jpg);
+        // background-image: url(../images/header-bg.png);
+        background-image: url(../images/header-bg.webp);
         background-position: right top;
         background-repeat: no-repeat;
         background-size: cover;
-        
+
         @media (min-width: 992px) {
             margin-top: -72px;
         }

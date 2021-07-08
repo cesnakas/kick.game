@@ -1,14 +1,10 @@
 // Fonts
-@import "fonts";
-// font-family: 'Oswald', sans-serif;
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+@import "main/fonts";
 
-// bootstrap 5.0.2
-// @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
-
+// BOOTSTRAP
 // Configuration
 @import "bootstrap/functions";
-@import "custom/variables"; // custom variables
+@import "custom/variables"; // custom
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 @import "bootstrap/utilities";
@@ -52,15 +48,15 @@
 // Utilities
 @import "bootstrap/utilities/api";
 
-// main
+// MAIN
 @import "header";
 @import "dropdown";
 @import "nav";
 
-// Sections
+// SECTIONS
 @import "sections/main-header";
 @import "sections/main-advantages";
 @import "sections/main-games";
 
-// Footer
+// FOOTER
 @import "footer";
