@@ -3,7 +3,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 $userID = CUser::GetID();
 $rsUser = CUser::GetByID($userID);
 $arUser = $rsUser->Fetch();
-//
+// Rating user
 function getUserRating($userID) {
     GLOBAL $DB;
     $sql = 'SELECT u.ID, IF(total IS NOT Null,total, 0) + IF(r.UF_RATING IS NOT Null, r.UF_RATING, 300) as total
@@ -68,7 +68,7 @@ function getUserRating($userID) {
             </a>
             <? endif; ?>
 
-            <a class="navbar-brand" href="<?=SITE_DIR?>~index.php">
+            <a class="navbar-brand" href="<?=SITE_DIR?>">
                 <svg width="154" height="17" fill="#FFE500" role="img" aria-label="KICKGAME">
                     <use xlink:href="<?=SITE_TEMPLATE_PATH;?>/dist/img/logo.svg#logo"/>
                 </svg>
@@ -87,13 +87,13 @@ function getUserRating($userID) {
                         <button class="btn btn-outline-warning px-3">EN</button>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=SITE_DIR?>~index.php">Главная</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=SITE_DIR?>game-schedule/~index.php">Расписание</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>game-schedule/">Расписание</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=SITE_DIR?>players/~index.php">Рейтинги</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>players/">Рейтинги</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Игровой магазин</a>
@@ -160,7 +160,7 @@ function getUserRating($userID) {
                             </svg>
                         </a>
                     </li>
-                    <? if(CSite::InDir('/~index.php')): ?>
+                    <? if(CSite::InDir('/index.php')): ?>
                         <? if($USER->IsAuthorized()): ?>
                         <li class="nav-item dropdown d-none d-lg-flex">
                             <a class="nav-link dropdown-toggle nav__user-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -196,7 +196,7 @@ function getUserRating($userID) {
                 </ul>
             </nav>
 
-            <? if(!CSite::InDir('/~index.php')): ?>
+            <? if(!CSite::InDir('/index.php')): ?>
                 <? if($USER->IsAuthorized()): ?>
                 <div class="navbar-nav dropdown d-none d-lg-flex">
                     <a class="nav-link dropdown-toggle nav__user-link" href="javascript:void(0);" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
