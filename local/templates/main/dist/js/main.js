@@ -1,5 +1,5 @@
 // Bootstrap
-$.getScript('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js');
+$.getScript('/local/templates/main/dist/js/bootstrap.bundle.min.js');
 
 // Header
 if(window.location.pathname === '/' && ($(window).outerWidth() >= 992)) {
