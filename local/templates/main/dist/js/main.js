@@ -4,14 +4,15 @@ $.getScript('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bund
 // Header
 if(window.location.pathname === '/' && ($(window).outerWidth() >= 992)) {
     let navbar = $('.navbar');
-    navbar.addClass('navbar-blur');
+    navbar.removeClass('blur');
     $(function() {
-        // var navbar = $('.navbar');
         $(window).scroll(function() {
-            if($(window).scrollTop() <= 8){
-                navbar.addClass('navbar-blur');
+            if ($(window).scrollTop() <= 8) {
+                // navbar.addClass('navbar-blur');
+                navbar.removeClass('blur');
             } else {
-                navbar.removeClass('navbar-blur');
+                // navbar.removeClass('navbar-blur');
+                navbar.addClass('blur');
             }
         });
     });
