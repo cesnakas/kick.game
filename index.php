@@ -61,13 +61,29 @@ $APPLICATION->SetTitle("Главная");
                     <p>или нескольких, и забрать часть призового фонда размером в 1000€ или 10000€</p>
                 </div>
             </div>
+            <div>
+                <button class="btn btn-warning">Войти</button>
+            </div>
 
         </div>
     </section>
 
     <section class="section__games">
         <div class="container">
-            <h3>Игры</h3>
+            <h3 class="display-4">Игры</h3>
+            <button class="btn btn-warning">Поиск</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h3 class="display-4">О платформе</h3>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h3 class="display-4">Функции</h3>
         </div>
     </section>
 
