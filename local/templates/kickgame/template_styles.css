@@ -49,3 +49,9 @@ body::-webkit-scrollbar-thumb {
         overflow: hidden;
     }
 }
+.history_pagen {
+    text-align: center;
+}
+.profile-info__balance-top-up{
+    text-align: center;
+}

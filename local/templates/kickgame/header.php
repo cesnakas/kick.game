@@ -10,7 +10,18 @@ $userID = CUser::GetID();
 $rsUser = CUser::GetByID($userID);
 $arUser = $rsUser->Fetch();
 $teamID = $arUser['UF_ID_TEAM'];
+//dump($teamID);
 $datePremExp = $arUser['UF_DATE_PREM_EXP'];
+$team = getTeamById($teamID);
+// текущий счет
+// $chi = CustomChick::getUserBudget($arUser["ID"], CustomChick::CHICK_CURRENCY_CODE);
+//dump($chi+0);
+// баланс команды
+$balanceTeamChicks = $team['BALANCE']['VALUE'] + 0;
+//dump($balanceTeamChicks);
+
+
+//dump($team);
 Global $intlFormatter;
 $intlFormatter = new IntlDateFormatter('ru_RU', IntlDateFormatter::SHORT, IntlDateFormatter::SHORT);
 $isCaptainHeader = isCaptainHeader($userID, $teamID);
@@ -143,14 +154,72 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
                 <li><a href="<?=SITE_DIR;?>"><?=GetMessage('NAV_HOME')?></a></li>
                 <li><a href="<?=SITE_DIR;?>game-schedule/"><?=GetMessage('NAV_TIMETABLE')?></a></li>
                 <li><a href="<?=SITE_DIR;?>teams/"><?=GetMessage('NAV_RATINGS')?></a></li>
+                  <li><a href="<?= SITE_DIR; ?>shop/"><?= GetMessage('GAME_STORE') ?></a></li>
                 <li><a href="<?=SITE_DIR;?>subscription-plans/"><?=GetMessage('NAV_SUBSCRIPTION')?></a></li>
                 <?php if ($USER->IsAuthorized()) { ?>
-                <li class="nav-link-exit"><a href="<?=$APPLICATION->GetCurPageParam("logout=yes&".bitrix_sessid_get(), array(
+                <li class="nav-link-exit">
+                  <ul>
+                    <li class="navbar-dropdown__item">
+                      <a href="<?=SITE_DIR;?>personal/" class="nav__link"><?=GetMessage('NAV_PERSONAL')?></a>
+                      <div class="navbar-dropdown-balance">
+                        <div class="profile-info__balance">
+                          <i></i>
+                          <div class="profile-info__balance-value">
+                            <span><?php echo $chi+0;?></span>
+                            <span><?php echo num_decline($chi+0, "chick, chicks", false);?></span>
+                          </div>
+                        </div>
+                        <!--<div class="profile-info__balance">
+                          <i></i>
+                          <div class="profile-info__balance-value">
+                            <span>5 015</span>
+                            <span>wincoin</span>
+                          </div>
+                        </div>-->
+                      </div>
+                    </li>
+                    <?php if($teamID) { ?>
+                    <li class="navbar-dropdown__item">
+
+                      <a href="<?=SITE_DIR?>teams/<?php echo $team['ID']; ?>/" class="nav__link"><?=GetMessage('NAV_MY_TEAM')?></a>
+                      <div class="navbar-dropdown__team">
+                        <span><?php echo $team['NAME']; ?></span>
+                        <div class="navbar-dropdown__team-logo" style="background-image: url(<?php echo CFile::GetPath($team["LOGO_TEAM"]['VALUE']); ?>)">
+                        </div>
+                      </div>
+
+
+                      <div class="navbar-dropdown-balance">
+                        <div class="profile-info__balance">
+                          <i></i>
+                          <div class="profile-info__balance-value">
+                            <span><?php echo $balanceTeamChicks;?></span>
+                            <span><?php echo num_decline($balanceTeamChicks, "chick, chicks", false);?></span>
+                          </div>
+                        </div>
+                        <!--<div class="profile-info__balance">
+                          <i></i>
+                          <div class="profile-info__balance-value">
+                            <span>5 015</span>
+                            <span>wincoin</span>
+                          </div>
+                        </div>-->
+                      </div>
+                      <?php if($isCaptainHeader) { ?>
+                        <a href="<?=SITE_DIR?>management-compositional/" class="nav__link">Управление командой</a>
+                      <?php } ?>
+                    </li>
+                    <?php } ?>
+                    <li class="navbar-dropdown__item">
+                      <a href="<?=$APPLICATION->GetCurPageParam("logout=yes&".bitrix_sessid_get(), array(
                         "login",
                         "logout",
                         "register",
                         "forgot_password",
-                        "change_password"));?>" class="color-red "><?=GetMessage('NAV_LOGOUT')?></a></li>
+                        "change_password"));?>" class="nav__link color-red"><?=GetMessage('NAV_LOGOUT')?></a>
+                    </li>
+                  </ul>
+                </li>
                 <?php } ?>
               </ul>
               <ul class="navbar__lang">
@@ -208,11 +277,48 @@ if(isset($_REQUEST['pubgIdVerifiedOk']) && check_bitrix_sessid()) {
                   <ul class="navbar-dropdown__menu">
                     <li class="navbar-dropdown__item">
                         <a href="<?=SITE_DIR;?>personal/" class="nav__link"><?=GetMessage('NAV_PERSONAL')?></a>
+                      <div class="navbar-dropdown-balance">
+                        <div class="profile-info__balance">
+                          <i></i>
+                          <div class="profile-info__balance-value">
+                            <span><?php echo $chi+0;?></span>
+                            <span><?php echo num_decline($chi+0, "chick, chicks", false);?></span>
+                          </div>
+                        </div>
+                        <!--<div class="profile-info__balance">
+                          <i></i>
+                          <div class="profile-info__balance-value">
+                            <span>5 015</span>
+                            <span>wincoin</span>
+                          </div>
+                        </div>-->
+                      </div>
                     </li>
-                    <?php if ($isCaptainHeader) { ?>
+                    <?php if($teamID) { ?>
                     <li class="navbar-dropdown__item">
-                      <a href="<?=SITE_DIR?>management-compositional/" class="nav__link"><?=GetMessage('NAV_MY_TEAM')?></a>
+                      <a href="<?=SITE_DIR?>teams/<?php echo $team['ID'];?>/" class="nav__link"><?=GetMessage('NAV_MY_TEAM')?></a>
+                      <div class="navbar-dropdown-balance">
+                        <div class="profile-info__balance">
+                          <i></i>
+                          <div class="profile-info__balance-value">
+                            <span><?php echo $balanceTeamChicks;?></span>
+                            <span><?php echo num_decline($balanceTeamChicks, "chick, chicks", false);?></span>
+                          </div>
+                        </div>
+                        <!--<div class="profile-info__balance">
+                          <i></i>
+                          <div class="profile-info__balance-value">
+                            <span>5 015</span>
+                            <span>wincoin</span>
+                          </div>
+                        </div>-->
+                      </div>
                     </li>
+                    <?php } ?>
+                    <?php if ($isCaptainHeader) { ?>
+                      <li class="navbar-dropdown__item">
+                          <a href="<?=SITE_DIR?>management-compositional/" class="nav__link">Управление составом</a>
+                      </li>
                         <?php if(isPrem($arUser['UF_DATE_PREM_EXP']) > 0 ) { ?>
                     <li class="navbar-dropdown__item">
                       <a href="<?=SITE_DIR?>management-games/" class="nav__link"><?=GetMessage('NAV_GAMES_MANAGEMENT')?></a>

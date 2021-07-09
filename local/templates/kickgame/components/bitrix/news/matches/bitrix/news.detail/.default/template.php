@@ -137,7 +137,7 @@ function getPlayersSquadByIdMatch($idMatch, $teamId)
 
 
 <?php
-$teamIds = getMembersIdsTeamByMatchId($arResult["ID"]);
+$teamIds = getMembersIdsByMatchId($arResult["ID"]);
 $teamIds = array_diff($teamIds, array(''));
 
 if (!empty($teamIds)) { ?>

@@ -31,92 +31,8 @@ function getMatchById($matchId) {
     }
     return null;
 }
-// проверка команды на участие
-function getParticipationByMatchId($idMatch)
-{
-    $arSelect = Array(
-        "ID",
-        "NAME",
-        "DATE_ACTIVE_FROM",
-        "PROPERTY_*",
-    );
-    $arFilter = Array(
-        "IBLOCK_ID" =>4,
-        "PROPERTY_WHICH_MATCH" => $idMatch,
-        "ACTIVE_DATE" => "Y",
-        "ACTIVE" => "Y");
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-    $arrTeams = [];
-    $key = [
-        3 => "TEAM_PLACE_03",
-        4 => "TEAM_PLACE_04",
-        5 => "TEAM_PLACE_05",
-        6 => "TEAM_PLACE_06",
-        7 => "TEAM_PLACE_07",
-        8 => "TEAM_PLACE_08",
-        9 => "TEAM_PLACE_09",
-        10 => "TEAM_PLACE_10",
-        11 => "TEAM_PLACE_11",
-        12 => "TEAM_PLACE_12",
-        13 => "TEAM_PLACE_13",
-        14 => "TEAM_PLACE_14",
-        15 => "TEAM_PLACE_15",
-        16 => "TEAM_PLACE_16",
-        17 => "TEAM_PLACE_17",
-        18 => "TEAM_PLACE_18",
-        19 => "TEAM_PLACE_19",
-        20 => "TEAM_PLACE_20",
-    ];
-    if ($ob = $res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        foreach ($key as $place=>$name) {
-            if ($arProps[$name]['VALUE']+0 > 0) {
-                $arrTeams[$place] = $arProps[$name]['VALUE'];
-            }
-        }
-        return $arrTeams;
-    }
-    return  false;
-}
 
-function checkRegistrationTeamOnTournament($idTeam, $idTournament)
-{
-    $matchesId = [];
-    $idRegistrationMatch = false;
-    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-    $arFilter = Array("IBLOCK_ID" =>4,
-        //"?NAME" => '#'.$idTournament.'_TOURNAMENT',
-        //"?NAME" => '_GROUP4_STAGE1',
-        array(
-            "LOGIC" => "AND",
-            array(
-                "?NAME" => '#'.$idTournament.'_TOURNAMENT'
-            ),
-            array(
-                "?NAME" => '_GROUP4_STAGE1'
-            ),
-        ),
-        "ACTIVE_DATE" => "Y",
-        "ACTIVE" => "Y");
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-    while ($ob = $res->GetNextElement()) {
-        //$arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        $matchesId[] = $arProps["WHICH_MATCH"]['VALUE']+0;
-    }
-    if (!empty($matchesId)) {
-        foreach ($matchesId as $id) {
-            if($tmp = getParticipationByMatchId($id)) {
-                $tmp = array_flip($tmp);
-                if (isset($tmp[$idTeam])) {
-                    $idRegistrationMatch = $id;
-                }
-            }
-        }
-    }
-    return $idRegistrationMatch;
-}
+
 function isTournament($idMatch)
 {
     $match = getMatchById($idMatch);
@@ -158,16 +74,6 @@ function getMatchesByDate($date, $minRating, $maxRating) {
     return $output;
 }
 
-// есть ли свободное место
-function isPlace($idMatch): bool
-{
-    $qtyPlaces = 18;
-    $qtyOccupiedPlaces = getParticipationByMatchId($idMatch);
-    if ($qtyPlaces == count($qtyOccupiedPlaces)) {
-        return false;
-    }
-    return true;
-}
 
 //function sortMatches($arItems){
 //    foreach($arItems as $arItem) {
@@ -177,6 +83,9 @@ function isPlace($idMatch): bool
 
 //Принимает на вход arItem с данными игры/ Возвращает букву первой свободной группы
 function getAvailableGroup($arItem) {
+
+
+
     $diff =  strtotime($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"]) - time();
 
     $matches = getMatchesByDate($arItem["DISPLAY_PROPERTIES"]["DATE_START"]["VALUE"], $arItem["PROPERTIES"]['MIN_RATING']["VALUE"], $arItem["PROPERTIES"]['MAX_RATING']["VALUE"]);
@@ -186,11 +95,12 @@ function getAvailableGroup($arItem) {
     foreach($matches as $match){
 
         $tmp = getParticipationByMatchId($match["ID"]);
-        $tmp = array_flip($tmp);
-        $fill = 18 - count($tmp);
-        if(count($tmp) == 18) $freeGroup  = $match;
+        $totalFree = count($tmp);
+        $tmp = array_flip(array_filter($tmp));
+        $fill =  - count($tmp);
+        if(count($tmp) ==  $totalFree) $freeGroup  = $match;
 // Случай если осталось меньше часа, отображаем новые группы только если в них до этого регались
-        if($fill <= 17 && $diff < 3600 && count($tmp) != 18){
+        if($fill <= ( $totalFree -1) && $diff < 3600 && count($tmp) !=  $totalFree){
             $freeGroup  = $matches[$k];
             break;
         }
@@ -212,19 +122,23 @@ foreach ($bigTournaments as $bigTournament)
 {
     $tournamentDates = getTournamentPeriod($bigTournament['ID']);
     if(strtotime($tournamentDates["max"]) < time()) continue;
+   // dump($tournamentDates["mode"], 1);
     switch($tournamentDates["mode"]) {
-        case 4:
+        case 14:
             $type = "SQUAD";
             break;
-        case 2:
+        case 13:
             $type = "DUO";
             break;
-        case 1:
+        case 12:
             $type = "SOLO";
             break;
     }
+    $firstGameID = findGame($bigTournament['ID']);
+    $tmp = getParticipationByMatchId($firstGameID);
+
     $gamesTotal = getStagePeriod($tournamentDates["firstStage"], $bigTournament['ID']);
-    $countTotal = $gamesTotal["games"] * 18;
+    $countTotal = $gamesTotal["games"] * count($tmp);
     $countReal = countTournamentTeams($tournamentDates["firstStage"], $bigTournament['ID']);
     $countFree = $countTotal - $countReal;
 ?>
@@ -351,13 +265,15 @@ foreach ($bigTournaments as $bigTournament)
     $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
     $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
 
-    if($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5){
-        $tournamentDates = getTournamentPeriod($arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"]);
-        $gamesTotal = getStagePeriod($tournamentDates["firstStage"], $arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"]);
-        $countTotal = $gamesTotal["games"] * 18;
-        $countReal = countTournamentTeams($tournamentDates["firstStage"], $arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"]);
-        $countFree = $countTotal - $countReal;
-    }
+        if($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5){
+            $tournamentDates = getTournamentPeriod($arItem["PROPERTIES"]["TOURNAMENT"]["VALUE"]);
+            $tmp = getParticipationByMatchId($arItem['ID']);
+
+            $gamesTotal = getStagePeriod($tournamentDates["firstStage"], $arItem["PROPERTIES"]['TOURNAMENT']["VALUE"]);
+            $countTotal = $gamesTotal["games"] * count($tmp);
+            $countReal = countTournamentTeams($tournamentDates["firstStage"], $arItem["PROPERTIES"]['TOURNAMENT']["VALUE"]);
+            $countFree = $countTotal - $countReal;
+        }
 
 
 
@@ -376,20 +292,8 @@ if(isset($freeGroup) && $freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROU
     //GROUP
     $arItem["PROPERTIES"]["GROUP"]["VALUE"] = $freeGroup["PROPERTY_53"];
 }
+            $type = $arItem["PROPERTIES"]["GAME_MODE"]["VALUE"]
 
-
-
-    switch($arItem["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]) {
-        case 4:
-            $type = "SQUAD";
-            break;
-        case 2:
-            $type = "DUO";
-            break;
-        case 1:
-            $type = "SOLO";
-            break;
-    }
     ?>
   <div class="flex-table-new--row new-mobile-item" id="<?=$this->GetEditAreaId($arItem['ID']);?>">
         <span>
@@ -450,29 +354,29 @@ if(isset($freeGroup) && $freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROU
                       </div>
                   <?php } ?>
                   <div class="game-info__item game-info__item_right">
+        <?php if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] != 5) {
 
-                      <?php
-        if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) {
-                      $tmp = getParticipationByMatchId($arItem["ID"]);
-                      $tmp = array_flip($tmp);
+            $tmp = getParticipationByMatchId($arItem["ID"]);
 
-                      if (isset($tmp[$teamID])) {
-                          ?>
-                          <span class="slot-span"><?=GetMessage('SLOT_NO')?><?php echo $tmp[$teamID];?></span>
-                      <?php } else {
-                          $freeSlots = 18 - count($tmp);
-                          if($freeSlots > 0){
-                              ?>
-                              <span class="place-span"> <?php echo count($tmp);?>/18 <?=GetMessage('RATING_SEATS_OCCUPIED')?></span><?php
-                          } else {
-                              ?>
-                              <span class="no-slots-span"><?=GetMessage('NO_SEATS')?></span><?php
-                          }
-                      }
-        } else { ?>
-            <span class="place-span"> <?php echo $countReal ."/".$countTotal;?> <?=GetMessage('RATING_SEATS_OCCUPIED')?></span>
-        <?php  } ?>
-
+            $totalSlots = count($tmp);
+            $tmp = array_flip(array_filter($tmp));
+            $slot = $tmp[$teamID];
+            if($arItem["PROPERTIES"]["GAME_MODE"]["VALUE_ENUM_ID"] == 12){
+                $slot = $tmp[$userID];
+            }
+            if (isset($slot)) { ?>
+                <span class="slot-span"><?=GetMessage('SLOT_NO')?><?php echo $slot;?></span>
+            <?php } else {
+                $freeSlots =  $totalSlots - count($tmp);
+                if($freeSlots > 0){
+                    ?>
+                    <span class="place-span"><?php echo (count($tmp));?> / <?php echo $totalSlots;?> <?=GetMessage('RATING_SEATS_OCCUPIED')?></span><?php
+                } else { ?>
+                    <span class="no-slots-span"><?=GetMessage('NO_SEATS')?></span><?php
+                }
+            }
+        }
+            ?>
                   </div>
               </div>
           </div>
@@ -517,10 +421,14 @@ if(isset($freeGroup) && $freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROU
               <?php
              // dump($arItem);
               if($tmp = getParticipationByMatchId($arItem["ID"])) {
-                //dump($tmp);
-                  $tmp = array_flip($tmp);
-                  if (isset($tmp[$teamID])) { ?>
-                      <div class="new-game-schedule__participation-label"><?=GetMessage('SLOT_NO')?><?php echo $tmp[$teamID];?></div>
+                  $totalSlots = count($tmp);
+                  $tmp = array_flip(array_filter($tmp));
+                  $slot = $tmp[$teamID];
+                  if($arItem["PROPERTIES"]["GAME_MODE"]["VALUE_ENUM_ID"] == 12){
+                      $slot = $tmp[$userID];
+                  }
+                  if (isset($slot)) { ?>
+                      <div class="new-game-schedule__participation-label"><?=GetMessage('SLOT_NO')?><?php echo $slot;?></div>
                   <?php }
               }
               ?>
@@ -572,7 +480,7 @@ if(isset($freeGroup) && $freeGroup["PROPERTY_53"] != $arItem["PROPERTIES"]["GROU
         <span class="new-game-schedule__param-wrap">
         <?php
         if ($arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 6) {
-            echo 18 - count($tmp);
+            echo $totalSlots - (count($tmp));
         } else {
             echo $countFree;
         }

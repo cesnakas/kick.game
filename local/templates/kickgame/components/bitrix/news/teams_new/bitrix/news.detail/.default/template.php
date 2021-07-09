@@ -17,6 +17,52 @@ $rsUser = CUser::GetByID($userID);
 $arUser = $rsUser->Fetch();
 $teamID = $arUser['UF_ID_TEAM'];
 $requestTeamID = $arUser['UF_REQUEST_ID_TEAM'];
+$chick_user = CustomChick::getUserBudget($arUser["ID"], CustomChick::CHICK_CURRENCY_CODE);
+$chick_user=number_format($chick_user, 0, "", "");
+$team = getTeamById($teamID);
+$balanceTeamChicks = $team['BALANCE']['VALUE']+0;
+if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['rand']==$_SESSION['rand'] && check_bitrix_sessid()) {
+    $quantity = 0;
+    if(isset($_POST["quantity"]))
+    {
+        $quantity   = trim(strip_tags($_POST["quantity"]));
+    }
+    if(empty($quantity)) {
+        createSession('management-players_error', 'Введи значение в поле количество');
+        LocalRedirect('');
+    } else if($quantity+0 > $chick_user) {
+        createSession('management-players_error', 'Недостаточно средств. Пополни личный счет');
+        LocalRedirect('');
+    }
+
+    // 33 - id chicks
+    // 36 - перевод на счет команды
+    // 34 приход
+    if(addRecordInHLTeamBalanceHistory($arUser, $balanceTeamChicks, $quantity+0, 33, 36, 34))  {
+        // спиши с баланса пользователя
+        CustomChick::setUserBudget($arUser["ID"], CustomChick::CHICK_CURRENCY_CODE, -$quantity+0);
+        // обнови поле баланса
+        CIBlockElement::SetPropertyValueCode($teamID+0, "BALANCE", $balanceTeamChicks+$quantity+0);
+        $fields = array(
+            "UF_TRANSACTION_ID" => '',
+            "UF_QUANTITY" => -$quantity+0,
+            "UF_OPERATION_NAME" => "Перевод на счет команды",
+            "UF_OPERATION_TYPE" => CustomChick::OPERATION_TYPE[0],
+            "UF_DATE" => date("d.m.Y H:i:s"),
+            "UF_CURRENCY_TYPE" => CustomChick::CHICK_CURRENCY_CODE,
+            "UF_USER_ID" => $arUser['ID']
+        );
+        CustomChick::addTransaction($fields);
+
+        // записываем в сесию для диалогового окна
+        createSession('team-balance__success', '<div class="alert-content__heading">Баланс команды пополнен</div>
+        <div class="alert-content__description">Вы успешно пополнили счет команды на '.$quantity.' Chicks</div>');
+
+        LocalRedirect(SITE_DIR . "teams/" . $arResult['ID'] . '/');
+
+    }
+}
+
 function countPointsByUserID( $userID ){
     GLOBAL $DB;
     $userID += 0;
@@ -202,6 +248,44 @@ if(isset($_SESSION['team_success'])) { ?>
         </div>
     </div>
         <?php unset($_SESSION['team_error']);} ?>
+<?php
+
+if(isset($_SESSION['management-players_success'])) { ?>
+    <div class="alert-container" style="position: relative !important; margin-bottom: 7px;">
+        <div class="alert alert-success alert-dismissible fade show"  role="alert">
+            <?php echo $_SESSION['management-players_success'];?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <?php
+}
+if(isset($_SESSION['management-players_error'])){ ?>
+    <div class="alert-container" style="position: relative !important;">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['management-players_error'];?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+<?php }
+unset($_SESSION['management-players_success']);
+unset($_SESSION['management-players_error']);
+
+?>
+<?php if(isset($_SESSION['team-balance__success'])) { ?>
+    <div class="alert alert-bottom alert-dismissible fade show" role="alert">
+        <div class="alert-content">
+            <div class="alert-content__img">
+                <img src="<?php echo CFile::GetPath($arUser["PERSONAL_PHOTO"]); ?>" alt="alert">
+            </div>
+            <div class="alert-content__message">
+                <?php echo $_SESSION['team-balance__success']; ?>
+            </div>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php }
+unset($_SESSION['team-balance__success']);
+?>
 <section class="team py-8">
   <div class="container">
     <a href="<?= SITE_DIR ?>teams/" class="btn-italic-icon">
@@ -282,7 +366,7 @@ if(isset($_SESSION['team_success'])) { ?>
                   </form>
                 </div>
                 <?php  } else if (!empty($teamID)) {
-              $team = getTeamById($teamID);
+
             ?>
             <div class="team-info__description">
               <br>
@@ -311,11 +395,93 @@ if(isset($_SESSION['team_success'])) { ?>
                 </div>
                 <?php } ?>
             <?php } ?>
+            <?php if($isMyCommand) { ?>
+          <div class="profile-info__line"></div>
+
+          <div class="team-info__balance">
+            <div class="profile-info__balance-wrap">
+              <div class="profile-info__balance">
+                <i></i>
+                <div class="profile-info__balance-value">
+                  <span><?php echo $team['BALANCE']['VALUE']+0; ?></span>
+                  <span>Chicks</span>
+                </div>
+              </div>
+              <!--<div class="profile-info__balance">
+                <i></i>
+                <div class="profile-info__balance-value">
+                  <span>5 015</span>
+                  <span>wincoin</span>
+                </div>
+              </div>-->
+            </div>
+            <div class="profile-info__balance-top-up">
+              <a href="#" class="btn" data-toggle="modal" data-target="#team-info__add_ballance">Пополнить счет</a>
+            </div>
+          </div>
+
+          <div class="team-info__balance-operation">
+            <div class="profile-info__balance-operation">
+              <a href="/management-compositional/account-history/" class="btn-italic-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20"><path d="M694.75,380.63l-6-6.36a.81.81,0,0,0-1.21,0,.93.93,0,0,0-.25.64v2.73h-6a.91.91,0,0,0,0,1.81h6.85a.88.88,0,0,0,.86-.9V377.1l3.93,4.17L689,385.44V384a.88.88,0,0,0-.86-.91h-9.43v-2.73a.88.88,0,0,0-.85-.91.84.84,0,0,0-.61.27l-6,6.36a1,1,0,0,0,0,1.29l6,6.36a.84.84,0,0,0,.61.27.78.78,0,0,0,.33-.07.9.9,0,0,0,.52-.84v-2.73h6a.91.91,0,0,0,0-1.81h-6.85a.88.88,0,0,0-.86.9v1.45l-3.93-4.17,3.93-4.17V384a.88.88,0,0,0,.86.91h9.43v2.73a.88.88,0,0,0,.85.91.84.84,0,0,0,.61-.27l6-6.36A1,1,0,0,0,694.75,380.63Z" transform="translate(-671 -374)"></path></svg>
+                История операций
+              </a>
+              <a href="#" class="btn-italic-icon" data-toggle="modal" data-target="#withdraw">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20"><path d="M681.61,374.36a10,10,0,0,1,6.23,1.15,10,10,0,0,1-4.27,18.73,10,10,0,0,1-10-6.66,1,1,0,1,1,1.88-.66,8,8,0,1,0,1.9-8.32l0,0-2.8,2.63H678a1,1,0,0,1,0,2h-6a1,1,0,0,1-1-1v-6a1,1,0,0,1,2,0v3.69l2.94-2.77A10,10,0,0,1,681.61,374.36Z" transform="translate(-671 -374.26)"></path></svg>
+                Снять со счета
+              </a>
+            </div>
+          </div>
+          <?php } ?>
         </div>
       </div>
     </div>
   </div>
 </section>
+<?php
+$_SESSION['rand']=rand()." - ".rand()." - ".rand;
+?>
+    <div class="modal fade" id="team-info__add_ballance" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close">
+                        <i></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="modal-body__title">Пополнение счета команды</h3>
+                    <div class="modal-body__content mb-3">
+                        <form action="<?= POST_FORM_ACTION_URI; ?>" method="post">
+                            <?=bitrix_sessid_post()?>
+                            <input type='hidden' name='rand' value='<?=$_SESSION['rand']?>' />
+                            <div class="form-field">
+                                <label for="qtyChicks" class="form-field__label">Количество:</label>
+                                <input type="number" class="form-field__input form-field__input_big"
+                                       autocomplete="off" id="qtyChicks"
+                                       maxlength="20"
+                                       placeholder="13"
+                                       name="quantity"
+                                       data-max="<?=$chick_user?>"
+                                       step="число"
+                                       min="1"
+                                       max="<?=$chick_user?>>
+                  </div>
+                  <div class="text-center">
+                                <button type="submit" class="btn mt-5 btn-wide" <?php if($chick_user == 0) { ?> disabled<?php } ?>>Пополнить счет</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <?php if($chick_user == 0) { ?>
+                    <div class="modal-footer__new modal-footer__new_error">
+                        <i></i> Недостаточно средств. <a href="/personal/pay/">Пополнить</a>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
 <?php
 // получаем состав команды
 function getCoreTeam($teamID)

@@ -1,3 +1,184 @@
+.account-history .flex-table--row span:last-child {
+	text-align: right;flex: 1;
+	color: #00DA5B
+}
+.account-history .load-more-items{text-align:center;width: 100%;cursor:pointer;}
+.account-history .flex-table--categories span:last-child {
+	text-align: right;flex: 1;
+}
+.history-operation__show-more div{cursor:pointer;}
+.account-history .flex-table--row span:nth-child(1),
+.account-history .flex-table--row span:nth-child(2),
+.account-history .flex-table--row span:nth-child(3),
+.account-history .flex-table--row span:nth-child(6) {
+	flex: 1;
+}
+
+.account-history .flex-table--categories span:nth-child(1),
+.account-history .flex-table--categories span:nth-child(2),
+.account-history .flex-table--categories span:nth-child(3),
+.account-history .flex-table--categories span:nth-child(6) {
+	flex: 1;
+}
+
+.account-history .flex-table--categories span:nth-child(4), .account-history .flex-table--categories span:nth-child(5)  {
+	flex: 2;
+}
+
+.account-history .flex-table--row span:nth-child(4), .account-history .flex-table--row  span:nth-child(5)  {
+	flex: 2;
+}
+
+.account-history__param {
+	display: none;
+}
+
+.account-history span.span__red:last-child {
+	color: #ff0052;
+}
+#team-info__add_ballance .modal-content{border:1px solid #ffffff30;background:#2d284a, linear-gradient(107.49deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%) }
+#team-info__add_ballance .modal-body__title{margin-top: 20px;}
+.team-info__add_ballance {
+font-family: "OswaldRegular";
+    color: #fff;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 24px;
+    padding: 13px 21px 15px;
+    box-sizing: content-box;
+    text-transform: uppercase;
+    width: calc(100% - 42px);
+    border-radius: 4px;
+    border-width: 0px !important;    margin-bottom: 40px;
+}
+
+#team-info__add_ballance .modal-dialog {
+	max-width: 416px;
+}
+
+.modal-body__graytext {
+	display: block;
+	margin-bottom: 20px;
+	color: #8D89A5;
+	font-family: "CeraProRegular";
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 18px;
+	color:
+}
+
+.modal-body__w100 {
+	width: 100%;
+	margin-top: 50px;
+	margin-top: 50px;
+    width: 162px;
+    margin: auto;
+    display: block;
+
+}
+
+.team-info__team_chicks {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.team-info__team_rating {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.team-info__team_rating b,
+.team-info__team_chicks b {
+	font-weight: 500;
+	font-size: 14px;
+	color: #fff;
+	box-sizing: content-box;
+	line-height: 9px;
+}
+
+.team-info__team_rating,
+.team-info__team_chicks {
+	text-transform: uppercase;
+	width: 80px;
+	flex-direction: column;
+	color: #8D89A5;
+	box-sizing: content-box;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 9px;
+	line-height: 11px;
+}
+
+.team-info__team_balance {
+	border-top: 1px solid #ffffff14;
+	margin-top: 33px;
+	max-width: 100%;
+	padding-top: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.team-info__add_ballance_team {
+	position: relative;
+	display: inline-block;
+	font-family: "CeraProMedium";
+	-webkit-box-shadow: 0 4px 24px #70621c;
+	box-shadow: 0 4px 24px #70621c;
+	text-align: center;
+	font-size: 1.4rem;
+	background-color: #ffe500;
+	text-decoration: none;
+	padding: 12px 26px;
+	border-radius: 4px;
+	outline: 0;
+	border: 1px solid transparent;
+	cursor: pointer;
+	overflow: hidden;
+	-webkit-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+	line-height: 1;
+	COLOR: #000;
+}
+.team-info__add_ballance_team:hover {
+    background: #fff7ac;
+    -webkit-box-shadow: 0 4px 36px #70621c;
+    box-shadow: 0 4px 36px #70621c;
+}
+.team-info__ico_money {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 0px;
+	position: static;
+	width: 32px;
+	height: 32px;
+	left: 0px;
+	top: 2px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-sizing: border-box;
+	border-radius: 4px;
+	/* Inside Auto Layout */
+	flex: none;
+	order: 0;
+	flex-grow: 0;
+	margin: 0px 12px 0px 0px;
+}
+
+.team-info__team_balance_history {
+	text-align: center;
+	margin-top: 30px;
+}
+
+
+
+
+
 .flex-table-new {
     width: 100%
 }
@@ -466,4 +647,38 @@
 .premium-message {
     color: #5F5A82;
     margin: 15px;
+}
+.personal-account
+{
+    margin: 100px 0;
+    /*width: 300px;*/
+}
+.personal-account .product
+{
+    border: 1px white solid;
+    display: block;
+    float: left;
+    margin: 5px;
+    text-align: center;
+    width: 200px;
+}
+.transactions
+{
+    margin: 100px 0 30px 0;
+    width: 70%;
+}
+.transactions .head .row > div
+{
+    border: 1px solid white;
+    padding: 5px 0;
+    text-align: center;
+    width: 20%;
+}
+.transactions .body .row > div
+{
+    border-bottom: 1px dotted white;
+    display: block;
+    padding: 5px 0;
+    text-align: center;
+    width: 20%;
 }

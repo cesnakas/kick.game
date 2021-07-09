@@ -2,6 +2,7 @@
 $MESS["MAIN_BTN_ACTION"] = "Registration";
 $MESS['MAIN_BTN_ACTION_LOGIN'] = 'My profile';
 $MESS["MAIN_CUSTOMS"] = "Scrims with equal opponents";
+$MESS['GAME_STORE'] = 'Game store';
 $MESS["MAIN_DUO"] = "Free scrims daily";
 $MESS["MAIN_FREE"] = "Free sign up for scrims opens  at 12:00 p.m. UTC+3 on the day of the match";
 $MESS["MAIN_SQUAD"] = "1000 € squad tournaments";

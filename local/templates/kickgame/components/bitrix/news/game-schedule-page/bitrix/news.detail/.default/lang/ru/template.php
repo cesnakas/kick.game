@@ -18,7 +18,8 @@ $MESS['GSP_GAME_MODE'] = 'Режим игры';
 $MESS['GSP_SEATS'] = 'Количество мест';
 $MESS['GSP_NO_SEATS'] = 'мест нет';
 $MESS['GSP_OCCUPIED'] = 'Занято ';
-$MESS['GSP_OUT_OF'] = ' из 18 мест';
+$MESS['GSP_OUT_OF'] = ' из ';
+$MESS['GSP_PLACES'] = ' мест';
 $MESS['GSP_BEFORE_TOURNAMENT_REGISTER'] = 'Для участия в турнире требуется оплаченная подписка на 7 дней с момента начала турнирных игр';
 
 $MESS['GSP_PARTICIPANTS'] = 'Участники игры';

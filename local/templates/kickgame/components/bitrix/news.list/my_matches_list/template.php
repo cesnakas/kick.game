@@ -117,10 +117,16 @@ $teamID = $arUser['UF_ID_TEAM'];
               <div class="color-tournament"><?php echo $arItem["DISPLAY_PROPERTIES"]['TYPE_MATCH']["~VALUE"]; ?></div>
             <?php } ?>
               <?php
-              if($tmp = getParticipationByMatchIdMyMatches($arItem["ID"])) {
-                  $tmp = array_flip($tmp);
-                  if (isset($tmp[$teamID])) { ?>
-                    <div class="game-schedule__participation-label">Слот № <?php echo $tmp[$teamID];?></div>
+
+              if($tmp = getParticipationByMatchId($arItem["ID"])) {
+                  $totalSlots = count($tmp);
+                  $tmp = array_flip(array_filter($tmp));
+                  $slot = $tmp[$teamID];
+                  if($arItem["PROPERTIES"]["GAME_MODE"]["VALUE_ENUM_ID"] == 12){
+                      $slot = $tmp[$userID];
+                  }
+                  if (isset($slot)) { ?>
+                      <div class="game-schedule__participation-label"><?=GetMessage('SCHEDULE_SLOT_N')?> <?php echo $slot;?></div>
                   <?php }
               }
               ?>

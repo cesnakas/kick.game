@@ -113,7 +113,7 @@ $this->setFrameMode(true);
     <div class="flex-table-new--body">
 <?php
 $curDate = date('Y-m-d H:i:s', time());
-
+//$curDate = "2021-05-01 00:00:00";
 GLOBAL $arrFilterDateTime;
 $ids = getOneIdPerTourney();
 

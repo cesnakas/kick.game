@@ -73,6 +73,20 @@ function getCoreTeam($teamID)
     return $output;
 }
 
+function getUserById($id)
+{
+    $filter = Array("GROUPS_ID" => Array(7), 'ID' => $id);
+    $arParams["SELECT"] = array("UF_*");
+    $elementsResult = CUser::GetList(($by = "NAME"), ($order = "desc"), $filter, $arParams);
+    $output = false;
+    if ($rsUser = $elementsResult->Fetch())
+    {
+        $output = $rsUser;
+    }
+    return $output;
+
+}
+
 // получаем участников команды
 function getPlayersSquadByIdMatch($idMatch, $teamId)
 {
@@ -160,64 +174,7 @@ function isCaptain($idUser, $idTeam)
   return  false;
 }
 $isCaptain = isCaptain($userID, $teamID);
-// проверка команды на участие
-function getParticipationByMatchId($idMatch)
-{
-    $arSelect = Array(
-        "ID",
-        "NAME",
-        "DATE_ACTIVE_FROM",
-        "PROPERTY_*",
-    );
-    $arFilter = Array(
-        "IBLOCK_ID" =>4,
-        "PROPERTY_WHICH_MATCH" => $idMatch,
-        "ACTIVE_DATE" => "Y",
-        "ACTIVE" => "Y");
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-    $arrTeams = [];
-    $key = [
-        3 => "TEAM_PLACE_03",
-        4 => "TEAM_PLACE_04",
-        5 => "TEAM_PLACE_05",
-        6 => "TEAM_PLACE_06",
-        7 => "TEAM_PLACE_07",
-        8 => "TEAM_PLACE_08",
-        9 => "TEAM_PLACE_09",
-        10 => "TEAM_PLACE_10",
-        11 => "TEAM_PLACE_11",
-        12 => "TEAM_PLACE_12",
-        13 => "TEAM_PLACE_13",
-        14 => "TEAM_PLACE_14",
-        15 => "TEAM_PLACE_15",
-        16 => "TEAM_PLACE_16",
-        17 => "TEAM_PLACE_17",
-        18 => "TEAM_PLACE_18",
-        19 => "TEAM_PLACE_19",
-        20 => "TEAM_PLACE_20",
-    ];
-    if ($ob = $res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        foreach ($key as $place=>$name) {
-            if ($arProps[$name]['VALUE']+0 > 0) {
-                $arrTeams[$place] = $arProps[$name]['VALUE'];
-            }
-        }
-        return $arrTeams;
-    }
-    return  false;
-}
-// есть ли свободное место
-function isPlace($idMatch)
-{
-    $qtyPlaces = 18;
-    $qtyOccupiedPlaces = getParticipationByMatchId($idMatch);
-    if ($qtyPlaces == count($qtyOccupiedPlaces)) {
-        return false;
-    }
-    return true;
-}
+
 
 function getLastTournamentGameTime($tournamentId){
 
@@ -254,17 +211,9 @@ $redirectLink = SITE_DIR."management-games/join-game/?mid=". $arResult["ID"];
 }
 
 $btnValue = GetMessage('BUTTON_VALUE');
-switch($arResult["PROPERTIES"]["COUTN_TEAMS"]["VALUE"]) {
-    case 4:
-        $mode = "SQUAD";
-        break;
-    case 2:
-        $mode = "DUO";
-        break;
-    case 1:
-        $mode = "SOLO";
-        break;
-}
+
+        $mode = $arResult["PROPERTIES"]["GAME_MODE"]["VALUE"];
+
 
 $matches = getChainMatches( $arResult["ID"] );
 $gamesCount = count($matches["chain"]);
@@ -329,7 +278,7 @@ unset($_SESSION['game-schedule-detail_error']);
               <div class="game__block-type game__block-type_tournament"><i></i> <?=GetMessage('GSP_GAME_TOURNAMENT')?></div>
             <?php } ?>
             <!--если юзер в группе ироков-->
-            <?if ($arUser["UF_ID_TEAM"] && $isCaptain):?>
+            <?if (($arUser["UF_ID_TEAM"] && $isCaptain) || $arResult["PROPERTIES"]["GAME_MODE"]["VALUE_ENUM_ID"] == 12) :?>
                 <?if($arResult["DISPLAY_PROPERTIES"]['TYPE_MATCH']["VALUE_ENUM_ID"] == 5):?>
                     <?php if(!empty($userProductGroups) && count($userProductGroups)) { ?>
                   <?php
@@ -454,7 +403,7 @@ unset($_SESSION['game-schedule-detail_error']);
                       <?=GetMessage('GSP_NO_SEATS')?>
                   <?php } else {
                       $qtyOccupiedPlaces = getParticipationByMatchId($arResult['ID']);
-                                        echo GetMessage('GSP_OCCUPIED') . count($qtyOccupiedPlaces) . GetMessage('GSP_OUT_OF');
+                      echo GetMessage('GSP_OCCUPIED') . (count(array_flip($qtyOccupiedPlaces)) - 1) . GetMessage('GSP_OUT_OF') . count($qtyOccupiedPlaces) . GetMessage('GSP_PLACES') ;
                   } ?>
               </div>
             </div>
@@ -465,8 +414,9 @@ unset($_SESSION['game-schedule-detail_error']);
   </section>
 </div>
 <?php
-$teamIds = getMembersIdsTeamByMatchId($arResult["ID"]);
-$teamIds = array_diff($teamIds, array(''));
+$teamIds =  getParticipationByMatchId($arResult["ID"]);
+$teamIds = array_filter($teamIds);
+
 
 
 function countPointsByMatchesIDs( $IDs = array() ){
@@ -605,6 +555,9 @@ if (!empty($teamIds)) {
         //$n=+1;
 
         $team = getTeamById($teamId);
+        if($arResult["PROPERTIES"]["GAME_MODE"]["VALUE_ENUM_ID"] == 12){
+            $team = getUserById($teamId);
+        }
         $total = '...';
         $kills = '...';
         $wwcd = '0';
@@ -684,7 +637,18 @@ if (!empty($teamIds)) {
 
     foreach ($arrForRank as $rank => $teamRank) {
       $rank+=1;
-      //dump($teamRank);
+      $avatar = $teamRank['team']["LOGO_TEAM"]['VALUE'];
+      $id = $teamRank['team']['ID'];
+      $name = $teamRank['team']['NAME'];
+        if($arResult["PROPERTIES"]["GAME_MODE"]["VALUE_ENUM_ID"] == 12){
+            $avatar = $teamRank['team']["PERSONAL_PHOTO"];
+            $id = $teamRank['team']['ID'];
+            $name = $teamRank['team']['LOGIN'];
+        }
+        if(isset($teamRank['team']["TAG_TEAM"]['VALUE'])){
+            $tag = " [". $teamRank['team']["TAG_TEAM"]['VALUE'] . "] ";
+        }
+
             //$team = getTeamById($teamId);
             //dump($team);
             //dump($team);
@@ -712,10 +676,10 @@ if (!empty($teamIds)) {
               <?php } ?>
                 <span>
                   <div class="match-participants__team">
-                    <div class="match-participants__team-logo" style="background-image: url(<?php echo CFile::GetPath($teamRank['team']["LOGO_TEAM"]['VALUE']); ?>">
+                    <div class="match-participants__team-logo" style="background-image: url(<?php echo CFile::GetPath($avatar); ?>">
                     </div>
                       <?php if(isset($teamRank['team'])) { ?>
-                    <a href="<?=SITE_DIR?>teams/<?php echo $teamRank['team']['ID'];?>/" class="match-participants__team-link"><?php echo $teamRank['team']['NAME']; ?> [<?php echo $teamRank['team']["TAG_TEAM"]['VALUE']; ?>]</a>
+                    <a href="<?=SITE_DIR?>teams/<?php echo $id;?>/" class="match-participants__team-link"><?php echo $name; ?></a>
                       <?php } else {
                           echo GetMessage('ALERTS_TEAM_DELETED');
                       }?>

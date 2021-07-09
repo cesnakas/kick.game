@@ -71,6 +71,7 @@ $intlFormatter = new IntlDateFormatter('ru_RU', IntlDateFormatter::SHORT, IntlDa
             <a href="<?=SITE_DIR;?>" class="link"><?=GetMessage('NAV_HOME')?></a>
             <a href="<?=SITE_DIR;?>game-schedule/" class="link"><?=GetMessage('NAV_GAME_SCHEDULE')?></a>
             <a href="<?=SITE_DIR;?>teams/" class="link"><?=GetMessage('NAV_TEAMS')?></a>
+            <a href="<?= SITE_DIR; ?>shop/" class="link"><?= GetMessage('GAME_STORE') ?></a>
             <a href="<?=SITE_DIR;?>subscription-plans/" class="link"><?=GetMessage('NAV_SUBSCRIPTION_PLANS')?></a>
           <div class="lang-selector js-lang">
                     <svg width="10" height="10" fill="currentColor">

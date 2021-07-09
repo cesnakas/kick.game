@@ -2,6 +2,7 @@
 $MESS['NAV_HOME'] = 'Главная';
 $MESS['NAV_TIMETABLE'] = 'Расписание';
 $MESS['NAV_RATINGS'] = 'Рейтинги';
+$MESS['GAME_STORE'] = 'Игровой магазин';
 $MESS['NAV_SUBSCRIPTION'] = 'Подписка';
 $MESS['NAV_LOGOUT'] = 'Выход';
 $MESS['NAV_LOGIN'] = 'Войти';

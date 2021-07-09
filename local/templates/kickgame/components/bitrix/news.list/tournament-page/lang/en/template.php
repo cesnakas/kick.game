@@ -1,7 +1,7 @@
 <?php
 $MESS["TOUR_SCHEDULE"] = 'Game schedule'; // "Matches";
 $MESS["TOUR_RESULTS"] = 'Results';
-$MESS['TOUR_TEAM'] = 'Squad';
+$MESS['TOUR_TEAM'] = 'Participants';
 $MESS['TOUR_RATINGS'] = 'Ratings';
 $MESS['TOUR_FINALE'] = ' finale';
 $MESS['TOUR_SQUADS'] = ' squads, ';

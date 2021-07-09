@@ -295,11 +295,11 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 <?php if ($USER->IsAuthorized()) { ?>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    if (!sessionStorage.getItem('shown-modal')){
+    if (!localStorage.getItem('shown-modal')){
       setTimeout(function () {
         $('#popup-login-by-email').modal('show');
       }, 3000);
-      sessionStorage.setItem('shown-modal', 'true');
+        localStorage.setItem('shown-modal', 'true');
     }
   });
 </script>
@@ -326,13 +326,14 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 <!-- End of  Zendesk Widget script -->
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-189243091-1"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TWEDGS6SBG"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    gtag('config', 'UA-189243091-1');
+  gtag('config', 'G-TWEDGS6SBG');
 </script>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
@@ -374,6 +375,12 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 </script>
 <!-- TikTok Pixel Code End -->
 
-<!-- TikTok Pixel Code End -->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K2FLPWQ');</script>
+<!-- End Google Tag Manager -->
 </body>
 </html>

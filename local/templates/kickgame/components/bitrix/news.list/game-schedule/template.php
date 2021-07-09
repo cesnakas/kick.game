@@ -33,91 +33,9 @@ function getMatchById($matchId) {
     return null;
 }
 // проверка команды на участие
-function getParticipationByMatchId($idMatch)
-{
-    $arSelect = Array(
-        "ID",
-        "NAME",
-        "DATE_ACTIVE_FROM",
-        "PROPERTY_*",
-    );
-    $arFilter = Array(
-        "IBLOCK_ID" =>4,
-        "PROPERTY_WHICH_MATCH" => $idMatch,
-        "ACTIVE_DATE" => "Y",
-        "ACTIVE" => "Y");
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-    $arrTeams = [];
-    $key = [
-        3 => "TEAM_PLACE_03",
-        4 => "TEAM_PLACE_04",
-        5 => "TEAM_PLACE_05",
-        6 => "TEAM_PLACE_06",
-        7 => "TEAM_PLACE_07",
-        8 => "TEAM_PLACE_08",
-        9 => "TEAM_PLACE_09",
-        10 => "TEAM_PLACE_10",
-        11 => "TEAM_PLACE_11",
-        12 => "TEAM_PLACE_12",
-        13 => "TEAM_PLACE_13",
-        14 => "TEAM_PLACE_14",
-        15 => "TEAM_PLACE_15",
-        16 => "TEAM_PLACE_16",
-        17 => "TEAM_PLACE_17",
-        18 => "TEAM_PLACE_18",
-        19 => "TEAM_PLACE_19",
-        20 => "TEAM_PLACE_20",
-    ];
-    if ($ob = $res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        foreach ($key as $place=>$name) {
-            if ($arProps[$name]['VALUE']+0 > 0) {
-                $arrTeams[$place] = $arProps[$name]['VALUE'];
-            }
-        }
-        return $arrTeams;
-    }
-    return  false;
-}
 
-function checkRegistrationTeamOnTournament($idTeam, $idTournament)
-{
-    $matchesId = [];
-    $idRegistrationMatch = false;
-    $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-    $arFilter = Array("IBLOCK_ID" =>4,
-        //"?NAME" => '#'.$idTournament.'_TOURNAMENT',
-        //"?NAME" => '_GROUP4_STAGE1',
-        array(
-            "LOGIC" => "AND",
-            array(
-                "?NAME" => '#'.$idTournament.'_TOURNAMENT'
-            ),
-            array(
-                "?NAME" => '_GROUP4_STAGE1'
-            ),
-        ),
-        "ACTIVE_DATE" => "Y",
-        "ACTIVE" => "Y");
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-    while ($ob = $res->GetNextElement()) {
-        //$arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        $matchesId[] = $arProps["WHICH_MATCH"]['VALUE']+0;
-    }
-    if (!empty($matchesId)) {
-        foreach ($matchesId as $id) {
-            if($tmp = getParticipationByMatchId($id)) {
-                $tmp = array_flip($tmp);
-                if (isset($tmp[$idTeam])) {
-                    $idRegistrationMatch = $id;
-                }
-            }
-        }
-    }
-    return $idRegistrationMatch;
-}
+
+
 function isTournament($idMatch)
 {
     $match = getMatchById($idMatch);
@@ -132,15 +50,7 @@ function isTournament($idMatch)
 }
 
 // есть ли свободное место
-function isPlace($idMatch): bool
-{
-    $qtyPlaces = 4;
-    $qtyOccupiedPlaces = getParticipationByMatchId($idMatch);
-    if ($qtyPlaces == count($qtyOccupiedPlaces)) {
-        return false;
-    }
-    return true;
-}
+
 
 ?>
 
@@ -256,6 +166,7 @@ function isPlace($idMatch): bool
             </div>
         </div>
     </div>
+
     <div class="flex-table--row new-desktop-item" id="<?=$this->GetEditAreaId($arItem['ID']);?>">
         <span>
           <div class="new-game-schedule__type-game">
