@@ -89,13 +89,13 @@ function getUserRating($userID) {
                         <a class="nav-link" href="<?=SITE_DIR?>game-schedule/">Расписание</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=SITE_DIR?>players/">Рейтинги</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>teams/">Рейтинги</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Игровой магазин</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>shop/">Игровой магазин</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Подписка</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>subscription-plans/">Подписка</a>
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -108,19 +108,19 @@ function getUserRating($userID) {
                     </li>
                     <? if($USER->IsAuthorized()): ?>
                     <li class="nav-item d-lg-none">
-                        <a class="nav-link" href="#">Профиль игрока</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>personal/">Профиль игрока</a>
                     </li>
                     <li class="nav-item d-lg-none">
-                        <a class="nav-link" href="#">Команда</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>">Команда</a>
                     </li>
                     <li class="nav-item d-lg-none">
-                        <a class="nav-link" href="#">Выйти</a>
+                        <a class="nav-link" href="<?=SITE_DIR?>">Выйти</a>
                     </li>
                     <? else: ?>
                     <li class="nav-item d-lg-none">
                         <div class="d-grid gap-3 gx-3">
-                            <a class="btn btn-warning" href="#" role="button">Вход</a>
-                            <a class="btn btn-outline-warning" href="#" role="button">Регистрация</a>
+                            <a class="btn btn-warning" href="<?=SITE_DIR?>personal/" role="button">Вход</a>
+                            <a class="btn btn-outline-warning" href="<?=SITE_DIR?>personal/" role="button">Регистрация</a>
                         </div>
                     </li>
                     <? endif; ?>
@@ -175,7 +175,7 @@ function getUserRating($userID) {
                                 <span class="d-none d-xl-block ms-2"><?= htmlspecialchars($arUser['LOGIN']); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Профиль пользователя</a></li>
+                                <li><a class="dropdown-item" href="<?=SITE_DIR?>personal/">Профиль пользователя</a></li>
                                 <li><a class="dropdown-item" href="#">Моя команда</a></li>
                                 <li><a class="dropdown-item" href="#">Dashboard</a></li>
                                 <li><a class="dropdown-item" href="#">Creat Matches</a></li>
@@ -184,8 +184,8 @@ function getUserRating($userID) {
                         </li>
                         <? else: ?>
                         <li class="nav-item d-none d-lg-flex">
-                            <a class="ms-3 btn btn-outline-warning" href="#" role="button">Регистрация</a>
-                            <a class="ms-3 btn btn-warning" href="#" role="button">Войти</a>
+                            <a class="ms-3 btn btn-outline-warning" href="<?=SITE_DIR?>personal/" role="button">Регистрация</a>
+                            <a class="ms-3 btn btn-warning" href="<?=SITE_DIR?>personal/" role="button">Войти</a>
                         </li>
                         <? endif; ?>
                     <? endif; ?>
@@ -211,7 +211,7 @@ function getUserRating($userID) {
                         <span class="d-none d-xl-block ms-2"><?= htmlspecialchars($arUser['LOGIN']); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Профиль пользователя</a></li>
+                        <li><a class="dropdown-item" href="<?=SITE_DIR?>personal/">Профиль пользователя</a></li>
                         <li><a class="dropdown-item" href="#">Моя команда</a></li>
                         <li><a class="dropdown-item" href="#">Dashboard</a></li>
                         <li><a class="dropdown-item" href="#">Creat Matches</a></li>
@@ -220,8 +220,8 @@ function getUserRating($userID) {
                 </div>
                 <? else: ?>
                 <div class="navbar-nav d-none d-lg-flex">
-                    <a class="btn btn-outline-warning" href="#" role="button">Регистрация</a>
-                    <a class="ms-3 btn btn-warning" href="#" role="button">Войти</a>
+                    <a class="btn btn-outline-warning" href="<?=SITE_DIR?>personal/" role="button">Регистрация</a>
+                    <a class="ms-3 btn btn-warning" href="<?=SITE_DIR?>personal/" role="button">Войти</a>
                 </div>
                 <? endif; ?>
             <? endif; ?>
