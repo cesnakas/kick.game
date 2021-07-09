@@ -75,13 +75,13 @@ $APPLICATION->SetTitle("Главная");
         </div>
     </section>
 
-    <section>
+    <section class="section__about">
         <div class="container">
             <h3 class="display-4">О платформе</h3>
         </div>
     </section>
 
-    <section>
+    <section class="section__functions">
         <div class="container">
             <h3 class="display-4">Функции</h3>
         </div>
