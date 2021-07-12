@@ -1,9 +1,58 @@
-<?
+<?php
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/header.php');
 $APPLICATION->SetPageProperty("TITLE", "KICKGAME");
 $APPLICATION->SetTitle("Главная");
 ?>
 
+    <section class="section__header">
+        <div class="container">
+
+            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" alt="...">
+                        <div class="carousel-caption">
+                            <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
+                            <p>Бесплатные праки каждый день и рейтинговые игры — играй с равными!</p>
+                            <button class="btn btn-warning">Зарегистрироваться</button>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" alt="...">
+                        <div class="carousel-caption">
+                            <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
+                            <p>Бесплатные праки каждый день и рейтинговые игры — играй с равными!</p>
+                            <button class="btn btn-warning">Зарегистрироваться</button>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" alt="...">
+                        <div class="carousel-caption">
+                            <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
+                            <p>Бесплатные праки каждый день и рейтинговые игры — играй с равными!</p>
+                            <button class="btn btn-warning">Зарегистрироваться</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <?/*
     <section class="section__header">
         <div class="container">
 
@@ -42,6 +91,7 @@ $APPLICATION->SetTitle("Главная");
 
         </div>
     </section>
+    */?>
 
     <section class="section__advantages">
         <div class="container">
