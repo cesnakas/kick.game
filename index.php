@@ -125,7 +125,41 @@ $APPLICATION->SetTitle("Главная");
 
     <section class="section__advantages">
         <div class="container">
-            <h3 class="display-5">Рекомендуемые <br> ближайшие игры</h3>
+            <h3 class="display-6">РЕКОМЕНДУЕМЫЕ <br> БЛИЖАЙШИЕ ИГРЫ</h3>
+            <div class="row g-3">
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" class="card-img" alt="...">
+                        <div class="card-img-overlay">
+                            <div class="card-text">sd</div>
+                            <h5 class="card-title">Kickgame Scrims GROUP B</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text">Last updated 3 mins ago</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="card h-100">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/card-a.png" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Kickgame Scrims GROUP A</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="card h-100">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Kickgame Scrims GROUP B</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </section>
 
