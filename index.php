@@ -13,7 +13,7 @@ $APPLICATION->SetTitle("Главная");
                         <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" alt="...">
                         <div class="carousel-caption">
                             <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
-                            <p>Бесплатные праки каждый день и рейтинговые игры — играй с равными!</p>
+                            <p>Бесплатные праки каждый день и <br> рейтинговые игры — играй с равными!</p>
                             <button class="btn btn-warning">Зарегистрироваться</button>
                         </div>
                     </div>
@@ -21,7 +21,7 @@ $APPLICATION->SetTitle("Главная");
                         <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" alt="...">
                         <div class="carousel-caption">
                             <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
-                            <p>Бесплатные праки каждый день и рейтинговые игры — играй с равными!</p>
+                            <p>Бесплатные праки каждый день и <br> рейтинговые игры — играй с равными!</p>
                             <button class="btn btn-warning">Зарегистрироваться</button>
                         </div>
                     </div>
@@ -29,7 +29,7 @@ $APPLICATION->SetTitle("Главная");
                         <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" alt="...">
                         <div class="carousel-caption">
                             <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
-                            <p>Бесплатные праки каждый день и рейтинговые игры — играй с равными!</p>
+                            <p>Бесплатные праки каждый день и <br> рейтинговые игры — играй с равными!</p>
                             <button class="btn btn-warning">Зарегистрироваться</button>
                         </div>
                     </div>

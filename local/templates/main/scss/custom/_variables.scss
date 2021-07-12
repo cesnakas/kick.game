@@ -11,7 +11,7 @@ $custom-colors: (
 );
 */
 
-// reboot
+// Reboot
 $body-color: #FFF;
 $body-bg: #100B2E;
 
@@ -31,7 +31,7 @@ $display-font-sizes: (
 );
 $display-font-weight: 500;
 
-// buttons
+// Buttons
 $btn-padding-x: 1.75rem;
 $btn-padding-y: .625rem;
 $btn-border-radius: .25rem;
@@ -40,10 +40,10 @@ $btn-font-size: .875rem;
 $btn-line-height: 1.125rem;
 $btn-font-weight: 500;
 
-// nav
+// Nav
 $nav-link-color: #FFF;
 
-// navbar
+// Navbar
 $navbar-brand-margin-end: 0;
 
 $navbar-dark-color: #FFF;
@@ -51,5 +51,14 @@ $navbar-dark-hover-color: $yellow;
 $navbar-nav-link-padding-x: 1rem;
 
 // Carousel
-$carousel-control-width: 5%;
-$carousel-caption-width: 90%;
+$carousel-caption-width: 80%;
+$carousel-caption-spacer: 0;
+
+$carousel-control-width: 10%;
+$carousel-control-opacity: 0;
+
+$carousel-indicator-width: 3rem;
+$carousel-indicator-height: .25rem;
+$carousel-indicator-hit-area-height: 0;
+$carousel-indicator-spacer: .375rem;
+$carousel-indicator-opacity: .2;
