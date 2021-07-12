@@ -31,9 +31,9 @@
                 max-height: 640px;
             }
             @media (max-width: 991.98px) {
-                // min-height: 528px;
                 height: calc(100vh - 56px - 5rem - 3rem);
-                // max-height: 640px;
+                -webkit-object-position: 94% 0;
+                object-position: 94% 0;
             }
         }
     }

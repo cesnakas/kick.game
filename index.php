@@ -14,6 +14,7 @@ $APPLICATION->SetTitle("Главная");
                         <div class="carousel-caption">
                             <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
                             <p>Бесплатные праки каждый день и <br> рейтинговые игры — играй с равными!</p>
+                            <br>
                             <button class="btn btn-warning">Зарегистрироваться</button>
                         </div>
                     </div>
@@ -22,6 +23,7 @@ $APPLICATION->SetTitle("Главная");
                         <div class="carousel-caption">
                             <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
                             <p>Бесплатные праки каждый день и <br> рейтинговые игры — играй с равными!</p>
+                            <br>
                             <button class="btn btn-warning">Зарегистрироваться</button>
                         </div>
                     </div>
@@ -30,6 +32,7 @@ $APPLICATION->SetTitle("Главная");
                         <div class="carousel-caption">
                             <h5 class="display-3">ТРЕНИРУЙСЯ</h5>
                             <p>Бесплатные праки каждый день и <br> рейтинговые игры — играй с равными!</p>
+                            <br>
                             <button class="btn btn-warning">Зарегистрироваться</button>
                         </div>
                     </div>
@@ -93,6 +96,7 @@ $APPLICATION->SetTitle("Главная");
     </section>
     */?>
 
+    <?/*
     <section class="section__advantages">
         <div class="container">
 
@@ -115,6 +119,13 @@ $APPLICATION->SetTitle("Главная");
                 <button class="btn btn-warning">Войти</button>
             </div>
 
+        </div>
+    </section>
+    */?>
+
+    <section class="section__advantages">
+        <div class="container">
+            <h3 class="display-5">Рекомендуемые <br> ближайшие игры</h3>
         </div>
     </section>
 
