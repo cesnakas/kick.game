@@ -1,4 +1,6 @@
+//
 // Colors
+//
 $yellow: #FFE500;
 $purple: #FF10CB;
 $red: #FF0052;
@@ -11,11 +13,15 @@ $custom-colors: (
 );
 */
 
+//
 // Reboot
+//
 $body-color: #FFF;
 $body-bg: #100B2E;
 
+//
 // Typography
+//
 $font-family-sans-serif: 'Cera Pro', 'Oswald', sans-serif;
 $headings-font-family: 'Oswald', sans-serif;
 // H1
@@ -31,7 +37,9 @@ $display-font-sizes: (
 );
 $display-font-weight: 500;
 
+//
 // Buttons
+//
 $btn-padding-x: 1.75rem;
 $btn-padding-y: .625rem;
 $btn-border-radius: .25rem;
@@ -40,17 +48,23 @@ $btn-font-size: .875rem;
 $btn-line-height: 1.125rem;
 $btn-font-weight: 500;
 
+//
 // Nav
+//
 $nav-link-color: #FFF;
 
+//
 // Navbar
+//
 $navbar-brand-margin-end: 0;
 
 $navbar-dark-color: #FFF;
 $navbar-dark-hover-color: $yellow;
 $navbar-nav-link-padding-x: 1rem;
 
+//
 // Carousel
+//
 $carousel-caption-width: 80%;
 $carousel-caption-spacer: 0;
 
@@ -63,8 +77,11 @@ $carousel-indicator-hit-area-height: 0;
 $carousel-indicator-spacer: .375rem;
 $carousel-indicator-opacity: .2;
 
+//
 // Card
+//
 $card-border-width: 0;
 $card-border-radius: .75rem;
 $card-height: 100%;
 $card-bg: transparent;
+$card-img-overlay-padding: 1.5rem;

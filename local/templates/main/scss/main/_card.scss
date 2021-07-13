@@ -5,4 +5,25 @@
         align-items: center;
         justify-content: space-between;
     }
+
+    &__bottom {
+
+        &-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        &-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &-title {
+            margin-bottom: .25rem;
+            font-size: 12px;
+            line-height: 1.2;
+            color: #8D89A5;
+        }
+    }
 }

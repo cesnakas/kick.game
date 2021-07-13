@@ -137,12 +137,33 @@ $APPLICATION->SetTitle("Главная");
 
                             <div class="card__top">
                                 <div class="badge bg-success p-2">Scrims</div>
-                                <div class="badge bg-dark p-2">1200-3600</div>
+                                <div class="badge bg-dark p-2">1200 - 3600</div>
                             </div>
 
                             <div class="card__bottom">
-                                <a class="card-title -stretched-link" href="#">Kickgame Scrims GROUP B</a>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <a class="card-link" href="#">Kickgame Scrims GROUP B</a>
+                                <div class="card__bottom-bar">
+                                    <div class="card__bottom-item">
+                                        <span class="card__bottom-title">Режим</span>
+                                        <span>Squad</span>
+                                    </div>
+                                    <div class="card__bottom-item">
+                                        <span class="card__bottom-title">Свободно мест</span>
+                                        <span>16 / 18</span>
+                                    </div>
+                                    <div class="card__bottom-item">
+                                        <span class="card__bottom-title">Призовой фонд</span>
+                                        <span>1500</span>
+                                    </div>
+                                    <div class="card__bottom-item">
+                                        <span class="card__bottom-title">Участие</span>
+                                        <span>500</span>
+                                    </div>
+                                    <div class="card__bottom-item">
+                                        <span class="card__bottom-title">Рейтинг</span>
+                                        <span>350</span>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -152,9 +173,9 @@ $APPLICATION->SetTitle("Главная");
 
                 <div class="col-lg-3">
                     <div class="card">
-                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/card-a.png" class="card-img-top" alt="...">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-b.png" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">Kickgame Scrims GROUP A</h5>
+                            <a class="card-link" href="#">Kickgame Scrims GROUP A</a>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                     </div>
@@ -162,9 +183,9 @@ $APPLICATION->SetTitle("Главная");
 
                 <div class="col-lg-3">
                     <div class="card">
-                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/header-bg.png" class="card-img-top" alt="...">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-c.png" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">Kickgame Scrims GROUP B</h5>
+                            <a class="card-link" href="#">Kickgame Scrims GROUP B</a>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                     </div>
