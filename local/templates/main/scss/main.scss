@@ -23,7 +23,8 @@
 @import "bootstrap/button-group";
 @import "bootstrap/nav";
 @import "bootstrap/navbar";
-@import "bootstrap/card";
+// @import "bootstrap/card";
+@import "custom/bootstrap/card"; // custom
 @import "bootstrap/accordion";
 @import "bootstrap/breadcrumb";
 @import "bootstrap/pagination";
@@ -45,12 +46,14 @@
 @import "bootstrap/utilities/api";
 // end Boostrap
 
-// Main
+// Custom
 @import "custom/reboot";
 @import "custom/type";
 @import "custom/buttons";
 @import "custom/nav";
 @import "custom/navbar";
+// Main
+@import "main/card";
 // Main header
 @import "main/header";
 // Main section

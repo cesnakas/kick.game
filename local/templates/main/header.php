@@ -156,7 +156,7 @@ function getUserRating($userID) {
                             </svg>
                         </a>
                     </li>
-                    <? if(CSite::InDir('/index.php')): ?>
+                    <? if(!CSite::InDir('/index.php')): ?>
                         <? if($USER->IsAuthorized()): ?>
                         <li class="nav-item dropdown d-none d-lg-flex">
                             <a class="nav-link dropdown-toggle nav__user-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -192,7 +192,7 @@ function getUserRating($userID) {
                 </ul>
             </nav>
 
-            <? if(!CSite::InDir('/index.php')): ?>
+            <? if(CSite::InDir('/index.php')): ?>
                 <? if($USER->IsAuthorized()): ?>
                 <div class="navbar-nav dropdown d-none d-lg-flex">
                     <a class="nav-link dropdown-toggle nav__user-link" href="javascript:void(0);" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
