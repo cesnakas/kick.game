@@ -136,7 +136,8 @@ $APPLICATION->SetTitle("Главная");
                         <div class="card-img-overlay">
 
                             <div class="card__top">
-                                <div class="badge bg-success p-2">Scrims</div>
+                                <div class="badge-scrims">Кастомки</div>
+                                <div class="badge-tour">Турнир</div>
                                 <div class="badge bg-dark p-2">1200 - 3600</div>
                             </div>
 
@@ -192,6 +193,11 @@ $APPLICATION->SetTitle("Главная");
                 </div>
 
             </div>
+
+            <div class="d-grid col-lg-3 mx-auto py-5">
+                <button class="btn btn-outline-warning">Смотреть расписание игр</button>
+            </div>
+
         </div>
     </section>
 
