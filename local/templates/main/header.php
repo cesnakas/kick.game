@@ -45,7 +45,7 @@ function getUserRating($userID) {
     <?php echo'<div id="panel">'; $APPLICATION->ShowPanel(); echo'</div>';?>
 
     <header class="navbar navbar-expand-lg navbar-dark fixed-top blur" <?=($USER->IsAdmin()) ? 'style="top:auto;"' : '';?>>
-        <div class="container">
+        <div class="container-xl">
 
             <? if($USER->IsAuthorized()): ?>
             <a class="d-lg-none" href="#">

@@ -150,6 +150,10 @@
     object-fit: cover;
     -webkit-object-position: center;
     object-position: center;
+
+    @media (min-width: 992px) {
+        height: 190px;
+    }
 }
 
 .card-img,

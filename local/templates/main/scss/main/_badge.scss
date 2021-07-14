@@ -1,3 +1,4 @@
+.badge-rating,
 .badge-scrims,
 .badge-tour,
 .badge-prac {
@@ -15,9 +16,17 @@
     vertical-align: baseline;
     @include border-radius($badge-border-radius);
     // @include gradient-bg();
-    // background-image: linear-gradient(0deg, #00C251, #00C251);
+    -webkit-backdrop-filter: blur(32px);
     backdrop-filter: blur(32px);
 
+    &:empty {
+        display: none;
+    }
+}
+
+.badge-scrims,
+.badge-tour,
+.badge-prac {
     &:before {
         content: '';
         display: inline-flex;
@@ -26,10 +35,10 @@
         background-position: center;
         background-repeat: no-repeat;
     }
+}
 
-    &:empty {
-        display: none;
-    }
+.badge-rating {
+    background-image: linear-gradient(0deg, rgba(0,0,0,.32), rgba(0,0,0,.32));
 }
 
 .badge-scrims {

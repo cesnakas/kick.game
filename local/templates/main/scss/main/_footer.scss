@@ -2,7 +2,7 @@
     min-height: 300px;
     background-color: #000;
 
-    .container {
+    .container, > div[class|=container] {
         padding-top: 5rem;
         padding-bottom: 5rem;
     }

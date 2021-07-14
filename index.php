@@ -1,52 +1,11 @@
-<?php
+<?
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/header.php');
 $APPLICATION->SetPageProperty("TITLE", "KICKGAME");
 $APPLICATION->SetTitle("Главная");
 ?>
 
-    <?/*
     <section class="section__header">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-6 offset-lg-1">
-
-                    <h1 class="display-1">KICKGAME</h1>
-                    <p class="lead">Твой пропуск в киберспорт, пабгер</p>
-
-                    <div class="row row-cols-xl-2">
-                        <figure class="figure">
-                            <img src="/local/templates/new_main/images/duo@2x.png" class="img-fluid" alt="Бесплатные праки каждый день">
-                            <figcaption class="figure-caption">Бесплатные праки <br class="d-none d-xl-block"> каждый день</figcaption>
-                        </figure>
-                        <figure class="figure">
-                            <img src="/local/templates/new_main/images/squad@2x.png" class="img-fluid" alt="Турниры для сквадов с призовым фондом от 1000 €">
-                            <figcaption class="figure-caption">Турниры для сквадов <br> с призовым фондом <br class="d-none d-xl-block"> от 1000 €</figcaption>
-                        </figure>
-                        <figure class="figure">
-                            <img src="/local/templates/new_main/images/customs@2x.png" class="img-fluid" alt="Рейтинговые игры, которые гарантируют игру с равными соперниками">
-                            <figcaption class="figure-caption">Рейтинговые игры, <br> которые гарантируют <br> игру с равными соперниками</figcaption>
-                        </figure>
-                        <figure class="figure">
-                            <img src="/local/templates/new_main/images/free@2x.png" class="img-fluid" alt="Бесплатная регистрация на праки открывается в 12:00 МСК в день игры">
-                            <figcaption class="figure-caption">Бесплатная <br> регистрация на праки <br> открывается в 12:00 МСК в день игры</figcaption>
-                        </figure>
-                    </div>
-
-                    <div>
-                        <button class="btn btn-warning">ПРОФИЛЬ</button>
-                        <span class="ms-lg-3">Начни путь к победе сегодня!</span>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </section>
-    */?>
-
-    <section class="section__header">
-        <div class="container">
+        <div class="container-xl">
 
             <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -96,74 +55,101 @@ $APPLICATION->SetTitle("Главная");
         </div>
     </section>
 
-    <?/*
-    <section class="section__advantages">
-        <div class="container">
+    <section class="section__advantages section__games">
+        <div class="container-xl">
 
-            <h3 class="display-4 text-center">Играя с нами, ты сможешь</h3>
-            <div class="row">
-                <div class="col-lg">
-                    <div>Прокачаться</div>
-                    <p>тренироваться с tier 1 - tier 3 командами, анализировать свои результаты по готовым записям игр и совершенствовать навыки</p>
-                </div>
-                <div class="col-lg">
-                    <div>Стать первым</div>
-                    <p>в рейтингах игроков и команд, ежедневно соревнуясь с разными соперниками в практических играх</p>
-                </div>
-                <div class="col-lg">
-                    <div>Победить в турнире</div>
-                    <p>или нескольких, и забрать часть призового фонда размером в 1000€ или 10000€</p>
-                </div>
-            </div>
-            <div>
-                <button class="btn btn-warning">Войти</button>
-            </div>
-
-        </div>
-    </section>
-    */?>
-
-    <section class="section__advantages">
-        <div class="container">
             <h3 class="display-6">РЕКОМЕНДУЕМЫЕ <br> БЛИЖАЙШИЕ ИГРЫ</h3>
-            <div class="row g-3">
 
-                <div class="col-lg-6">
+            <div class="row row-cols-1 row-cols-lg-3 g-4">
+
+                <div class="col col-xl-6">
+                    <!-- card scrims -->
                     <div class="card">
 
-                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-a.png" class="card-img" alt="...">
+                        <div class="position-relative d-xl-none">
+                            <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-a.png" class="card-img-top" alt="...">
+                            <div class="card-img-overlay">
+                                <div class="card__top">
+                                    <div class="badge-scrims">Кастомки</div>
+                                    <div class="badge-rating">1200 - 3600</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body d-xl-none">
+                            <a class="card-link" href="#">Kickgame Scrims GROUP C</a>
+                            <div class="card__bottom">
+                                <div class="card__bottom-bar row row-cols-2 row-cols-xl-auto g-3">
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Режим</div>
+                                        <div>Squad</div>
+                                    </div>
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Свободно мест</div>
+                                        <div class="seats">
+                                            <div><span class="text-success">16 </span>/ 18</div>
+                                        </div>
+                                    </div>
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Призовой фонд</div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="coins-win">1500</div>
+                                            <div class="info"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Участие</div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="coins-chick">500</div>
+                                            <div class="info"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Рейтинг</div>
+                                        <div>350</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <div class="card-img-overlay">
+                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-a.png" class="card-img d-none d-xl-block" alt="...">
+
+                        <div class="card-img-overlay card-img-blur d-none d-xl-flex">
 
                             <div class="card__top">
                                 <div class="badge-scrims">Кастомки</div>
-                                <!--<div class="badge-tour">Турнир</div>
-                                <div class="badge-prac">Праки</div>-->
-                                <div class="badge bg-dark p-2">1200 - 3600</div>
+                                <div class="badge-rating">1200 - 3600</div>
                             </div>
 
                             <div class="card__bottom">
-                                <a class="card-link" href="#">Kickgame Scrims GROUP B</a>
-                                <div class="card__bottom-bar">
-                                    <div class="card__bottom-item">
-                                        <span class="card__bottom-title">Режим</span>
-                                        <span>Squad</span>
+                                <a class="card-link" href="#">Kickgame Scrims GROUP C</a>
+                                <div class="card__bottom-bar row row-cols-2 row-cols-xl-auto g-3">
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Режим</div>
+                                        <div>Squad</div>
                                     </div>
-                                    <div class="card__bottom-item">
-                                        <span class="card__bottom-title">Свободно мест</span>
-                                        <span>16 / 18</span>
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Свободно мест</div>
+                                        <div class="seats">
+                                            <div><span class="text-success">16 </span>/ 18</div>
+                                        </div>
                                     </div>
-                                    <div class="card__bottom-item">
-                                        <span class="card__bottom-title">Призовой фонд</span>
-                                        <span>1500</span>
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Призовой фонд</div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="coins-win">1500</div>
+                                            <div class="info"></div>
+                                        </div>
                                     </div>
-                                    <div class="card__bottom-item">
-                                        <span class="card__bottom-title">Участие</span>
-                                        <span>500</span>
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Участие</div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="coins-chick">500</div>
+                                            <div class="info"></div>
+                                        </div>
                                     </div>
-                                    <div class="card__bottom-item">
-                                        <span class="card__bottom-title">Рейтинг</span>
-                                        <span>350</span>
+                                    <div class="col card__bottom-item">
+                                        <div class="card__bottom-title">Рейтинг</div>
+                                        <div>350</div>
                                     </div>
                                 </div>
                             </div>
@@ -171,24 +157,93 @@ $APPLICATION->SetTitle("Главная");
                         </div>
 
                     </div>
+                    <!-- /card scrims -->
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col col-xl-3">
                     <div class="card">
-                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-b.png" class="card-img-top" alt="...">
+                        <div class="position-relative">
+                            <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-b.png" class="card-img-top" alt="...">
+                            <div class="card-img-overlay">
+                                <div class="card__top">
+                                    <div class="badge-tour">Турнир</div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card-body">
+
                             <a class="card-link" href="#">Kickgame Scrims GROUP A</a>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                            <div class="card__bottom-bar row row-cols-2 g-3">
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Режим</div>
+                                    <div>Squad</div>
+                                </div>
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Статус</div>
+                                    <div>Идёт регистрация</div>
+                                </div>
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Призовой фонд</div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="coins-win">1000</div>
+                                        <div class="info"></div>
+                                    </div>
+                                </div>
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Участие</div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="coins-chick">500</div>
+                                        <div class="info"></div>
+                                    </div>
+                                </div>
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Даты провения</div>
+                                    <div>23.08.21-28.08.21</div>
+                                </div>
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Рейтинг</div>
+                                    <div>>350</div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col col-xl-3">
                     <div class="card">
-                        <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-c.png" class="card-img-top" alt="...">
+                        <div class="position-relative">
+                            <img src="<?=SITE_TEMPLATE_PATH?>/dist/images/games-c.png" class="card-img-top" alt="...">
+                            <div class="card-img-overlay">
+                                <div class="card__top">
+                                    <div class="badge-prac">Праки</div>
+                                    <div class="badge-rating">500 - 800</div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card-body">
                             <a class="card-link" href="#">Kickgame Scrims GROUP B</a>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="card__bottom-bar row row-cols-2 g-3">
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Режим</div>
+                                    <div>Squad</div>
+                                </div>
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Свободно мест</div>
+                                    <div class="seats">
+                                        <div><span class="text-success">16 </span>/ 18</div>
+                                    </div>
+                                </div>
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Призовой фонд</div>
+                                    <div>Отсутствует</div>
+                                </div>
+                                <div class="col card__bottom-item">
+                                    <div class="card__bottom-title">Участие</div>
+                                    <div>Бесплатно</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,30 +257,17 @@ $APPLICATION->SetTitle("Главная");
         </div>
     </section>
 
-    <?/*
-    <section class="section__games">
-        <div class="container">
-            <h3 class="display-4">Игры</h3>
-            <button class="btn btn-warning">Поиск</button>
-        </div>
-    </section>
-    */?>
+    <section>
+        <div class="container-xl">
 
-    <?/*
-    <section class="section__about">
-        <div class="container">
-            <h3 class="display-4">О платформе</h3>
         </div>
     </section>
-    */?>
 
-    <?/*
-    <section class="section__functions">
-        <div class="container">
-            <h3 class="display-4">Функции</h3>
+    <section>
+        <div class="container-xl">
+
         </div>
     </section>
-    */?>
 
 <?
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/footer.php');
