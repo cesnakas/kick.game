@@ -137,7 +137,8 @@ $APPLICATION->SetTitle("Главная");
 
                             <div class="card__top">
                                 <div class="badge-scrims">Кастомки</div>
-                                <div class="badge-tour">Турнир</div>
+                                <!--<div class="badge-tour">Турнир</div>
+                                <div class="badge-prac">Праки</div>-->
                                 <div class="badge bg-dark p-2">1200 - 3600</div>
                             </div>
 
@@ -210,17 +211,21 @@ $APPLICATION->SetTitle("Главная");
     </section>
     */?>
 
+    <?/*
     <section class="section__about">
         <div class="container">
             <h3 class="display-4">О платформе</h3>
         </div>
     </section>
+    */?>
 
+    <?/*
     <section class="section__functions">
         <div class="container">
             <h3 class="display-4">Функции</h3>
         </div>
     </section>
+    */?>
 
 <?
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/footer.php');
